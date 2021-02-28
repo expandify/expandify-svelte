@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;1,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+$font-stack: 'Nunito Sans', 'Rubik', 'Roboto', 'sans-serif';
+$title_font_stack: 'Montserrat','Rubik', 'Roboto', 'sans-serif';
+
+$h1_size: 50px;
+$h2_size: 29px;
+$h3_size: 15px;
+$title_size: 2 * $h1_size;
+$heading_size: $h2_size;
+$sub_heading_size: $h3_size;
+$body_size: 14px;
+$small_size: 12px;
+$button_size: 16px;
