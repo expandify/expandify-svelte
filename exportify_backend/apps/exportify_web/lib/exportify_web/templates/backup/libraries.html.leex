@@ -1,0 +1,41 @@
+<div class="top">
+  <h1>Your Libraries</h1>
+</div>
+
+<div class="bottom bottom-libraries">
+  <table class="libraries">
+    <thead>
+      <tr>
+        <th>Library ID</th>
+        <th>Library Name</th>
+        <th>User Name</th>
+        <th>Library Creation Date</th>
+        <%= if @expanded != "" do %>
+        <th></th>
+        <th></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for library <- @libraries do %>
+        <tr
+        class="<%= if @expanded == to_string(library.library_id) do %> expanded <% end %>"
+        phx-click="expand"
+        phx-value-library_id=<%= library.library_id %>>
+          <td class="library_id"><span><%= library.library_id %></span></td>
+          <td class="library_name"><span><%= library.library_name %></span></td>
+          <td class="user_name"><span><%= library.user_name %></span></td>
+          <td class="creation_date"><span><%= library.library_creation %></span></td>
+          <%= if @expanded != "" do %>
+          <td class="library-button">
+            <%= if @expanded == to_string(library.library_id) do %> <button class="spotify-button" phx-click="import-library">Import Library</button> <% end %>
+          </td>
+          <td class="library-button">
+            <%= if @expanded == to_string(library.library_id) do %> <button class="spotify-button" phx-click="compare-library" phx-value-library_id=<%= library.library_id %>>Compare Library</button> <% end %>
+          </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

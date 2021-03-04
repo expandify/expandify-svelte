@@ -1,0 +1,52 @@
+@use 'defaults';
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+  background-color: defaults.$gray;
+  color: defaults.$white;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: defaults.$font-stack;
+  font-weight: normal;
+}
+
+footer {
+  height: 40px;
+  text-align: center;
+  align-items: center;
+  padding: 8px;
+  background-color: #181818;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 0 10px black;
+  z-index: 2;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-weight: 400;
+
+  .phx-logo {
+    height: 100%;
+    flex-basis: 0;
+    margin: 0;
+    min-width: unset;
+  }
+
+  .phx-img {
+    height: 100%;
+    width: auto;
+    max-width: unset;
+  }
+
+  .github {
+    color: #404040;
+  }
+}
+

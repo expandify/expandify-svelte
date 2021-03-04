@@ -1,0 +1,130 @@
+@use 'defaults';
+
+main.library {
+
+  .bottom-playlists {
+    display: flex;
+    flex-direction: row;
+
+    table.playlists {
+      thead {
+        tr {
+          position: relative;
+          display: block;
+
+          th:first-child {
+            min-width: 700px;
+          }
+        }
+      }
+
+      tbody {
+        tr.expanded {
+          background-color: defaults.$gray;
+          border: 1px solid defaults.$green;
+          border-right: none;
+          z-index: 1;
+        }
+
+        tr.expanded:after {
+          content: '';
+          position: absolute;
+          height: 100%;
+          width: 5px;
+          right: -5px;
+          top: 0;
+          background-color: defaults.$gray;
+        }
+
+        tr {
+          position: relative;
+          display: block;
+
+          td:first-child {
+            width: 700px;
+          }
+        }
+
+        tr:hover {
+          background-color: defaults.$light_gray;
+          cursor: pointer;
+        }
+      }
+    }
+
+    table.playlist-expand {
+      flex: 1;
+      position: sticky;
+      top: 20px; //20px is the .bottom padding
+
+
+      background-color: defaults.$gray;
+      outline: 1px solid defaults.$green;
+      table-layout: fixed;
+      width: 100%;
+
+      thead {
+        font-size: 20px;
+        color: defaults.$light_gray;
+        border-bottom: 2px solid defaults.$green;
+        display: table;
+        width: 100%;
+        tr {
+          th {
+          }
+        }
+      }
+
+      tbody {
+        max-height: calc(100vh - (200px + 40px + 20px + 20px + 25px)); //.top height + fotter height + .bottom padding + self padding + header size(guess)
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: block;
+        tr {
+          display: table;
+          width: 100%;
+          table-layout: fixed;
+          background-color: defaults.$gray;
+          td {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+
+          @keyframes showName {
+            0% {overflow: hidden;}
+            100% {overflow: visible;}
+          }
+
+          @keyframes showNameBack {
+            0% {
+              box-shadow: none;
+              padding: 0;
+              background-color: inherit;
+            }
+            100% {
+              display: inline;
+              background-color: defaults.$light_gray;
+              box-shadow: 0 0 2px defaults.$black;
+              padding: 5px;
+            }
+          }
+
+          td:hover {
+            animation: showName 0.5s steps(1) 0s 1 normal forwards;
+            overflow: visible;
+            position: relative;
+          }
+          td:hover span {
+            animation: showNameBack 0.5s steps(1) 0s 1 normal forwards;
+            display: inline;
+            background-color: defaults.$light_gray;
+            box-shadow: 0 0 2px defaults.$black;
+            padding: 5px;
+          }
+        }
+
+      }
+    }
+  }
+}

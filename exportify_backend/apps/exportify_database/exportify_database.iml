@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="ELIXIR_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <content url="file://$MODULE_DIR$/../../../apps/exportify_database">
+      <sourceFolder url="file://$MODULE_DIR$/../../../apps/exportify_database/lib" isTestSource="false" />
+    </content>
+    <orderEntry type="jdk" jdkName="Elixir 1.11.2" jdkType="Elixir SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="ecto_sql" level="project" />
+    <orderEntry type="library" name="myxql" level="project" />
+    <orderEntry type="library" name="telemetry" level="project" />
+    <orderEntry type="library" name="db_connection" level="project" />
+    <orderEntry type="library" name="jason" level="project" />
+    <orderEntry type="library" name="ex_doc" level="project" />
+    <orderEntry type="library" name="benchee" level="project" />
+    <orderEntry type="library" name="benchee_json" level="project" />
+    <orderEntry type="library" name="decimal" level="project" />
+    <orderEntry type="library" name="geo" level="project" />
+    <orderEntry type="library" name="binpp" level="project" />
+    <orderEntry type="library" name="dialyxir" level="project" />
+    <orderEntry type="library" name="connection" level="project" />
+    <orderEntry type="module" module-name="exportify_local_storage" />
+    <orderEntry type="module" module-name="exportify_spotify" />
+  </component>
+</module>
+

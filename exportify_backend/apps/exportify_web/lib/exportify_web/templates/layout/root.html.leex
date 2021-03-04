@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= csrf_meta_tag() %>
+    <%= live_title_tag assigns[:page_title] || "Exportify", suffix: " · Phoenix Framework" %>
+    <link phx-track-static rel="stylesheet" href="<%= Routes.static_url(@conn, "/css/app.css") %>"/>
+    <script defer phx-track-static type="text/javascript" src="<%= Routes.static_url(@conn, "/js/app.js") %>"></script>
+    <title></title>
+  </head>
+  <body class="body">
+
+    <div class="inner-layout">
+      <%= @inner_content %>
+    </div>
+
+    <footer>
+      <a href="https://phoenixframework.org/" class="phx-logo">
+        <img class="phx-img" src="<%= Routes.static_url(@conn, "/images/phoenix.png") %>" alt="Phoenix Framework Logo"/>
+      </a>
+      <div>&copy; Copyright Till Wittenburg</div>
+      <a href="https://github.com/systeno" class="github">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+    </footer>
+  </body>
+</html>

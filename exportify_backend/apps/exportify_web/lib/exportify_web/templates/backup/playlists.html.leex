@@ -1,0 +1,53 @@
+<div class="top">
+  <h1>Your Playlists</h1>
+  <h2>You have <%= length(@playlists) %> Playlists.</h2>
+</div>
+<div class="bottom bottom-playlists">
+  <table class="playlists">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Songs</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for playlist <- @playlists do %>
+
+        <tr
+        class="<%= if @expanded == playlist.spotify_id do %> expanded <% end %>"
+        phx-click="expand"
+        phx-value-playlist_id=<%= playlist.spotify_id %>>
+
+          <td class="name"><%= playlist.name %></td>
+          <td class="songs"><%= playlist.song_count %></td>
+        </tr>
+
+      <% end %>
+    </tbody>
+  </table>
+  <%= for playlist <- @playlists do %>
+    <%= if @expanded == playlist.spotify_id do %>
+
+      <table class="playlist-expand">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Artists</th>
+            <th>Album</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for song <- playlist.songs do %>
+            <tr>
+              <td class="name"><span><%= song.name %></span></td>
+              <td class="artists"><span><%= song.artists |> Enum.map(&(&1.name)) |> Enum.join(", ") %></span></td>
+              <td class="album"><span><%= song.album.name %></span></td>
+              <td class="duration"><span><%= song.duration %></span></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  <% end %>
+</div>

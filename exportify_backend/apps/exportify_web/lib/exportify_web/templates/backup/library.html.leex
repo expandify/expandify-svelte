@@ -1,0 +1,44 @@
+<aside class="sidebar">
+  <a class="title-live" href="<%=ExportifyWeb.Router.Helpers.index_url(@socket, :index)%>">Exportify</a>
+  <nav>
+    <ul class="navbar">
+      <li class="nav-item"><%= live_redirect("Playlists", to: ExportifyWeb.Router.Helpers.library_url(@socket, :playlists))%></li>
+      <li class="nav-item"><%= live_redirect("Songs", to: ExportifyWeb.Router.Helpers.library_url(@socket, :songs))%></li>
+      <li class="nav-item"><%= live_redirect("Artists", to: ExportifyWeb.Router.Helpers.library_url(@socket, :artists))%></li>
+      <li class="nav-item"><%= live_redirect("Albums", to: ExportifyWeb.Router.Helpers.library_url(@socket, :albums))%></li>
+      <li class="nav-item"><%= live_redirect("Libraries", to: ExportifyWeb.Router.Helpers.library_url(@socket, :libraries))%></li>
+      <li>
+        <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+          <%= link to: Routes.live_dashboard_url(@socket, :home), class: "dashboard" do%>
+            <i class="fas fa-tachometer-alt"></i>
+          <% end %>
+        <% end %>
+      </li>
+    </ul>
+  </nav>
+
+  <div>
+    <ul class="actions">
+      <li><button class="spotify-button" phx-click="test-flash">Test Flash</button></li>
+      <li><button class="spotify-button" phx-click="save-library">Save to Database</button></li>
+      <li><a class="spotify-button" href="<%=ExportifyWeb.Router.Helpers.download_url(@socket, :download)%>" download>Download Library</a></li>
+    </ul>
+  </div>
+</aside>
+
+<main class="library">
+  <%= if @current_content != nil do %>
+    <%= live_render(@socket, @current_content, id: "content_id") %>
+  <% else %>
+  <div class="advisor advisor-top">
+    <i class="fas fa-long-arrow-alt-left direction"></i>
+    <div class="advise">Browse your Library.</div>
+  </div>
+
+  <div class="advisor advisor-bottom">
+    <i class="fas fa-long-arrow-alt-left direction"></i>
+    <div class="advise">Safe Library.</div>
+  </div>
+
+  <% end %>
+</main>

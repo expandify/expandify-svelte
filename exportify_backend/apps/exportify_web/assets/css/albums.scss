@@ -1,0 +1,71 @@
+@use 'defaults';
+
+main.library {
+
+  .bottom-albums {
+    display: grid;
+    justify-content: space-between;
+    align-content: start;
+    grid-template-columns: repeat(auto-fill, 200px);
+    gap: 30px;
+
+    .album.normal {
+      background-color: #181818;
+    }
+    .album.red {
+      background-color: #281818;
+    }
+    .album.green {
+      background-color: #182818;
+    }
+
+    .album {
+      padding: 10px;
+      box-shadow: 0 0 10px black;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .image {
+        width: 100%;
+        position: relative;
+        padding-bottom: 100%;
+        .content {
+
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 100%;
+          height: 100%;
+
+          img {
+            width: inherit;
+            height: inherit;
+            object-fit: cover;
+
+            box-shadow: 0 0 5px black;
+          }
+          img:before {
+            content: ' ';
+            display: block;
+            position: absolute;
+            background-image: linear-gradient(to right top, #181818, #27303d, #1f4e61, #00707a, #009180, #00a581, #23b87c, #4acb72, #63d888, #7be59d, #91f2b2, #a8ffc7);
+            height: 100%;
+            width: 100%;
+          }
+        }
+      }
+
+      .text {
+        padding: 5px;
+        max-height: 100%;
+        max-width: 100%;
+        text-shadow: 0 0 5px black;
+      }
+      .artist {
+        color: defaults.$light_gray;
+        padding-top: 0;
+      }
+    }
+  }
+}

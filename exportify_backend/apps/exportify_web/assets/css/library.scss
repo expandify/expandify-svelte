@@ -1,0 +1,205 @@
+@use "defaults";
+
+aside.sidebar {
+  position: fixed;
+  padding: 10px;
+  width: 300px;
+  height: 100vh;
+  grid-area: sidebar;
+  background-color: defaults.$black;
+  box-shadow: 0 0 10px black;
+  z-index: 1;
+  flex: 0;
+  display: flex;
+  flex-direction: column;
+
+  .title-live {
+    color: defaults.$green;
+    margin: 0;
+    font-weight: 900;
+    font-size: 45px;
+    letter-spacing: 2px;
+    font-family: 'Montserrat', 'sans-serif';
+    text-decoration: none
+  }
+  .title-live:hover {
+    color: #e1e1e1;
+  }
+
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding-left: 20px;
+  }
+
+  nav {
+    flex: 1;
+    .navbar {
+      .nav-item {
+        a {
+          color: defaults.$white;
+          font-family: defaults.$font-stack;
+          font-weight: 700;
+          border-radius: 20px;
+          display: block;
+          background-color: unset;
+          border: none;
+          text-decoration: none;
+        }
+        a:hover {
+          color: defaults.$light_gray;
+        }
+      }
+      li {
+        padding: 10px;
+        .dashboard {
+          right: 20px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 150%;
+          color: #404040;
+          text-shadow: 0 0 3px #181818;
+          :hover {
+            color: #e1e1e1;
+          }
+        }
+      }
+    }
+  }
+
+  .actions {
+    margin-bottom: 40px;
+
+    .spotify-button {
+      font-size: 11px;
+      min-width: 200px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      background-color: #1DB954;
+      cursor: pointer;
+      color: #e1e1e1;
+      transition-duration: .3s;
+      box-sizing: border-box;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-align: center;
+      vertical-align: middle;
+      text-transform: uppercase;
+      border-radius: 500px;
+      padding: 15px 10px 15px 10px;
+      display: inline-block;
+      text-decoration: none;
+      border: none;
+    }
+    .spotify-button:hover {
+      background-color: #1ED760;
+      color: #e1e1e1;
+    }
+  }
+}
+
+
+main.library {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 40px);
+  width: calc(100% - 300px);
+  margin-left: 300px;
+  justify-content: space-between;
+  font-family: defaults.$font-stack;
+  background-color: defaults.$gray;
+
+  .advisor-top {
+    align-items: center;
+    line-height: 100px;
+  }
+
+  .advisor-bottom {
+    align-items: center;
+  }
+
+  .advisor {
+
+    display: flex;
+    flex-direction: row;
+
+    .direction {
+      font-size: 200px;
+      color: defaults.$white;
+      margin-right: 20px;
+    }
+    .advise {
+      flex: 1;
+      color: defaults.$white;
+      font-size: 50px;
+    }
+  }
+
+  .top {
+    height: 200px;
+    background-image: linear-gradient(to right top, #181818, #27303d, #1f4e61, #00707a, #009180, #00a581, #23b87c, #4acb72, #63d888, #7be59d, #91f2b2, #a8ffc7);
+    padding: 20px;
+    flex: 1;
+    h1 {
+      margin: 0;
+      font-size:  50px;
+      height: 50px;
+      color: defaults.$black;
+      text-shadow: 0 0 5px #e1e1e1;
+    }
+
+    h2 {
+      margin: 0;
+      color: defaults.$white;
+    }
+  }
+
+  .bottom {
+    padding: 20px 40px 20px 40px;
+    background-color: defaults.$gray;
+    box-shadow: 0 0 10px black;
+    width: 100%;
+
+    min-height: calc(100vh - 240px); //200px top, 40px footer
+    flex: 1;
+  }
+
+  table {
+    text-align: left;
+    background-color: defaults.$black;
+    box-shadow: 0 0 10px black;
+    border-collapse: collapse;
+
+    thead {
+      font-size: 20px ;
+      color: defaults.$light_gray;
+      border-bottom: 2px solid defaults.$green;
+      tr {
+        th {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          padding-top: 10px;
+          padding-bottom: 10px;
+          padding-left: 20px;
+          align-items: center;
+        }
+      }
+      tr:nth-child(even) {
+        background-color: defaults.$black;
+      }
+      tr:nth-child(odd) {
+        background-color: lighten(defaults.$black, 1%);
+      }
+    }
+  }
+}

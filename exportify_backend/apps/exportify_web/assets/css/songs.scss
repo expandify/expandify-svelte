@@ -1,0 +1,71 @@
+@use 'defaults';
+
+main.library {
+
+  .bottom-songs {
+
+
+    table.songs {
+      table-layout: fixed;
+      thead {
+        table-layout: fixed;
+        width: 100%;
+        display: table;
+        tr {
+          th:first-child {
+          }
+        }
+      }
+      tbody {
+        display: block;
+        tr {
+          display: table;
+          width: 100%;
+          table-layout: fixed;
+
+
+          @keyframes showName {
+            0% {overflow: hidden;}
+            100% {overflow: visible;}
+          }
+
+          @keyframes showNameBack {
+            0% {
+              box-shadow: none;
+              padding: 0;
+              background-color: inherit;
+            }
+            100% {
+              display: inline;
+              background-color: defaults.$light_gray;
+              box-shadow: 0 0 2px defaults.$black;
+              padding: 5px;
+            }
+          }
+
+          td {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+
+          td:hover {
+            animation: showName 0.5s steps(1) 0s 1 normal forwards;
+            position: relative;
+            overflow: visible;
+          }
+
+          td:hover span {
+
+            animation: showNameBack 0.5s steps(1) 0s 1 normal forwards;
+            display: inline;
+            background-color: defaults.$light_gray;
+            box-shadow: 0 0 2px defaults.$black;
+            padding: 5px;
+          }
+        }
+
+      }
+    }
+  }
+}

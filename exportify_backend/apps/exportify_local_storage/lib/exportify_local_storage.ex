@@ -1,0 +1,3 @@
+defmodule ExportifyLocalStorage do
+
+end

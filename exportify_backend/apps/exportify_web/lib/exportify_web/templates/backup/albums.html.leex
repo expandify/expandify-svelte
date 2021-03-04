@@ -1,0 +1,32 @@
+<div class="top">
+  <h1>Your Albums</h1>
+  <h2>You saved <%= length(Enum.at(@list_of_albums, 0, [])) %> Albums.</h2>
+</div>
+
+<div class="bottom bottom-albums">
+
+  <%= for {_albums, idx} <- Enum.with_index(@list_of_albums) do %>
+    <%= if idx <= 1 do %>
+      <% list1 = Enum.at(@list_of_albums, idx, []) %>
+      <% list2 = Enum.at(@list_of_albums, 1 - idx, []) %>
+      <%= for album <- list1 do %>
+        <% unique = (list2 != []) and (Enum.find(list2, fn a -> a.spotify_id == album.spotify_id end) == nil) %>
+        <% color = case {unique, idx} do {true, 0} -> "green"; {true, 1} -> "red"; _ -> "normal" end %>
+        <%= if (idx == 0) or (color != "normal") do %>
+          <div class="album <%= color %>">
+            <div class="image">
+              <div class="content"> <img src="<%= album.image %>" alt=""/> </div>
+            </div>
+
+            <div class="text name">
+              <%= album.name %>
+            </div>
+            <div class="text artist">
+              <%= album.artists |> Enum.map(&(&1.name)) |> Enum.join(", ") %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

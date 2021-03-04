@@ -72,6 +72,8 @@ export default {
 @use "src/styles/fonts";
 @use "src/styles/colors";
 
+$top-size: 700px;
+
 @keyframes gradient {
   0% {
     background-position: 0% 0%;
@@ -92,7 +94,7 @@ export default {
 .login-top {
   background-size: 400% 400%;
   animation: gradient 120s linear infinite;
-  height: 700px;
+  height: $top-size;
   background-image: colors.$background_gradiant;
   align-items: center;
   display: flex;
@@ -129,7 +131,7 @@ export default {
   padding: 50px 300px;
   z-index: 1;
   box-shadow: 0 0 10px black;
-
+  min-height: calc(100vh - #{$top-size});
   .mt0 {
     margin-top: 0;
   }

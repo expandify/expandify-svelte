@@ -1,0 +1,23 @@
+<div class="alerts">
+  <%= if(live_flash(@flash, :info) != nil) do%>
+    <div class="alert alert-info" role="alert">
+      <p><%= live_flash(@flash, :info) %></p>
+      <a phx-click="lv:clear-flash" phx-value-key="info">
+        <i class="fas fa-times"></i>
+      </a>
+    </div>
+  <% end %>
+
+  <%= if(live_flash(@flash, :error) != nil) do%>
+    <div class="alert alert-danger" role="alert">
+      <p><%= live_flash(@flash, :error) %></p>
+      <a phx-click="lv:clear-flash" phx-value-key="error">
+        <i class="fas fa-times"></i>
+      </a>
+    </div>
+  <% end %>
+</div>
+
+<main class="live">
+  <%= @inner_content %>
+</main>

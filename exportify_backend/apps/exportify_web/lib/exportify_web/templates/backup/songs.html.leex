@@ -1,0 +1,28 @@
+<div class="top">
+  <h1>Your Songs</h1>
+  <h2>You saved <%= length(@songs) %> Songs.</h2>
+</div>
+
+<div class="bottom bottom-songs">
+  <table class="songs">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Artists</th>
+        <th>Album</th>
+        <th>Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for song <- @songs do %>
+        <tr>
+          <td class="name"><span><%= song.name %></span></td>
+          <td class="artists"><span><%= song.artists |> Enum.map(&(&1.name)) |> Enum.join(", ") %></span></td>
+          <td class="album"><span><%= song.album.name %></span></td>
+          <td class="duration"><span><%= song.duration %></span></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
