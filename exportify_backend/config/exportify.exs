@@ -20,6 +20,14 @@ database_name = System.get_env("DATABASE_NAME", "Exportify")
 database_user = System.get_env("DATABASE_USER", "Exportify")
 database_password = System.get_env("DATABASE_PASSWORD", "")
 
+
+jwt_secret =
+  System.get_env("JOKEN_SECRET") ||
+    raise """
+    Environment variable not found.
+    Please set the environment variable 'JOKEN_SECRET'.
+    """
+
 if database_password == "" do
     IO.puts(:stderr, """
     WARNING: The environment variable DATABASE_PASSWORD is empty. The database
@@ -42,3 +50,6 @@ config :exportify_database, ExportifyDatabase.Repo,
 
 config :exportify_database,
        ecto_repos: [ExportifyDatabase.Repo]
+
+# Signer is needed for the Jason Web Token
+config :joken, default_signer: jwt_secret

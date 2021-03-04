@@ -13,21 +13,37 @@ defmodule ExportifyApi.LoginController do
   @scopes "playlist-read-private playlist-read-collaborative user-library-read user-follow-read user-read-private"
   @client_secret Application.get_env(:exportify_web, ExportifyWeb.Endpoint)[:spotify_client_secret]
 
-  def get_login_url() do
-    @login_url
-    |> URI.parse()
-    |> Map.put(
-      :query,
-      URI.encode_query(%{
-        client_id: @client_id,
-        scope: @scopes,
-        response_type: @response_type,
-        redirect_uri: ExportifyApi.Router.Helpers.login_url(ExportifyApi.Endpoint, :callback),
-        show_dialog: @show_dialog
-      })
-    )
-    |> URI.to_string()
+  def login(conn, _params) do
+    response =
+      @login_url
+      |> URI.parse()
+      |> Map.put(
+        :query,
+        URI.encode_query(%{
+          client_id: @client_id,
+          scope: @scopes,
+          response_type: @response_type,
+          redirect_uri: ExportifyApi.Router.Helpers.login_url(ExportifyApi.Endpoint, :callback),
+          show_dialog: @show_dialog
+        })
+      )
+      |> URI.to_string()
+
+    json(conn, %{login_url: response})
   end
+
+
+  def auth(conn, _params) do
+    result=
+      case ExportifyAuthenticator.authenticate(conn) do
+        {:ok, token} -> token
+        {:error, reason} -> reason
+      end
+
+    json(conn, result)
+  end
+
+
 
   @doc """
     Callback function used after a successful spotify login callback.
@@ -43,16 +59,17 @@ defmodule ExportifyApi.LoginController do
       |> token_request()
       |> handle_response
 
+    token = ExportifyAuthenticator.create_token(response)
 
     conn
     |> put_status(response.status_code)
-    |> json(response.body)
+    |> json(token)
   end
 
   def callback(conn, params) do
     conn
     |> put_status(401)
-    |> json(%{error: params["error"])
+    |> json(%{error: params["error"]})
   end
 
   @doc false
@@ -60,7 +77,7 @@ defmodule ExportifyApi.LoginController do
     %{
       grant_type: @grant_type,
       code: code,
-      redirect_uri: ExportifyWeb.Router.Helpers.login_url(ExportifyWeb.Endpoint, :callback),
+      redirect_uri: ExportifyApi.Router.Helpers.login_url(ExportifyApi.Endpoint, :callback),
       client_id: @client_id,
       client_secret: @client_secret
     }
@@ -91,14 +108,16 @@ defmodule ExportifyApi.LoginController do
   end
 
   @doc false
-  defp handle_response({:ok, %HTTPoison.Response{} = response}) do
-    %{status_code: 400, body: response}
-  end
-
-  @doc false
   defp handle_response({:error, %HTTPoison.Error{reason: reason}}) do
     %{status_code: 400, response: reason}
   end
+
+  @doc false
+  defp handle_response({:ok, response}) do
+    %{status_code: 400, body: response}
+  end
+
+
 
 
 end

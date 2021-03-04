@@ -10,5 +10,5 @@ config :exportify_api, ExportifyApi.Endpoint,
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :exportify_web, ExportifyWeb.Endpoint,
-  http: [port: 4002],
+  http: [port: 4003],
   server: false

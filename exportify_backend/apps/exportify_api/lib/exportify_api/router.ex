@@ -9,9 +9,12 @@ defmodule ExportifyApi.Router do
     pipe_through :api
 
     get "/login", LoginController, :login
-    get "/library", LibraryController, :login
-    
+    get "/auth", LoginController, :auth
+    get "/callback", LoginController, :callback
+    #get "/library", LibraryController, :login
+
   end
+
 
   # Enables LiveDashboard only for development
   #

@@ -31,6 +31,10 @@ config :exportify_web, ExportifyWeb.Endpoint,
   pubsub_server: ExportifyWeb.PubSub,
   live_view: [signing_salt: "GXiHPUEL"]
 
+
+ 
+
+
 # Sample configuration:
 #
 #     config :logger, :console,
