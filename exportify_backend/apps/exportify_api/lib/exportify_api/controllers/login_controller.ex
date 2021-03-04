@@ -33,6 +33,10 @@ defmodule ExportifyApi.LoginController do
   end
 
 
+  @doc """
+    This is just a test function for Jokens.
+    This should become a Plug sometime in the future.
+  """
   def auth(conn, _params) do
     result=
       case ExportifyAuthenticator.authenticate(conn) do
