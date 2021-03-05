@@ -21,17 +21,6 @@ config :api, API.Endpoint,
   pubsub_server: API.PubSub,
   live_view: [signing_salt: "MFhfLPPR"]
 
-config :exportify_api,
-  generators: [context_app: false]
-
-# Configures the endpoint
-config :exportify_api, ExportifyApi.Endpoint,
-  url: [host: "localhost"],
-  secret_key_base: "38vnsD1cnZo6aop7nLLUQrHxhhdrR+ADHLczUTTgTLXxBDBqaMEBY/d4+nKDC5Td",
-  render_errors: [view: ExportifyApi.ErrorView, accepts: ~w(json), layout: false],
-  pubsub_server: ExportifyApi.PubSub,
-  live_view: [signing_salt: "r65+VTVi"]
-
 config :exportify_web,
   generators: [context_app: false]
 
@@ -44,7 +33,7 @@ config :exportify_web, ExportifyWeb.Endpoint,
   live_view: [signing_salt: "GXiHPUEL"]
 
 
- 
+
 
 
 # Sample configuration:
