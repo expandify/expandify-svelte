@@ -1,5 +1,5 @@
-defmodule ExportifyApi.Router do
-  use ExportifyApi, :router
+defmodule API.Router do
+  use API, :router
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -7,10 +7,10 @@ defmodule ExportifyApi.Router do
 
   pipeline :api_protected do
     plug :api
-    plug ExportifyApi.Plugs.Authenticate
+    plug API.Plugs.Authenticate
   end
 
-  scope "/api", ExportifyApi do
+  scope "/api", API do
     pipe_through :api
 
     get "/login", LoginController, :login
@@ -19,12 +19,11 @@ defmodule ExportifyApi.Router do
 
   end
 
-  scope "/api", ExportifyApi do
+  scope "/api", API do
     pipe_through :api_protected
 
     get "/auth", LoginController, :auth
   end
-
 
   # Enables LiveDashboard only for development
   #
@@ -38,7 +37,7 @@ defmodule ExportifyApi.Router do
 
     scope "/" do
       pipe_through [:fetch_session, :protect_from_forgery]
-      live_dashboard "/dashboard", metrics: ExportifyApi.Telemetry
+      live_dashboard "/dashboard", metrics: API.Telemetry
     end
   end
 end

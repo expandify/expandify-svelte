@@ -9,6 +9,18 @@
 # move said applications out of the umbrella.
 import Config
 
+config :api,
+  namespace: API,
+  generators: [context_app: false]
+
+# Configures the endpoint
+config :api, API.Endpoint,
+  url: [host: "localhost"],
+  secret_key_base: "fspHYA+CBVMczWR6cy4fB9rqfDd6SR06A5w4emfj9BgykK+VOzAeILUGyNNjJhFM",
+  render_errors: [view: API.ErrorView, accepts: ~w(json), layout: false],
+  pubsub_server: API.PubSub,
+  live_view: [signing_salt: "MFhfLPPR"]
+
 config :exportify_api,
   generators: [context_app: false]
 

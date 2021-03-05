@@ -1,8 +1,8 @@
-defmodule ExportifyApi.LoginController do
+defmodule API.LoginController do
   @moduledoc """
     This module is responsible for the coordination of the spotify login.
   """
-  use ExportifyWeb, :controller
+  use API, :controller
 
   @login_url "https://accounts.spotify.com/authorize"
   @response_type "code"
@@ -23,7 +23,7 @@ defmodule ExportifyApi.LoginController do
           client_id: @client_id,
           scope: @scopes,
           response_type: @response_type,
-          redirect_uri: ExportifyApi.Router.Helpers.login_url(ExportifyApi.Endpoint, :callback),
+          redirect_uri: API.Router.Helpers.login_url(API.Endpoint, :callback),
           show_dialog: @show_dialog
         })
       )
@@ -70,7 +70,7 @@ defmodule ExportifyApi.LoginController do
     %{
       grant_type: @grant_type,
       code: code,
-      redirect_uri: ExportifyApi.Router.Helpers.login_url(ExportifyApi.Endpoint, :callback),
+      redirect_uri: API.Router.Helpers.login_url(API.Endpoint, :callback),
       client_id: @client_id,
       client_secret: @client_secret
     }
