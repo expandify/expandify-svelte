@@ -1,3 +1,0 @@
-defmodule ExportifyAuthenticator do
-  
-end

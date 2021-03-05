@@ -1,9 +1,9 @@
-defmodule ExportifyAuthenticator.MixProject do
+defmodule Authenticator.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :exportify_authenticator,
+      app: :authenticator,
       version: "0.1.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
@@ -19,7 +19,7 @@ defmodule ExportifyAuthenticator.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {ExportifyAuthenticator.Application, []}
+      mod: {Authenticator.Application, []}
     ]
   end
 

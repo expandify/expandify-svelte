@@ -1,0 +1,3 @@
+defmodule Authenticator do
+
+end

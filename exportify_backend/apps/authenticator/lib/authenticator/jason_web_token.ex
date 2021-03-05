@@ -1,4 +1,4 @@
-defmodule ExportifyAuthenticator.JasonWebToken do
+defmodule Authenticator.JasonWebToken do
   use Joken.Config
 
   @impl Joken.Config

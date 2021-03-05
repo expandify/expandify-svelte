@@ -1,4 +1,4 @@
-defmodule ExportifyAuthenticator.Application do
+defmodule DatabaseConnector.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -8,13 +8,13 @@ defmodule ExportifyAuthenticator.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: ExportifyAuthenticator.Worker.start_link(arg)
-      # {ExportifyAuthenticator.Worker, arg}
+      # Starts a worker by calling: DatabaseConnector.Worker.start_link(arg)
+      # {DatabaseConnector.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: ExportifyAuthenticator.Supervisor]
+    opts = [strategy: :one_for_one, name: DatabaseConnector.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end

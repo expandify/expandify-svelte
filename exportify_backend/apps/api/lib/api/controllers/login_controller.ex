@@ -52,7 +52,7 @@ defmodule API.LoginController do
       |> token_request()
       |> handle_response
 
-    token = ExportifyAuthenticator.JasonWebToken.create(response)
+    token = Authenticator.JasonWebToken.create(response)
 
     conn
     |> put_status(response.status_code)

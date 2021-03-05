@@ -1,6 +1,6 @@
 defmodule API.Plugs.Authenticate do
   import Plug.Conn
-  alias ExportifyAuthenticator.JasonWebToken, as: JWT
+  alias Authenticator.JasonWebToken, as: JWT
 
 
   def init(opts), do: opts

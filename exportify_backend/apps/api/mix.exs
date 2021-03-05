@@ -44,7 +44,7 @@ defmodule API.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:exportify_authenticator, in_umbrella: true}
+      {:authenticator, in_umbrella: true}
     ]
   end
 
