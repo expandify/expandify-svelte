@@ -11,11 +11,12 @@ defmodule Authenticator.JasonWebToken do
     %{"claims" => data}
   end
 
-  def create(data \\ %{}) do
+  def create(data) do
     extra_claims = create_claims(data)
     {:ok, token, _} = generate_and_sign(extra_claims)
-    token
+    {:ok, token}
   end
+
 
   def verify(token) do
     verify_and_validate(token)

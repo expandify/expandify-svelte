@@ -46,17 +46,13 @@ defmodule API.LoginController do
     Redirects the user to the library view index page.
   """
   def callback(conn, %{"code" => code}) do
-    response =
-      code
-      |> post_body()
-      |> token_request()
-      |> handle_response
-
-    token = Authenticator.JasonWebToken.create(response)
-
-    conn
-    |> put_status(response.status_code)
-    |> json(token)
+    code
+    |> post_body
+    |> token_request
+    |> handle_response
+    |> upsert_user_data
+    |> build_jwt
+    |> build_response(conn)
   end
 
   def callback(conn, params) do
@@ -64,6 +60,36 @@ defmodule API.LoginController do
     |> put_status(401)
     |> json(%{error: params["error"]})
   end
+
+  def upsert_user_data({status_code, response}) when status_code != 200, do: {:error, response}
+  def upsert_user_data({status_code, response}) when status_code == 200 do
+    access_token = Map.get(response, "access_token")
+    refresh_token = Map.get(response, "refresh_token")
+
+    # retrieve user data from spotify
+    # build a User object (maybe this happens while retrieving already)
+    # safe to database
+    # return {:ok, user_obj} on success, {:error, reason} on failure
+
+    {:ok, %{access_token: access_token, refresh_token: refresh_token}}
+  end
+
+  def build_jwt({:ok, user}), do: Authenticator.JasonWebToken.create(user)
+  def build_jwt({_, reason}), do: {:error, "token could not be created"}
+
+  def build_response({:ok, token}, conn) do
+    conn
+    |> put_status(200)
+    |> json(%{token: token})
+  end
+
+  def build_response({_, reason}, conn) do
+    conn
+    |> put_status(401)
+    |> json(%{error: reason})
+    |> halt
+  end
+
 
   @doc false
   defp post_body(code) do
@@ -92,22 +118,22 @@ defmodule API.LoginController do
   defp handle_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
     {:ok, response} = Poison.decode(body)
 
-    %{status_code: 200, body: response}
+    {200, response}
   end
 
   @doc false
   defp handle_response({:ok, %HTTPoison.Response{status_code: status_code} = response}) do
-    %{status_code: status_code, body: response}
+    {status_code, response}
   end
 
   @doc false
   defp handle_response({:error, %HTTPoison.Error{reason: reason}}) do
-    %{status_code: 400, response: reason}
+    {400, reason}
   end
 
   @doc false
   defp handle_response({:ok, response}) do
-    %{status_code: 400, body: response}
+    {400, response}
   end
 
 
