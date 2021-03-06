@@ -28,7 +28,7 @@ defmodule API.LoginController do
         })
       )
       |> URI.to_string()
-
+      
     json(conn, %{login_url: response})
   end
 

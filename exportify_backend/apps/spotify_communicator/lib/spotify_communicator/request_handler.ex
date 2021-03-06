@@ -10,10 +10,12 @@ defmodule SpotifyCommunicator.RequestHandler do
 
   defp invoke_spotify_request(spotify_request, access_token) do
     case spotify_request.() do
-      :complete -> ""
-      {:error, _} = err -> err
-      {:retry, _} = retry -> retry_after(retry, spotify_request, access_token)
       {:ok, response} -> response
+      {:retry, _} = retry -> retry_after(retry, spotify_request, access_token)
+      {:access_token_expired, _} = ate -> ate
+      :complete -> :complete
+      {:error, _} = err -> err
+      _ -> {:error, "unexpected return from spotify api call"}
     end
   end
 
@@ -28,8 +30,6 @@ defmodule SpotifyCommunicator.RequestHandler do
     get_all(spotify_request_func, access_token)
 
   end
-
-
 
   defp unpagify(%Paging{next: "null"} = obj, _), do: obj.items
   defp unpagify(%Paging{} = obj, access_token) do

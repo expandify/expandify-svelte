@@ -38,19 +38,15 @@ defmodule DatabaseConnector.Query do
           |> Repo.insert_or_update
         end
 
-        defp validate_get_by(nil) do
-          {:error, nil}
-        end
-
-        defp validate_get_by(model) do
-          {:ok, model}
-        end
+        defp validate_get_by(nil), do: {:error, nil}
+        defp validate_get_by(model), do: {:ok, model}
 
         def get_by_spotify_id(module, spotify_id) do
           module
           |> Repo.get_by(spotify_id: spotify_id)
           |> validate_get_by
         end
+
     end
   end
 end

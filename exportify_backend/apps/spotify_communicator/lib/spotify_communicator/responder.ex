@@ -8,6 +8,10 @@ defmodule SpotifyCommunicator.Responder do
           when code in 200..299,
           do: :complete
 
+
+      @doc """
+        Happens when too many requests are made to the api.
+      """
       def handle_response({message, %HTTPoison.Response{status_code: 429, body: body, headers: headers}}) do
         {retry_after, ""} =
           headers
@@ -16,6 +20,14 @@ defmodule SpotifyCommunicator.Responder do
           |> Integer.parse()
 
         {:retry, Map.put(Jason.decode!(body), "meta", %{"retry_after" => retry_after})}
+      end
+
+      @doc """
+        Happens when the access token is expired or not valid.
+      """
+      def handle_response({message, %HTTPoison.Response{status_code: 401, body: body}}) do
+
+        {:access_token_expired, Jason.decode!(body)}
       end
 
       def handle_response({message, %HTTPoison.Response{status_code: code, body: body}})
