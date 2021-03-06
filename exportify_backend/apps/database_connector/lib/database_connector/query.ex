@@ -1,9 +1,9 @@
 defmodule DatabaseConnector.Query do
-  defmacro __using__(opts) do
+  defmacro __using__(_) do
 
     quote do
 
-      alias __MODULE__.Repo, as: Repo
+      alias __MODULE__, as: Repo
 
         def get_or_insert(model) do
           insert_validation =

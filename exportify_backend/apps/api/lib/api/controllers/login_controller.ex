@@ -116,7 +116,7 @@ defmodule API.LoginController do
 
   @doc false
   defp handle_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
-    {:ok, response} = Poison.decode(body)
+    {:ok, response} = Jason.decode(body)
 
     {200, response}
   end

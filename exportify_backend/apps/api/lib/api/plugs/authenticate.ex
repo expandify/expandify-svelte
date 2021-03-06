@@ -25,7 +25,7 @@ defmodule API.Plugs.Authenticate do
 
   def authenticate(conn) do
     case extract_token(conn) do
-      {:ok, token} -> JWT.verify(token)
+      {:ok, token} -> JWT.auth(token)
       error -> error
     end
   end

@@ -18,7 +18,7 @@ defmodule Authenticator.JasonWebToken do
   end
 
 
-  def verify(token) do
+  def auth(token) do
     verify_and_validate(token)
   end
 
