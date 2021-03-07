@@ -28,7 +28,7 @@ defmodule API.LoginController do
         })
       )
       |> URI.to_string()
-      
+
     json(conn, %{login_url: response})
   end
 
@@ -75,7 +75,7 @@ defmodule API.LoginController do
   end
 
   def build_jwt({:ok, user}), do: Authenticator.JasonWebToken.create(user)
-  def build_jwt({_, reason}), do: {:error, "token could not be created"}
+  def build_jwt({_, _}), do: {:error, "token could not be created"}
 
   def build_response({:ok, token}, conn) do
     conn
