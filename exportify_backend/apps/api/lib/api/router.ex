@@ -21,8 +21,14 @@ defmodule API.Router do
 
   scope "/api", API do
     pipe_through :api_protected
-
+    
     get "/auth", LoginController, :auth
+    get "/library/:id/songs", LibraryController, :songs
+    get "/library/:id/albums", LibraryController, :albums
+    get "/library/:id/artists", LibraryController, :artists
+    get "/library/:id/playlists", LibraryController, :playlists
+    post "/library/current", LibraryController, :save
+
   end
 
   # Enables LiveDashboard only for development

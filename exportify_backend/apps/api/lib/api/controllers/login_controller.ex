@@ -11,7 +11,9 @@ defmodule API.LoginController do
   @token_url "https://accounts.spotify.com/api/token"
   @client_id Application.get_env(:exportify_web, ExportifyWeb.Endpoint)[:spotify_client_id]
   @scopes "playlist-read-private playlist-read-collaborative user-library-read user-follow-read user-read-private"
-  @client_secret Application.get_env(:exportify_web, ExportifyWeb.Endpoint)[:spotify_client_secret]
+  @client_secret Application.get_env(:exportify_web, ExportifyWeb.Endpoint)[
+                   :spotify_client_secret
+                 ]
 
   def login(conn, _params) do
     response =
@@ -28,10 +30,9 @@ defmodule API.LoginController do
         })
       )
       |> URI.to_string()
-
+    
     json(conn, %{login_url: response})
   end
-
 
   def auth(conn, _params) do
     IO.inspect(conn)
@@ -62,6 +63,7 @@ defmodule API.LoginController do
   end
 
   def upsert_user_data({status_code, response}) when status_code != 200, do: {:error, response}
+
   def upsert_user_data({status_code, response}) when status_code == 200 do
     access_token = Map.get(response, "access_token")
     refresh_token = Map.get(response, "refresh_token")
@@ -89,7 +91,6 @@ defmodule API.LoginController do
     |> json(%{error: reason})
     |> halt
   end
-
 
   @doc false
   defp post_body(code) do
@@ -135,8 +136,4 @@ defmodule API.LoginController do
   defp handle_response({:ok, response}) do
     {400, response}
   end
-
-
-
-
 end
