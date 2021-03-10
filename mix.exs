@@ -1,4 +1,4 @@
-defmodule ExportifyBackend.MixProject do
+defmodule Exportify.MixProject do
   use Mix.Project
 
 
