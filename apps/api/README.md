@@ -11,20 +11,61 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 # Api Resources
 
-Call Type | Resource | Endpoint
---------- | -------- | --------
-Get | Current Library Songs| /api/library/current/songs
-Get | Current Library Artists| /api/library/current/artists
-Get | Current Library Albums| /api/library/current/albums
-Get | Current Library Playlists| /api/library/current/playlists
-Get | Any Library Songs, etc. | /api/libraray/:lib_id/{songs, artists, albums, playlists}
-Post | Safe Current Libraray | /api/library/current
-Get | Retrieve Spotify Login URL | /api/login
-Get | Song by Id | /api/song/:id
-Get | Album by Id | /api/album/:id
-Get | Artist by Id | /api/artist/:id
+### Login
 
-## Learn more
+Call Type | Usage | Endpoint | Auth Required?
+--------- | ----- | -------- | --------------
+Get | Retrieve Spotify Login URL | /api/login | no
+. | Callback After Login | /api/callback | no
+
+### Current User Api References
+Call Type | Usage | Endpoint | Auth Required?
+--------- | ----- | -------- | --------------
+Get | Get Current User Profile Info | /api/me | yes
+Get | Get Current Library Songs | /api/me/library/current/songs | yes
+Get | Get Current Library Artists| /api/me/library/current/artists | yes
+Get | Get Current Library Albums| /api/me/library/current/albums | yes 
+Get | Get Current Library Playlists| /api/me/library/current/playlists | yes
+Post | Save Current Library | /api/me/library/current | yes
+
+### Current User's Saved Librarys Api References
+Call Type | Usage | Endpoint | Auth Required?
+--------- | ----- | -------- | --------------
+Get | Get Saved Library Songs | /api/me/library/{id}/songs | yes
+Get | Get Saved Library Artists| /api/me/library/{id}/artists | yes
+Get | Get Saved Library Albums| /api/me/library/{id}/albums | yes 
+Get | Get Saved Library Playlists| /api/me/library/{id}/playlists | yes
+
+### Albums Api References
+Call Type | Usage | Endpoint | Auth Required?
+--------- | ----- | -------- | --------------
+Get | Get Information About An Album | /api/albums/{id} | yes
+Get | Get Information About Multiple Albums | /api/albums | yes
+Get | Get An Albums Tracks | /api/albums/{id}/tracks | yes
+
+### Artists Api References
+Call Type | Usage | Endpoint | Auth Required?
+--------- | ----- | -------- | --------------
+Get | Get Information About An Artist | /api/artists/{id} | yes
+Get | Get Information About Multiple Artist | /api/artists | yes
+Get | Get An Artists Albums | /api/artists/{id}/albums | yes 
+Get | Get An Artists Related Artists | /api/artist/{id}/related-artists | yes
+Get | Get An Artists Top Tracks |/api/artists/{id}/top-tracks |yes
+
+### Playlist Api References
+Call Type | Usage | Endpoint | Auth Required?
+--------- | ----- | -------- | --------------
+Get | Get A Playlist | /api/playlists/{id} | yes
+Get | Get A Playlists Tracks | /api/playlist/{id}/tracks | yes
+
+### Tracks Api References
+Call Type | Usage | Endpoint | Auth Required?
+--------- | ----- | -------- | --------------
+Get | Get A Track | /api/tracks/{id} | yes
+Get | Get Multiple Tracks | /api/tracks | yes
+Get | Get Audio Analysis For A Track | /api/tracks/{id}/audio-analysis | yes
+
+# Learn more
 
   * Official website: https://www.phoenixframework.org/
   * Guides: https://hexdocs.pm/phoenix/overview.html
