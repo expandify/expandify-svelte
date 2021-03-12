@@ -9,11 +9,9 @@ defmodule API.LoginController do
   @show_dialog "true"
   @grant_type "authorization_code"
   @token_url "https://accounts.spotify.com/api/token"
-  @client_id Application.get_env(:exportify_web, ExportifyWeb.Endpoint)[:spotify_client_id]
+  @client_id Application.get_env(:api, API.Endpoint)[:spotify_client_id]
   @scopes "playlist-read-private playlist-read-collaborative user-library-read user-follow-read user-read-private"
-  @client_secret Application.get_env(:exportify_web, ExportifyWeb.Endpoint)[
-                   :spotify_client_secret
-                 ]
+  @client_secret Application.get_env(:api, API.Endpoint)[:spotify_client_secret]
 
   def login(conn, _params) do
     response =
@@ -30,13 +28,12 @@ defmodule API.LoginController do
         })
       )
       |> URI.to_string()
-    
+
     json(conn, %{login_url: response})
   end
 
   def auth(conn, _params) do
-    IO.inspect(conn)
-    json(conn, %{"success" => inspect(conn)})
+    json(conn, %{"success" => conn.assigns.claims["access_token"]})
   end
 
   @doc """

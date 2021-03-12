@@ -10,6 +10,7 @@ defmodule SpotifyCommunicator.Album do
     Track
   }
 
+  @derive Jason.Encoder
   defstruct ~w[
     album_type
     artists

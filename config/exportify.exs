@@ -37,7 +37,7 @@ if database_password == "" do
 end
 
 
-config :exportify_web, ExportifyWeb.Endpoint,
+config :api, API.Endpoint,
   spotify_client_id: spotify_client_id,
   spotify_client_secret: spotify_client_secret
 
@@ -52,14 +52,6 @@ config :user_database, UserDatabase.Repo,
   port: 3307
 
 config :user_database, ecto_repos: [UserDatabase.Repo]
-
-config :exportify_database, ExportifyDatabase.Repo,
-    database: database_name,
-    username: database_user,
-    password: database_password,
-    hostname: database_host
-
-config :exportify_database, ecto_repos: [ExportifyDatabase.Repo]
 
 # Signer is needed for the Jason Web Token
 config :joken, default_signer: jwt_secret
