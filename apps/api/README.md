@@ -22,7 +22,7 @@ Get | Retrieve Spotify Login URL | /api/login | no
 Call Type | Usage | Endpoint | Auth Required?
 --------- | ----- | -------- | --------------
 Get | Get Current User Profile Info | /api/me | yes
-Get | Get Current Library Songs | /api/me/library/current/songs | yes
+Get | Get Current Library Tracks | /api/me/library/current/tracks | yes
 Get | Get Current Library Artists| /api/me/library/current/artists | yes
 Get | Get Current Library Albums| /api/me/library/current/albums | yes 
 Get | Get Current Library Playlists| /api/me/library/current/playlists | yes
@@ -31,7 +31,7 @@ Post | Save Current Library | /api/me/library/current | yes
 ### Current User's Saved Librarys Api References
 Call Type | Usage | Endpoint | Auth Required?
 --------- | ----- | -------- | --------------
-Get | Get Saved Library Songs | /api/me/library/{id}/songs | yes
+Get | Get Saved Library Tracks | /api/me/library/{id}/tracks | yes
 Get | Get Saved Library Artists| /api/me/library/{id}/artists | yes
 Get | Get Saved Library Albums| /api/me/library/{id}/albums | yes 
 Get | Get Saved Library Playlists| /api/me/library/{id}/playlists | yes
@@ -63,6 +63,8 @@ Call Type | Usage | Endpoint | Auth Required?
 --------- | ----- | -------- | --------------
 Get | Get A Track | /api/tracks/{id} | yes
 Get | Get Multiple Tracks | /api/tracks | yes
+Get | Get Audio Features for a Track | /api/audio-features/{id} | yes
+Get | Get Audio Features for multiple Tracks | /api/audio-features | yes
 Get | Get Audio Analysis For A Track | /api/tracks/{id}/audio-analysis | yes
 
 # Learn more

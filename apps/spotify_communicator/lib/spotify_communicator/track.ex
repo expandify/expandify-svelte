@@ -1,9 +1,14 @@
 defmodule SpotifyCommunicator.Track do
 
+  # TODO: Compare with API Endpoints Markdown (albums, artists and playlists are already checked)
+
+
   alias SpotifyCommunicator.{
     Client,
     Track,
-    Paging
+    Paging,
+    AudioAnalysis,
+    AudioFeatures
   }
 
   import SpotifyCommunicator.Helpers
@@ -30,20 +35,8 @@ defmodule SpotifyCommunicator.Track do
     uri
   ]a
 
-  @doc """
-    Get the current users saved tracks.
-  """
-  def get_saved_tracks(conn, params \\ []) do
-    url = saved_tracks_url(params)
 
-    conn
-    |> Client.get(url)
-    |> handle_response
-  end
 
-  def saved_tracks_url(params) do
-    "https://api.spotify.com/v1/me/tracks" <> query_string(params)
-  end
 
   @doc """
     Get audio features of multiple tracks.
@@ -67,6 +60,15 @@ defmodule SpotifyCommunicator.Track do
 
   def audio_features_url(id) do
     "https://api.spotify.com/v1/audio-features/#{id}"
+  end
+
+  def audio_analysis(access_token, id) do
+    url = audio_analysis_url(id)
+    access_token |> Client.get(url) |> handle_response
+  end
+
+  def audio_analysis_url(id) do
+    "https://api.spotify.com/v1/audio-analysis/#{id}"
   end
 
   @doc """
@@ -95,35 +97,24 @@ defmodule SpotifyCommunicator.Track do
 
   def build_response(body) do
     case body do
-      %{"audio_features" => audio_features} -> build_audio_features(audio_features) # response type for: get audio features for multiple tracks
-      %{"tracks" => tracks} -> build_tracks(tracks) # response type for: get multiple tracks
       %{"album" => _} -> to_struct(Track, body) # response type for: get one track
-      %{"energy" => _} -> to_struct(Spotify.AudioFeatures, body) # response type for: get audio features for one track
-
-      %{"items" => _} = response -> build_paged_response(response) # response type for: get saved tracks
+      %{"tracks" => tracks} -> Enum.map(tracks, &to_struct(Track, &1)) # response type for: get multiple tracks
+      %{"energy" => _} -> to_struct(AudioFeatures, body) # response type for: get audio features for one track
+      %{"audio_features" => audio_features} -> Enum.map(audio_features, &to_struct(AudioFeatures, &1)) # response type for: get audio features for multiple tracks
+      %{"bars" => _} -> to_struct(AudioAnalysis, body) # response type for: get audio analysis for one track
     end
   end
 
   @doc false
-  def build_tracks(tracks) do
-    Enum.map(tracks, &to_struct(Track, &1))
-  end
-
-  @doc false
-  defp build_paged_response(response) do
+  def build_paged_tracks(response) do
     %Paging{
       href: response["href"],
-      items: response["items"] |>Enum.map(fn %{"track" => items} -> items end) |> build_tracks(),
+      items: Enum.map(response["items"], &to_struct(Track, &1)),
       limit: response["limit"],
       next: response["next"],
       offset: response["offset"],
       previous: response["previous"],
       total: response["total"]
     }
-  end
-
-  @doc false
-  def build_audio_features(audio_features) do
-    Enum.map(audio_features, &to_struct(Spotify.AudioFeatures, &1))
   end
 end

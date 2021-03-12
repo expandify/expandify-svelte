@@ -7,7 +7,8 @@ defmodule SpotifyCommunicator.Artist do
     Artist,
     Client,
     Paging,
-    Track
+    Track,
+    Album
   }
 
   @derive Jason.Encoder
@@ -33,7 +34,6 @@ defmodule SpotifyCommunicator.Artist do
     access_token |> Client.get(url) |> handle_response
   end
 
-
   def get_artist_url(id) do
     "https://api.spotify.com/v1/artists/#{id}"
   end
@@ -52,16 +52,15 @@ defmodule SpotifyCommunicator.Artist do
   end
 
   @doc """
-    Get an artists top tracks.
+    Get all albums from an artist.
   """
-  def get_top_tracks(access_token, id, params) do
-    url = get_top_tracks_url(id, params)
+  def get_artists_albums(access_token, id) do
+    url = get_artists_albums_url(id)
     access_token |> Client.get(url) |> handle_response
   end
 
-
-  def get_top_tracks_url(id, params) do
-    "https://api.spotify.com/v1/artists/#{id}/top-tracks" <> query_string(params)
+  def get_artists_albums_url(id) do
+    "https://api.spotify.com/v1/artists/#{id}/albums"
   end
 
   @doc """
@@ -78,31 +77,29 @@ defmodule SpotifyCommunicator.Artist do
   end
 
   @doc """
-    Get artists I follow.
+    Get an artists top tracks.
   """
-  def artists_I_follow(access_token, params \\ []) do
-    url = artists_I_follow_url(params)
+  def get_top_tracks(access_token, id, params) do
+    url = get_top_tracks_url(id, params)
     access_token |> Client.get(url) |> handle_response
   end
 
 
-  def artists_I_follow_url(params) do
-    "https://api.spotify.com/v1/me/following?type=artist&" <> URI.encode_query(params)
+  def get_top_tracks_url(id, params) do
+    "https://api.spotify.com/v1/artists/#{id}/top-tracks" <> query_string(params)
   end
-
 
   def build_response(body) do
     case body do
-      %{"artists" => %{"items" => _items}} = response -> build_paged_artists(response) # response type for: get followed artists
-      %{"artists" => artists} -> build_artists(artists) # response type for: get multiple artists
-      %{"tracks" => tracks} -> Track.build_tracks(tracks) # response tye for: get artists top tracks
       %{"name" => _} -> to_struct(Artist, body) # response type for: get one artist
-      booleans_or_error -> booleans_or_error
+      %{"artists" => artists} -> build_artists(artists) # response type for: get multiple artists and get related artists
+      %{"items" => _} -> Album.build_paged_albums(body) # response type for: get an artists album
+      %{"tracks" => tracks} -> Enum.map(tracks, &to_struct(Track, &1)) # response tye for: get artists top tracks
     end
   end
 
   @doc false
-  defp build_paged_artists(%{"artists" => response}) do
+  def build_paged_artists(%{"artists" => response}) do
     %Paging{
       items: build_artists(response["items"]),
       next: response["next"],
