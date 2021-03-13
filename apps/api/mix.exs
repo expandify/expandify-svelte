@@ -44,7 +44,6 @@ defmodule API.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:poison, "~> 3.1"},
       {:authenticator, in_umbrella: true},
       {:spotify_communicator, in_umbrella: true},
       {:httpoison, "~> 1.8"}

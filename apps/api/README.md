@@ -63,8 +63,8 @@ Call Type | Usage | Endpoint | Auth Required?
 --------- | ----- | -------- | --------------
 Get | Get A Track | /api/tracks/{id} | yes
 Get | Get Multiple Tracks | /api/tracks | yes
-Get | Get Audio Features for a Track | /api/audio-features/{id} | yes
-Get | Get Audio Features for multiple Tracks | /api/audio-features | yes
+Get | Get Audio Features for a Track | /api/tracks/audio-features/{id} | yes
+Get | Get Audio Features for multiple Tracks | /api/tracks/audio-features | yes
 Get | Get Audio Analysis For A Track | /api/tracks/{id}/audio-analysis | yes
 
 # Learn more

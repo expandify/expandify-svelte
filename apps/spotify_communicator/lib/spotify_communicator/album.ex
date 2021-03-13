@@ -84,7 +84,13 @@ defmodule SpotifyCommunicator.Album do
   @doc false
   def build_album(album) do
     album = to_struct(Album, album)
-    tracks = Track.build_paged_tracks(album.tracks)
+
+    tracks =
+      case album.tracks do
+        nil -> nil
+        _ -> Track.build_paged_tracks(album.tracks)
+      end
+
     Map.put(album, :tracks, tracks)
   end
 
@@ -95,7 +101,7 @@ defmodule SpotifyCommunicator.Album do
   def build_paged_albums(response) do
     %Paging{
       href: response["href"],
-      items: response["items"] |> Track.build_paged_tracks,
+      items: response["items"] |> Enum.map(&(build_album(&1))),
       limit: response["limit"],
       next: response["next"],
       offset: response["offset"],

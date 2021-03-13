@@ -1,8 +1,5 @@
 defmodule SpotifyCommunicator.Track do
 
-  # TODO: Compare with API Endpoints Markdown (albums, artists and playlists are already checked)
-
-
   alias SpotifyCommunicator.{
     Client,
     Track,
@@ -34,9 +31,6 @@ defmodule SpotifyCommunicator.Track do
     type
     uri
   ]a
-
-
-
 
   @doc """
     Get audio features of multiple tracks.

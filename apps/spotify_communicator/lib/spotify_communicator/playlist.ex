@@ -10,6 +10,7 @@ defmodule SpotifyCommunicator.Playlist do
     Playlist
   }
 
+  @derive Jason.Encoder
   defstruct ~w[
     collaborative
     description

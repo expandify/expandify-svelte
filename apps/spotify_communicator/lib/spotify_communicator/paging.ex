@@ -1,5 +1,6 @@
 defmodule SpotifyCommunicator.Paging do
-  
+
+  @derive Jason.Encoder
   defstruct ~w[
     href
     items

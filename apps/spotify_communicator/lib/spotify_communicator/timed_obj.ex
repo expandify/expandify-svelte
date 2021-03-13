@@ -4,6 +4,8 @@ defmodule SpotifyCommunicator.TimedObj do
   """
   import SpotifyCommunicator.Helpers
   alias SpotifyCommunicator.Paging
+
+  @derive Jason.Encoder
   defstruct ~w[
     added_at
     added_by

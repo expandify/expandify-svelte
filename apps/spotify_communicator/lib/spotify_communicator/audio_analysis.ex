@@ -1,4 +1,6 @@
 defmodule SpotifyCommunicator.AudioAnalysis do
+
+  @derive Jason.Encoder
   defstruct ~w[
     bars
     beats

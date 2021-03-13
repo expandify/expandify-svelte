@@ -79,7 +79,7 @@ defmodule API.LoginController do
   def build_response({:ok, token}, conn) do
     conn
     |> put_status(200)
-    |> json(%{token: token})
+    |> json(%{Joken: token})
   end
 
   def build_response({_, reason}, conn) do

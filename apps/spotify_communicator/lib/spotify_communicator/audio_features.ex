@@ -1,4 +1,6 @@
 defmodule SpotifyCommunicator.AudioFeatures do
+
+  @derive Jason.Encoder
   defstruct ~w[
     acousticness
     analysis_url
