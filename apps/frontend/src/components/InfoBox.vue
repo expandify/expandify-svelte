@@ -24,11 +24,14 @@ export default {
 @use "src/styles/fonts";
 
 .box {
-  margin-left: 50px;
-  margin-right: 50px;
-  width: 300px;
-  height: 300px;
+  margin: 50px;
+  width: 350px;
+  height: 400px;
   overflow: hidden;
+  border-radius: 20px;
+  background-color: colors.$black;
+  padding-left: 20px;
+  padding-right: 20px;
 
   .title {
     color: colors.$green;
@@ -36,6 +39,7 @@ export default {
     font-size: fonts.$h2_size;
     text-shadow: 0 0 1px colors.$black;
     margin-bottom: 0;
+    text-align: center;
   }
   .empty {
     margin-bottom: 20px;
@@ -53,6 +57,7 @@ export default {
 
   .text {
     font-size: fonts.$body_size;
+    text-align: justify;
   }
 }
 </style>

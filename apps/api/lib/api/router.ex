@@ -15,7 +15,6 @@ defmodule API.Router do
 
     get "/login", LoginController, :login
     get "/callback", LoginController, :callback
-
   end
 
 

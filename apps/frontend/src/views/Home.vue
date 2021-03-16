@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="login-top">
-      <h1 class="title">Exportify</h1>
+      <TitleBar/>
       <div class="greeting"> Export and back up your Spotify library.</div>
       <SpotifyButton @click="login">Login With Spotify</SpotifyButton>
     </div>
@@ -41,26 +41,27 @@
         est.
       </InfoBox>
     </div>
-    <ExporitfyFooter></ExporitfyFooter>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import SpotifyButton from "@/components/SpotifyButton.vue";
-import ExporitfyFooter from "@/components/ExportifyFooter";
+import Footer from "@/components/Footer";
 import InfoBox from "@/components/InfoBox";
+import TitleBar from "@/components/TitleBar";
 
 export default {
   name: "Home",
   components: {
+    TitleBar,
     InfoBox,
-    ExporitfyFooter,
+    Footer,
     SpotifyButton
   },
   methods: {
     async login() {
-      console.log("test");
       window.location.href = "localhost:4001/";
     }
   }
@@ -100,17 +101,6 @@ $top-size: 700px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  .title {
-    align-items: center;
-    position: absolute;
-    margin-top: 0;
-    top: 20px;
-    font-size: fonts.$title_size;
-    font-family: fonts.$title_font_stack;
-    color: colors.$green;
-    text-shadow: 0 0 5px colors.$black;
-  }
 
   .greeting {
     align-items: center;

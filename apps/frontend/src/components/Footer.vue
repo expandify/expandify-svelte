@@ -5,7 +5,7 @@
     </a>
     <div>&copy; Copyright Till Wittenburg</div>
     <a href="https://github.com/systeno" class="github">
-      <i class="fab fa-github"></i> GitHub
+      <fa-icon class="github" :icon="['fab', 'github']" /> GitHub
     </a>
   </footer>
 </template>
@@ -18,22 +18,26 @@ export default {
 
 <style lang="scss">
 @use "src/styles/colors";
+@use "src/styles/sizes";
+@use "src/styles/fonts";
 
 .footer {
-  height: 40px;
+  height: sizes.$footer;
   text-align: center;
   align-items: center;
   padding: 8px;
   background-color: colors.$black;
   display: flex;
   justify-content: space-between;
-  box-shadow: 0 0 10px black;
   z-index: 2;
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  font-weight: 400;
+  font-weight: fonts.$normal_weight;
+  font-size: fonts.$body_size;
+  font-family: fonts.$font-stack;
+  border-radius: sizes.$border_radius;
 
   .phx-logo {
     height: 100%;
