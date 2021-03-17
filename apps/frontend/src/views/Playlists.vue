@@ -1,26 +1,22 @@
 <template>
-  <div class="playlists">
-    <TitleBar></TitleBar>
-    <NavBar></NavBar>
-    <Footer></Footer>
-  </div>
+  <BasicView>
+    <h1>test</h1>
+  </BasicView>
 </template>
 
 <script>
-import TitleBar from "@/components/TitleBar";
-import Footer from "@/components/Footer";
-import NavBar from "@/components/NavBar";
+import BasicView from "@/components/BasicView";
 
 export default {
   name: "Playlists",
   components: {
-    NavBar,
-    TitleBar,
-    Footer,
-  },
-}
+    BasicView
+  }
+};
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@use "src/styles/fonts";
+@use "src/styles/colors";
 
 </style>

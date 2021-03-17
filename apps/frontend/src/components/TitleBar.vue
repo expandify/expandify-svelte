@@ -26,10 +26,10 @@ export default {
   left: 0;
   right: 0;
   top: 0;
-  opacity: 70%;
   text-align: center;
   background-color: colors.$black;
   border-radius: sizes.$border_radius;
+  z-index: 2;
 
   .title {
     margin-top: 0;

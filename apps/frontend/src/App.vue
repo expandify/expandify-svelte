@@ -14,13 +14,12 @@
   -webkit-font-smoothing: antialiased;
 }
 
-html, body {
+html,
+body {
   background-color: colors.$gray;
   color: colors.$white;
   min-height: 100vh;
   font-family: fonts.$font-stack;
   font-weight: normal;
 }
-
-
 </style>
