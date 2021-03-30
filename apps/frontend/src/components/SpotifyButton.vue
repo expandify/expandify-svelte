@@ -23,7 +23,7 @@ export default {
 .spotify-button {
   background-color: colors.$green;
   cursor: pointer;
-  color: colors.$white;
+  color: colors.$green_contrast;
   transition-duration: .3s;
   box-sizing: border-box;
   font-family: fonts.$font-stack;
