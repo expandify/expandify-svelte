@@ -17,7 +17,6 @@ export default {
 </script>
 
 <style lang="scss">
-@use "src/styles/colors";
 @use "src/styles/sizes";
 @use "src/styles/fonts";
 
@@ -26,18 +25,15 @@ export default {
   text-align: center;
   align-items: center;
   padding: 8px;
-  background-color: colors.$black;
+  background-color: var(--footer-bg-color);
   display: flex;
   justify-content: space-between;
   z-index: 2;
-  position: fixed;
-  left: 0;
-  right: 0;
   bottom: 0;
   font-weight: fonts.$normal_weight;
   font-size: fonts.$body_size;
   font-family: fonts.$font-stack;
-  border-radius: sizes.$border_radius;
+  color: var(--footer-text-color);
 
   .phx-logo {
     height: 100%;
@@ -53,7 +49,7 @@ export default {
   }
 
   .github {
-    color: colors.$light_gray;
+    color: var(--footer-text-color);
   }
 }
 </style>

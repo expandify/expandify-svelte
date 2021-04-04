@@ -17,6 +17,5 @@ export default {
 
 <style scoped lang="scss">
 @use "src/styles/fonts";
-@use "src/styles/colors";
 
 </style>

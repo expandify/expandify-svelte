@@ -17,7 +17,6 @@ export default {
 
 <style scoped lang="scss">
 @use "src/styles/fonts";
-@use "src/styles/colors";
 @use "src/styles/sizes";
 
 .title-bar {
@@ -27,18 +26,17 @@ export default {
   right: 0;
   top: 0;
   text-align: center;
-  background-color: colors.$black;
-  border-radius: sizes.$border_radius;
+  background-color: var(--title-bg-color);
   z-index: 2;
 
   .title {
     margin-top: 0;
     font-size: fonts.$title_size;
     font-family: fonts.$title_font_stack;
-    color: colors.$green;
+    color: var(--title-font-color);
   }
   .title:hover {
-    color: colors.$green_hover;
+    color: var(--title-hover-font-color);
     cursor: pointer;
   }
 }

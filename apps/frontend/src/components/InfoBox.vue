@@ -20,24 +20,23 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@use "src/styles/colors";
 @use "src/styles/fonts";
+@use "src/styles/sizes";
 
 .box {
   margin: 50px;
   width: 350px;
   height: 400px;
   overflow: hidden;
-  border-radius: 20px;
-  background-color: colors.$black;
+  border-radius: sizes.$border_radius;
+  background-color: var(--text-box-bg-color);
   padding-left: 20px;
   padding-right: 20px;
 
   .title {
-    color: colors.$green;
+    color: var(--text-box-title-color);
     font-weight: 700;
     font-size: fonts.$h2_size;
-    text-shadow: 0 0 1px colors.$black;
     margin-bottom: 0;
     text-align: center;
   }
@@ -46,16 +45,16 @@ export default {
   }
 
   .warning {
-    color: colors.$warning;
+    color: var(--text-box-warning-color);
     font-weight: 600;
     font-size: fonts.$h3_size;
-    text-shadow: 0 0 1px colors.$black;
     margin-bottom: 0;
     margin-top: 0;  
     min-height: 20px;
   }
 
   .text {
+    color: var(--text-box-text-color);
     font-size: fonts.$body_size;
     text-align: justify;
   }

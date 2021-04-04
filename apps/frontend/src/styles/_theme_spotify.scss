@@ -9,3 +9,33 @@ $gray_transparent: #282828B2;
 $light_gray: #404040;
 $warning: #a94442;
 $background_gradiant: linear-gradient(90deg, #181818, #27303d, #1f4e61, #00707a, #009180, #00a581, #23b87c, #4acb72, #63d888, #7be59d, #91f2b2, #a8ffc7);
+
+
+:root {
+  --main-bg-color: pink;
+  --main-text-color: magenta;
+
+  --title-bg-color: green;
+  --title-font-color: red;
+  --title-hover-font-color: purple;
+
+  --bg-image-color: blue;
+  --greeting-color: red;
+  --button-bg-color: red;
+  --button-hover-bg-color: purple;
+  --button-text-color: green;
+
+  --second-bg-color: yellow;
+  --text-box-bg-color: green;
+  --text-box-title-color: red;
+  --text-box-warning-color: red;
+  --text-box-text-color: red;
+  
+  --navbar-bg-color: blue;
+  --navbutton-bg-color: green;
+  --navbutton-hover-bg-color: lime;
+  --navbutton-text-color: red;
+
+  --footer-bg-color: green;
+  --footer-text-color: red;
+}

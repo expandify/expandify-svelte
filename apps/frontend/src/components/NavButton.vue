@@ -15,14 +15,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@use "src/styles/colors";
 @use "src/styles/fonts";
 @use "src/styles/sizes";
 
 .nav-button {
-  background: colors.$gray;
+  background: var(--navbutton-bg-color);
   cursor: pointer;
-  color: colors.$white;
+  color: var(--navbutton-text-color);
   transition-duration: .3s;
   box-sizing: border-box;
   font-family: fonts.$font-stack;
@@ -41,7 +40,6 @@ export default {
 }
 
 .nav-button:hover {
-  background: lighten(colors.$gray, 10%);
-  color: colors.$white;
+  background: var(--navbutton-hover-bg-color);
 }
 </style>

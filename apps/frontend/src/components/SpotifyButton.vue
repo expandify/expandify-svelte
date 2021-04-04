@@ -16,14 +16,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-@use "src/styles/colors";
 @use "src/styles/fonts";
 @use "src/styles/sizes";
 
 .spotify-button {
-  background-color: colors.$green;
+  background-color: var(--button-bg-color);
   cursor: pointer;
-  color: colors.$green_contrast;
+  color: var(--button-text-color);
   transition-duration: .3s;
   box-sizing: border-box;
   font-family: fonts.$font-stack;
@@ -43,7 +42,7 @@ export default {
 }
 
 .spotify-button:hover {
-  background-color: colors.$green_hover;
-  color: colors.$white;
+  background-color:   var(--button-hover-bg-color);
+  color: var(--button-text-color);
 }
 </style>

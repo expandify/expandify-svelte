@@ -9,3 +9,32 @@ $gray_transparent: #ffffff;
 $light_gray: #404040;
 $warning: #a94442;
 $background_gradiant: linear-gradient(90deg, #000000, #000000);
+
+:root {
+  --main-bg-color: #ffffff;
+  --main-text-color: #000000;
+
+  --title-bg-color: #000000;
+  --title-font-color: #ffffff;
+  --title-hover-font-color: #cccccc;
+
+  --bg-image-color: #222222;
+  --greeting-color: #ffffff;
+  --button-bg-color: #ffffff;
+  --button-hover-bg-color: #cccccc;
+  --button-text-color: #000000;
+
+  --second-bg-color: #ffffff;
+  --text-box-bg-color: #000000;
+  --text-box-title-color: #ffffff;
+  --text-box-warning-color: #ffffff;
+  --text-box-text-color: #ffffff;
+
+  --navbar-bg-color: #000000;
+  --navbutton-bg-color: #ffffff;
+  --navbutton-hover-bg-color: #cccccc;
+  --navbutton-text-color: #000000;
+  
+  --footer-bg-color: #000000;
+  --footer-text-color: #ffffff;
+}

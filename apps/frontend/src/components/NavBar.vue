@@ -31,17 +31,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@use "src/styles/colors";
 @use "src/styles/sizes";
 
 .nav-bar {
-  background: colors.$black;
-  border-radius: sizes.$border_radius;
+  background: var(--navbar-bg-color);
   width: sizes.$side_bar;
   position: fixed;
   left: 0;
   top: sizes.$title_bar;
-  bottom: sizes.$footer;
+  bottom: 0; 
   padding: 10px;
   display: flex;
   flex-direction: column;

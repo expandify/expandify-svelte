@@ -5,8 +5,8 @@
 </template>
 
 <style lang="scss">
-@use "styles/colors";
 @use "styles/fonts";
+@use "styles/colors";
 @import "~normalize.scss";
 
 * {
@@ -16,8 +16,8 @@
 
 html,
 body {
-  background-color: colors.$gray;
-  color: colors.$white;
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
   min-height: 100vh;
   font-family: fonts.$font-stack;
   font-weight: normal;
