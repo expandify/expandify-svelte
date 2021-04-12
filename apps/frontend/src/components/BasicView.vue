@@ -1,16 +1,14 @@
 <template>
   <div class="view">
     <TitleBar></TitleBar>
-    <NavBar></NavBar>      
+    <NavBar></NavBar>
     <div class="content">
       <div>
-        <slot> </slot>
+        <slot></slot>
       </div>
       <Footer></Footer>
     </div>
-    
   </div>
-
 </template>
 
 <script>
@@ -32,7 +30,6 @@ export default {
 @use "src/styles/fonts";
 @use "src/styles/sizes";
 
-
 .content {
   min-height: 100vh;
   display: flex;
@@ -40,6 +37,5 @@ export default {
   padding-left: sizes.$side_bar;
   flex-direction: column;
   justify-content: space-between;
-
 }
 </style>
