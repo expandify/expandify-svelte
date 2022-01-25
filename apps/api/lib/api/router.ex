@@ -18,6 +18,7 @@ defmodule Api.Router do
 
     scope "/playlists" do
       get "/me", PlaylistController, :get_current_user_playlists
+      get "/me/save", PlaylistController, :save_current_user_playlists
     end
   end
 

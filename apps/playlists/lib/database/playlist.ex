@@ -9,8 +9,8 @@ defmodule Playlist do
     field :description, :string
     field :external_urls, :map
     field :followers, :map
-    field :href, {:array, :map}
-    field :images, :string
+    field :href, :string
+    field :images, {:array, :map}
     field :name, :string
     field :owner, :map
     field :public, :boolean

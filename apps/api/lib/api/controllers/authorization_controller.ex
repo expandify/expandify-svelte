@@ -3,8 +3,6 @@ defmodule Api.AuthorizationController do
 
   use Api, :controller
 
-
-
   def authorize(conn, _params), do: redirect(conn, external: Spotify.Authorization.url)
 
   def authenticate(conn, params) do

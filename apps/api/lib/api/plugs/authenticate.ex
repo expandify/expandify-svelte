@@ -39,7 +39,7 @@ defmodule Api.Plugs.Authenticate do
 
   defp get_user({:error, reason}), do: {:error, reason}
   defp get_user({:ok, user_id}) do
-    case Users.Service.find(user_id) do
+    case Users.Query.find(user_id) do
       nil -> {:error, "No Credentials for the user were found"}
       user -> {:ok, user}
     end

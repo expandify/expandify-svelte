@@ -19,7 +19,7 @@ defmodule Exportify.Authenticator do
       access_token: creds.access_token,
       refresh_token: creds.refresh_token
     }
-    |> Users.Service.upsert()
+    |> Users.Query.upsert()
   end
 
   defp create_token({:error, changeset}), do: {:error, changeset}

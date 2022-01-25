@@ -13,13 +13,13 @@ import_config "secret.exs"
 import_config "spotify.exs"
 
 config :users, Users.Repo,
-       database: "users",
+       database: "exportify",
        hostname: "localhost"
 
 config :users, ecto_repos: [Users.Repo]
 
 config :playlists, Playlists.Repo,
-       database: "playlists",
+       database: "exportify",
        hostname: "localhost"
 
 config :playlists, ecto_repos: [Playlists.Repo]
