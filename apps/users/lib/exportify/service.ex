@@ -22,7 +22,7 @@ defmodule Users.Service do
     response =
       Spotify.Client.get(credentials, url)
       |> Spotify.Profile.handle_response
-      |> SpotifyResponseHandler.normalize_response(credentials)
+      |> SpotifyHelper.ResponseHandler.normalize_response(credentials)
 
     case response do
       {:empty, _} -> raise("Spotify did not return any user data, but also didnt throw an error.")

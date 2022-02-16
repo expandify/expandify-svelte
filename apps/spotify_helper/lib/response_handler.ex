@@ -1,10 +1,12 @@
-defmodule SpotifyResponseHandler do
+defmodule SpotifyHelper.ResponseHandler do
   @moduledoc """
-  Documentation for `SpotifyResponseHandler`.
+  Documentation for `ResponseHandler`.
   """
 
   def normalize_response({:ok, %{"error" => %{"status" => 401}}}, creds = %Spotify.Credentials{}) do
-    new_creds = Exportify.Authenticator.refresh(creds)
+    # Users already depends on SpotifyHelper, this only works because SpotifyHelper does not
+    # explicitly has Users as a dependency.
+    new_creds = Users.Token.refresh(creds)
     {:retry_with, new_creds}
   end
   def normalize_response({_, %{"meta" => %{"retry_after" => retry_after}}}, creds = %Spotify.Credentials{}) do

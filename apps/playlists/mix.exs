@@ -33,7 +33,7 @@ defmodule Playlists.MixProject do
       {:mongodb_ecto, "1.0.0-beta.2"},
       {:ecto, "~> 3.6"},
       {:spotify_ex, "~> 2.2.0"},
-      {:spotify_response_handler, in_umbrella: true}
+      {:spotify_helper, in_umbrella: true}
     ]
   end
 end

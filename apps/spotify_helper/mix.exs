@@ -1,9 +1,9 @@
-defmodule Authenticator.MixProject do
+defmodule SpotifyHelper.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :authenticator,
+      app: :spotify_helper,
       version: "0.1.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
@@ -28,9 +28,7 @@ defmodule Authenticator.MixProject do
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
       # {:sibling_app_in_umbrella, in_umbrella: true}
-      {:spotify_ex, "~> 2.2.0"},
-      {:phoenix, "~> 1.6.6"},
-      {:users, in_umbrella: true}
+
     ]
   end
 end

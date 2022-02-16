@@ -21,7 +21,7 @@ defmodule Playlists.Service do
     response = credentials
                |> Spotify.Client.get(url)
                |> Spotify.Playlist.handle_response()
-               |> SpotifyResponseHandler.normalize_response(credentials)
+               |> SpotifyHelper.ResponseHandler.normalize_response(credentials)
 
     case response do
       {:empty, _} -> []
