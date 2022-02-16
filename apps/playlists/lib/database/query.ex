@@ -5,9 +5,8 @@ defmodule Playlists.Query do
     Playlists.Repo.get_by(Playlist, spotify_id: spotify_id)
   end
 
-  def save(playlist_data = %Spotify.Playlist{}) do
+  def save(playlist_data = %Playlist{}) do
     playlist_data
-    |> convert()
     |> upsert()
   end
 
@@ -15,13 +14,13 @@ defmodule Playlists.Query do
     selectors = [spotify_id: playlist_data.spotify_id, snapshot_id: playlist_data.snapshot_id]
     playlist = Playlists.Repo.get_by(Playlist, selectors)
     case playlist do
-      nil -> Playlists.Repo.insert(playlist_data)
-      _ -> :ok
+      nil -> Playlists.Repo.insert!(playlist_data)
+      playlist -> playlist
     end
   end
 
-  def save_all(playlists) do
-    Enum.each(playlists, &(save(&1)))
+  def save_all([%Playlist{} | _] = playlists) do
+    Enum.map(playlists, &(save(&1)))
   end
 
   def convert(playlist = %Spotify.Playlist{}) do

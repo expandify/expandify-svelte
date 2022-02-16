@@ -20,6 +20,11 @@ defmodule Api.Router do
       get "/me", PlaylistController, :get_current_user_playlists
       get "/me/save", PlaylistController, :save_current_user_playlists
     end
+
+    scope "/users" do
+      get "/me", UserController, :get_current_user
+      get "/me/save", UserController, :save_current_user
+    end
   end
 
   # Enables LiveDashboard only for development

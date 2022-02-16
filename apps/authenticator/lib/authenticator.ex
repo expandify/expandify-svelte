@@ -1,30 +1,25 @@
 defmodule Exportify.Authenticator do
 
   def authenticate(params) do
+    # This function gets called after the spotify redirect
+    # This gets the access and refresh token from spotify
     Spotify.Authentication.authenticate(%Spotify.Credentials{}, params)
-    |> handle_authentication()
-  end
-
-  defp handle_authentication({:error, reason}), do: {:error, reason}
-  defp handle_authentication({:ok, creds}) do
-    Spotify.Profile.me(creds)
-    |> safe_user(creds)
+    |> save_user()
     |> create_token()
   end
 
-  defp safe_user({:error, reason}, _), do: {:error, reason}
-  defp safe_user({:ok, spotify_user}, creds) do
-    %User{
-      spotify_id: spotify_user.id,
-      access_token: creds.access_token,
-      refresh_token: creds.refresh_token
-    }
-    |> Users.Query.upsert()
+  def refresh(%Spotify.Credentials{} = creds) do
+    user =
+      Spotify.Authentication.refresh(creds)
+      |> save_user()
+
+    %Spotify.Credentials{access_token: user.access_token, refresh_token: user.refresh_token}
   end
 
-  defp create_token({:error, changeset}), do: {:error, changeset}
-  defp create_token({:ok, user = %User{}}) do
-    token = Phoenix.Token.sign(Api.Endpoint, "user auth", user.spotify_id)
-    {:ok, token}
+  defp create_token(user) do
+    Phoenix.Token.sign(Api.Endpoint, "user auth", user.spotify_id)
   end
+
+  defp save_user({:error, reason}), do: raise(reason)
+  defp save_user({:ok, creds}), do: Users.Service.save_current_user(creds)
 end
