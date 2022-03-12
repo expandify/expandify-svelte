@@ -1,6 +1,6 @@
-defmodule Playlists.Repo do
+defmodule Playlist.Repo do
   @moduledoc false
   use Ecto.Repo,
-      otp_app: :playlists,
+      otp_app: :playlist,
       adapter: Mongo.Ecto
 end

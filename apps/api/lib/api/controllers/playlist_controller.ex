@@ -6,7 +6,7 @@ defmodule Api.PlaylistController do
   def get_current_user_playlists(conn, _params) do
     try do
       conn.assigns.spotify_credentials
-      |> Playlists.Service.get_current_user_playlists()
+      |> Playlist.Service.get_current_user_playlists()
       |> build_response(conn)
     rescue
       e -> build_error(e, conn)
@@ -16,7 +16,7 @@ defmodule Api.PlaylistController do
   def save_current_user_playlists(conn, _params) do
     try do
       conn.assigns.spotify_credentials
-      |> Playlists.Service.save_current_user_playlists()
+      |> Playlist.Service.save_current_user_playlists()
       |> build_response(conn)
     rescue
       e -> build_error(e, conn)

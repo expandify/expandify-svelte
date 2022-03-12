@@ -7,7 +7,7 @@ defmodule Api.UserController do
   def get_current_user(conn, _params) do
     try do
       conn.assigns.spotify_credentials
-      |> Users.Service.get_current_user()
+      |> User.Service.get_current_user()
       |> build_response(conn)
     rescue
       e -> build_error(e, conn)
@@ -17,7 +17,7 @@ defmodule Api.UserController do
   def save_current_user(conn, _params) do
     try do
       conn.assigns.spotify_credentials
-      |> Users.Service.save_current_user()
+      |> User.Service.save_current_user()
       |> build_response(conn)
     rescue
       e -> build_error(e, conn)

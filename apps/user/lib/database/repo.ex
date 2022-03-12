@@ -1,6 +1,6 @@
-defmodule Users.Repo do
+defmodule User.Repo do
   @moduledoc false
   use Ecto.Repo,
-      otp_app: :users,
+      otp_app: :user,
       adapter: Mongo.Ecto
 end

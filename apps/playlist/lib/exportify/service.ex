@@ -1,18 +1,18 @@
-defmodule Playlists.Service do
+defmodule Playlist.Service do
   @moduledoc false
 
   def get_current_user_playlists(credentials = %Spotify.Credentials{}) do
     Spotify.Playlist.get_current_user_playlists_url()
     |> get_paging_response(credentials)
-    |> Enum.map(&(Playlists.Query.convert(&1)))
+    |> Enum.map(&(Playlist.Query.convert(&1)))
     |> Enum.map(&(filter_keys(&1)))
   end
 
   def save_current_user_playlists(credentials = %Spotify.Credentials{}) do
     Spotify.Playlist.get_current_user_playlists_url()
     |> get_paging_response(credentials)
-    |> Enum.map(&(Playlists.Query.convert(&1)))
-    |> Playlists.Query.save_all()
+    |> Enum.map(&(Playlist.Query.convert(&1)))
+    |> Playlist.Query.save_all()
     |> Enum.map(&(filter_keys(&1)))
   end
 
@@ -21,12 +21,13 @@ defmodule Playlists.Service do
     response = credentials
                |> Spotify.Client.get(url)
                |> Spotify.Playlist.handle_response()
-               |> SpotifyHelper.ResponseHandler.normalize_response(credentials)
+               |> SpotifyHelper.ResponseHandler.normalize_response()
 
     case response do
-      {:empty, _} -> []
-      {:retry_with, new_creds} -> get_paging_response(url, new_creds)
-      {:ok, page} -> page.items ++ get_paging_response(page.next, credentials)
+      :retry -> get_paging_response(url, credentials)
+      :token_expired -> get_paging_response(url, User.Token.refresh(credentials))
+      :empty -> []
+      page -> page.items ++ get_paging_response(page.next, credentials)
     end
   end
 

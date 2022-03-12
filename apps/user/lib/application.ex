@@ -1,4 +1,4 @@
-defmodule Users.Application do
+defmodule User.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -8,14 +8,14 @@ defmodule Users.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: Users.Worker.start_link(arg)
-      # {Users.Worker, arg}
-      Users.Repo,
+      # Starts a worker by calling: User.Worker.start_link(arg)
+      # {User.Worker, arg}
+      User.Repo
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Users.Supervisor]
+    opts = [strategy: :one_for_one, name: User.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end

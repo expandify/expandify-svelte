@@ -1,8 +1,8 @@
-defmodule Playlists.Query do
+defmodule Playlist.Query do
   @moduledoc false
 
   def find(spotify_id) do
-    Playlists.Repo.get_by(Playlist, spotify_id: spotify_id)
+    Playlist.Repo.get_by(Playlist, spotify_id: spotify_id)
   end
 
   def save(playlist_data = %Playlist{}) do
@@ -12,9 +12,9 @@ defmodule Playlists.Query do
 
   defp upsert(playlist_data = %Playlist{}) do
     selectors = [spotify_id: playlist_data.spotify_id, snapshot_id: playlist_data.snapshot_id]
-    playlist = Playlists.Repo.get_by(Playlist, selectors)
+    playlist = Playlist.Repo.get_by(Playlist, selectors)
     case playlist do
-      nil -> Playlists.Repo.insert!(playlist_data)
+      nil -> Playlist.Repo.insert!(playlist_data)
       playlist -> playlist
     end
   end

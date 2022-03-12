@@ -1,4 +1,4 @@
-defmodule Users.Token do
+defmodule User.Token do
   @moduledoc false
 
   def authenticate(params) do
@@ -18,6 +18,6 @@ defmodule Users.Token do
 
 
   defp save_user({:error, reason}), do: raise(reason)
-  defp save_user({:ok, creds}), do: Users.Service.save_current_user(creds)
+  defp save_user({:ok, creds}), do: User.Service.save_current_user(creds)
 
 end

@@ -1,18 +1,18 @@
-defmodule Users.Service do
+defmodule User.Service do
   @moduledoc false
 
   def get_current_user(credentials = %Spotify.Credentials{}) do
     credentials
     |> get_spotify_user
-    |> Users.Query.convert(credentials)
+    |> User.Query.convert(credentials)
     |> filter_keys
   end
 
   def save_current_user(credentials = %Spotify.Credentials{}) do
     credentials
     |> get_spotify_user
-    |> Users.Query.convert(credentials)
-    |> Users.Query.save()
+    |> User.Query.convert(credentials)
+    |> User.Query.save()
     |> filter_keys
   end
 
@@ -22,12 +22,13 @@ defmodule Users.Service do
     response =
       Spotify.Client.get(credentials, url)
       |> Spotify.Profile.handle_response
-      |> SpotifyHelper.ResponseHandler.normalize_response(credentials)
+      |> SpotifyHelper.ResponseHandler.normalize_response()
 
     case response do
-      {:empty, _} -> raise("Spotify did not return any user data, but also didnt throw an error.")
-      {:retry_with, new_creds} -> get_current_user(new_creds)
-      {:ok, spotify_user} -> spotify_user
+      :retry -> get_current_user(credentials)
+      :token_expired -> get_current_user(User.Token.refresh(credentials))
+      :empty -> raise("Spotify did not return any user data, but also didnt throw an error.")
+      spotify_user -> spotify_user
     end
   end
 

@@ -3,7 +3,7 @@ defmodule User do
   use Ecto.Schema
 
   @primary_key {:id, :binary_id, autogenerate: true}
-  schema "user" do
+  schema "users" do
     field :spotify_id, :string
     field :access_token, :string
     field :refresh_token, :string

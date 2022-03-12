@@ -12,17 +12,17 @@ import Config
 import_config "secret.exs"
 import_config "spotify.exs"
 
-config :users, Users.Repo,
+config :user, User.Repo,
        database: "exportify",
        hostname: "localhost"
 
-config :users, ecto_repos: [Users.Repo]
+config :user, ecto_repos: [User.Repo]
 
-config :playlists, Playlists.Repo,
+config :playlist, Playlist.Repo,
        database: "exportify",
        hostname: "localhost"
 
-config :playlists, ecto_repos: [Playlists.Repo]
+config :playlist, ecto_repos: [Playlist.Repo]
 
 
 config :api,
