@@ -45,6 +45,9 @@ defmodule Api.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:spotify_ex, "~> 2.2.0"},
       {:playlist, in_umbrella: true},
+      {:song, in_umbrella: true},
+      {:artist, in_umbrella: true},
+      {:album, in_umbrella: true},
       {:user, in_umbrella: true}
     ]
   end

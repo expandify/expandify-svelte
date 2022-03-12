@@ -2,6 +2,17 @@
 
 Another Exportify Project.
 
+## Requirements
+You need a `secret.exs` containing your spotify client id and secret.
+````elixir
+import Config
+
+config :spotify_ex, client_id: "00000000000000000000000000000000",
+                    secret_key: "00000000000000000000000000000000"
+````
+
+You will also need to have a Mongo Database running.
+
 ## Project Plan
 
 ### Backend

@@ -15,15 +15,27 @@ import_config "spotify.exs"
 config :user, User.Repo,
        database: "exportify",
        hostname: "localhost"
-
 config :user, ecto_repos: [User.Repo]
 
 config :playlist, Playlist.Repo,
        database: "exportify",
        hostname: "localhost"
-
 config :playlist, ecto_repos: [Playlist.Repo]
 
+config :song, Song.Repo,
+       database: "exportify",
+       hostname: "localhost"
+config :song, ecto_repos: [Song.Repo]
+
+config :artist, Artist.Repo,
+       database: "exportify",
+       hostname: "localhost"
+config :artist, ecto_repos: [Artist.Repo]
+
+config :album, Album.Repo,
+       database: "exportify",
+       hostname: "localhost"
+config :album, ecto_repos: [Album.Repo]
 
 config :api,
   generators: [context_app: false]

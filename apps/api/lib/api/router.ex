@@ -16,6 +16,11 @@ defmodule Api.Router do
 
     pipe_through :token_validation
 
+    scope "/songs" do
+      get "/me", SongController, :get_saved_songs
+      get "/me/save", SongController, :save_saved_songs
+    end
+
     scope "/playlists" do
       get "/me", PlaylistController, :get_current_user_playlists
       get "/me/save", PlaylistController, :save_current_user_playlists
@@ -24,6 +29,16 @@ defmodule Api.Router do
     scope "/users" do
       get "/me", UserController, :get_current_user
       get "/me/save", UserController, :save_current_user
+    end
+
+    scope "/albums" do
+      get "/me", AlbumController, :get_saved_albums
+      get "/me/save", AlbumController, :save_saved_albums
+    end
+
+    scope "/artists" do
+      get "/me", ArtistController, :get_followed_artists
+      get "/me/save", ArtistController, :save_followed_artists
     end
   end
 

@@ -1,18 +1,18 @@
-defmodule Playlist.Service do
+defmodule Song.Service do
   @moduledoc false
 
-  def get_current_user_playlists(credentials = %Spotify.Credentials{}) do
-    Spotify.Playlist.get_current_user_playlists_url(limit: 50)
+  def get_saved_songs(credentials = %Spotify.Credentials{}) do
+    Spotify.Library.saved_tracks_url(limit: 50)
     |> get_paging_response(credentials)
-    |> Enum.map(&(Playlist.Query.convert(&1)))
+    |> Enum.map(&(Song.Query.convert(&1)))
     |> Enum.map(&(filter_keys(&1)))
   end
 
-  def save_current_user_playlists(credentials = %Spotify.Credentials{}) do
-    Spotify.Playlist.get_current_user_playlists_url(limit: 50)
+  def save_saved_songs(credentials = %Spotify.Credentials{}) do
+    Spotify.Library.saved_tracks_url(limit: 50)
     |> get_paging_response(credentials)
-    |> Enum.map(&(Playlist.Query.convert(&1)))
-    |> Playlist.Query.save_all()
+    |> Enum.map(&(Song.Query.convert(&1)))
+    |> Song.Query.save_all()
     |> Enum.map(&(filter_keys(&1)))
   end
 
@@ -20,7 +20,7 @@ defmodule Playlist.Service do
   defp get_paging_response(url, credentials = %Spotify.Credentials{}) do
     response = credentials
                |> Spotify.Client.get(url)
-               |> Spotify.Playlist.handle_response()
+               |> Spotify.Library.handle_response()
                |> SpotifyHelper.ResponseHandler.normalize_response()
 
     case response do
@@ -31,8 +31,8 @@ defmodule Playlist.Service do
     end
   end
 
-  defp filter_keys(%Playlist{} = playlist) do
-    playlist
+  defp filter_keys(%Song{} = song) do
+    song
     |> Map.from_struct()
     |> Map.drop([:__meta__])
   end

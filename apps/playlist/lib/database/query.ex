@@ -12,8 +12,8 @@ defmodule Playlist.Query do
 
   defp upsert(playlist_data = %Playlist{}) do
     selectors = [spotify_id: playlist_data.spotify_id, snapshot_id: playlist_data.snapshot_id]
-    playlist = Playlist.Repo.get_by(Playlist, selectors)
-    case playlist do
+    old_playlist = Playlist.Repo.get_by(Playlist, selectors)
+    case old_playlist do
       nil -> Playlist.Repo.insert!(playlist_data)
       playlist -> playlist
     end
