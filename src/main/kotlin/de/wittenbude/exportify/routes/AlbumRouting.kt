@@ -1,7 +1,8 @@
 package de.wittenbude.exportify.routes
 
 import de.wittenbude.exportify.models.requestUser
-import de.wittenbude.exportify.services.AlbumService
+import de.wittenbude.exportify.services.getUserAlbums
+import de.wittenbude.exportify.services.saveUserAlbums
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -9,13 +10,11 @@ import io.ktor.server.routing.*
 fun Route.albumRouting() {
     route("/album") {
         get {
-            val user = requestUser
-            val response = AlbumService.getUserAlbums(user)
+            val response = getUserAlbums(requestUser)
             call.respond(response)
         }
         post {
-            val user = requestUser
-            val response = AlbumService.saveUserAlbums(user)
+            val response = saveUserAlbums(requestUser)
             call.respond(response)
         }
     }

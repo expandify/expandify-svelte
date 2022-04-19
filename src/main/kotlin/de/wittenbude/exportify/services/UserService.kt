@@ -8,31 +8,30 @@ import de.wittenbude.exportify.models.SpotifyUser
 import de.wittenbude.exportify.models.convert
 import org.litote.kmongo.findOneById
 
-object UserService {
-    fun saveExportifyUser(exportifyUser: ExportifyUser) {
-        Database.EXPORTIFY_USER.upsert(exportifyUser)
-    }
 
-    fun saveExportifyUser(id: String, accessToken: String, refreshToken: String) {
-        saveExportifyUser(ExportifyUser(id, accessToken, refreshToken))
-    }
+fun saveExportifyUser(exportifyUser: ExportifyUser) {
+    Database.EXPORTIFY_USER.upsert(exportifyUser)
+}
 
-    fun loadExportifyUser(id: String): ExportifyUser? {
-        return Database.EXPORTIFY_USER.findOneById(id)
-    }
+fun saveExportifyUser(id: String, accessToken: String, refreshToken: String) {
+    saveExportifyUser(ExportifyUser(id, accessToken, refreshToken))
+}
 
-    fun saveCurrentSpotifyUser(exportifyUser: ExportifyUser): SpotifyUser? {
-        return getCurrentSpotifyUser(exportifyUser)
-            ?.also { Database.SPOTIFY_USER.upsert(it) }
-    }
+fun loadExportifyUser(id: String): ExportifyUser? {
+    return Database.EXPORTIFY_USER.findOneById(id)
+}
 
-    fun saveCurrentSpotifyUser(accessToken: String, refreshToken: String): SpotifyUser? {
-        return saveCurrentSpotifyUser(ExportifyUser(null, accessToken, refreshToken))
-    }
+fun saveCurrentSpotifyUser(exportifyUser: ExportifyUser): SpotifyUser? {
+    return getCurrentSpotifyUser(exportifyUser)
+        ?.also { Database.SPOTIFY_USER.upsert(it) }
+}
 
-    fun getCurrentSpotifyUser(exportifyUser: ExportifyUser): SpotifyUser? {
-        return SpotifyApiConnector(exportifyUser)
-            .makeRequest { spotifyApi -> spotifyApi.getCurrentUsersProfile() }
-            ?.convert()
-    }
+fun saveCurrentSpotifyUser(accessToken: String, refreshToken: String): SpotifyUser? {
+    return saveCurrentSpotifyUser(ExportifyUser(null, accessToken, refreshToken))
+}
+
+fun getCurrentSpotifyUser(exportifyUser: ExportifyUser): SpotifyUser? {
+    return SpotifyApiConnector(exportifyUser)
+        .makeRequest { spotifyApi -> spotifyApi.getCurrentUsersProfile() }
+        ?.convert()
 }

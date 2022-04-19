@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import de.wittenbude.exportify.models.ExportifyUser
-import de.wittenbude.exportify.services.UserService
+import de.wittenbude.exportify.services.loadExportifyUser
 import io.ktor.server.auth.jwt.*
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -39,6 +39,6 @@ object ExportifyJWT {
     fun getPrincipal(credential: JWTCredential): ExportifyUser? {
         return credential.payload.claims[CLAIM_KEY]
             ?.asString()
-            ?.let { UserService.loadExportifyUser(it) }
+            ?.let { loadExportifyUser(it) }
     }
 }
