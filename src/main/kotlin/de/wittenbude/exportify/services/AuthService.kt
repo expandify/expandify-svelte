@@ -6,11 +6,12 @@ import de.wittenbude.exportify.security.ExportifyJWT
 import io.ktor.server.application.*
 
 
-fun buildAuthRedirectUri(): String {
+fun buildAuthRedirectUri(state: String): String {
     return SpotifyApiConnector
         .getSpotifyAuthApi()
         .authorizationCodeUri()
         .scope(SCOPES)
+        .state(state)
         .show_dialog(true)
         .build()
         .execute()
