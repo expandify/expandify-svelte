@@ -1,0 +1,28 @@
+{
+  "name": "exportify-svelte",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "svelte-kit dev",
+    "build": "svelte-kit build",
+    "package": "svelte-kit package",
+    "preview": "svelte-kit preview",
+    "prepare": "svelte-kit sync"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "next",
+    "@sveltejs/kit": "next",
+    "bulma": "^0.9.3",
+    "mdsvex": "^0.10.5",
+    "sass": "^1.49.11",
+    "svelte": "^3.44.0",
+    "svelte-feather-icons": "^4.0.0",
+    "svelte-preprocess": "^4.10.5"
+  },
+  "type": "module",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.5.0",
+    "spotify-web-api-node": "^5.0.2"
+  }
+}

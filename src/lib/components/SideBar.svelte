@@ -1,0 +1,48 @@
+<script>
+
+</script>
+
+<aside class="has-background-grey-dark section menu is-flex is-flex-direction-column fixed vh-100">
+
+  <a href="/" class="is-size-4">Exportify</a>
+
+  <hr class="is-size-6 has-background-grey-lighter">
+
+  <p class="menu-label is-size-6">Library</p>
+
+  <ul class="menu-list is-size-6">
+    <li><a href="/library/albums">Albums</a></li>
+    <li><a href="/library/artists">Artist</a></li>
+    <li><a href="/library/libraries">Libraries</a></li>
+    <li><a href="/library/playlists">Playlists</a></li>
+    <li><a href="/library/songs">Songs</a></li>
+    <li><a href="/library/user">User</a></li>
+  </ul>
+
+  <hr class="mt-auto is-size-6 has-background-grey-lighter">
+
+  <div class="dropdown is-up is-hoverable">
+    <button class="button" aria-haspopup="true" aria-controls="dropdown-user">
+      <figure class="image is-32x32 mr-2">
+        <img class="is-rounded" src="https://github.com/systeno.png" alt="">
+      </figure>
+      <strong>UserName</strong>
+    </button>
+    <div class="dropdown-menu" id="dropdown-user" role="menu">
+      <div class="dropdown-content">
+        <a class="dropdown-item" href="/">Settings</a>
+        <a class="dropdown-item" href="/">Profile</a>
+        <hr class="dropdown-divider">
+        <a class="dropdown-item" href="/">Sign out</a>
+      </div>
+    </div>
+
+  </div>
+</aside>
+
+<style lang="scss">
+  .fixed {
+    top: 0;
+    position: sticky;
+  }
+</style>
