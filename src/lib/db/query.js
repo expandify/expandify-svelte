@@ -11,6 +11,7 @@ async function upsert(collection, item, query = {id: item.id}) {
   }
 }
 
-export {
+
+export default {
   upsert
 }

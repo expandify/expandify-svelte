@@ -5,6 +5,7 @@
   import SpotifyButton from "../lib/components/SpotifyButton.svelte";
 
   const authorize = "/api/auth/login"
+
 </script>
 
 

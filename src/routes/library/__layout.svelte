@@ -1,16 +1,25 @@
+<script context="module">
+  export async function load({session}) {
+    if (!session.loggedIn) {
+      return { redirect: "/", status: 302}
+    }
+    return { props: {} }
+  }
+</script>
+
 <script>
   import SideBar from "../../lib/components/SideBar.svelte";
 
 </script>
 
 
-<div class="is-flex">
+<div class="columns ">
 
-  <div class="is-flex-shrink-1">
+  <div class="column is-one-fifth">
     <SideBar/>
   </div>
 
-  <div class="is-flex-grow-1 section">
+  <div class="column section">
     <slot/>
   </div>
 </div>

@@ -1,5 +1,9 @@
 <script>
+  import {user} from "../../stores/user.js";
 
+  function logout() {
+   localStorage.clear()
+  }
 </script>
 
 <aside class="has-background-grey-dark section menu is-flex is-flex-direction-column fixed vh-100">
@@ -22,18 +26,15 @@
   <hr class="mt-auto is-size-6 has-background-grey-lighter">
 
   <div class="dropdown is-up is-hoverable">
-    <button class="button" aria-haspopup="true" aria-controls="dropdown-user">
-      <figure class="image is-32x32 mr-2">
-        <img class="is-rounded" src="https://github.com/systeno.png" alt="">
-      </figure>
-      <strong>UserName</strong>
+    <button class="button overflow" aria-haspopup="true" aria-controls="dropdown-user">
+      <strong class="overflow">{$user.user.display_name}</strong>
     </button>
     <div class="dropdown-menu" id="dropdown-user" role="menu">
       <div class="dropdown-content">
         <a class="dropdown-item" href="/">Settings</a>
-        <a class="dropdown-item" href="/">Profile</a>
+        <a class="dropdown-item" href="/library/user">Profile</a>
         <hr class="dropdown-divider">
-        <a class="dropdown-item" href="/">Sign out</a>
+        <a class="dropdown-item" on:click="{logout}" href="/api/auth/logout">Sign out</a>
       </div>
     </div>
 
@@ -44,5 +45,12 @@
   .fixed {
     top: 0;
     position: sticky;
+  }
+  .overflow {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .overflow:hover {
+    overflow: visible;
   }
 </style>
