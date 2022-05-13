@@ -1,4 +1,11 @@
 <script>
+  import { onMount } from 'svelte'
+  import { themeChange } from 'theme-change'
+
+  onMount(() => {
+    themeChange(false)
+  })
+
   let showNav = false;
 
   function toggleNav() {
@@ -8,7 +15,7 @@
 
 
 <div>
-  <nav class="navbar" aria-label="main navigation">
+  <nav class="navbar bg-base-100" aria-label="main navigation">
     <div class="navbar-brand">
       <a href="/" class="navbar-item is-size-3">
         Exportify
@@ -21,6 +28,13 @@
         <span aria-hidden="true"></span>
       </button>
     </div>
+
+
+    <select data-choose-theme>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+      <option value="night">Night</option>
+    </select>
 
     <div id="navbarBasicExample" class="navbar-menu" class:is-active={showNav}>
       <div class="navbar-start"></div>

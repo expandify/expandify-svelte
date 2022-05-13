@@ -1,7 +1,6 @@
 <script>
   import {albums} from "../../stores/albums.js";
-
-  console.log($albums)
+  
   function artistsToString(artists) {
     return artists.map(artist => artist.name).join()
   }

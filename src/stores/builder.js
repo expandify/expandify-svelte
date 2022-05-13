@@ -40,16 +40,13 @@ export function buildStore(name, defaults = {}) {
   // Whenever a change on the store happens, it will be persisted into localStorage
   store.subscribe(value => browser && localStorage.setItem(name, JSON.stringify(value)))
 
-
-  const debug = get(store)
-  console.log("--------------")
-  console.log(debug)
-
   return store
 }
 
 
 export async function fetchPagedItems(store, apiPath, limit = 10) {
+
+  console.log("fetcch Items ", apiPath)
   if (get(store).status === STORE_STATUS.FINISHED) {
     return
   }

@@ -25,6 +25,12 @@
 
   <hr class="mt-auto is-size-6 has-background-grey-lighter">
 
+  <select data-choose-theme>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="night">Night</option>
+  </select>
+  
   <div class="dropdown is-up is-hoverable">
     <button class="button overflow" aria-haspopup="true" aria-controls="dropdown-user">
       <strong class="overflow">{$user.user.display_name}</strong>
