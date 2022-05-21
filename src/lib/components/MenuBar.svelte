@@ -1,10 +1,5 @@
 <script>
   import { onMount } from 'svelte'
-  import { themeChange } from 'theme-change'
-
-  onMount(() => {
-    themeChange(false)
-  })
 
   let showNav = false;
 
@@ -30,7 +25,7 @@
     </div>
 
 
-    <select data-choose-theme>
+    <select >
       <option value="light">Light</option>
       <option value="dark">Dark</option>
       <option value="night">Night</option>

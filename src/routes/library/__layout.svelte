@@ -8,22 +8,10 @@
 </script>
 
 <script>
-  import SideBar from "../../lib/components/SideBar.svelte";
-
 </script>
 
 
-<div class="columns ">
-
-  <div class="column is-one-fifth">
-    <SideBar/>
-  </div>
-
-  <div class="column section">
-    <slot/>
-  </div>
-</div>
+<slot/>
 
 <style lang="scss">
-
 </style>

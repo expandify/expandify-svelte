@@ -8,9 +8,7 @@ const config = {
   },
 
   preprocess: [
-    preprocess({
-      postcss: true,
-    }),
+    preprocess(),
   ],
 };
 

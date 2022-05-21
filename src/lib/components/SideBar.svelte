@@ -1,62 +1,65 @@
 <script>
-  import {user} from "../../stores/user.js";
+  import {LogOutIcon} from 'svelte-feather-icons'
+  import ThemeChanger from "./ThemeChanger.svelte";
+  import LibraryMenu from "./menu/LibraryMenu.svelte";
+  import MenuEntry from "./menu/MenuEntry.svelte";
+  import SpotifyButton from "./SpotifyButton.svelte";
 
   function logout() {
-   localStorage.clear()
+    const theme = localStorage.getItem("theme")
+    localStorage.clear()
+    localStorage.setItem("theme", theme)
   }
 </script>
 
-<aside class="has-background-grey-dark section menu is-flex is-flex-direction-column fixed vh-100">
+<aside class="sidebar">
+  <a href="/" class="title">Exportify</a>
+  <hr class="divider">
+  <LibraryMenu/>
+  <div class="top-bottom-split"></div>
 
-  <a href="/" class="is-size-4">Exportify</a>
-
-  <hr class="is-size-6 has-background-grey-lighter">
-
-  <p class="menu-label is-size-6">Library</p>
-
-  <ul class="menu-list is-size-6">
-    <li><a href="/library/albums">Albums</a></li>
-    <li><a href="/library/artists">Artist</a></li>
-    <li><a href="/library/libraries">Libraries</a></li>
-    <li><a href="/library/playlists">Playlists</a></li>
-    <li><a href="/library/songs">Songs</a></li>
-    <li><a href="/library/user">User</a></li>
-  </ul>
-
-  <hr class="mt-auto is-size-6 has-background-grey-lighter">
-
-  <select data-choose-theme>
-    <option value="light">Light</option>
-    <option value="dark">Dark</option>
-    <option value="night">Night</option>
-  </select>
-  
-  <div class="dropdown is-up is-hoverable">
-    <button class="button overflow" aria-haspopup="true" aria-controls="dropdown-user">
-      <strong class="overflow">{$user.user.display_name}</strong>
-    </button>
-    <div class="dropdown-menu" id="dropdown-user" role="menu">
-      <div class="dropdown-content">
-        <a class="dropdown-item" href="/">Settings</a>
-        <a class="dropdown-item" href="/library/user">Profile</a>
-        <hr class="dropdown-divider">
-        <a class="dropdown-item" on:click="{logout}" href="/api/auth/logout">Sign out</a>
-      </div>
-    </div>
-
+  <ThemeChanger/>
+  <hr class="divider">
+  <div on:click={logout}>
+    <MenuEntry href="/api/auth/logout" icon={LogOutIcon}>Sign Out</MenuEntry>
   </div>
 </aside>
 
 <style lang="scss">
-  .fixed {
+
+  .sidebar {
+    width: 15rem;
+    min-height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: var(--bg-main-100);
     top: 0;
+    padding: 1.5rem;
     position: sticky;
+
+    .title {
+      font-size: 2rem;
+    }
+
+    .top-bottom-split {
+      margin-top: auto;
+      color: unset;
+      background-color: unset;
+    }
+
+    .divider {
+      border-radius: 5rem;
+      border-color: var(--accent);
+      border-width: 0.2rem;
+      border-style: solid;
+      width: 100%;
+      background-color: var(--accent);
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
   }
-  .overflow {
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-  .overflow:hover {
-    overflow: visible;
-  }
+
 </style>

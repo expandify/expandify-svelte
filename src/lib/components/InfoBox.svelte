@@ -3,25 +3,45 @@
   export let warning = "";
 </script>
 
-<div class="card w-96 h-96 bg-base-300 shadow-w1 text-clip">
-  <div class="card-body">
-    <h2 class="card-title" class:mb-6={!warning}>{ title }</h2>
+<div class="card">
+  <h2 class="title" class:no-warning={!warning}>{ title }</h2>
+
   {#if warning !== ""}
-    <div class="text-warning">{ warning }</div>
+  <div class="warning">{ warning }</div>
   {/if}
-  <slot>
-    
-  </slot>
+
+  <div class="content">
+    <slot />
   </div>
-  
+
 </div>
 
 <style lang="scss">
 
-  .box {
-    width: 370px;
-
-    height: 400px;
+  .card {
+    width: 17rem;
+    height: 20rem;
     overflow: hidden;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: var(--bg-main-100);
+    box-shadow: 0 0 1rem 0.1rem var(--bg-main-100);
+    margin: 1rem;
+
+    .title {
+      margin-bottom: 0.5rem;
+    }
+
+    .title.no-warning {
+
+      margin-bottom: 0.5rem + 1.5rem;
+    }
+
+    .warning {
+      color: var(--accent);
+      height: 1.5rem;
+    }
   }
+
+
 </style>
