@@ -11,12 +11,12 @@
 
 <MenuBar/>
 
-<div class="min-vh-50 has-background-grey-dark is-flex is-flex-direction-column is-justify-content-center">
+<div class="my-3">
   <div class="title mx-auto mb-6">Export and back up your Spotify library.</div>
   <SpotifyButton goto="{authorize}">Login With Spotify</SpotifyButton>
 </div>
 
-<div class="is-flex is-flex-wrap-wrap is-justify-content-space-around ">
+<div class="flex flex-row gap-4 flex-wrap justify-around">
   {#each InfoBoxes as infoBox}
     <InfoBox title={infoBox.title} warning={infoBox.warning}>{infoBox.text}</InfoBox>
   {/each}

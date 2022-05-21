@@ -5,7 +5,7 @@
 </script>
 
 <div class="is-flex is-flex-direction-column min-vh-100 is-justify-content-space-between">
-  <div>
+  <div class="my-4">
     <slot />
   </div>
   <Footer />
