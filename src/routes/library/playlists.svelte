@@ -1,7 +1,7 @@
 <script>
-  import {playlists} from "../../stores/playlists.js";
+  import {playlists} from "../../stores/library/playlists.js";
   import LoadingBar from "../../lib/client/components/elements/LoadingBar.svelte";
-  import { STORE_STATUS } from "../../stores/builder.js";
+  import {STORE_STATUS} from "../../lib/client/library/store.js";
   import Table from "../../lib/client/components/elements/Table.svelte";
 
   let headers = ["Name", "Id", "Owner", "Public", "Collaborative", "Tracks"]

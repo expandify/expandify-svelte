@@ -1,8 +1,8 @@
 <script>
-  import {albums} from "../../stores/albums.js";
+  import {albums} from "../../stores/library/albums.js";
   import Table from "../../lib/client/components/elements/Table.svelte";
   import LoadingBar from "../../lib/client/components/elements/LoadingBar.svelte";
-  import { STORE_STATUS } from "../../stores/builder.js";
+  import {STORE_STATUS} from "../../lib/client/library/store.js";
 
   let headers = ["Name", "Artists", "Label", "Tracks"]
   let sizes = ["16rem", "16rem", "16rem", "4rem"]

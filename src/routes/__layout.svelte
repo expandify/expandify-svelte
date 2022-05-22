@@ -1,9 +1,12 @@
 <script>
   import "../styles/app.scss";
+  import {onMount} from "svelte";
+  import {initTheme} from "../stores/theme.js";
   import {session} from "$app/stores";
   import Footer from "../lib/client/components/page-elements/Footer.svelte";
   import SideBar from "../lib/client/components/page-elements/SideBar.svelte";
 
+  onMount(() => initTheme())
 </script>
 
   <div class="footer-wrapper">
