@@ -1,9 +1,9 @@
 <script>
   import {LogOutIcon} from 'svelte-feather-icons'
-  import ThemeChanger from "./ThemeChanger.svelte";
-  import LibraryMenu from "./menu/LibraryMenu.svelte";
-  import MenuEntry from "./menu/MenuEntry.svelte";
-  import SpotifyButton from "./SpotifyButton.svelte";
+  import ThemeChanger from "../elements/ThemeChanger.svelte";
+  import LibraryMenu from "../menu/LibraryMenu.svelte";
+  import MenuEntry from "../menu/MenuEntry.svelte";
+  import Divider from "../elements/Divider.svelte";
 
   function logout() {
     const theme = localStorage.getItem("theme")
@@ -14,12 +14,12 @@
 
 <aside class="sidebar">
   <a href="/" class="title">Exportify</a>
-  <hr class="divider">
+  <Divider/>
   <LibraryMenu/>
   <div class="top-bottom-split"></div>
 
   <ThemeChanger/>
-  <hr class="divider">
+  <Divider/>
   <div on:click={logout}>
     <MenuEntry href="/api/auth/logout" icon={LogOutIcon}>Sign Out</MenuEntry>
   </div>
@@ -47,17 +47,6 @@
       margin-top: auto;
       color: unset;
       background-color: unset;
-    }
-
-    .divider {
-      border-radius: 5rem;
-      border-color: var(--accent);
-      border-width: 0.2rem;
-      border-style: solid;
-      width: 100%;
-      background-color: var(--accent);
-      margin-top: 1rem;
-      margin-bottom: 1rem;
     }
 
   }

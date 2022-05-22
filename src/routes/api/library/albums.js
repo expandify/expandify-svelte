@@ -1,4 +1,4 @@
-import {getSpotifyApi} from "../../../lib/auth/spotify.js";
+import {getSpotifyApi} from "../../../lib/server/auth/spotify.js";
 
 export async function get(request) {
   if (!request.locals.loggedIn) {

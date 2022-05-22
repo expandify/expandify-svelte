@@ -1,8 +1,8 @@
-import { exportifyUserCollection, spotifyUserCollection} from "../../../lib/db/collections.js"
-import db from "../../../lib/db/query.js";
-import { createJwt} from "../../../lib/auth/jwt.js";
-import { createCookie} from "../../../lib/auth/cookies.js";
-import {authenticate, getSpotifyApi} from "../../../lib/auth/spotify.js";
+import { exportifyUserCollection, spotifyUserCollection} from "../../../lib/server/db/collections.js"
+import db from "../../../lib/server/db/query.js";
+import { createJwt} from "../../../lib/server/auth/jwt.js";
+import { createCookie} from "../../../lib/server/auth/cookies.js";
+import {authenticate, getSpotifyApi} from "../../../lib/server/auth/spotify.js";
 
 
 export async function get(request) {
@@ -25,7 +25,7 @@ export async function get(request) {
     status: 302,
     headers: {
       ...createCookie("jwt", token),
-      location: "/library/user"
+      location: "/"
     }
   }
 }

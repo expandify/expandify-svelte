@@ -46,7 +46,6 @@ export function buildStore(name, defaults = {}) {
 
 export async function fetchPagedItems(store, apiPath, limit = 10) {
 
-  console.log("fetcch Items ", apiPath)
   if (get(store).status === STORE_STATUS.FINISHED) {
     return
   }

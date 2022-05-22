@@ -1,33 +1,14 @@
 import * as cookie from "cookie"
-import {verifyJwt} from "../lib/auth/jwt.js";
-import {exportifyUserCollection } from "../lib/db/collections.js"
+import {verifyJwt} from "../lib/server/auth/jwt.js";
+import {exportifyUserCollection} from "../lib/server/db/collections.js"
 
 export async function handle({event, resolve}) {
   // This function gets called, everytime the server gets a request
 
-  // See if a cookie exists
-  const cookies = cookie.parse(event.request.headers.get("cookie") || "")
-
-  // Decode the cookie and check if a valid user exists
-  const decoded = verifyJwt(cookies.jwt);
-  if (!!decoded) {
-    try {
-      // Set the user, token and loggedIn status
-      // Usable in server endpoints
-      event.locals.exportifyUser = await exportifyUserCollection.findOne({id: decoded.id})
-      event.locals.loggedIn = !!event.locals.exportifyUser
-      event.locals.jwt = cookies.jwt
-    } catch (err) {
-      event.locals.loggedIn = false
-    }
-  }
-
-
+  await decodeJwtCookie(event)
 
   // This calls the actual endpoint
-  const response = await resolve(event)
-
-  return response
+  return await resolve(event)
 }
 
 
@@ -39,3 +20,17 @@ export async function getSession(event) {
   }
 }
 
+async function decodeJwtCookie(event) {
+  const cookies = cookie.parse(event.request.headers.get("cookie") || "")
+
+  const decoded = verifyJwt(cookies.jwt);
+  if (!!decoded) {
+    try {
+      event.locals.exportifyUser = await exportifyUserCollection.findOne({id: decoded.id})
+      event.locals.loggedIn = !!event.locals.exportifyUser
+      event.locals.jwt = cookies.jwt
+    } catch (err) {
+      event.locals.loggedIn = false
+    }
+  }
+}

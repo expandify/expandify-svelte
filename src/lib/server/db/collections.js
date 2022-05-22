@@ -1,4 +1,4 @@
-import clientPromise from "./_connection.js";
+import clientPromise from "./connection.js";
 
 async function getDB() {
   const connection = await clientPromise

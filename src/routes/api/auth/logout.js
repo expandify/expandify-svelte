@@ -1,4 +1,4 @@
-import {createCookie} from "../../../lib/auth/cookies.js";
+import {createCookie} from "../../../lib/server/auth/cookies.js";
 
 export async function get(request) {
 

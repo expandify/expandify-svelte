@@ -1,28 +1,25 @@
 <script>
   import "../styles/app.scss";
-  import Footer from "../lib/components/Footer.svelte";
-  import SideBar from "../lib/components/SideBar.svelte";
-  import {setTheme} from "../stores/theme.js";
-  import {onMount} from 'svelte';
-
-  onMount(() => setTheme());
+  import {session} from "$app/stores";
+  import Footer from "../lib/client/components/page-elements/Footer.svelte";
+  import SideBar from "../lib/client/components/page-elements/SideBar.svelte";
 
 </script>
 
+  <div class="footer-wrapper">
+    <div class="sidebar-wrapper">
+      {#if $session.loggedIn}
+        <div>
+          <SideBar/>
+        </div>
+      {/if}
+      <div class="slot">
+        <slot/>
+      </div>
+    </div>
 
-<div class="footer-wrapper">
-  <div class="sidebar-wrapper">
-    <div>
-      <SideBar/>
-    </div>
-    <div class="slot">
-      <slot/>
-    </div>
+    <Footer/>
   </div>
-
-  <Footer/>
-</div>
-
 <style lang="scss">
 
   .footer-wrapper {
@@ -35,7 +32,10 @@
       flex-direction: row;
 
       .slot {
+        min-height: 100vh;
         width: 100%;
+        padding: 2rem;
+        box-sizing: border-box;
       }
     }
   }

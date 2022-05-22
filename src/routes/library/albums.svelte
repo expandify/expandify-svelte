@@ -1,45 +1,26 @@
 <script>
   import {albums} from "../../stores/albums.js";
-  
-  function artistsToString(artists) {
-    return artists.map(artist => artist.name).join()
-  }
+  import Table from "../../lib/client/components/elements/Table.svelte";
+  import LoadingBar from "../../lib/client/components/elements/LoadingBar.svelte";
+  import { STORE_STATUS } from "../../stores/builder.js";
+
+  let headers = ["Name", "Artists", "Label", "Tracks"]
+  let sizes = ["16rem", "16rem", "16rem", "4rem"]
+  let items; // This is not necessary, but otherwise the IDE is not happy
+  $: items = $albums.items.map(album => ({
+    "Name": album.album.name,
+    "Artists": album.album.artists.map(artist => artist.name).join(),
+    "Label": album.album.label,
+    "Tracks": album.album.total_tracks
+  }))
+
+
 </script>
 
-
-
-{#if $albums.status !== "finished"}
-  {#if $albums.status === "fetching"}
-    <progress class="progress is-large is-primary" value="{$albums.items.length}" max="{$albums.total}"></progress>
-    <h1 class="has-text-primary has-text-weight-bold is-size-4">Loading Albums: {$albums.items.length} of {$albums.total}</h1>
-  {:else}
-    <progress class="progress is-large is-primary" max="100"></progress>
-  {/if}
+{#if $albums.status !== STORE_STATUS.FINISHED}
+  <LoadingBar name="Albums" max="{$albums.total}" current="{$albums.items.length}" status={STORE_STATUS.FETCHING}/>
+{:else}
+  <Table headers={headers} items={items} sizes="{sizes}"/>
 {/if}
 
 
-<table class="table">
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>Artists</th>
-    <th>Label</th>
-    <th>Tracks</th>
-  </tr>
-  </thead>
-  <tbody>
-  {#each $albums.items as album}
-    <tr>
-      <th>{ album.album.name }</th>
-      <th>{ artistsToString(album.album.artists) }</th>
-      <th>{ album.album.label }</th>
-      <th>{ album.album.total_tracks }</th>
-    </tr>
-  {/each}
-  </tbody>
-</table>
-
-
-<style lang="scss">
-
-</style>
