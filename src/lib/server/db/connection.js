@@ -1,7 +1,5 @@
 import { MongoClient } from 'mongodb';
 
-const MONGODB_URI = import.meta.env.VITE_MONGODB_URI
-const MONGODB_DB = import.meta.env.VITE_MONGODB_NAME
 const development = import.meta.env.DEV
 const uri = import.meta.env.VITE_MONGODB_URI
 

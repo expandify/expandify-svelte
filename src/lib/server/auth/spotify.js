@@ -1,11 +1,11 @@
-import crypto from "crypto";
 import SpotifyWebApi from 'spotify-web-api-node';
+import {randomString} from "../../shared/helpers.js";
 
 const scopes = ["playlist-read-private", "playlist-read-collaborative", "user-library-read", "user-follow-read", "user-read-private"]
 const redirectUri = import.meta.env.VITE_HOST_NAME + import.meta.env.VITE_SPOTIFY_REDIRECT_ENDPOINT
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID
 const clientSecret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
-const state = crypto.randomBytes(20).toString("hex")
+const state = randomString(20)
 const showDialog = true
 
 
