@@ -23,7 +23,7 @@ jobs:
       
     - name: Build and push
       env: 
-        TAG: ${{ github.ref.name }}
+        TAG: ${{ github.ref_name }}
       uses: docker/build-push-action@v3
       with:
         push: true
