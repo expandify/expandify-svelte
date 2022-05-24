@@ -1,19 +1,7 @@
 import {browser} from "$app/env";
-import {fetchPagedItems, fetchItems, fetchCursorItems} from "../api-connection/request.js";
+import {fetchPagedItems, fetchCursorItems} from "../api-connection/request.js";
 import {get} from "svelte/store";
 import {STORE_STATUS, updateStoreItems, updateStoreStatus} from "../../../stores/library.js";
-
-
-async function populateStore(store, apiPath, initPage = null, ca) {
-  if (browser) {
-    if (get(store).status !== STORE_STATUS.READY) {
-      return
-    }
-    updateStoreStatus(store, STORE_STATUS.FETCHING)
-    let data = await fetchItems(apiPath)
-    updateStoreStatus(store, STORE_STATUS.FINISHED)
-  }
-}
 
 async function populatePagedStore(store, apiPath, firstPage = null, limit = 50) {
   if (browser) {
@@ -39,4 +27,4 @@ async function populateCursorStore(store, apiPath, firstPage = null, transform =
 }
 
 
-export {populatePagedStore, populateStore, populateCursorStore}
+export {populatePagedStore, populateCursorStore}

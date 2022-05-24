@@ -15,7 +15,8 @@
     "Owner": playlist.owner.display_name,
     "Public": playlist.public,
     "Collaborative": playlist.collaborative,
-    "Tracks": playlist.tracks.total
+    "Tracks": playlist.tracks.total,
+    "id": playlist.id
   }))
 
   onMount(() => {
@@ -27,8 +28,8 @@
 
 
 {#if $playlistStore.status !== STORE_STATUS.FINISHED}
-  <LoadingBar name="Albums" max="{$playlistStore.total}" current="{$playlistStore.items.length}" status={$playlistStore.status}/>
+  <LoadingBar name="Playlists" max="{$playlistStore.total}" current="{$playlistStore.items.length}" status={$playlistStore.status}/>
 {:else}
-  <Table headers={headers} items={playlists}/>
+  <Table headers={headers} items={playlists} gotoPath="/library/playlists"/>
 {/if}
 

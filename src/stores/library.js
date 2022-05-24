@@ -39,11 +39,11 @@ function buildLibraryStore(name, defaults = {}) {
   store.subscribe(value => {
     if (browser) {
       localStorage.setItem(name, JSON.stringify(value))
-      if (value.status === STORE_STATUS.FINISHED) {
-        document.cookie = createCookieString(name, "cached", false)
-      } else {
-        document.cookie = createCookieString(name, "missing", false)
-      }
+      // if (value.status === STORE_STATUS.FINISHED) {
+      //   document.cookie = createCookieString(name, "cached", false)
+      // } else {
+      //   document.cookie = createCookieString(name, "missing", false)
+      // }
     }
   })
 

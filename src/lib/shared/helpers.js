@@ -25,4 +25,8 @@ function msToTime(s, milli = false) {
   return res;
 }
 
-export {msToTime}
+function delay(ms) {
+  return new Promise(res => setTimeout(res, ms))
+}
+
+export {msToTime, delay}

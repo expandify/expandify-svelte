@@ -5,6 +5,7 @@
 
   export let headers = []
   export let items = []
+  export let gotoPath = null
 
   let sortHeader = headers[0]
   let sortedItems = items
@@ -41,8 +42,8 @@
   }
 
   function gotoId(id) {
-    if (id) {
-      goto("/library/albums/" + id)
+    if (gotoPath !== null && id) {
+      goto(`${gotoPath}/${id}`)
     }
   }
 

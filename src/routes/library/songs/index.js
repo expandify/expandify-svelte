@@ -1,4 +1,4 @@
-import {getSpotifyApi} from "../../../lib/server/auth/spotify.js";
+import * as Spotify from "../../../lib/server/spotify.js";
 
 
 export async function get({locals, url}) {
@@ -7,25 +7,18 @@ export async function get({locals, url}) {
       status: 403
     }
   }
-  if (locals.cookies.songs === "cached") {
-    return {
-      status: 200,
-      body: {
-        items: null
-      }
-    }
-  }
-
 
   const limit = url.searchParams.get("limit") || 50
   const offset = url.searchParams.get("offset") || 0
 
   const exportifyUser = locals.exportifyUser
-  const data = (await getSpotifyApi(exportifyUser).getMySavedTracks({ limit: limit, offset: offset }))
+
+  const data = await Spotify.makeRequest(exportifyUser, async (api) => await api.getMySavedTracks({ limit: limit, offset: offset }))
 
   return {
-    status: 200,
+    status: data.statusCode,
     body: {
+      spotifyHeaders: data.headers,
       items: data.body
     }
   }

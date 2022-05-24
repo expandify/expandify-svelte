@@ -38,6 +38,7 @@ async function fetchPagedItems(apiPath,
     offset = offset + data.limit
   }
 
+
   while (next != null) {
     let items = await fetchItems(apiPath, {offset: offset, limit: limit})
     data = processData(items, callback, transform)

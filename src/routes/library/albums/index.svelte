@@ -27,7 +27,7 @@
 {#if $albumStore.status !== STORE_STATUS.FINISHED}
   <LoadingBar name="Albums" max="{$albumStore.total}" current="{$albumStore.items.length}" status={$albumStore.status}/>
 {:else}
-  <Table headers={headers} items={albums}/>
+  <Table headers={headers} items={albums} gotoPath="/library/albums"/>
 {/if}
 
 

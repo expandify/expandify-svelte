@@ -1,4 +1,4 @@
-import {getSpotifyApi} from "../../../lib/server/auth/spotify.js";
+import * as Spotify from "../../../lib/server/spotify.js";
 
 export async function get({locals}) {
   if (!locals.loggedIn) {
@@ -7,22 +7,14 @@ export async function get({locals}) {
     }
   }
 
-  if (locals.cookies.user === "cached") {
-    return {
-      status: 200,
-      body: {
-        items: null
-      }
-    }
-  }
-
   const exportifyUser = locals.exportifyUser
-  const data = (await getSpotifyApi(exportifyUser).getMe())
+  const user = await Spotify.makeRequest(exportifyUser, async (api) => await api.getMe())
 
   return {
-    status: 200,
+    status: user.statusCode,
     body: {
-      user: data.body
+      spotifyHeaders: user.headers,
+      user: user.body
     }
   }
 }

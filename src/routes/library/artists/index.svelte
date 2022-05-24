@@ -14,7 +14,8 @@
     "Name": artist.name,
     "Genres": artist.genres.join(", "),
     "Popularity": artist.popularity,
-    "Followers": artist.followers?.total
+    "Followers": artist.followers?.total,
+    "id": artist.id
   }))
 
   onMount(() => {
@@ -24,9 +25,9 @@
 </script>
 
 {#if $artistStore.status !== STORE_STATUS.FINISHED}
-  <LoadingBar name="Albums" max="{$artistStore.total}" current="{$artistStore.items.length}" status={$artistStore.status}/>
+  <LoadingBar name="Artists" max="{$artistStore.total}" current="{$artistStore.items.length}" status={$artistStore.status}/>
 {:else}
-  <Table headers={headers} items={artists}/>
+  <Table headers={headers} items={artists} gotoPath="/library/artists"/>
 {/if}
 
 

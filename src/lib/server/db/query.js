@@ -10,7 +10,16 @@ async function upsert(collection, item, query = {id: item.id}) {
   }
 }
 
+async function update(collection, newItems, query) {
+  let newValues = { $set: newItems };
+  try {
+    return await collection.updateOne(query, newValues)
+  } catch (err) {
+    throw new Error("Error on update.")
+  }
+}
 
 export default {
-  upsert
+  upsert,
+  update
 }

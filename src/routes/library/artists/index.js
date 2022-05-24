@@ -1,18 +1,10 @@
-import {getSpotifyApi} from "../../../lib/server/auth/spotify.js";
+import * as Spotify from "../../../lib/server/spotify.js";
 
 
 export async function get({locals, url}) {
   if (!locals.loggedIn) {
     return {
       status: 403
-    }
-  }
-  if (locals.cookies.artists === "cached") {
-    return {
-      status: 200,
-      body: {
-        items: null
-      }
     }
   }
 
@@ -26,13 +18,15 @@ export async function get({locals, url}) {
   }
 
   const exportifyUser = locals.exportifyUser
-  const data = (await getSpotifyApi(exportifyUser).getFollowedArtists(options))
+  const data = await Spotify.makeRequest(exportifyUser, async (api) => await api.getFollowedArtists(options))
 
   return {
-    status: 200,
+    status: data.statusCode,
     body: {
+      spotifyHeaders: data.headers,
       items: data.body
     }
   }
+
 }
 

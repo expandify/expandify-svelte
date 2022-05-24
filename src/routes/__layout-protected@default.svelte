@@ -3,6 +3,7 @@
     if (!session.loggedIn) {
       return { redirect: "/", status: 302}
     }
+
     return { props: {} }
   }
 </script>

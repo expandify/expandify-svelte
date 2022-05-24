@@ -17,10 +17,11 @@
     "Album": song.track.album.name,
     "Popularity": song.track.popularity,
     "Explicit": song.track.explicit,
+    "id": song.track.id
   }))
 
   onMount(() => {
-    populatePagedStore(songStore, "/library/songs/__data.json", {items: items})
+    populatePagedStore(songStore, "/library/songs/__data.json", {items: items}, 1)
   })
 
 </script>
@@ -29,8 +30,8 @@
 
 
 {#if $songStore.status !== STORE_STATUS.FINISHED}
-  <LoadingBar name="Albums" max="{$songStore.total}" current="{$songStore.items.length}" status={$songStore.status}/>
+  <LoadingBar name="Songs" max="{$songStore.total}" current="{$songStore.items.length}" status={$songStore.status}/>
 {:else}
-  <Table headers={headers} items={songs}/>
+  <Table headers={headers} items={songs} gotoPath="/library/songs"/>
 {/if}
 
