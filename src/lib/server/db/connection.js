@@ -1,7 +1,8 @@
 import { MongoClient } from 'mongodb';
 
 const development = import.meta.env.DEV
-const uri = import.meta.env.VITE_MONGODB_URI
+
+const uri = process.env.VITE_MONGODB_URI || import.meta.env.VITE_MONGODB_URI
 
 const options = {}
 

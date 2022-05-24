@@ -2,9 +2,17 @@ import SpotifyWebApi from 'spotify-web-api-node';
 import {randomString} from "../../shared/helpers.js";
 
 const scopes = ["playlist-read-private", "playlist-read-collaborative", "user-library-read", "user-follow-read", "user-read-private"]
-const redirectUri = import.meta.env.VITE_HOST_NAME + import.meta.env.VITE_SPOTIFY_REDIRECT_ENDPOINT
-const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID
-const clientSecret = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
+
+
+const hostname = process.env.VITE_HOST_NAME || import.meta.env.VITE_HOST_NAME
+const spotifyRedirectEndpoint = process.env.VITE_SPOTIFY_REDIRECT_ENDPOINT || import.meta.env.VITE_SPOTIFY_REDIRECT_ENDPOINT
+
+const redirectUri = `${hostname}${spotifyRedirectEndpoint}`
+
+
+
+const clientId = process.env.VITE_SPOTIFY_CLIENT_ID || import.meta.env.VITE_SPOTIFY_CLIENT_ID
+const clientSecret = process.env.VITE_SPOTIFY_CLIENT_SECRET || import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
 const state = randomString(20)
 const showDialog = true
 

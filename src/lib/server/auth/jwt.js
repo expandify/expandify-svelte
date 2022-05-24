@@ -1,6 +1,6 @@
 import JsonWebToken from "jsonwebtoken";
 
-const jwtSecret = import.meta.env.VITE_JWT_SECRET
+const jwtSecret = process.env.VITE_JWT_SECRET || import.meta.env.VITE_JWT_SECRET
 
 export function createJwt(data) {
   return JsonWebToken.sign(data, jwtSecret)

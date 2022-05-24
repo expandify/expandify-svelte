@@ -5,6 +5,7 @@
   import {msToTime} from "../../../lib/shared/helpers.js";
   import {onMount} from "svelte";
   import {populatePagedStore} from "../../../lib/client/library/store.js";
+  import {page} from "$app/stores";
 
   export let items = null
 
@@ -21,7 +22,8 @@
   }))
 
   onMount(() => {
-    populatePagedStore(songStore, "/library/songs/__data.json", {items: items}, 1)
+
+    populatePagedStore(songStore, "/library/songs/__data.json", {items: items})
   })
 
 </script>

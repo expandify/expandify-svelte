@@ -3,11 +3,15 @@
   import {onMount} from "svelte";
   import {initTheme} from "../stores/theme.js";
   import {navigating, session} from "$app/stores";
+  import {config} from "../stores/config.js";
   import Footer from "../lib/client/components/page-elements/Footer.svelte";
   import SideBar from "../lib/client/components/page-elements/SideBar.svelte";
   import PageLoader from "../lib/client/components/elements/PageLoader.svelte";
 
+
+  config.update(value => ({...value, BASE_URL: $session.BASE_URL}))
   onMount(() => initTheme())
+
 </script>
 
   <div class="footer-wrapper">

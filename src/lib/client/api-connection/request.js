@@ -1,4 +1,5 @@
-const HOST_NAME = import.meta.env.VITE_HOST_NAME
+import {config} from "../../../stores/config.js";
+import {get} from "svelte/store";
 
 function processData(data, callback, transform) {
   let transformedData
@@ -14,16 +15,19 @@ function processData(data, callback, transform) {
 
 async function fetchItems(apiPath, options = {}) {
 
-  let params = "?" + new URLSearchParams(options).toString()
-  let path = `${HOST_NAME}${apiPath}${params}`
+    const BASE_URL = get(config).BASE_URL
 
-  const res = await fetch(path)
-  return await res.json()
+    let params = "?" + new URLSearchParams(options).toString()
+    let path = `${BASE_URL}${apiPath}${params}`
+
+    const res = await fetch(path)
+    return await res.json()
 }
 
 
 async function fetchPagedItems(apiPath,
-                               callback = (_) => {},
+                               callback = (_) => {
+                               },
                                transform = (data) => data,
                                limit = 50,
                                firstPage = null) {
@@ -48,7 +52,8 @@ async function fetchPagedItems(apiPath,
 }
 
 async function fetchCursorItems(apiPath,
-                                callback = (_) => {},
+                                callback = (_) => {
+                                },
                                 transform = (data) => data,
                                 limit = 50,
                                 firstPage = null) {
