@@ -1,28 +1,20 @@
 <script>
-  import {LogOutIcon} from 'svelte-feather-icons'
   import ThemeChanger from "../elements/ThemeChanger.svelte";
-  import LibraryMenu from "../menu/LibraryMenu.svelte";
-  import MenuEntry from "../menu/MenuEntry.svelte";
+  import MenuList from "../menu/MenuList.svelte";
   import Divider from "../elements/Divider.svelte";
+  import LogoutButton from "../elements/LogoutButton.svelte";
 
-  function logout() {
-    const theme = localStorage.getItem("theme")
-    localStorage.clear()
-    localStorage.setItem("theme", theme)
-  }
 </script>
 
 <aside class="sidebar">
   <a href="/" class="title">Exportify</a>
   <Divider/>
-  <LibraryMenu/>
+  <MenuList/>
   <div class="top-bottom-split"></div>
 
   <ThemeChanger/>
   <Divider/>
-  <div on:click={logout}>
-    <MenuEntry href="/api/auth/logout" icon={LogOutIcon}>Sign Out</MenuEntry>
-  </div>
+  <LogoutButton/>
 </aside>
 
 <style lang="scss">

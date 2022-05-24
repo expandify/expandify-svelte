@@ -1,11 +1,11 @@
-import {createCookie} from "../../../lib/server/auth/cookies.js";
+import {createCookieHeader} from "../../../lib/shared/cookies.js";
 
 export async function get(request) {
 
   return {
     status: 302,
     headers: {
-      ...createCookie("jwt", null),
+      ...createCookieHeader("jwt", null),
       location: "/"
     }
   }

@@ -1,86 +1,125 @@
 <script>
   import _ from "lodash";
-  import {ChevronDownIcon} from 'svelte-feather-icons'
+  import {ChevronDownIcon, ChevronUpIcon} from 'svelte-feather-icons'
+  import {goto} from "$app/navigation";
 
   export let headers = []
   export let items = []
-  export let sizes = []
 
   let sortHeader = headers[0]
-  $: sortedItems = _.sortBy(items, [sortHeader])
+  let sortedItems = items
+  let sortOrder = null
+
+  $: reactiveItems = sortedItems
+
+  function sort(header) {
+
+    setHeader(header)
+
+    if (sortOrder === null) {
+      sortedItems = items
+    } else {
+      sortedItems = _.orderBy(items, sortHeader, sortOrder)
+    }
+  }
+
+  function setHeader(header) {
+    if (sortHeader !== header) {
+      sortHeader = header
+      sortOrder = "asc"
+      return
+    }
+    if (sortOrder === "asc") {
+      sortOrder = "desc"
+      return;
+    }
+    if (sortOrder === "desc") {
+      sortOrder = null
+      return;
+    }
+    sortOrder = "asc"
+  }
+
+  function gotoId(id) {
+    if (id) {
+      goto("/library/albums/" + id)
+    }
+  }
 
 </script>
 
-
-<section class="table">
-  <header class="row">
+<table class="table">
+  <tr class="header row">
     {#each headers as header, i}
-      <div class="col" style:width="{sizes[i]}" on:click={() => sortHeader = header}>{header}
-        {#if header === sortHeader}
-        <ChevronDownIcon/>
-        {/if}
-      </div>
+      <th class="col" on:click={() => sort(header)}>
+        <div class="title">
+          {header}
+          {#if header === sortHeader}
+            {#if sortOrder === "asc" }
+              <ChevronDownIcon/>
+            {:else if sortOrder === "desc"}
+              <ChevronUpIcon/>
+            {/if}
+          {/if}
+        </div>
+      </th>
     {/each}
-  </header>
-  {#each sortedItems as item}
-    <div class="row">
+  </tr>
+  {#each reactiveItems as item}
+    <tr class="row" on:click={() => gotoId(item.id)}>
       {#each headers as header, i}
-        <div class="col" style:width="{sizes[i]}">{item[header]}</div>
+        <td class="col">{item[header]}</td>
       {/each}
-    </div>
+    </tr>
   {/each}
-</section>
-
+</table>
 <style lang="scss">
 
   .table {
+    border-spacing: 0;
+    border-collapse: collapse;
 
     .row {
-      padding: 1rem;
-      display: flex;
-      min-height: 2rem;
-      height: 2rem;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-
       .col {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        padding-right: 0.5rem;
+        padding: 1rem;
+        text-align: left;
+        max-height: 3rem;
+
       }
 
+      .col:first-child {
+        border-radius: 0.5rem 0 0 0.5rem;
+      }
+
+      .col:last-child {
+        border-radius: 0 0.5rem 0.5rem 0;
+      }
     }
 
-    .row:hover:not(header) {
+    .row:hover:not(.header) {
       background-color: var(--bg-main-100);
       border-radius: 0.5rem;
       cursor: pointer;
     }
 
-    header.row {
+    .header.row {
       text-transform: uppercase;
       border-bottom: 0.2rem solid var(--accent);
-      margin-bottom: 1.5rem;
       height: 1.5rem;
 
-      .col {
+      .col:hover {
+        background-color: var(--bg-main-100);
+        border-radius: 0.5rem;
+        cursor: pointer;
+      }
+
+      .title {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
-      }
-
-      .col:hover {
-        background-color: var(--bg-main-100);
-        box-shadow: 0 0 0 1rem var(--bg-main-100);
-        border-radius: 0.5rem;
-        cursor: pointer;
-
+        height: 2rem;
       }
     }
-
-
   }
 </style>

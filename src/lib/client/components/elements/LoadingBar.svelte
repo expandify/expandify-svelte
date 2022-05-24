@@ -1,11 +1,11 @@
 <script>
   import {onDestroy} from "svelte";
-  import {STORE_STATUS} from "../../library/store.js";
+  import {STORE_STATUS} from "../../../../stores/library.js";
 
   export let max = null;
   export let current = null;
   export let name = "Something"
-  export let status = STORE_STATUS.INIT
+  export let status = STORE_STATUS.READY
 
   let progressDots = ""
   $: progress = (current / max) * 100
@@ -20,17 +20,19 @@
 
   onDestroy(() => clearInterval(interval));
 </script>
+{#if status !== STORE_STATUS.FINISHED}
+  <div class="wrapper">
+    {#if status === STORE_STATUS.FETCHING}
+      <h1 class="title">Loading {name}: {current} of {max}</h1>
+      <div class="progress">
+        <div class="pill" style:width="{progress}%"></div>
+      </div>
+    {:else}
+      <h1 class="title">Loading {name} {progressDots}</h1>
+    {/if}
+  </div>
+{/if}
 
-<div class="wrapper">
-  {#if status === STORE_STATUS.FETCHING}
-    <h1 class="title">Loading {name}: {current} of {max}</h1>
-    <div class="progress">
-      <div class="pill" style:width="{progress}%"></div>
-    </div>
-  {:else}
-    <h1 class="title">Loading {name} {progressDots}</h1>
-  {/if}
-</div>
 
 <style lang="scss">
 

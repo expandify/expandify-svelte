@@ -1,7 +1,7 @@
 import { exportifyUserCollection, spotifyUserCollection} from "../../../lib/server/db/collections.js"
 import db from "../../../lib/server/db/query.js";
 import { createJwt} from "../../../lib/server/auth/jwt.js";
-import { createCookie} from "../../../lib/server/auth/cookies.js";
+import { createCookieHeader} from "../../../lib/shared/cookies.js";
 import {authenticate, getSpotifyApi} from "../../../lib/server/auth/spotify.js";
 
 
@@ -24,7 +24,7 @@ export async function get(request) {
   return {
     status: 302,
     headers: {
-      ...createCookie("jwt", token),
+      ...createCookieHeader("jwt", token),
       location: "/"
     }
   }

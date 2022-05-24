@@ -1,17 +1,24 @@
 <script>
   export let icon;
-  export let href;
+  export let href = null;
+
 </script>
 
+{#if href === null}
+  <div class="menu-entry">
+    <svelte:component this={icon} class="icon"/>
+    <slot></slot>
+  </div>
+{:else}
 <a class="menu-entry" href={href}>
   <svelte:component this={icon} class="icon"/>
   <slot></slot>
 </a>
-
+{/if}
 
 <style lang="scss">
 
-  a.menu-entry {
+  .menu-entry {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -27,5 +34,9 @@
     }
   }
 
+  .menu-entry:hover {
+    color: var(--accent);
+    cursor: pointer;
+  }
 
 </style>

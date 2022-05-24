@@ -29,6 +29,7 @@ async function decodeJwtCookie(event) {
       event.locals.exportifyUser = await exportifyUserCollection.findOne({id: decoded.id})
       event.locals.loggedIn = !!event.locals.exportifyUser
       event.locals.jwt = cookies.jwt
+      event.locals.cookies = cookies
     } catch (err) {
       event.locals.loggedIn = false
     }

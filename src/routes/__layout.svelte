@@ -2,9 +2,10 @@
   import "../styles/app.scss";
   import {onMount} from "svelte";
   import {initTheme} from "../stores/theme.js";
-  import {session} from "$app/stores";
+  import {navigating, session} from "$app/stores";
   import Footer from "../lib/client/components/page-elements/Footer.svelte";
   import SideBar from "../lib/client/components/page-elements/SideBar.svelte";
+  import PageLoader from "../lib/client/components/elements/PageLoader.svelte";
 
   onMount(() => initTheme())
 </script>
@@ -17,7 +18,11 @@
         </div>
       {/if}
       <div class="slot">
-        <slot/>
+        {#if $navigating}
+          <PageLoader />
+        {:else}
+          <slot/>
+        {/if}
       </div>
     </div>
 
@@ -39,6 +44,7 @@
         width: 100%;
         padding: 2rem;
         box-sizing: border-box;
+
       }
     }
   }
