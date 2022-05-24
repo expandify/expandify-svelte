@@ -1,8 +1,8 @@
 <script>
   import {session} from "$app/stores";
-  import SpotifyButton from "../lib/client/components/elements/SpotifyButton.svelte";
-  import FeatureBar from "../lib/client/components/page-elements/FeatureBar.svelte";
-  import Divider from "../lib/client/components/elements/Divider.svelte";
+  import SpotifyButton from "../lib/components/elements/SpotifyButton.svelte";
+  import FeatureBar from "../lib/components/page-elements/FeatureBar.svelte";
+  import Divider from "../lib/components/elements/Divider.svelte";
 
   const authorize = "/api/auth/login"
 

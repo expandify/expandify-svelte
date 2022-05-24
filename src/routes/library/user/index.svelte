@@ -1,7 +1,7 @@
 <script>
   import {STORE_STATUS, userStore} from "../../../stores/library.js";
   import {onMount} from "svelte";
-  import InfoView from "../../../lib/client/components/elements/InfoView.svelte";
+  import InfoView from "../../../lib/components/elements/InfoView.svelte";
 
   export let user = {}
 

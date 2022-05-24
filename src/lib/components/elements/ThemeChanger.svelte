@@ -1,6 +1,6 @@
 <script>
-  import {themeStore} from "../../../../stores/theme.js";
-  import {setDarkMode, setAccent, SUPPORTED_ACCENTS} from "../../../../stores/theme.js";
+  import {themeStore} from "../../../stores/theme.js";
+  import {setDarkMode, setAccent, SUPPORTED_ACCENTS} from "../../../stores/theme.js";
   import {SunIcon, MoonIcon, SettingsIcon} from 'svelte-feather-icons'
 
   let themeSelector = false

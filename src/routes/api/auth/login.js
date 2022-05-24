@@ -1,4 +1,4 @@
-import {createAuthorizeURL} from "../../../lib/server/auth/spotify.js";
+import {createAuthorizeURL} from "../../../server/auth/spotify.js";
 
 export async function get(request) {
 

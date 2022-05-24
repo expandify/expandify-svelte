@@ -1,4 +1,4 @@
-import {config} from "../../../stores/config.js";
+import {config} from "../../stores/config.js";
 import {get} from "svelte/store";
 
 function processData(data, callback, transform) {

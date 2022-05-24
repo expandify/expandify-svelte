@@ -1,6 +1,6 @@
 <script>
   import {onDestroy} from "svelte";
-  import {STORE_STATUS} from "../../../../stores/library.js";
+  import {STORE_STATUS} from "../../../stores/library.js";
 
   export let max = null;
   export let current = null;

@@ -1,8 +1,8 @@
-import { exportifyUserCollection, spotifyUserCollection} from "../../../lib/server/db/collections.js"
-import db from "../../../lib/server/db/query.js";
-import { createJwt} from "../../../lib/server/auth/jwt.js";
-import { createCookieHeader} from "../../../lib/shared/cookies.js";
-import {authenticate, getSpotifyApi} from "../../../lib/server/auth/spotify.js";
+import { exportifyUserCollection, spotifyUserCollection} from "../../../server/db/collections.js"
+import db from "../../../server/db/query.js";
+import { createJwt} from "../../../server/auth/jwt.js";
+import { createCookieHeader} from "../../../shared/cookies.js";
+import {authenticate, getSpotifyApi} from "../../../server/auth/spotify.js";
 
 
 export async function get(request) {

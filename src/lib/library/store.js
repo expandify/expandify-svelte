@@ -1,7 +1,7 @@
 import {browser} from "$app/env";
 import {fetchPagedItems, fetchCursorItems} from "../api-connection/request.js";
 import {get} from "svelte/store";
-import {STORE_STATUS, updateStoreItems, updateStoreStatus} from "../../../stores/library.js";
+import {STORE_STATUS, updateStoreItems, updateStoreStatus} from "../../stores/library.js";
 
 async function populatePagedStore(store, apiPath, firstPage = null, limit = 50) {
   if (browser) {

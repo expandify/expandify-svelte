@@ -1,6 +1,6 @@
 import * as cookie from "cookie"
-import {verifyJwt} from "../lib/server/auth/jwt.js";
-import {exportifyUserCollection} from "../lib/server/db/collections.js"
+import {verifyJwt} from "../server/auth/jwt.js";
+import {exportifyUserCollection} from "../server/db/collections.js"
 const HOST_NAME = process.env.VITE_HOST_NAME || import.meta.env.VITE_HOST_NAME
 
 export async function handle({event, resolve}) {

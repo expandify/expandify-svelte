@@ -1,4 +1,4 @@
-import {createCookieHeader} from "../../../lib/shared/cookies.js";
+import {createCookieHeader} from "../../../shared/cookies.js";
 
 export async function get(request) {
 

@@ -1,9 +1,9 @@
 <script>
   import {onMount} from "svelte";
   import {playlistStore, STORE_STATUS} from "../../../stores/library.js";
-  import LoadingBar from "../../../lib/client/components/elements/LoadingBar.svelte";
-  import Table from "../../../lib/client/components/elements/Table.svelte";
-  import {populatePagedStore} from "../../../lib/client/library/store.js";
+  import LoadingBar from "../../../lib/components/elements/LoadingBar.svelte";
+  import Table from "../../../lib/components/elements/Table.svelte";
+  import {populatePagedStore} from "../../../lib/library/store.js";
 
   export let items = null
 

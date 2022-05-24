@@ -1,8 +1,8 @@
 <script>
-  import InfoView from "../../../../lib/client/components/elements/InfoView.svelte";
+  import InfoView from "../../../../lib/components/elements/InfoView.svelte";
   import {onMount} from "svelte";
   import {page} from "$app/stores";
-  import {fetchPagedItems} from "../../../../lib/client/api-connection/request.js";
+  import {fetchPagedItems} from "../../../../lib/api-connection/request.js";
   export let album = {}
 
 

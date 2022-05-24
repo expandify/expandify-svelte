@@ -1,6 +1,6 @@
 import {writable} from "svelte/store";
 import {browser} from "$app/env";
-import {createCookieString} from "../lib/shared/cookies.js";
+import {createCookieString} from "../shared/cookies.js";
 
 const STORE_STATUS = {
   READY: "initializing",

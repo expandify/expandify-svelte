@@ -5,7 +5,7 @@
     userStore, albumStore, artistStore,
     playlistStore, songStore, libraryStore,
     emptyLibraryStore, STORE_STATUS
-  } from "../../../../stores/library.js";
+  } from "../../../stores/library.js";
   import {goto} from "$app/navigation";
 
   function logout() {

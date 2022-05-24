@@ -1,10 +1,10 @@
 <script>
   import {songStore, STORE_STATUS} from "../../../stores/library.js";
-  import LoadingBar from "../../../lib/client/components/elements/LoadingBar.svelte";
-  import Table from "../../../lib/client/components/elements/Table.svelte";
-  import {msToTime} from "../../../lib/shared/helpers.js";
+  import LoadingBar from "../../../lib/components/elements/LoadingBar.svelte";
+  import Table from "../../../lib/components/elements/Table.svelte";
+  import {msToTime} from "../../../shared/helpers.js";
   import {onMount} from "svelte";
-  import {populatePagedStore} from "../../../lib/client/library/store.js";
+  import {populatePagedStore} from "../../../lib/library/store.js";
   import {page} from "$app/stores";
 
   export let items = null
