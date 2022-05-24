@@ -22,12 +22,10 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
       
     - name: Build and push
-      env: 
-        TAG: ${{ github.ref_name }}
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: systeno/exportify:$TAG
+        tags: systeno/exportify:${{ github.ref_name }}
           
     - name: Build and push
       uses: docker/build-push-action@v3
