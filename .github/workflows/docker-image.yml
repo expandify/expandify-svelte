@@ -23,7 +23,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: systeno/exportify:${GITHUB_REF_NAME}
+        tags: systeno/exportify:${GITHUB_REF##*/}
           
     - name: Build and push
       uses: docker/build-push-action@v3
