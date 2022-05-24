@@ -1,8 +1,7 @@
-import clientPromise from "./connection.js";
+import getClient from "./connection.js";
 
 async function getDB() {
-  const connection = await clientPromise
-
+  const connection = await getClient()
   return connection.db("exportify-sveltekit")
 }
 
