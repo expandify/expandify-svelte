@@ -47,6 +47,7 @@
       font-size: 3rem;
       margin-bottom: 12rem;
     }
+
     .help {
       font-size: 1.5rem;
       margin-bottom: 3rem;
