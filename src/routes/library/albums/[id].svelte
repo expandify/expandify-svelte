@@ -1,11 +1,11 @@
 <script>
   import {page} from '$app/stores';
-  import {albums} from "../../../stores/library.js";
+  import {albumStore} from "../../../stores/library.js";
   import {goto} from "$app/navigation";
   import {onMount} from "svelte";
 
   const id = $page.params.id
-  const album = $albums.items.find(value => value.album.id === id)
+  const album = $albumStore.items.find(value => value.album.id === id)
 
   onMount(() => {
     if (album === undefined) {
