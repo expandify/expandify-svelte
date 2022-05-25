@@ -24,13 +24,14 @@ FROM node:16-alpine
 # change working directory
 WORKDIR /app
 
-# copy files from previous step
+RUN echo "['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach(signal => process.on(signal, () => process.exit())); await import('./index.js')" > docker-entrypoint.js
+COPY --from=builder /app/package*.json .
+RUN npm ci --production --ignore-scripts
+
 COPY --from=builder /app/build .
-COPY --from=builder /app/package.json .
-COPY --from=builder /app/node_modules ./node_modules
 
 # our app is running on port 3000 within the container, so need to expose it
 EXPOSE 3000
 
 # the command that starts our app
-CMD ["node", "index.js"]
+CMD ["node", "./docker-entrypoint.js"]
