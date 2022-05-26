@@ -7,12 +7,14 @@ import {collectDefaultMetrics, Counter, register} from "prom-client"
 const HOST_NAME = process.env.VITE_HOST_NAME || import.meta.env.VITE_HOST_NAME
 
 register.clear()
-collectDefaultMetrics();
+collectDefaultMetrics({
+  labels: {app: "exportify"}
+});
 
 const requests = new Counter({
   name: "exportify_requests_total",
   help: "Requests made to Exportify",
-  labelNames: ["requests", "method", "path"]
+  labelNames: ["method", "path", "app"]
 });
 
 
@@ -23,7 +25,7 @@ export async function handle({event, resolve}) {
   event.locals.BASE_URL = HOST_NAME
 
   requests.inc()
-  requests.inc({method: event.request.method, path: event.url.pathname})
+  requests.inc({method: event.request.method, path: event.url.pathname, app: "exportify"})
 
   // This calls the actual endpoint
   return await resolve(event)
