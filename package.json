@@ -24,6 +24,7 @@
     "lodash": "^4.17.21",
     "mongodb": "^4.5.0",
     "normalize.css": "^8.0.1",
+    "prom-client": "^14.0.1",
     "spotify-web-api-node": "^5.0.2"
   }
 }
