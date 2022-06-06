@@ -8,7 +8,7 @@ async function saveLibraryItems(collection, libraryId, libraryItem, newItems) {
     return await updateLibraryItem(libraryId, libraryItem, Library.Status.ready, newItems.map(value => value.id))
   } catch (err) {
     await updateLibraryItem(libraryId, libraryItem, Library.Status.error, [])
-    return null
+    throw new Error("Error updating Library.")
   }
 }
 
@@ -21,7 +21,7 @@ async function updateLibraryItem(libraryId, libraryItem, status, newItem) {
     let filter = {_id: libraryId}
     return await Query.upsert(libraryCollection, library, filter)
   } catch (err) {
-    return null
+    throw new Error("Error updating Library.")
   }
 }
 

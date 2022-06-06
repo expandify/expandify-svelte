@@ -40,4 +40,9 @@ function randomString(length) {
   return result;
 }
 
-export {msToTime, delay, randomString}
+function formatDate(dateString) {
+  const options = { year: "numeric", month: "long", day: "numeric" }
+  return new Date(dateString).toLocaleDateString(undefined, options)
+}
+
+export {msToTime, delay, randomString, formatDate}

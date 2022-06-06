@@ -35,7 +35,7 @@ export async function get(request) {
     status: 302,
     headers: {
       ...createCookieHeader("jwt", token),
-      location: "/library/libraries"
+      location: "/library"
     }
   }
 }

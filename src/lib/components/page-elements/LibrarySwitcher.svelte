@@ -9,6 +9,7 @@
   $: currentPath = $page.url.pathname
   $: currentLibrary = $config?.currentLibrary || "current"
 
+  let entries
   $: entries = [
     {
       text: "Albums",
@@ -22,7 +23,7 @@
     },
     {
       text: "Libraries",
-      href: "/library/libraries",
+      href: "/library",
       icon: FileTextIcon
     },
     {
@@ -64,12 +65,15 @@
     flex-direction: row;
     justify-content: space-around;
     align-content: center;
-    font-weight: bold;
-    background-color: var(--bg-main-100);
+    background-color: var(--bg-main-900);
 
     .current {
-
+      background-color: var(--bg-main-100);
       border-bottom: 0.2rem solid var(--accent);
+    }
+
+    .menu-entry:hover {
+      background-color: var(--bg-main-100);
     }
 
     .menu-entry {

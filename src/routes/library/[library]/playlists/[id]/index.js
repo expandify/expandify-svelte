@@ -16,7 +16,6 @@ export async function get({locals, params}) {
   return {
     status: playlist.statusCode,
     body: {
-      spotifyHeaders: playlist.headers,
       playlist: playlist.body
     }
   }

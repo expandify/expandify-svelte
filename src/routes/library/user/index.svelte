@@ -2,7 +2,6 @@
   import InfoView from "../../../lib/components/elements/InfoView.svelte";
 
   export let user = {}
-  export let spotifyHeaders = null
 
 
   const userStruct = {

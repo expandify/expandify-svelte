@@ -13,7 +13,6 @@ export async function get({locals}) {
   return {
     status: user.statusCode,
     body: {
-      spotifyHeaders: user.headers,
       user: user.body
     }
   }

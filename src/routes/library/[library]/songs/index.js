@@ -22,8 +22,17 @@ export async function post({locals, params}) {
   await updateLibraryItem(activeLibrary._id, "saved_tracks", Library.Status.loading, [])
   unwrapPaging(exportifyUser, _getTracks)
       .then(async items => {
-        let tracks = items.map(item => item.track)
-        await saveLibraryItems(songCollection, activeLibrary._id, "saved_tracks", tracks)
+        try {
+          await Query.upsert_many(songCollection, items.map(item => item.track))
+          return await updateLibraryItem(
+              activeLibrary._id,
+              "saved_tracks",
+              Library.Status.ready,
+              items.map(value => ({id: value.track.id, added_at: value.added_at})))
+        } catch (err) {
+          await updateLibraryItem(activeLibrary._id, "saved_tracks", Library.Status.error, [])
+          throw new Error("Error updating Library.")
+        }
       })
 
   return {status: 202}
@@ -39,7 +48,25 @@ export async function get({locals, params}) {
   const activeLibrary = await Query.getActiveLibrary(exportifyUser, params?.library)
 
 
-  return await Query.getActiveLibraryItem(activeLibrary, songCollection, "saved_tracks")
+  if (!activeLibrary || activeLibrary["saved_tracks"].status === Library.Status.error) {
+    return {status: 500}
+  }
+  if (activeLibrary["saved_tracks"].status === Library.Status.loading) {
+    return {status: 202}
+  }
+
+  let libraryItems = activeLibrary["saved_tracks"].item
+  const items = await Query.findAll(songCollection, {"id": {$in: libraryItems.map(value => value.id) || []}})
+
+
+  const result = libraryItems.map(t1 => ({...t1, ...items.find(t2 => t2.id === t1.id)}))
+  return {
+    status: 200,
+    body: {
+      items: result
+    }
+  }
+
 }
 
 

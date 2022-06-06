@@ -1,22 +1,34 @@
 <script>
-  import Table from "../../../../lib/components/elements/Table.svelte";
+  import _ from "lodash";
+  import CardView from "../../../../lib/components/elements/CardView.svelte";
+  import {page} from "$app/stores";
 
-  export let items
-  export const spotifyHeaders = null
+  export let items = []
 
-
-  let headers = ["Name", "Artists", "Label", "Tracks"]
-  let albums = items.map(album => ({
-    "Name": album.name,
-    "Artists": album.artists.map(artist => artist.name).join(),
-    "Label": album.label,
-    "Tracks": album.total_tracks,
-    "id": album.id
+  let default_image = "/images/default.png"
+  let cards = items.map(album => ({
+    title: album.name,
+    subtitle: artistsToString(album.artists),
+    image: imageSelector(album.images),
+    id: album.id
   }))
+
+
+  function artistsToString(artists) {
+    return artists.map(artist => artist.name).join()
+  }
+
+  function imageSelector(images) {
+    if (!images || images.length === 0) {
+      return default_image
+    }
+    return _.maxBy(images, ["height", "width"]).url
+  }
 
 </script>
 
-<Table headers={headers} items={albums}/>
+
+<CardView title="Albums" gotoPath="{$page.url.href}" cards="{cards}"/>
 
 
 

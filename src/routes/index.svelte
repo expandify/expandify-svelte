@@ -74,7 +74,7 @@
       <SpotifyButton goto="/api/auth/login">Login With Spotify</SpotifyButton>
     {:else}
       <p class="logged-in">You are already Logged In</p>
-      <SpotifyButton goto="/library/libraries">Go To Library</SpotifyButton>
+      <SpotifyButton goto="/library">Go To Library</SpotifyButton>
     {/if}
   </div>
 

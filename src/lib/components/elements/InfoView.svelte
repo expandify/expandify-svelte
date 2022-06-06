@@ -26,7 +26,6 @@
 
       .key {
         width: 20rem;
-        font-weight: bold;
         color: var(--accent);
       }
 
