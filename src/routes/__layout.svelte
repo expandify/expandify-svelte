@@ -2,55 +2,40 @@
   import "../styles/app.scss";
   import {onMount} from "svelte";
   import {initTheme} from "../stores/theme.js";
-  import {navigating, session} from "$app/stores";
+  import {page, session} from "$app/stores";
   import {config} from "../stores/config.js";
   import Footer from "../lib/components/page-elements/Footer.svelte";
-  import SideBar from "../lib/components/page-elements/SideBar.svelte";
-  import PageLoader from "../lib/components/elements/PageLoader.svelte";
+  import MenuBar from "../lib/components/page-elements/MenuBar.svelte";
 
 
-  config.update(value => ({...value, BASE_URL: $session.BASE_URL}))
+  config.update(value => ({...value, BASE_URL: $session.BASE_URL, CURRENT_PATH: $page.url.pathname}))
   onMount(() => initTheme())
-
 </script>
 
-  <div class="footer-wrapper">
-    <div class="sidebar-wrapper">
-      {#if $session.loggedIn}
-        <div>
-          <SideBar/>
-        </div>
-      {/if}
-      <div class="slot">
-        {#if $navigating}
-          <PageLoader />
-        {:else}
-          <slot/>
-        {/if}
-      </div>
+<div class="wrapper">
+  <div class="fill-page">
+    <MenuBar/>
+    <div class="slot">
+      <slot/>
     </div>
-
-    <Footer/>
   </div>
+  <Footer/>
+</div>
 <style lang="scss">
 
-  .footer-wrapper {
+  .wrapper {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 
-    .sidebar-wrapper {
-      display: flex;
-      flex-direction: row;
+    .fill-page {
+      min-height: 100vh;
 
       .slot {
-        min-height: 100vh;
         width: 100%;
-        padding: 2rem;
         box-sizing: border-box;
-
       }
     }
   }
+
 
 </style>

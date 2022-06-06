@@ -1,6 +1,6 @@
 <script>
   import {LogOutIcon} from 'svelte-feather-icons'
-  import MenuEntry from "../menu/MenuEntry.svelte";
+  import MenuEntry from "./MenuEntry.svelte";
   import {
     userStore, albumStore, artistStore,
     playlistStore, songStore, libraryStore,

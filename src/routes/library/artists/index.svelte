@@ -7,6 +7,7 @@
 
 
   export let items = null
+  export let spotifyHeaders = null
 
   let headers = ["Name", "Genres", "Popularity", "Followers"]
   let artists; // This is not necessary, but otherwise the IDE is not happy

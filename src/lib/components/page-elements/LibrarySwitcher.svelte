@@ -1,7 +1,10 @@
 <script>
+  import { page } from '$app/stores';
   import {DiscIcon, ListIcon, UsersIcon, MusicIcon, UserIcon, FileTextIcon} from 'svelte-feather-icons'
-  import MenuEntry from "./MenuEntry.svelte";
+  import MenuEntry from "../elements/MenuEntry.svelte";
 
+  let currentPath
+  $: currentPath = $page.url.pathname
   $: entries = [
     {
       text: "Albums",
@@ -37,33 +40,39 @@
 
 </script>
 
-<ul class="menu-list">
+<div class="menu-list">
   {#each entries as entry}
-    <li>
+
+    <div class="menu-entry" class:current={currentPath === entry.href}>
       <MenuEntry href={entry.href} icon={entry.icon}>
         {entry.text}
       </MenuEntry>
-    </li>
+    </div>
   {/each}
-</ul>
+</div>
 
 <style lang="scss">
 
-  ul.menu-list {
-
-    margin-top: 2rem;
-    padding: 0;
+  .menu-list {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-content: center;
     font-weight: bold;
+    background-color: var(--bg-main-100);
 
-    li {
-      list-style-type: none;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      padding-left: 1rem;
-      height: 2rem;
-      margin-bottom: 0.6rem;
+    .current {
+
+      border-bottom: 0.2rem solid var(--accent);
     }
+
+    .menu-entry {
+      flex-grow: 1;
+      padding: 1rem;
+    }
+
   }
 
 </style>

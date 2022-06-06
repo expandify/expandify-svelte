@@ -2,9 +2,6 @@
   import {session} from "$app/stores";
   import SpotifyButton from "../lib/components/elements/SpotifyButton.svelte";
   import FeatureBar from "../lib/components/page-elements/FeatureBar.svelte";
-  import Divider from "../lib/components/elements/Divider.svelte";
-
-  const authorize = "/api/auth/login"
 
   const features = [
     {
@@ -70,38 +67,56 @@
 
 </script>
 
+<div class="index">
+  <div class="index-top">
+    <div class="title">Export and back up your Spotify library.</div>
+    {#if !$session.loggedIn}
+      <SpotifyButton goto="/api/auth/login">Login With Spotify</SpotifyButton>
+    {:else}
+      <p class="logged-in">You are already Logged In</p>
+      <SpotifyButton goto="/library/libraries">Go To Library</SpotifyButton>
+    {/if}
+  </div>
 
-<div class="index-top">
-  <div class="title">Export and back up your Spotify library.</div>
-  {#if !$session.loggedIn}
-    <SpotifyButton goto="{authorize}">Login With Spotify</SpotifyButton>
-  {:else}
-    <p class="logged-in">You are Logged In</p>
-  {/if}
+  <hr class="divider">
+  <h2>Features</h2>
+  <FeatureBar features={features}/>
 </div>
 
-<Divider/>
-<h2>Features</h2>
-<FeatureBar features={features}/>
 
 
 <style lang="scss">
 
-  .index-top {
-    height: 40rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  .index {
+    padding: 2rem;
 
-    .title {
-      font-size: 1.8rem;
+    .index-top {
+      height: 40rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .title {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+      }
+
+      .logged-in {
+        color: var(--accent);
+      }
+    }
+    .divider {
+      border-radius: 5rem;
+      border-color: var(--accent);
+      border-width: 0.2rem;
+      border-style: solid;
+      width: 100%;
+      background-color: var(--accent);
+      margin-top: 1rem;
       margin-bottom: 1rem;
     }
-
-    .logged-in {
-      color: var(--accent);
-    }
   }
+
 
 </style>

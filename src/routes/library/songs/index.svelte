@@ -8,6 +8,7 @@
   import {page} from "$app/stores";
 
   export let items = null
+  export let spotifyHeaders = null
 
   let headers = ["Name", "Artists", "Duration", "Album", "Popularity", "Explicit"]
   let songs; // This is not necessary, but otherwise the IDE is not happy

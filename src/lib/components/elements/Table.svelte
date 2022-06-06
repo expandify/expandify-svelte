@@ -11,6 +11,7 @@
   let sortedItems = items
   let sortOrder = null
 
+  let reactiveItems
   $: reactiveItems = sortedItems
 
   function sort(header) {
@@ -79,6 +80,7 @@
   .table {
     border-spacing: 0;
     border-collapse: collapse;
+    min-width: 100%;
 
     .row {
       .col {

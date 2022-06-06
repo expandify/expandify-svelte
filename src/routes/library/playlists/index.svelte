@@ -6,6 +6,7 @@
   import {populatePagedStore} from "../../../lib/library/store.js";
 
   export let items = null
+  export let spotifyHeaders = null
 
   let headers = ["Name", "Id", "Owner", "Public", "Collaborative", "Tracks"]
   let playlists; // This is not necessary, but otherwise the IDE is not happy

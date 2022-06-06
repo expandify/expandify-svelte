@@ -1,7 +1,7 @@
 import {getSpotifyApi} from "./auth/spotify.js";
 import {delay} from "../shared/helpers.js";
-import db from "./db/query.js";
-import {exportifyUserCollection} from "./db/collections.js";
+import db from "./db/mongodb/query.js";
+import {exportifyUserCollection} from "./db/mongodb/collections.js";
 const clientId = process.env.VITE_SPOTIFY_CLIENT_ID || import.meta.env.VITE_SPOTIFY_CLIENT_ID
 const clientSecret = process.env.VITE_SPOTIFY_CLIENT_SECRET || import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
 

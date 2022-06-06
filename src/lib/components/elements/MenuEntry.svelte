@@ -27,9 +27,8 @@
     // Needs the :global modifier, because classes cannot be passed down to child components.
     // Together with the scoped .menu-list > li, this will still be scoped
     :global(.icon) {
-      stroke-width: 3;
-      width: 1.1rem;
-      height: 1.1rem;
+      width: 1.5rem;
+      height: 1.5rem;
       margin-right: 1rem;
     }
   }
