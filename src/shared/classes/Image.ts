@@ -1,9 +1,9 @@
 export class Image {
-  url: string
-  height: number
-  width: number
+  url: string | null = null
+  height: number | null = null
+  width: number | null = null
 
-  static from(json){
+  static from(json: any){
     if (json === null) return null
     
     let image = new Image()

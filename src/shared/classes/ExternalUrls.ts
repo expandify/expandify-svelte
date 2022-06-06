@@ -1,7 +1,7 @@
 export class ExternalUrls {
-  spotify: string
+  spotify: string | null = null
 
-  static from(json){
+  static from(json: any){
     if (json === null) return null
 
     let externalUrls = new ExternalUrls()

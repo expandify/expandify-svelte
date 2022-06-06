@@ -1,7 +1,7 @@
 <script>
   import {setAccent, SUPPORTED_ACCENTS} from "../../../stores/theme.js";
   import {SettingsIcon} from 'svelte-feather-icons'
-  import MenuEntry from "./MenuEntry.svelte";
+  import MenuEntry from "./IconLink.svelte";
 
   let themeSelector = false
 </script>

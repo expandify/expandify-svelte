@@ -1,8 +1,8 @@
 export class ExplicitContent {
-  filter_enabled: boolean
-  filter_locked: boolean
+  filter_enabled: boolean | null = null
+  filter_locked: boolean | null = null
 
-  static from(json){
+  static from(json: any){
     if (json === null) return null
 
     let explicitContent = new ExplicitContent()

@@ -1,12 +1,12 @@
 export class ExportifyUser {
-  id: string
-  access_token: string
-  expires_in: number
-  refresh_token: string
-  scope: string
-  token_type: string
+  id: string | null = null
+  access_token: string | null = null
+  expires_in: number | null = null
+  refresh_token: string | null = null
+  scope: string | null = null
+  token_type: string | null = null
 
-  static from(json){
+  static from(json: any){
     if (json === null) return null
 
     let exportifyUser = new ExportifyUser()

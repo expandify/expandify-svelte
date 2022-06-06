@@ -2,6 +2,7 @@
 import LibrarySwitcher from "../../lib/components/page-elements/LibrarySwitcher.svelte";
 import PageLoader from "../../lib/components/elements/PageLoader.svelte";
 import {navigating} from "$app/stores";
+
 </script>
 
 <div>

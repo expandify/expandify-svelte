@@ -1,14 +1,8 @@
 <script>
-  import {STORE_STATUS, userStore} from "../../../stores/library.js";
-  import {onMount} from "svelte";
   import InfoView from "../../../lib/components/elements/InfoView.svelte";
 
   export let user = {}
   export let spotifyHeaders = null
-
-  onMount(() => {
-    userStore.update(curr => ({user: user, status: STORE_STATUS.FINISHED}))
-  })
 
 
   const userStruct = {

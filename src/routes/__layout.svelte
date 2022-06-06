@@ -8,7 +8,7 @@
   import MenuBar from "../lib/components/page-elements/MenuBar.svelte";
 
 
-  config.update(value => ({...value, BASE_URL: $session.BASE_URL, CURRENT_PATH: $page.url.pathname}))
+  config.update(value => ({...value, BASE_URL: $session.BASE_URL}))
   onMount(() => initTheme())
 </script>
 

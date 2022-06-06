@@ -2,7 +2,7 @@
   import {themeStore} from "../../../stores/theme.js";
   import {setDarkMode} from "../../../stores/theme.js";
   import {SunIcon, MoonIcon} from 'svelte-feather-icons'
-  import MenuEntry from "./MenuEntry.svelte";
+  import MenuEntry from "./IconLink.svelte";
 
 </script>
 

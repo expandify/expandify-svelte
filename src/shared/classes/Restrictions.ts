@@ -1,7 +1,7 @@
 export class Restrictions {
-  reason: string
+  reason: string | null = null
 
-  static from(json){
+  static from(json: any){
     if (json === null) return null
 
     let restrictions = new Restrictions()

@@ -5,7 +5,7 @@
   import AccentPicker from "../elements/AccentPicker.svelte";
   import {clickOutside} from "../../directives/clickOutside.js";
   import {session} from "$app/stores";
-  import MenuEntry from "../elements/MenuEntry.svelte";
+  import MenuEntry from "../elements/IconLink.svelte";
 
   let menuOpen = false
 

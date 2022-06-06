@@ -1,9 +1,9 @@
 export class ExternalIds {
-  isrc: string
-  ean: string
-  upc: string
+  isrc: string | null = null
+  ean: string | null = null
+  upc: string | null = null
 
-  static from(json){
+  static from(json: any){
     if (json === null) return null
 
     let externalIds = new ExternalIds()

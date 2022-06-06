@@ -1,8 +1,8 @@
 export class Followers {
-  href: string
-  total: number
+  href: string | null = null
+  total: number | null = null
 
-  static from(json){
+  static from(json: any){
     if (json === null) return null
     
     let followers = new Followers()

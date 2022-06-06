@@ -2,10 +2,11 @@
   import _ from "lodash";
   import {ChevronDownIcon, ChevronUpIcon} from 'svelte-feather-icons'
   import {goto} from "$app/navigation";
+  import {page} from "$app/stores";
 
   export let headers = []
   export let items = []
-  export let gotoPath = null
+  export let gotoPath = $page.url.href
 
   let sortHeader = headers[0]
   let sortedItems = items

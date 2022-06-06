@@ -6,22 +6,23 @@ import {Track} from "./Track";
 import {Paging} from "./Paging";
 
 export class Album {
-  album_type: string
-  total_tracks: number
-  available_markets: string[]
-  external_urls: ExternalUrls = new ExternalUrls()
-  href: string
-  id: string
+  album_type: string | null = null
+  total_tracks: number | null = null
+  available_markets: string[] = []
+  external_urls: ExternalUrls | null = new ExternalUrls()
+  href: string | null = null
+  id: string | null = null
   images: Image[] = []
-  name: string
-  release_date: string
-  release_date_precision: string
-  restrictions: Restrictions = new Restrictions()
-  type: string
+  label: string | null = null
+  name: string | null = null
+  release_date: string | null = null
+  release_date_precision: string | null = null
+  restrictions: Restrictions | null = new Restrictions()
+  type: string | null = null
   artists: Artist[] = []
-  tracks: Paging<Track> = new Paging<Track>()
+  tracks: Paging<Track> | null = new Paging<Track>()
 
-  static from(json){
+  static from(json: any){
     if (json === null) return null
 
     let album = new Album()
@@ -32,14 +33,15 @@ export class Album {
     album.external_urls = ExternalUrls.from(json?.external_urls)
     album.href = json?.href
     album.id = json?.id
-    album.images = json?.images?.map(value => Image.from(value))
+    album.images = json?.images?.map((value: any) => Image.from(value))
+    album.label = json?.label
     album.name = json?.name
     album.release_date = json?.release_date
     album.release_date_precision = json?.release_date_precision
     album.restrictions = Restrictions.from(json?.restrictions)
     album.type = json?.type
-    album.artists = json?.artists?.map(value => Artist.from(value))
-    album.tracks = Paging.from<Track>(json?.tracks, Track.from)
+    album.artists = json?.artists?.map((value: any) => Artist.from(value))
+    album.tracks = Paging.from<Track>(json?.tracks, (track) => Track.from(track))
 
     return album
   }

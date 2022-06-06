@@ -1,19 +1,23 @@
 <script>
   import { page } from '$app/stores';
   import {DiscIcon, ListIcon, UsersIcon, MusicIcon, UserIcon, FileTextIcon} from 'svelte-feather-icons'
-  import MenuEntry from "../elements/MenuEntry.svelte";
+  import MenuEntry from "../elements/IconLink.svelte";
+  import {config} from "../../../stores/config.js";
 
   let currentPath
+  let currentLibrary
   $: currentPath = $page.url.pathname
+  $: currentLibrary = $config?.currentLibrary || "current"
+
   $: entries = [
     {
       text: "Albums",
-      href: "/library/albums",
+      href: `/library/${currentLibrary}/albums`,
       icon: DiscIcon
     },
     {
       text: "Artist",
-      href: "/library/artists",
+      href: `/library/${currentLibrary}/artists`,
       icon: UsersIcon
     },
     {
@@ -23,12 +27,12 @@
     },
     {
       text: "Playlists",
-      href: "/library/playlists",
+      href: `/library/${currentLibrary}/playlists`,
       icon: ListIcon
     },
     {
       text: "Songs",
-      href: "/library/songs",
+      href: `/library/${currentLibrary}/songs`,
       icon: MusicIcon
     },
     {

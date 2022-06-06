@@ -6,22 +6,22 @@ import {Paging} from "./Paging";
 import {Track} from "./Track";
 
 export class Playlist {
-  collaborative: boolean
-  description: string | null
-  external_urls: ExternalUrls = new ExternalUrls()
-  followers: Followers = new Followers()
-  href: string
-  id: string
-  images: Image[] = []
-  name: string
-  owner: SpotifyUser = new SpotifyUser()
-  public: boolean
-  snapshot_id: string
-  tracks: Paging<Track> = new Paging<Track>()
-  type: string
-  uri: string
+  collaborative: boolean | null = null
+  description: string | null = null
+  external_urls: ExternalUrls | null = new ExternalUrls()
+  followers: Followers | null = new Followers()
+  href: string | null = null
+  id: string | null = null
+  images: Image[] | null = []
+  name: string | null = null
+  owner: SpotifyUser | null = new SpotifyUser()
+  public: boolean | null = null
+  snapshot_id: string | null = null
+  tracks: Paging<Track> | null = new Paging<Track>()
+  type: string | null = null
+  uri: string | null = null
 
-  static from(json){
+  static from(json: any){
     if (json === null) return null
     
     let playlist = new Playlist()
@@ -32,7 +32,7 @@ export class Playlist {
     playlist.followers = Followers.from(json?.followers)
     playlist.href = json?.href
     playlist.id = json?.id
-    playlist.images = json?.images?.map(value => Image.from(value))
+    playlist.images = json?.images?.map((value: any) => Image.from(value))
     playlist.name = json?.name
     playlist.owner = SpotifyUser.from(json?.owner)
     playlist.public = json?.public
