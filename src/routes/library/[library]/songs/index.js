@@ -55,7 +55,7 @@ export async function get({locals, params}) {
     return {status: 202}
   }
 
-  let libraryItems = activeLibrary["saved_tracks"].item
+  let libraryItems = activeLibrary["saved_tracks"].item || []
   const items = await Query.findAll(songCollection, {"id": {$in: libraryItems.map(value => value.id) || []}})
 
 
