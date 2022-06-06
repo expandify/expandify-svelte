@@ -1,4 +1,4 @@
-import {albumCollection, libraryCollection} from "./collections.js";
+import {libraryCollection} from "./collections.js";
 import {Library} from "../../../shared/classes/Library";
 
 async function upsert(collection, item, query = {id: item.id}) {
