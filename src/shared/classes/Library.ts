@@ -1,10 +1,3 @@
-import type {Album} from "./Album";
-import type {Artist} from "./Artist";
-import type {Track} from "./Track";
-import type {Playlist} from "./Playlist";
-import type {SpotifyUser} from "./SpotifyUser";
-
-
 enum Status {
   loading,
   error,
@@ -42,5 +35,6 @@ export class Library {
   owner: LibraryItem<String> = new LibraryItem<String>()
 
   type: Type | null = null
+  id: string | null = null
 }
 
