@@ -24,10 +24,10 @@ export async function post({locals, params}) {
       .then(async items => {
         let albums = items.map(item => item.album)
         await DBClient.saveAlbums(albums)
-        await DBClient.updateCurrentLibraryAlbums(exportifyUser, albums.map(value => value.id), Library.Status.ready)
+        await DBClient.updateCurrentLibraryAlbums(exportifyUser, albums, Library.Status.ready)
       })
 
-  return {status: 202}
+  return {status: Library.Status.loading}
 }
 
 
@@ -35,25 +35,16 @@ export async function get({locals, params}) {
   if (!locals.loggedIn) {
     return {status: 403}
   }
-
   const exportifyUser = locals.exportifyUser
-  const activeLibrary = await DBClient.getLibrary(exportifyUser, params?.library)
+  const albums = await DBClient.getLibraryAlbums(exportifyUser, params?.library)
 
-  if (!activeLibrary || activeLibrary.saved_albums.status === Library.Status.error) {
-    return {status: 500}
-  }
-  if (activeLibrary.saved_albums.status === Library.Status.loading) {
-    return {status: 202}
-  }
-
-  const items = await DBClient.getLibraryAlbums(exportifyUser, params?.library)
   return {
-    status: 200,
+    status: albums.status,
     body: {
-      items: items
+      items: albums.item,
+      last_updated: albums.last_updated
     }
   }
-
 }
 
 

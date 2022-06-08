@@ -1,4 +1,11 @@
 import getClient from "./connection.js";
+import {Album} from "../../../shared/classes/Album";
+import {Artist} from "../../../shared/classes/Artist";
+import {Library} from "../../../shared/classes/Library";
+import {Playlist} from "../../../shared/classes/Playlist";
+import {Track} from "../../../shared/classes/Track";
+import {ExportifyUser} from "../../../shared/classes/ExportifyUser";
+import {SpotifyUser} from "../../../shared/classes/SpotifyUser";
 
 async function getDB() {
   const connection = await getClient()
@@ -6,31 +13,31 @@ async function getDB() {
 }
 
 const getAlbumCollection = async () => {
-  return (await getDB()).collection("albums")
+  return (await getDB()).collection<Album>(Album.name)
 }
 
 const getArtistCollection = async () => {
-  return (await getDB()).collection("artists")
+  return (await getDB()).collection<Artist>(Artist.name)
 }
 
 const getLibraryCollection = async () => {
-  return (await getDB()).collection("libraries")
+  return (await getDB()).collection<Library>(Library.name)
 }
 
 const getPlaylistCollection = async () => {
-  return (await getDB()).collection("playlists")
+  return (await getDB()).collection<Playlist>(Playlist.name)
 }
 
 const getSongCollection = async () => {
-  return (await getDB()).collection("songs")
+  return (await getDB()).collection<Track>(Track.name)
 }
 
 const getExportifyUserCollection = async () => {
-  return (await getDB()).collection("exportifyUsers")
+  return (await getDB()).collection<ExportifyUser>(ExportifyUser.name)
 }
 
 const getSpotifyUserCollection = async () => {
-  return (await getDB()).collection("spotifyUsers")
+  return (await getDB()).collection<SpotifyUser>(SpotifyUser.name)
 }
 
 const spotifyUserCollection = await getSpotifyUserCollection()

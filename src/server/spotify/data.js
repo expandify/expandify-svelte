@@ -1,5 +1,5 @@
 import Query from "../db/mongodb/query.js";
-import {libraryCollection} from "../db/mongodb/collections.js";
+import {libraryCollection} from "../db/mongodb/collections.ts";
 import {Library, LibraryItem} from "../../shared/classes/Library";
 
 async function saveLibraryItems(collection, libraryId, libraryItem, newItems) {

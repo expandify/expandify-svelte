@@ -1,6 +1,6 @@
 import * as cookie from "cookie"
 import {verifyJwt} from "../server/auth/jwt.js";
-import {exportifyUserCollection} from "../server/db/mongodb/collections.js";
+import {exportifyUserCollection} from "../server/db/mongodb/collections.ts";
 
 async function handle(event) {
   const cookies = cookie.parse(event.request.headers.get("cookie") || "")

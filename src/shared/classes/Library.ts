@@ -1,7 +1,7 @@
 enum Status {
-  loading,
-  error,
-  ready
+  loading = 202,
+  error = 500,
+  ready = 200
 }
 
 enum Type {
@@ -10,12 +10,12 @@ enum Type {
 }
 
 
-export class LibraryItem<Item> {
-  status: Status | null = null
+export class LibraryItem<I> {
+  status: Status = Status.ready
   last_updated: string | null = null
-  item: Item | null = null
+  item: I | null = null
 
-  constructor(status: Status | null = null, last_updated: string | null = null, item: Item | null = null) {
+  constructor(status: Status = Status.ready, last_updated: string | null = null, item: I | null = null) {
     this.status = status;
     this.last_updated = last_updated;
     this.item = item;
@@ -28,11 +28,11 @@ export class Library {
   static readonly Status = Status;
   static readonly Type = Type;
 
-  saved_albums: LibraryItem<String[]> = new LibraryItem<String[]>()
-  followed_artists: LibraryItem<String[]> = new LibraryItem<String[]>()
-  saved_tracks: LibraryItem<String[]> = new LibraryItem<String[]>()
-  playlists: LibraryItem<String[]> = new LibraryItem<String[]>()
-  owner: LibraryItem<String> = new LibraryItem<String>()
+  saved_albums: LibraryItem<string[]> = new LibraryItem<string[]>()
+  followed_artists: LibraryItem<string[]> = new LibraryItem<string[]>()
+  saved_tracks: LibraryItem<string[]> = new LibraryItem<string[]>()
+  playlists: LibraryItem<string[]> = new LibraryItem<string[]>()
+  owner: LibraryItem<string> = new LibraryItem<string>()
 
   type: Type | null = null
   id: string | null = null

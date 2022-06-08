@@ -2,7 +2,7 @@ import {
   exportifyUserCollection,
   libraryCollection,
   spotifyUserCollection
-} from "../../../server/db/mongodb/collections.js"
+} from "../../../server/db/mongodb/collections.ts"
 import db from "../../../server/db/mongodb/query.js";
 import { createJwt} from "../../../server/auth/jwt.js";
 import { createCookieHeader} from "../../../shared/cookies.js";

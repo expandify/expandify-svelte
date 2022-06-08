@@ -7,12 +7,10 @@ const uri = process.env.VITE_MONGODB_URI || import.meta.env.VITE_MONGODB_URI
 const options = {}
 
 let client
-let clientPromise = null
+let clientPromise: Promise<MongoClient>
 
-
-
-async function getClient() {
-  if (clientPromise !== null) {
+async function getClient(): Promise<MongoClient> {
+  if (clientPromise !== null && clientPromise !== undefined) {
     return clientPromise
   }
 
@@ -23,10 +21,13 @@ async function getClient() {
   if (development) {
     // In development mode, use a global variable so that the value
     // is preserved across module reloads caused by HMR (Hot Module Replacement).
+    // @ts-ignore
     if (!global._mongoClientPromise) {
       client = new MongoClient(uri, options)
+      // @ts-ignore
       global._mongoClientPromise = client.connect()
     }
+    // @ts-ignore
     clientPromise = global._mongoClientPromise
   } else {
     // In production mode, it's best to not use a global variable.

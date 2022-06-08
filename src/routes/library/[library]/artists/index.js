@@ -1,4 +1,4 @@
-import {artistCollection} from "../../../../server/db/mongodb/collections.js";
+import {artistCollection} from "../../../../server/db/mongodb/collections.ts";
 import {unwrapCursor} from "../../../../server/spotify/paging";
 import {Library} from "../../../../shared/classes/Library";
 import {saveLibraryItems, updateLibraryItem} from "../../../../server/spotify/data.js";

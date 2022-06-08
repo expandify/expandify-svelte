@@ -20,7 +20,7 @@ export class Album {
   restrictions: Restrictions | null = new Restrictions()
   type: string | null = null
   artists: Artist[] = []
-  tracks: Paging<Track> | null = new Paging<Track>()
+  tracks: Paging<String> | null = new Paging<String>()
 
   static from(json: any){
     if (json === null) return null
@@ -41,7 +41,7 @@ export class Album {
     album.restrictions = Restrictions.from(json?.restrictions)
     album.type = json?.type
     album.artists = json?.artists?.map((value: any) => Artist.from(value))
-    album.tracks = Paging.from<Track>(json?.tracks, (track) => Track.from(track))
+    album.tracks = Paging.from<String>(json?.tracks, (track) => track.id)
 
     return album
   }

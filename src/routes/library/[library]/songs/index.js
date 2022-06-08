@@ -1,4 +1,4 @@
-import {songCollection} from "../../../../server/db/mongodb/collections.js";
+import {songCollection} from "../../../../server/db/mongodb/collections.ts";
 import {unwrapPaging} from "../../../../server/spotify/paging.ts";
 import {Library} from "../../../../shared/classes/Library.ts";
 import {saveLibraryItems, updateLibraryItem} from "../../../../server/spotify/data.js";
