@@ -1,16 +1,22 @@
 <script>
   import {page} from "$app/stores";
-  import CardView from "../../../../lib/components/elements/CardView.svelte";
+  import CardView from "../../../../lib/client/components/elements/CardView.svelte";
   import _ from "lodash";
+  import {artistStore} from "../../../../lib/client/stores/library";
 
   export let items = []
-
   let default_image = "/images/default.png"
-  let cards = items.map(artist => ({
-    title: artist.name,
-    image: imageSelector(artist.images),
-    id: artist.id
-  }))
+  $artistStore.artists = items
+
+  $: cards = parseArtists($artistStore.artists)
+
+  function parseArtists(artists) {
+    return artists.map(artist => ({
+      title: artist.name,
+      image: imageSelector(artist.images),
+      id: artist.id
+    }))
+  }
 
   function imageSelector(images) {
     if (!images || images.length === 0) {
@@ -20,7 +26,9 @@
   }
 </script>
 
-<CardView title="Artists" gotoPath="{$page.url.href}" cards="{cards}"/>
 
+{#key cards}
+  <CardView title="Artists" gotoPath="{$page.url.href}" cards="{cards}"/>
+{/key}
 
 

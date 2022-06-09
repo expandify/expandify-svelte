@@ -1,30 +1,36 @@
 <script>
-  import {formatDate, msToTime} from "../../../../shared/helpers.js";
+  import {formatDate, msToTime} from "../../../../lib/shared/helpers";
   import _ from "lodash";
-  import SearchBar from "../../../../lib/components/elements/SearchBar.svelte";
+  import SearchBar from "../../../../lib/client/components/elements/SearchBar.svelte";
   import {goto} from "$app/navigation";
   import {page} from "$app/stores";
+  import {songStore} from "../../../../lib/client/stores/library";
 
 
   export let items = []
-
   let default_image = "/images/default.png"
   let search = ""
+  $songStore.songs = items
 
-  let songs = items.map(value =>
-      ({
-        name: value.name,
-        artists: artistsToString(value.artists),
-        album: value.album.name,
-        added_at: formatDate(value.added_at),
-        duration: msToTime(value.duration_ms),
-        image: imageSelector(value.album.images),
-        id: value.id
-      }))
+  $: songs = parseSongs($songStore.songs)
+
+  function parseSongs(songs) {
+    return songs.map(value =>
+        ({
+          name: value.name,
+          artists: artistsToString(value.artists),
+          album: value.album.name,
+          added_at: formatDate(value.added_at),
+          duration: msToTime(value.duration_ms),
+          image: imageSelector(value.album.images),
+          id: value.id
+        }))
+  }
+
   let reactiveSongs
-  $: reactiveSongs = filterSongs(search)
+  $: reactiveSongs = filterSongs(search, songs)
 
-  function filterSongs(filter) {
+  function filterSongs(filter, songs) {
     let lowerFilter = filter.toLowerCase()
     let inString = (string) => string.toLowerCase().includes(lowerFilter)
 

@@ -8,8 +8,6 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "strict": true,
-    "target": "ESNext",
-    "types": ["vite/client"]
+    "strict": true
   }
 }

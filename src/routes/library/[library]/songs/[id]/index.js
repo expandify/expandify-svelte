@@ -1,4 +1,4 @@
-import * as Spotify from "../../../../../server/spotify/request.js";
+import * as Spotify from "../../../../../lib/server/spotify/request";
 
 export async function get({locals, params}) {
   if (!locals.loggedIn) {

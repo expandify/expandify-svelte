@@ -1,18 +1,23 @@
 <script>
   import _ from "lodash";
-  import CardView from "../../../../lib/components/elements/CardView.svelte";
+  import CardView from "../../../../lib/client/components/elements/CardView.svelte";
   import {page} from "$app/stores";
+  import {albumStore} from "../../../../lib/client/stores/library";
 
   export let items = []
-
   let default_image = "/images/default.png"
-  let cards = items.map(album => ({
-    title: album.name,
-    subtitle: artistsToString(album.artists),
-    image: imageSelector(album.images),
-    id: album.id
-  }))
+  $albumStore.albums = items
 
+  $: cards = parseAlbums($albumStore.albums)
+
+  function parseAlbums(albums) {
+    return albums.map(album => ({
+      title: album.name,
+      subtitle: artistsToString(album.artists),
+      image: imageSelector(album.images),
+      id: album.id
+    }))
+  }
 
   function artistsToString(artists) {
     return artists.map(artist => artist.name).join()
@@ -27,8 +32,10 @@
 
 </script>
 
+{#key cards}
+  <CardView title="Albums" gotoPath="{$page.url.href}" cards="{cards}"/>
+{/key}
 
-<CardView title="Albums" gotoPath="{$page.url.href}" cards="{cards}"/>
 
 
 

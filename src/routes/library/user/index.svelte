@@ -1,5 +1,5 @@
 <script>
-  import InfoView from "../../../lib/components/elements/InfoView.svelte";
+  import InfoView from "../../../lib/client/components/elements/InfoView.svelte";
 
   export let user = {}
 

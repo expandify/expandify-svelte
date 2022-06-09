@@ -1,7 +1,7 @@
 <script>
   import {session} from "$app/stores";
-  import SpotifyButton from "../lib/components/elements/SpotifyButton.svelte";
-  import FeatureBar from "../lib/components/page-elements/FeatureBar.svelte";
+  import SpotifyButton from "../lib/client/components/elements/SpotifyButton.svelte";
+  import FeatureBar from "../lib/client/components/page-elements/FeatureBar.svelte";
 
   const features = [
     {
@@ -71,7 +71,7 @@
   <div class="index-top">
     <div class="title">Export and back up your Spotify library.</div>
     {#if !$session.loggedIn}
-      <SpotifyButton goto="/api/auth/login">Login With Spotify</SpotifyButton>
+      <SpotifyButton goto="/auth/login">Login With Spotify</SpotifyButton>
     {:else}
       <p class="logged-in">You are already Logged In</p>
       <SpotifyButton goto="/library">Go To Library</SpotifyButton>
