@@ -1,3 +1,6 @@
+import _ from "lodash";
+import type {Image} from "./classes/Image";
+
 function msToTime(s: number, milli = false) {
 
   // Pad to 2 or 3 digits, default is 2
@@ -40,8 +43,16 @@ function randomString(length: number) {
 }
 
 function formatDate(dateString: string) {
-  const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" }
-  return new Date(dateString).toLocaleDateString(undefined, options)
+  const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric", hour12: false }
+
+  return new Date(dateString).toLocaleTimeString(undefined, options)
 }
 
-export {msToTime, delay, randomString, formatDate}
+function imageSelector(images: Image[], fallbackImage = "/images/default.png"): string {
+  if (!images || images.length === 0) {
+    return fallbackImage
+  }
+  return _.maxBy(images, ["height", "width"])?.url || fallbackImage
+}
+
+export {msToTime, delay, randomString, formatDate, imageSelector}

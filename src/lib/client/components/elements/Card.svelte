@@ -1,13 +1,20 @@
 <script>
+  import {goto} from "$app/navigation";
+
   export let image;
   export let title
   export let subtitle
-  export let id
+  export let href
+
+  function handleClick() {
+    if (href) {
+      goto(href)
+    }
+  }
 
 </script>
-
-<div class="card">
-  <img src="{image}" class="image" alt="image">
+<div class="card" on:click={handleClick}>
+  <img src="{image}" class="image" alt="{title}">
   <div class="card-bottom">
 
     <div class="title">{title}</div>

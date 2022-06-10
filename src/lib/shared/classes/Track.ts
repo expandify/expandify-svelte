@@ -24,7 +24,7 @@ export class Track {
   type: string | null = null
   uri: string | null = null
   is_local: string | null = null
-  added_at: string | null = null
+  added_at?: string | null = null
 
   static from(json: any){
     if (json === null) return null

@@ -1,6 +1,5 @@
 <script>
-  import {formatDate, msToTime} from "../../../../lib/shared/helpers";
-  import _ from "lodash";
+  import {formatDate, imageSelector, msToTime} from "../../../../lib/shared/helpers";
   import SearchBar from "../../../../lib/client/components/elements/SearchBar.svelte";
   import {goto} from "$app/navigation";
   import {page} from "$app/stores";
@@ -8,17 +7,16 @@
 
 
   export let items = []
-  let default_image = "/images/default.png"
+  export let last_updated
   let search = ""
   $songStore.songs = items
-
   $: songs = parseSongs($songStore.songs)
 
   function parseSongs(songs) {
     return songs.map(value =>
         ({
           name: value.name,
-          artists: artistsToString(value.artists),
+          artists: value.artists.map(artist => artist.name).join(),
           album: value.album.name,
           added_at: formatDate(value.added_at),
           duration: msToTime(value.duration_ms),
@@ -28,24 +26,12 @@
   }
 
   let reactiveSongs
-  $: reactiveSongs = filterSongs(search, songs)
+  $: reactiveSongs = searchSongs(search, songs)
 
-  function filterSongs(filter, songs) {
-    let lowerFilter = filter.toLowerCase()
-    let inString = (string) => string.toLowerCase().includes(lowerFilter)
+  function searchSongs(filter, songs) {
+    let inSearch = (str) => str.toLowerCase().includes(filter.toLowerCase())
 
-    return songs.filter(s => inString(s.name) || inString(s.artists) || inString(s.album));
-  }
-
-  function artistsToString(artists) {
-    return artists.map(artist => artist.name).join()
-  }
-
-  function imageSelector(images) {
-    if (!images || images.length === 0) {
-      return default_image
-    }
-    return _.maxBy(images, ["height", "width"]).url
+    return songs.filter(s => inSearch(s.name) || inSearch(s.artists) || inSearch(s.album));
   }
 
   function gotoId(id) {
@@ -59,10 +45,11 @@
 
 <div class="top">
   <h1>Songs</h1>
+  {#if last_updated !== null}
+    <span>Last Updated: {formatDate(last_updated)}</span>
+  {/if}
   <SearchBar searchIn="songs" bind:search={search}/>
 </div>
-
-
 
 <div class="table">
   <div class="header row">

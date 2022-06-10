@@ -2,6 +2,7 @@ import {Library} from "../../../lib/shared/classes/Library";
 import {unwrapPaging} from "../../../lib/server/spotify/paging";
 import {DBClient} from "../../../lib/server/db/client";
 import type {RequestHandler} from './__types/albums';
+import {Album} from "../../../lib/shared/classes/Album";
 
 export const post: RequestHandler = async function ({locals}) {
   if (!locals.loggedIn) {
@@ -14,7 +15,7 @@ export const post: RequestHandler = async function ({locals}) {
 
   unwrapPaging(exportifyUser, _getAlbums)
       .then(async items => {
-        let albums = items.map(item => item.album)
+        const albums = items.map(value => Album.from(value.album)).filter(x => !!x) as Album[]
         await DBClient.saveAlbums(albums)
         await DBClient.updateCurrentLibraryAlbums(exportifyUser, albums, Library.Status.ready)
       })

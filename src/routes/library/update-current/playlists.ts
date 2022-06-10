@@ -2,6 +2,7 @@ import {Library} from "../../../lib/shared/classes/Library";
 import {unwrapPaging} from "../../../lib/server/spotify/paging";
 import {DBClient} from "../../../lib/server/db/client";
 import type {RequestHandler} from './__types/albums';
+import {Playlist} from "../../../lib/shared/classes/Playlist";
 
 export const post: RequestHandler = async function ({locals}) {
   if (!locals.loggedIn) {
@@ -13,7 +14,8 @@ export const post: RequestHandler = async function ({locals}) {
   await DBClient.updateCurrentLibraryPlaylists(exportifyUser, [], Library.Status.loading)
 
   unwrapPaging(exportifyUser, _getPlaylists)
-    .then(async playlists => {
+    .then(async items => {
+      const playlists = items.map(value => Playlist.from(value)).filter(x => !!x) as Playlist[]
       await DBClient.savePlaylists(playlists)
       await DBClient.updateCurrentLibraryPlaylists(exportifyUser, playlists, Library.Status.ready)
     })

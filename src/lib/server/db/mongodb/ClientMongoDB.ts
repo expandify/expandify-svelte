@@ -187,7 +187,11 @@ class ClientMongoDB implements ClientTemplate {
   }
 
   async saveTracks(tracks: Track[]): Promise<boolean> {
-    let bulkUpsertOptions = tracks.map((item) => ClientMongoDB._createUpsertOption(item))
+    let bulkUpsertOptions = tracks.map((item) => {
+      // added_at is user specific and should not be persisted to the global track document
+      delete item.added_at
+      return ClientMongoDB._createUpsertOption(item)
+    })
     const result = await songCollection.bulkWrite(bulkUpsertOptions)
     return Promise.resolve(result.isOk())
   }

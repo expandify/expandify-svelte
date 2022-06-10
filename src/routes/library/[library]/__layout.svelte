@@ -74,7 +74,7 @@
 <div class="library-head">
   Library: {$config.currentLibrary}
   {#if loading}
-    <LoadingDots/>
+    <LoadingDots>Library</LoadingDots>
   {:else if $config.currentLibrary === Library.Type.current }
     <div on:click={refreshLibrary}>
       <IconLink icon={RefreshCwIcon}>Refresh Library</IconLink>

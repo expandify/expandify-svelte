@@ -1,40 +1,39 @@
 <script>
-  import _ from "lodash";
   import CardView from "../../../../lib/client/components/elements/CardView.svelte";
   import {page} from "$app/stores";
   import {albumStore} from "../../../../lib/client/stores/library";
+  import {imageSelector} from "../../../../lib/shared/helpers";
+  import LibraryView from "../../../../lib/client/components/elements/LibraryView.svelte";
 
   export let items = []
-  let default_image = "/images/default.png"
+  export let last_updated
   $albumStore.albums = items
-
   $: cards = parseAlbums($albumStore.albums)
+  let search = ""
 
   function parseAlbums(albums) {
     return albums.map(album => ({
       title: album.name,
-      subtitle: artistsToString(album.artists),
-      image: imageSelector(album.images),
+      subtitle: album.artists.map(artist => artist.name).join(),
+      image:  imageSelector(album.images),
       id: album.id
     }))
   }
 
-  function artistsToString(artists) {
-    return artists.map(artist => artist.name).join()
-  }
-
-  function imageSelector(images) {
-    if (!images || images.length === 0) {
-      return default_image
-    }
-    return _.maxBy(images, ["height", "width"]).url
-  }
-
 </script>
 
-{#key cards}
-  <CardView title="Albums" gotoPath="{$page.url.href}" cards="{cards}"/>
-{/key}
+<LibraryView title="Albums" state="{$albumStore.state}" lastUpdated="{last_updated}" bind:search>
+  <CardView></CardView>
+</LibraryView>
+<CardView title="Albums"
+          cards="{cards}"
+          state="{$albumStore.state}"
+          hrefBasePath="{$page.url.href}"
+          lastUpdated="{last_updated}"
+          />
+
+
+
 
 
 
