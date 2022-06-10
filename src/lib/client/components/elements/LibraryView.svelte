@@ -7,10 +7,9 @@
   export let title
   export let state
   export let lastUpdated
-  let search = ""
+  export let search = ""
 
 </script>
-
 
 <div class="top">
   <h1>{title}</h1>

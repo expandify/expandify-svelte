@@ -23,14 +23,9 @@
 </script>
 
 <LibraryView title="Albums" state="{$albumStore.state}" lastUpdated="{last_updated}" bind:search>
-  <CardView></CardView>
+  <CardView cards="{cards}" hrefBasePath="{$page.url.href}" search="{search}"/>
 </LibraryView>
-<CardView title="Albums"
-          cards="{cards}"
-          state="{$albumStore.state}"
-          hrefBasePath="{$page.url.href}"
-          lastUpdated="{last_updated}"
-          />
+
 
 
 

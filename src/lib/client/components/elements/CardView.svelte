@@ -1,17 +1,9 @@
 <script>
   import Card from "./Card.svelte";
-  import {Library} from "../../../shared/classes/Library";
-  import LoadingDots from "./LoadingDots.svelte";
-  import {formatDate} from "../../../shared/helpers";
-  import SearchBar from "./SearchBar.svelte";
 
   export let hrefBasePath = null
   export let cards = []
-  export let title
-  export let state
-  export let lastUpdated
-
-  let search = ""
+  export let search = ""
   $: reactiveCards = filterCards(search, cards)
 
   function filterCards(filter, toFilter) {
@@ -21,62 +13,18 @@
 </script>
 
 
-<div class="top">
-  <h1>{title}</h1>
-  {#if lastUpdated !== null}
-    <span>Last Updated: {formatDate(lastUpdated)}</span>
-  {/if}
-  <SearchBar searchIn="{title.toLowerCase()}" bind:search={search}/>
+<div class="cards">
+  {#each reactiveCards as card}
+    <Card title="{card.title}"
+          subtitle="{card.subtitle || ''}"
+          image="{card.image}"
+          href="{`${hrefBasePath}/${card.id}`}"
+    />
+  {/each}
 </div>
-
-{#if state === Library.Status.loading}
-  <LoadingDots>{title}</LoadingDots>
-{:else if state === Library.Status.error}
-  <h1>{Error}</h1>
-  Please try to reload the page.
-{:else}
-  <div class="cards">
-    {#each reactiveCards as card}
-      <Card title="{card.title}"
-            subtitle="{card.subtitle || ''}"
-            image="{card.image}"
-            href="{`${hrefBasePath}/${card.id}`}"
-      />
-    {/each}
-  </div>
-{/if}
 
 
 <style lang="scss">
-
-  .top {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    .search {
-      background-color: var(--bg-main-100);
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      border-radius: 0.2rem;
-      padding: 0.2rem;
-
-      input {
-        box-sizing: border-box;
-        border: none;
-        background-color: var(--bg-main-100);
-        color: var(--text-700);
-        margin-left: 0.4rem;
-      }
-
-      input:focus {
-        outline: none;
-      }
-    }
-  }
 
   .cards {
     display: grid;
