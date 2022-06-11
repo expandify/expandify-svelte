@@ -3,6 +3,7 @@ import {DBClient} from "$lib/server/db/client";
 import type {RequestHandler} from './__types/albums';
 import type {Album} from "$lib/shared/types/Album";
 import {LibraryStatus} from "$lib/shared/types/Library";
+import type SpotifyWebApi from "spotify-web-api-node";
 
 export const post: RequestHandler = async function ({locals}) {
   if (!locals.loggedIn) {
@@ -23,6 +24,6 @@ export const post: RequestHandler = async function ({locals}) {
   return {status: LibraryStatus.loading}
 }
 
-async function _getAlbums(api: any, limit: number, offset: number) {
+async function _getAlbums(api: SpotifyWebApi, limit: number, offset: number) {
   return api.getMySavedAlbums({limit, offset});
 }

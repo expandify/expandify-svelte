@@ -28,7 +28,7 @@ const getPlaylistCollection = async () => {
   return (await getDB()).collection<Playlist>("Playlist")
 }
 
-const getSongCollection = async () => {
+const getTrackCollection = async () => {
   return (await getDB()).collection<Track>("Track")
 }
 
@@ -46,14 +46,14 @@ const albumCollection = await getAlbumCollection()
 const artistCollection = await getArtistCollection()
 const libraryCollection = await getLibraryCollection()
 const playlistCollection = await getPlaylistCollection()
-const songCollection = await getSongCollection()
+const trackCollection = await getTrackCollection()
 
 export {
   albumCollection,
   artistCollection,
   libraryCollection,
   playlistCollection,
-  songCollection,
+  trackCollection,
   exportifyUserCollection,
   spotifyUserCollection
 }

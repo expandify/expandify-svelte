@@ -16,7 +16,7 @@
   <div class="card-bottom">
 
     <div class="title">{card.title}</div>
-    <div class="subtitle">{card.subtitle}</div>
+    <div class="subtitle">{card.subtitle || ""}</div>
   </div>
 </div>
 

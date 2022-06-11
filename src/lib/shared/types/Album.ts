@@ -2,7 +2,7 @@ import type {ExternalUrls} from "./ExternalUrls";
 import type {Image} from "./Image";
 import type {Restrictions} from "./Restrictions";
 
-export interface Album {
+export class Album {
   album_type?: string
   total_tracks?: number
   available_markets?: string[]
@@ -20,4 +20,8 @@ export interface Album {
   tracks: { id: string, name: string }[]
   genres?: string[]
   popularity?: number
+
+  constructor(obj: any) {
+
+  }
 }

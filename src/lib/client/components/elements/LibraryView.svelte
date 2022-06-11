@@ -6,7 +6,7 @@
 
   export let title: string
   export let state: number
-  export let lastUpdated: string
+  export let lastUpdated: string | null
   export let search: string = ""
 
 </script>

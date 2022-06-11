@@ -4,7 +4,7 @@
   import IconLink from "$lib/client/components/elements/IconLink.svelte";
   import {LibraryStatus, LibraryType} from "$lib/shared/types/Library";
   import LoadingDots from "$lib/client/components/elements/LoadingDots.svelte";
-  import {albumStore, artistStore, playlistStore, songStore} from "$lib/client/stores/library";
+  import {albumStore, artistStore, playlistStore, trackStore} from "$lib/client/stores/library";
   import {libraryStore} from "$lib/client/stores/library.js";
 
   libraryStore.update(value => ({
@@ -12,21 +12,21 @@
     currentLibrary: $page.params?.library || LibraryType.current
   }))
 
-
+  let loading: boolean
   $: loading = $albumStore.state === LibraryStatus.loading
       || $artistStore.state === LibraryStatus.loading
       || $playlistStore.state === LibraryStatus.loading
-      || $songStore.state === LibraryStatus.loading
+      || $trackStore.state === LibraryStatus.loading
 
   async function refreshLibrary() {
     await fetch($session.BASE_URL + "/library/update-current/albums", {method: 'POST'})
     await fetch($session.BASE_URL + "/library/update-current/artists", {method: 'POST'})
     await fetch($session.BASE_URL + "/library/update-current/playlists", {method: 'POST'})
-    await fetch($session.BASE_URL + "/library/update-current/songs", {method: 'POST'})
+    await fetch($session.BASE_URL + "/library/update-current/tracks", {method: 'POST'})
     $albumStore.state = LibraryStatus.loading
     $artistStore.state = LibraryStatus.loading
     $playlistStore.state = LibraryStatus.loading
-    $songStore.state = LibraryStatus.loading
+    $trackStore.state = LibraryStatus.loading
 
     const albumInterval = setInterval(async () => {
       const albums = await fetch($session.BASE_URL + "/library/current/albums/__data.json")
@@ -56,12 +56,12 @@
       }
     }, 1000)
 
-    const songInterval = setInterval(async () => {
-      const songs = await fetch($session.BASE_URL + "/library/current/songs/__data.json")
-      $songStore.state = songs.status
-      if (songs.status !== LibraryStatus.loading) {
-        clearInterval(songInterval)
-        $songStore.songs = (await songs.json()).items
+    const trackInterval = setInterval(async () => {
+      const tracks = await fetch($session.BASE_URL + "/library/current/tracks/__data.json")
+      $trackStore.state = tracks.status
+      if (tracks.status !== LibraryStatus.loading) {
+        clearInterval(trackInterval)
+        $trackStore.tracks = (await tracks.json()).items
       }
     }, 1000)
 

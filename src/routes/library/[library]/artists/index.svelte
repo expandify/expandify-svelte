@@ -8,7 +8,7 @@
   import type {Card} from "$lib/shared/types/Card";
 
   export let items: Artist[] = []
-  export let last_updated: string
+  export let last_updated: string | null
   $artistStore.artists = items
   let cards: Card[]
   $: cards = parseArtists($artistStore.artists)

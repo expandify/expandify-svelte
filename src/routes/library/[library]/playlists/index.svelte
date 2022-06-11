@@ -8,13 +8,14 @@
   import type  {Card} from "$lib/shared/types/Card";
 
   export let items: Playlist[] = []
-  export let last_updated: string
+  export let last_updated: string | null
   $playlistStore.playlists = items
   let cards: Card[]
   $: cards = parsePlaylists($playlistStore.playlists)
   let search = ""
 
   function parsePlaylists(playlists: Playlist[]): Card[] {
+    console.log(playlists)
     return playlists.map(playlist => ({
       title: playlist.name,
       subtitle: playlist.owner.name,

@@ -1,6 +1,7 @@
 import {DBClient} from "$lib/server/db/client";
 import type {RequestHandler} from './__types/index';
 
+// @ts-ignore
 export const get: RequestHandler = async function ({locals, params}) {
   if (!locals.loggedIn) {
     return {status: 403}
@@ -11,7 +12,7 @@ export const get: RequestHandler = async function ({locals, params}) {
   return {
     status: playlists.status,
     body: {
-      items: JSON.stringify(playlists.item),
+      items: playlists.item,
       last_updated: playlists.last_updated
     }
   }

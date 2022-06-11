@@ -3,12 +3,12 @@
   import type {TableTrack} from "../../../shared/types/TableTrack";
 
   export let hrefBasePath: string | null = null
-  export let songs: TableTrack[] = []
+  export let tracks: TableTrack[] = []
   export let search: string = ""
-  let reactiveSongs: TableTrack[]
-  $: reactiveSongs = searchSongs(search, songs)
+  let reactiveTracks: TableTrack[]
+  $: reactiveTracks = searchTracks(search, tracks)
 
-  function searchSongs(filter: string, toFilter: TableTrack[]) {
+  function searchTracks(filter: string, toFilter: TableTrack[]) {
     let inSearch = (str: string) => str.toLowerCase().includes(filter.toLowerCase())
 
     return toFilter.filter(s => inSearch(s.name) || inSearch(s?.album.name) || s?.artists?.some(a => inSearch(a.name)));
@@ -29,18 +29,18 @@
     <div class="cell date-col">Date Added</div>
     <div class="cell duration-col">Duration</div>
   </div>
-  {#each reactiveSongs as song}
-    <div class="row" on:click={() => gotoId(song.id)}>
+  {#each reactiveTracks as track}
+    <div class="row" on:click={() => gotoId(track.id)}>
       <div class="cell title-col">
-        <img src="{song.image}" class="image" alt="{song.name}">
+        <img src="{track.image}" class="image" alt="{track.name}">
         <div class="title">
-          <span class="name">{song.name}</span>
-          <span class="artist">{song.artists}</span>
+          <span class="name">{track.name}</span>
+          <span class="artist">{track.artists}</span>
         </div>
       </div>
-      <div class="cell album-col">{song.album}</div>
-      <div class="cell date-col">{song.added_at}</div>
-      <div class="cell duration-col">{song.duration}</div>
+      <div class="cell album-col">{track.album}</div>
+      <div class="cell date-col">{track.added_at}</div>
+      <div class="cell duration-col">{track.duration}</div>
     </div>
   {/each}
 </div>

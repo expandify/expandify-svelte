@@ -32,8 +32,8 @@
       icon: ListIcon
     },
     {
-      text: "Songs",
-      href: `/library/${currentLibrary}/songs`,
+      text: "Tracks",
+      href: `/library/${currentLibrary}/tracks`,
       icon: MusicIcon
     },
     {
