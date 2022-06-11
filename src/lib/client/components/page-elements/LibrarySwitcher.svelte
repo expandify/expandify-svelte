@@ -1,15 +1,15 @@
-<script>
+<script lang="ts">
   import { page } from '$app/stores';
   import {DiscIcon, ListIcon, UsersIcon, MusicIcon, UserIcon, FileTextIcon} from 'svelte-feather-icons'
   import MenuEntry from "../elements/IconLink.svelte";
-  import {config} from "../../stores/config";
+  import {libraryStore} from "../../stores/library.js";
 
-  let currentPath
-  let currentLibrary
+  let currentPath: string
+  let currentLibrary: string
   $: currentPath = $page.url.pathname
-  $: currentLibrary = $config?.currentLibrary || "current"
+  $: currentLibrary = $libraryStore.currentLibrary
 
-  let entries
+  let entries: {text: string, href: string, icon: any}[]
   $: entries = [
     {
       text: "Albums",

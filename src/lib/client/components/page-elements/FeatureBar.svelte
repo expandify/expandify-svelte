@@ -1,9 +1,11 @@
-<script>
-  export let features;
+<script lang="ts">
+  import type {Feature} from "../../../shared/types/Feature";
 
-  let currentFeature = null
+  export let features: Feature[];
 
-  function featureClick(feature) {
+  let currentFeature: Feature | null = null
+
+  function featureClick(feature: Feature | null) {
     if (currentFeature === feature) {
       currentFeature = null;
     } else {

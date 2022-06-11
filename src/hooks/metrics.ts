@@ -15,7 +15,7 @@ async function handle(event: RequestEvent) {
   requests.inc({method: event.request.method, path: event.url.pathname})
 }
 
-async function getSession(event: RequestEvent) {
+async function getSession(_: RequestEvent) {
   return {}
 }
 

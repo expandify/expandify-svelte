@@ -1,5 +1,7 @@
-<script context="module">
-  export function load({error, status}) {
+<script context="module" lang="ts">
+  import type { Load } from '@sveltejs/kit';
+
+  export const load: Load = async function({error, status}) {
     return {
       props: {
         error: error,
@@ -9,12 +11,12 @@
   }
 </script>
 
-<script>
+<script lang="ts">
   import {HomeIcon} from 'svelte-feather-icons'
   import {goto} from "$app/navigation";
 
-  export let error;
-  export let status;
+  export let error: Error;
+  export let status: number;
 </script>
 
 <div class="error">

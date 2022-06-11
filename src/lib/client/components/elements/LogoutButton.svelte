@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import {LogOutIcon} from 'svelte-feather-icons'
   import MenuEntry from "./IconLink.svelte";
 

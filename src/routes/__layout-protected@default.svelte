@@ -1,5 +1,7 @@
-<script context="module">
-  export async function load({session}) {
+<script context="module" lang="ts">
+  import type { Load } from '@sveltejs/kit';
+
+  export const load: Load = async function({session}) {
     if (!session.loggedIn) {
       return { redirect: "/", status: 302}
     }

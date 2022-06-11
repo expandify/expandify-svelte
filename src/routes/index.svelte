@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
   import {session} from "$app/stores";
-  import SpotifyButton from "../lib/client/components/elements/SpotifyButton.svelte";
-  import FeatureBar from "../lib/client/components/page-elements/FeatureBar.svelte";
+  import SpotifyButton from "$lib/client/components/elements/SpotifyButton.svelte";
+  import FeatureBar from "$lib/client/components/page-elements/FeatureBar.svelte";
 
   const features = [
     {

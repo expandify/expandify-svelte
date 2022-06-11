@@ -1,4 +1,4 @@
-import {createAuthorizeURL} from "../../lib/server/auth/spotify";
+import {createAuthorizeURL} from "$lib/server/auth/spotify";
 import type {RequestHandler} from './__types/login';
 
 export const get: RequestHandler = async function (_) {

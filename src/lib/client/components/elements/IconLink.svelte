@@ -1,6 +1,6 @@
-<script>
-  export let icon;
-  export let href = null;
+<script lang="ts">
+  export let icon: any;
+  export let href: string | null = null;
 
 </script>
 

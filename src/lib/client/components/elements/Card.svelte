@@ -1,24 +1,22 @@
-<script>
+<script lang="ts">
   import {goto} from "$app/navigation";
+  import type {Card} from "../../../shared/types/Card";
 
-  export let image;
-  export let title
-  export let subtitle
-  export let href
+  export let card: Card
 
   function handleClick() {
-    if (href) {
-      goto(href)
+    if (card.href) {
+      goto(card.href)
     }
   }
 
 </script>
 <div class="card" on:click={handleClick}>
-  <img src="{image}" class="image" alt="{title}">
+  <img src="{card.image}" class="image" alt="{card.title}">
   <div class="card-bottom">
 
-    <div class="title">{title}</div>
-    <div class="subtitle">{subtitle}</div>
+    <div class="title">{card.title}</div>
+    <div class="subtitle">{card.subtitle}</div>
   </div>
 </div>
 

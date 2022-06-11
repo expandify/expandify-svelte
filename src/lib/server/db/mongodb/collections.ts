@@ -1,11 +1,11 @@
 import getClient from "./connection";
-import {Album} from "../../../shared/classes/Album";
-import {Artist} from "../../../shared/classes/Artist";
-import {Library} from "../../../shared/classes/Library";
-import {Playlist} from "../../../shared/classes/Playlist";
-import {Track} from "../../../shared/classes/Track";
-import {ExportifyUser} from "../../../shared/classes/ExportifyUser";
-import {SpotifyUser} from "../../../shared/classes/SpotifyUser";
+import type {Album} from "$lib/shared/types/Album";
+import type {Artist} from "$lib/shared/types/Artist";
+import type {Library} from "$lib/shared/types/Library";
+import type {Playlist} from "$lib/shared/types/Playlist";
+import type {Track} from "$lib/shared/types/Track";
+import type {ExportifyUser} from "$lib/shared/types/ExportifyUser";
+import type {SpotifyUser} from "$lib/shared/types/SpotifyUser";
 
 async function getDB() {
   const connection = await getClient()
@@ -13,31 +13,31 @@ async function getDB() {
 }
 
 const getAlbumCollection = async () => {
-  return (await getDB()).collection<Album>(Album.name)
+  return (await getDB()).collection<Album>("Album")
 }
 
 const getArtistCollection = async () => {
-  return (await getDB()).collection<Artist>(Artist.name)
+  return (await getDB()).collection<Artist>("Artist")
 }
 
 const getLibraryCollection = async () => {
-  return (await getDB()).collection<Library>(Library.name)
+  return (await getDB()).collection<Library>("Library")
 }
 
 const getPlaylistCollection = async () => {
-  return (await getDB()).collection<Playlist>(Playlist.name)
+  return (await getDB()).collection<Playlist>("Playlist")
 }
 
 const getSongCollection = async () => {
-  return (await getDB()).collection<Track>(Track.name)
+  return (await getDB()).collection<Track>("Track")
 }
 
 const getExportifyUserCollection = async () => {
-  return (await getDB()).collection<ExportifyUser>(ExportifyUser.name)
+  return (await getDB()).collection<ExportifyUser>("ExportifyUser")
 }
 
 const getSpotifyUserCollection = async () => {
-  return (await getDB()).collection<SpotifyUser>(SpotifyUser.name)
+  return (await getDB()).collection<SpotifyUser>("SpotifyUser")
 }
 
 const spotifyUserCollection = await getSpotifyUserCollection()

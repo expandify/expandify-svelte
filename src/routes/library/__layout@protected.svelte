@@ -1,6 +1,6 @@
 <script>
-import LibrarySwitcher from "../../lib/client/components/page-elements/LibrarySwitcher.svelte";
-import PageLoader from "../../lib/client/components/elements/PageLoader.svelte";
+import LibrarySwitcher from "$lib/client/components/page-elements/LibrarySwitcher.svelte";
+import PageLoader from "$lib/client/components/elements/PageLoader.svelte";
 import {navigating} from "$app/stores";
 
 </script>

@@ -1,11 +1,11 @@
-import type {Album} from "../../shared/classes/Album";
-import type {Artist} from "../../shared/classes/Artist";
-import type {ExportifyUser} from "../../shared/classes/ExportifyUser";
-import type {SpotifyUser} from "../../shared/classes/SpotifyUser";
-import type {Track} from "../../shared/classes/Track";
-import type {Playlist} from "../../shared/classes/Playlist";
-import type {Library} from "../../shared/classes/Library";
-import type {LibraryItem} from "../../shared/classes/Library";
+import type {Album} from "../../shared/types/Album";
+import type {Artist} from "../../shared/types/Artist";
+import type {ExportifyUser} from "../../shared/types/ExportifyUser";
+import type {SpotifyUser} from "../../shared/types/SpotifyUser";
+import type {Track} from "../../shared/types/Track";
+import type {Playlist} from "../../shared/types/Playlist";
+import type {Library} from "../../shared/types/Library";
+import type {LibraryItem} from "../../shared/types/Library";
 import type {WithId} from "mongodb";
 
 

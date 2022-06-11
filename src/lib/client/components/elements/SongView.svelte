@@ -1,18 +1,20 @@
-<script>
+<script lang="ts">
   import {goto} from "$app/navigation";
+  import type {TableTrack} from "../../../shared/types/TableTrack";
 
-  export let hrefBasePath = null
-  export let songs = []
-  export let search = ""
+  export let hrefBasePath: string | null = null
+  export let songs: TableTrack[] = []
+  export let search: string = ""
+  let reactiveSongs: TableTrack[]
   $: reactiveSongs = searchSongs(search, songs)
 
-  function searchSongs(filter, toFilter) {
-    let inSearch = (str) => str.toLowerCase().includes(filter.toLowerCase())
+  function searchSongs(filter: string, toFilter: TableTrack[]) {
+    let inSearch = (str: string) => str.toLowerCase().includes(filter.toLowerCase())
 
-    return toFilter.filter(s => inSearch(s.name) || inSearch(s.artists) || inSearch(s.album));
+    return toFilter.filter(s => inSearch(s.name) || inSearch(s?.album.name) || s?.artists?.some(a => inSearch(a.name)));
   }
 
-  function gotoId(id) {
+  function gotoId(id: string) {
     if (hrefBasePath !== null && id) {
       goto(`${hrefBasePath}/${id}`)
     }
@@ -30,7 +32,7 @@
   {#each reactiveSongs as song}
     <div class="row" on:click={() => gotoId(song.id)}>
       <div class="cell title-col">
-        <img src="{song.image}" class="image" alt="image">
+        <img src="{song.image}" class="image" alt="{song.name}">
         <div class="title">
           <span class="name">{song.name}</span>
           <span class="artist">{song.artists}</span>
@@ -58,8 +60,6 @@
       background-color: var(--bg-main-100);
       border-bottom: 0.2rem solid var(--accent);
 
-      .cell {
-      }
     }
 
     .row {

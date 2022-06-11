@@ -1,8 +1,8 @@
-import {Library} from "../../../lib/shared/classes/Library";
-import {unwrapPaging} from "../../../lib/server/spotify/paging";
-import {DBClient} from "../../../lib/server/db/client";
+import {unwrapPaging} from "$lib/server/spotify/paging";
+import {DBClient} from "$lib/server/db/client";
 import type {RequestHandler} from './__types/albums';
-import {Album} from "../../../lib/shared/classes/Album";
+import type {Album} from "$lib/shared/types/Album";
+import {LibraryStatus} from "$lib/shared/types/Library";
 
 export const post: RequestHandler = async function ({locals}) {
   if (!locals.loggedIn) {
@@ -11,16 +11,16 @@ export const post: RequestHandler = async function ({locals}) {
 
   const exportifyUser = locals.exportifyUser
 
-  await DBClient.updateCurrentLibraryAlbums(exportifyUser, [], Library.Status.loading)
+  await DBClient.updateCurrentLibraryAlbums(exportifyUser, [], LibraryStatus.loading)
 
   unwrapPaging(exportifyUser, _getAlbums)
       .then(async items => {
-        const albums = items.map(value => Album.from(value.album)).filter(x => !!x) as Album[]
+        const albums: Album[] = items.map(value => value.album)
         await DBClient.saveAlbums(albums)
-        await DBClient.updateCurrentLibraryAlbums(exportifyUser, albums, Library.Status.ready)
+        await DBClient.updateCurrentLibraryAlbums(exportifyUser, albums, LibraryStatus.ready)
       })
 
-  return {status: Library.Status.loading}
+  return {status: LibraryStatus.loading}
 }
 
 async function _getAlbums(api: any, limit: number, offset: number) {

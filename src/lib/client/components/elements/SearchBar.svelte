@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
   import {SearchIcon} from "svelte-feather-icons";
 
-  export let search
-  export let searchIn
+  export let search: string
+  export let searchIn: string
 </script>
 
 

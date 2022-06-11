@@ -1,6 +1,6 @@
 import * as cookie from "cookie"
-import {verifyJwt} from "../lib/server/auth/jwt";
-import {DBClient} from "../lib/server/db/client";
+import {verifyJwt} from "$lib/server/auth/jwt";
+import {DBClient} from "$lib/server/db/client";
 import type {RequestEvent} from "@sveltejs/kit";
 
 async function handle(event: RequestEvent) {

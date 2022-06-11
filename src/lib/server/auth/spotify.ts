@@ -1,6 +1,6 @@
 import SpotifyWebApi from 'spotify-web-api-node';
 import {randomString} from "../../shared/helpers";
-import type {ExportifyUser} from "../../shared/classes/ExportifyUser";
+import type {ExportifyUser} from "../../shared/types/ExportifyUser";
 
 const scopes = ["playlist-read-private", "playlist-read-collaborative", "user-library-read", "user-follow-read", "user-read-private"]
 

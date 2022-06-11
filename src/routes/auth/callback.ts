@@ -1,10 +1,10 @@
-import { createJwt} from "../../lib/server/auth/jwt";
-import { createCookieHeader} from "../../lib/shared/cookies";
-import {authenticate} from "../../lib/server/auth/spotify";
-import {DBClient} from "../../lib/server/db/client";
-import {ExportifyUser} from "../../lib/shared/classes/ExportifyUser";
+import { createJwt} from "$lib/server/auth/jwt";
+import { createCookieHeader} from "$lib/shared/cookies";
+import {authenticate} from "$lib/server/auth/spotify";
+import {DBClient} from "$lib/server/db/client";
+import type {ExportifyUser} from "$lib/shared/types/ExportifyUser";
 import SpotifyWebApi from "spotify-web-api-node";
-import {SpotifyUser} from "../../lib/shared/classes/SpotifyUser";
+import type {SpotifyUser} from "$lib/shared/types/SpotifyUser";
 import type {RequestHandler} from './__types/callback';
 
 
@@ -20,8 +20,8 @@ export const get: RequestHandler = async function (request) {
 
   const userProfile = (await spotifyApi.getMe()).body
 
-  const exportifyUser = new ExportifyUser({...auth, ...userProfile})
-  const spotifyUser = new SpotifyUser(userProfile)
+  const exportifyUser: ExportifyUser = {...auth, ...userProfile}
+  const spotifyUser: SpotifyUser = userProfile
 
   await DBClient.saveSpotifyUser(spotifyUser)
   await DBClient.saveExportifyUser(exportifyUser)

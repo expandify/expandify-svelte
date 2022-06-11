@@ -1,12 +1,17 @@
-<script>
-  import Card from "./Card.svelte";
+<script lang="ts">
+  import CardComponent from "./Card.svelte";
+  import type {Card} from "../../../shared/types/Card";
 
-  export let hrefBasePath = null
-  export let cards = []
-  export let search = ""
-  $: reactiveCards = filterCards(search, cards)
 
-  function filterCards(filter, toFilter) {
+  export let hrefBasePath: string | null = null
+  export let cards: Card[] = []
+  export let search: string = ""
+
+
+  let reactiveCards: Card[]
+  $: reactiveCards = filterCards(search, cards.map(value => ({...value, href: `${hrefBasePath}/${value.id}`})))
+
+  function filterCards(filter: string, toFilter: Card[]) {
     return toFilter.filter(value => value.title.toLowerCase().includes(filter.toLowerCase()));
   }
 
@@ -15,11 +20,7 @@
 
 <div class="cards">
   {#each reactiveCards as card}
-    <Card title="{card.title}"
-          subtitle="{card.subtitle || ''}"
-          image="{card.image}"
-          href="{`${hrefBasePath}/${card.id}`}"
-    />
+    <CardComponent card="{card}"/>
   {/each}
 </div>
 

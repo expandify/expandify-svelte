@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 
-  export let goto = "/"
+  export let goto: string = "/"
 
 </script>
 

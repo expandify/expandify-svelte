@@ -1,14 +1,11 @@
-<script>
+<script lang="ts">
   import "../app.scss";
   import {onMount} from "svelte";
-  import {initTheme} from "../lib/client/stores/theme";
-  import {session} from "$app/stores";
-  import {config} from "../lib/client/stores/config";
-  import Footer from "../lib/client/components/page-elements/Footer.svelte";
-  import MenuBar from "../lib/client/components/page-elements/MenuBar.svelte";
+  import {initTheme} from "$lib/client/stores/theme";
+  import Footer from "$lib/client/components/page-elements/Footer.svelte";
+  import MenuBar from "$lib/client/components/page-elements/MenuBar.svelte";
 
 
-  config.update(value => ({...value, BASE_URL: $session.BASE_URL}))
   onMount(() => initTheme())
 </script>
 

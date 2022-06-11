@@ -1,5 +1,5 @@
 import _ from "lodash";
-import type {Image} from "./classes/Image";
+import type {Image} from "./types/Image";
 
 function msToTime(s: number, milli = false) {
 
@@ -48,7 +48,7 @@ function formatDate(dateString: string) {
   return new Date(dateString).toLocaleTimeString(undefined, options)
 }
 
-function imageSelector(images: Image[], fallbackImage = "/images/default.png"): string {
+function imageSelector(images: Image[] | null | undefined, fallbackImage = "/images/default.png"): string {
   if (!images || images.length === 0) {
     return fallbackImage
   }

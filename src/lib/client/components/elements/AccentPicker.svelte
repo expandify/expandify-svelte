@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import {setAccent, SUPPORTED_ACCENTS} from "../../stores/theme";
   import {SettingsIcon} from 'svelte-feather-icons'
   import MenuEntry from "./IconLink.svelte";

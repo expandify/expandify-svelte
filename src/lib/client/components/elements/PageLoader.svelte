@@ -1,10 +1,10 @@
-
-<script>
+<script lang="ts">
   import { onDestroy, onMount } from 'svelte';
   import { tweened } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
   import {navigating} from "$app/stores";
   import {fade} from "svelte/transition";
+
   const progress = tweened(0, {
     duration: 5000,
     easing: cubicOut

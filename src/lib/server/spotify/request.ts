@@ -1,7 +1,7 @@
 import {getSpotifyApi} from "../auth/spotify";
 import {delay} from "../../shared/helpers";
 import {DBClient} from "../db/client";
-import type {ExportifyUser} from "../../shared/classes/ExportifyUser";
+import type {ExportifyUser} from "../../shared/types/ExportifyUser";
 import type SpotifyWebApi from "spotify-web-api-node";
 const clientId = process.env.VITE_SPOTIFY_CLIENT_ID || import.meta.env.VITE_SPOTIFY_CLIENT_ID
 const clientSecret = process.env.VITE_SPOTIFY_CLIENT_SECRET || import.meta.env.VITE_SPOTIFY_CLIENT_SECRET

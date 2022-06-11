@@ -1,11 +1,10 @@
 import type ClientTemplate from "../ClientTemplate";
-import type {Album} from "../../../shared/classes/Album";
-import type {Artist} from "../../../shared/classes/Artist";
-import type {ExportifyUser} from "../../../shared/classes/ExportifyUser";
-import type {Playlist} from "../../../shared/classes/Playlist";
-import type {Track} from "../../../shared/classes/Track";
-import type {SpotifyUser} from "../../../shared/classes/SpotifyUser";
-import {Library, LibraryItem, type LibraryTrack} from "../../../shared/classes/Library";
+import type {Album} from "../../../shared/types/Album";
+import type {Artist} from "../../../shared/types/Artist";
+import type {ExportifyUser} from "../../../shared/types/ExportifyUser";
+import type {Playlist} from "../../../shared/types/Playlist";
+import type {Track} from "../../../shared/types/Track";
+import type {SpotifyUser} from "../../../shared/types/SpotifyUser";
 import {
   albumCollection,
   artistCollection,
@@ -16,11 +15,19 @@ import {
   spotifyUserCollection
 } from "./collections.js"
 import type {WithId} from "mongodb";
+import {
+  Library,
+  LibraryItem,
+  LibraryStatus,
+  type LibraryTrack,
+  LibraryType
+} from "../../../shared/types/Library";
+import {ObjectId} from "mongodb";
 
 
 class ClientMongoDB implements ClientTemplate {
 
-  private static _createUpsertOption(item: { id: string | null }) {
+  private static _createUpsertOption(item: { id: string }) {
     return {
       "updateOne": {
         "filter": {id: item.id},
@@ -39,10 +46,10 @@ class ClientMongoDB implements ClientTemplate {
 
   async getLibraryAlbums(user: ExportifyUser, libraryId: string): Promise<LibraryItem<WithId<Album>[]>> {
     const library = await this.getLibrary(user, libraryId)
-    const status = library?.saved_albums?.status || Library.Status.error
+    const status = library?.saved_albums?.status || LibraryStatus.error
     const last_updated = library?.saved_albums?.last_updated || ""
 
-    if (status !== Library.Status.ready) {
+    if (status !== LibraryStatus.ready) {
       return Promise.resolve(new LibraryItem(status, last_updated, []))
     }
     const albumIds = library?.saved_albums?.item || []
@@ -68,7 +75,7 @@ class ClientMongoDB implements ClientTemplate {
     }
     let date = new Date().toString()
     const item = new LibraryItem(state, date, albums.map(value => value.id).filter(x => !!x)) as LibraryItem<string[]>
-    const result = await libraryCollection.updateOne({id: currentLibrary.id}, {$set: {saved_albums: item}})
+    const result = await libraryCollection.updateOne({id: currentLibrary._id}, {$set: {saved_albums: item}})
     return Promise.resolve(result.acknowledged);
   }
 
@@ -82,9 +89,9 @@ class ClientMongoDB implements ClientTemplate {
 
   async getLibraryArtists(user: ExportifyUser, libraryId: string): Promise<LibraryItem<WithId<Artist>[]>> {
     const library = await this.getLibrary(user, libraryId)
-    const status = library?.followed_artists?.status || Library.Status.error
+    const status = library?.followed_artists?.status || LibraryStatus.error
     const last_updated = library?.followed_artists?.last_updated || ""
-    if (status !== Library.Status.ready) {
+    if (status !== LibraryStatus.ready) {
       return Promise.resolve(new LibraryItem(status, last_updated, []))
     }
     const artistsIds = library?.followed_artists?.item || []
@@ -110,7 +117,7 @@ class ClientMongoDB implements ClientTemplate {
     }
     let date = new Date().toString()
     const item = new LibraryItem(state, date, artists.map(value => value.id).filter(x => !!x)) as LibraryItem<string[]>
-    const result = await libraryCollection.updateOne({id: currentLibrary.id}, {$set: {followed_artists: item}})
+    const result = await libraryCollection.updateOne({id: currentLibrary._id}, {$set: {followed_artists: item}})
     return Promise.resolve(result.acknowledged);
   }
 
@@ -124,9 +131,9 @@ class ClientMongoDB implements ClientTemplate {
 
   async getLibraryPlaylists(user: ExportifyUser, libraryId: string): Promise<LibraryItem<WithId<Playlist>[]>> {
     const library = await this.getLibrary(user, libraryId)
-    const status = library?.playlists?.status || Library.Status.error
+    const status = library?.playlists?.status || LibraryStatus.error
     const last_updated = library?.playlists?.last_updated || ""
-    if (status !== Library.Status.ready) {
+    if (status !== LibraryStatus.ready) {
       return Promise.resolve(new LibraryItem(status, last_updated, []))
     }
     const playlistIds: string[] = library?.playlists?.item || []
@@ -152,7 +159,7 @@ class ClientMongoDB implements ClientTemplate {
     }
     let date = new Date().toString()
     const item = new LibraryItem(state, date, playlists.map(value => value.id).filter(x => !!x)) as LibraryItem<string[]>
-    const result = await libraryCollection.updateOne({id: currentLibrary.id}, {$set: {playlists: item}})
+    const result = await libraryCollection.updateOne({id: currentLibrary._id}, {$set: {playlists: item}})
     return Promise.resolve(result.acknowledged);
   }
 
@@ -166,9 +173,9 @@ class ClientMongoDB implements ClientTemplate {
 
   async getLibraryTracks(user: ExportifyUser, libraryId: string): Promise<LibraryItem<WithId<Track>[]>> {
     const library = await this.getLibrary(user, libraryId)
-    const status = library?.saved_tracks?.status || Library.Status.error
+    const status = library?.saved_tracks?.status || LibraryStatus.error
     const last_updated = library?.saved_tracks?.last_updated || ""
-    if (status !== Library.Status.ready) {
+    if (status !== LibraryStatus.ready) {
       return Promise.resolve(new LibraryItem(status, last_updated, []))
     }
     const libraryTracks = library?.saved_tracks?.item || []
@@ -204,7 +211,7 @@ class ClientMongoDB implements ClientTemplate {
     let date = new Date().toString()
     const libraryTracks = tracks.map(value => ({id: value.id, added_at: value.added_at}))
     const item = new LibraryItem(state, date, libraryTracks.filter(x => !!x)) as LibraryItem<LibraryTrack[]>
-    const result = await libraryCollection.updateOne({id: currentLibrary.id}, {$set: {saved_tracks: item}})
+    const result = await libraryCollection.updateOne({id: currentLibrary._id}, {$set: {saved_tracks: item}})
     return Promise.resolve(result.acknowledged);
   }
 
@@ -213,15 +220,15 @@ class ClientMongoDB implements ClientTemplate {
   // ######### Libraries #########
 
   async initCurrentLibrary(owner: ExportifyUser): Promise<boolean> {
-    const currentLibrary = await libraryCollection.findOne({"owner.item": owner.id, type: Library.Type.current})
+    const currentLibrary = await libraryCollection.findOne({"owner.item": owner.id, type: LibraryType.current})
 
     if (currentLibrary !== null) {
       return Promise.resolve(false);
     }
 
-    const library = new Library()
-    library.type = Library.Type.current
-    library.owner = new LibraryItem(Library.Status.ready, new Date().toString(), owner.id)
+    const libOwner = new LibraryItem(LibraryStatus.ready, new Date().toString(), owner.id)
+    const type = LibraryType.current
+    const library = new Library(libOwner, type)
     const result = await libraryCollection.insertOne(library)
     return Promise.resolve(result.acknowledged);
   }
@@ -236,15 +243,15 @@ class ClientMongoDB implements ClientTemplate {
   }
 
   async getCurrentLibrary(owner: ExportifyUser): Promise<WithId<Library> | null> {
-    return await libraryCollection.findOne({"owner.item": owner.id, type: Library.Type.current})
+    return await libraryCollection.findOne({"owner.item": owner.id, type: LibraryType.current})
   }
 
   async getLibrary(owner: ExportifyUser, libraryId: string): Promise<WithId<Library> | null> {
-    if (libraryId === Library.Type.current) {
+    if (libraryId === LibraryType.current) {
       return await this.getCurrentLibrary(owner)
     }
 
-    return await libraryCollection.findOne({id: libraryId})
+    return await libraryCollection.findOne({_id: new ObjectId(libraryId)})
   }
 
 

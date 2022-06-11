@@ -1,21 +1,21 @@
-<script>
+<script lang="ts">
   import _ from "lodash";
   import {ChevronDownIcon, ChevronUpIcon} from 'svelte-feather-icons'
   import {goto} from "$app/navigation";
   import {page} from "$app/stores";
 
-  export let headers = []
-  export let items = []
-  export let gotoPath = $page.url.href
+  export let headers: string[] = []
+  export let items: any[] = []
+  export let gotoPath: string = $page.url.href
 
   let sortHeader = headers[0]
   let sortedItems = items
-  let sortOrder = null
+  let sortOrder: "asc" | "desc" | null = null
 
-  let reactiveItems
+  let reactiveItems: any[]
   $: reactiveItems = sortedItems
 
-  function sort(header) {
+  function sort(header: string) {
 
     setHeader(header)
 
@@ -26,7 +26,7 @@
     }
   }
 
-  function setHeader(header) {
+  function setHeader(header: string) {
     if (sortHeader !== header) {
       sortHeader = header
       sortOrder = "asc"
@@ -43,7 +43,7 @@
     sortOrder = "asc"
   }
 
-  function gotoId(id) {
+  function gotoId(id: string) {
     if (gotoPath !== null && id) {
       goto(`${gotoPath}/${id}`)
     }
@@ -53,7 +53,7 @@
 
 <table class="table">
   <tr class="header row">
-    {#each headers as header, i}
+    {#each headers as header}
       <th class="col" on:click={() => sort(header)}>
         <div class="title">
           {header}
@@ -70,7 +70,7 @@
   </tr>
   {#each reactiveItems as item}
     <tr class="row" on:click={() => gotoId(item.id)}>
-      {#each headers as header, i}
+      {#each headers as header}
         <td class="col">{item[header]}</td>
       {/each}
     </tr>

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import {MenuIcon} from "svelte-feather-icons"
   import LogoutButton from "../elements/LogoutButton.svelte";
   import ThemePicker from "../elements/ThemePicker.svelte";
