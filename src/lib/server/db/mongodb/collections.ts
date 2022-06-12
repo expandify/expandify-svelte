@@ -1,11 +1,11 @@
 import getClient from "./connection";
-import type {Album} from "$lib/shared/types/Album";
-import type {Artist} from "$lib/shared/types/Artist";
-import type {Library} from "$lib/shared/types/Library";
-import type {Playlist} from "$lib/shared/types/Playlist";
-import type {Track} from "$lib/shared/types/Track";
-import type {ExportifyUser} from "$lib/shared/types/ExportifyUser";
-import type {SpotifyUser} from "$lib/shared/types/SpotifyUser";
+import type {Album} from "$lib/types/Album";
+import type {Artist} from "$lib/types/Artist";
+import type {Library} from "$lib/types/Library";
+import type {Playlist} from "$lib/types/Playlist";
+import type {Track} from "$lib/types/Track";
+import type {ExportifyUser} from "$lib/types/ExportifyUser";
+import type {SpotifyUser} from "$lib/types/SpotifyUser";
 
 async function getDB() {
   const connection = await getClient()

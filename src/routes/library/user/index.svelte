@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type {SpotifyUser} from "$lib/shared/types/SpotifyUser";
+  import type {SpotifyUser} from "$lib/types/SpotifyUser";
 
   export let user: SpotifyUser
 

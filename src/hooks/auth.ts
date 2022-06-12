@@ -1,5 +1,5 @@
 import * as cookie from "cookie"
-import {verifyJwt} from "$lib/server/auth/jwt";
+import {verifyJwt} from "../lib/server/functions/jwt";
 import {DBClient} from "$lib/server/db/client";
 import type {RequestEvent} from "@sveltejs/kit";
 

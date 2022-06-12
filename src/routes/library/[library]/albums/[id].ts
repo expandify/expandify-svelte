@@ -1,4 +1,4 @@
-import * as Spotify from "$lib/server/spotify/request.js";
+import * as Spotify from "../../../../lib/server/functions/request.js";
 import type {RequestHandler} from './__types/[id]';
 
 // @ts-ignore

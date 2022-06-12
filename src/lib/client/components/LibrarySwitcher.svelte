@@ -10,7 +10,7 @@
     refreshCurrentLibrary,
     trackStore
   } from "../stores/library.js";
-  import {LibraryStatus, LibraryType} from "../../shared/types/Library.js";
+  import {LibraryStatus, LibraryType} from "../../types/Library.js";
 
   let currentPath: string
   let currentLibrary: string
@@ -72,20 +72,15 @@
     position: sticky;
     top: 0;
     background-color: var(--bg-main-900);
+    border-bottom: 0.1rem solid var(--bg-main-100);
     .menu-list {
       display: flex;
       flex-direction: row;
-
       align-content: center;
 
-
       .current {
-        background-color: var(--bg-main-100);
+        //background-color: var(--bg-main-100);
         border-bottom: 0.2rem solid var(--accent);
-      }
-
-      .menu-entry:hover {
-        background-color: var(--bg-main-100);
       }
 
       .menu-entry {

@@ -1,12 +1,16 @@
-import { createJwt} from "$lib/server/auth/jwt";
-import { createCookieHeader} from "$lib/shared/cookies";
-import {authenticate} from "$lib/server/auth/spotify";
+import { createJwt} from "../../lib/server/functions/jwt";
+import { createCookieHeader} from "../../lib/server/functions/cookies";
 import {DBClient} from "$lib/server/db/client";
-import type {ExportifyUser} from "$lib/shared/types/ExportifyUser";
+import type {ExportifyUser} from "$lib/types/ExportifyUser";
 import SpotifyWebApi from "spotify-web-api-node";
-import type {SpotifyUser} from "$lib/shared/types/SpotifyUser";
+import type {SpotifyUser} from "$lib/types/SpotifyUser";
 import type {RequestHandler} from './__types/callback';
 
+const hostname = process.env.VITE_HOST_NAME || import.meta.env.VITE_HOST_NAME
+const spotifyRedirectEndpoint = process.env.VITE_SPOTIFY_REDIRECT_ENDPOINT || import.meta.env.VITE_SPOTIFY_REDIRECT_ENDPOINT
+const redirectUri = `${hostname}${spotifyRedirectEndpoint}`
+const clientId = process.env.VITE_SPOTIFY_CLIENT_ID || import.meta.env.VITE_SPOTIFY_CLIENT_ID
+const clientSecret = process.env.VITE_SPOTIFY_CLIENT_SECRET || import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
 
 export const get: RequestHandler = async function (request) {
   const code = request.url.searchParams.get("code")
@@ -36,4 +40,15 @@ export const get: RequestHandler = async function (request) {
       location: "/library"
     }
   }
+}
+
+export async function authenticate(code: string) {
+
+  const spotifyApi = new SpotifyWebApi({
+    clientId: clientId,
+    clientSecret: clientSecret,
+    redirectUri: redirectUri
+  });
+
+  return (await spotifyApi.authorizationCodeGrant(code)).body
 }

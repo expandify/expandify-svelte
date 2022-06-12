@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type {Playlist} from "$lib/shared/types/Playlist";
+  import type {Playlist} from "$lib/types/Playlist";
 
   export let playlist: Playlist
 

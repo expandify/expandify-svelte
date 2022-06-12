@@ -3,15 +3,15 @@
   import CardView from "../../../../lib/client/components/CardView.svelte";
   import {artistStore} from "$lib/client/stores/library";
   import LibraryView from "../../../../lib/client/components/LibraryView.svelte";
-  import type {LibraryArtist} from "$lib/shared/types/Artist";
-  import type {Card} from "$lib/shared/types/Card";
-  import type {LibraryItem} from "$lib/shared/types/Library";
-  import {artistToCard} from "$lib/shared/types/Card";
+  import type {LibraryArtist} from "$lib/types/Artist";
+  import type {Card} from "$lib/types/Card";
+  import type {LibraryItem} from "$lib/types/Library";
+  import {artistToCard} from "$lib/types/Card";
 
   export let libraryItem: LibraryItem<LibraryArtist[]>
   $artistStore = libraryItem
   let cards: Card[]
-  $: cards = $artistStore.item.map(artistToCard)
+  $: cards = ($artistStore.item || []).map(artistToCard)
   let search = ""
 </script>
 

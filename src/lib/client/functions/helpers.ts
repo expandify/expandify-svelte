@@ -1,5 +1,5 @@
 import _ from "lodash";
-import type {Image} from "./types/Image";
+import type {Image} from "../../types/Image";
 
 function msToTime(s: number, milli = false) {
 
@@ -27,21 +27,6 @@ function msToTime(s: number, milli = false) {
   return res;
 }
 
-function delay(ms: number) {
-  return new Promise(res => setTimeout(res, ms))
-}
-
-function randomString(length: number) {
-  let result           = '';
-  let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let charactersLength = characters.length;
-  for ( let i = 0; i < length; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() *
-        charactersLength));
-  }
-  return result;
-}
-
 function formatDate(dateString: string) {
   const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric", hour12: false }
 
@@ -59,4 +44,4 @@ function joinOn(list: any[], key: string) {
   return list.map(value => value[key]).join(", ")
 }
 
-export {msToTime, delay, randomString, formatDate, imageSelector, joinOn}
+export {msToTime, formatDate, imageSelector, joinOn}

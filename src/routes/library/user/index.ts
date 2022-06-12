@@ -1,6 +1,7 @@
-import * as Spotify from "$lib/server/spotify/request";
+import * as Spotify from "../../../lib/server/functions/request";
 import type {RequestHandler} from './__types';
 
+// @ts-ignore
 export const get: RequestHandler = async function ({locals}) {
   if (!locals.loggedIn) {
     return {

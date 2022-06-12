@@ -52,7 +52,6 @@
     background-color: var(--bg-main-100);
     height: 4rem;
     width: 100%;
-    border-bottom: 0.2rem solid var(--accent);
 
     .dropdown-menu {
 

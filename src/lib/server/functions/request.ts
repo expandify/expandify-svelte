@@ -1,8 +1,6 @@
-import {getSpotifyApi} from "../auth/spotify";
-import {delay} from "../../shared/helpers";
 import {DBClient} from "../db/client";
-import type {ExportifyUser} from "../../shared/types/ExportifyUser";
-import type SpotifyWebApi from "spotify-web-api-node";
+import type {ExportifyUser} from "../../types/ExportifyUser";
+import SpotifyWebApi from "spotify-web-api-node";
 
 const clientId = process.env.VITE_SPOTIFY_CLIENT_ID || import.meta.env.VITE_SPOTIFY_CLIENT_ID
 const clientSecret = process.env.VITE_SPOTIFY_CLIENT_SECRET || import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
@@ -13,6 +11,14 @@ type Response<T> = {
   statusCode: number;
 }
 type RequestFunc<T> = (api: SpotifyWebApi) => Promise<Response<T>>
+
+export function getSpotifyApi(exportifyUser: ExportifyUser) {
+  const spotifyApi = new SpotifyWebApi()
+  spotifyApi.setAccessToken(exportifyUser.access_token);
+  spotifyApi.setRefreshToken(exportifyUser.refresh_token);
+
+  return spotifyApi
+}
 
 async function makeRequest<T>(exportifyUser: ExportifyUser, func: RequestFunc<T>): Promise<Response<T>> {
 
@@ -60,7 +66,7 @@ async function rateLimitRequest<T>(spotifyApi: SpotifyWebApi, func: RequestFunc<
     let data = await func(spotifyApi)
     if (data.statusCode === 429) {
       const retry = data.headers["Retry-After"]
-      await delay(Number(retry) * 1000)
+      await new Promise(r => setTimeout(r, Number(retry) * 1000))
       data = await func(spotifyApi)
     }
     return data;

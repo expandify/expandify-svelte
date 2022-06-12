@@ -1,10 +1,10 @@
 import {DBClient} from "$lib/server/db/client";
 import type {RequestHandler} from './__types/index';
-import {LibraryStatus, LibraryType} from "../../../../lib/shared/types/Library";
-import type {ExportifyUser} from "../../../../lib/shared/types/ExportifyUser";
+import {LibraryStatus, LibraryType} from "../../../../lib/types/Library";
+import type {ExportifyUser} from "../../../../lib/types/ExportifyUser";
 import type SpotifyWebApi from "spotify-web-api-node";
-import {makeRequest} from "../../../../lib/server/spotify/request";
-import {type LibraryTrack, toLibraryTrack, toTrack, type Track} from "../../../../lib/shared/types/Track";
+import {makeRequest} from "../../../../lib/server/functions/request";
+import {type LibraryTrack, toLibraryTrack, toTrack, type Track} from "../../../../lib/types/Track";
 
 // @ts-ignore
 export const get: RequestHandler = async function ({locals, params}) {

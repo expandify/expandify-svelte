@@ -14,14 +14,10 @@
   </ul>
   <hr class="divider">
   <IconLink href="/library/current/albums" icon={FolderIcon}>Current library</IconLink>
-  <hr class="divider">
   <span class="snapshot-title">Snapshots:</span>
   <div class="snapshots">
 
   </div>
-
-
-
 </aside>
 
 <style lang="scss">
@@ -33,19 +29,22 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background-color: var(--bg-main-100);
+    background-color: var(--bg-main-900);
     bottom: 0;
     top: 0;
     padding: 1.5rem;
     position: sticky;
 
+    border-right: 0.1rem solid var(--bg-main-100);
+
     .divider {
       border-radius: 5rem;
-      border-color: var(--accent);
-      border-width: 0.1rem;
+      border-color: var(--bg-main-100);
+      border-width: 0.05rem;
+      height: 0.05rem;
       border-style: solid;
       width: 100%;
-      background-color: var(--accent);
+      background-color: var(--bg-main-100);
       margin-top: 1rem;
       margin-bottom: 1rem;
     }
@@ -62,13 +61,8 @@
       }
     }
 
-    .top-bottom-split {
-      margin-top: auto;
-      color: unset;
-      background-color: unset;
-    }
-
     .snapshot-title {
+      margin-top: 1rem;
       opacity: 30%;
     }
   }

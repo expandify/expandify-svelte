@@ -1,9 +1,9 @@
 import {DBClient} from "$lib/server/db/client";
 import type {RequestHandler} from './__types/index';
-import {LibraryStatus, LibraryType} from "../../../../lib/shared/types/Library";
-import type {ExportifyUser} from "../../../../lib/shared/types/ExportifyUser";
-import {makeRequest} from "../../../../lib/server/spotify/request";
-import {type LibraryPlaylist, type Playlist, toLibraryPlaylist, toPlaylist} from "../../../../lib/shared/types/Playlist";
+import {LibraryStatus, LibraryType} from "../../../../lib/types/Library";
+import type {ExportifyUser} from "../../../../lib/types/ExportifyUser";
+import {makeRequest} from "../../../../lib/server/functions/request";
+import {type LibraryPlaylist, type Playlist, toLibraryPlaylist, toPlaylist} from "../../../../lib/types/Playlist";
 import type SpotifyWebApi from "spotify-web-api-node";
 
 // @ts-ignore

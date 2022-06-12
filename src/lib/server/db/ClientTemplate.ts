@@ -1,14 +1,14 @@
-import type {Album, LibraryAlbum} from "../../shared/types/Album";
-import type {Artist} from "../../shared/types/Artist";
-import type {ExportifyUser} from "../../shared/types/ExportifyUser";
-import type {SpotifyUser} from "../../shared/types/SpotifyUser";
-import type {Track} from "../../shared/types/Track";
-import type {LibraryPlaylist, Playlist} from "../../shared/types/Playlist";
-import type {Library} from "../../shared/types/Library";
-import type {LibraryItem} from "../../shared/types/Library";
+import type {Album, LibraryAlbum} from "../../types/Album";
+import type {Artist} from "../../types/Artist";
+import type {ExportifyUser} from "../../types/ExportifyUser";
+import type {SpotifyUser} from "../../types/SpotifyUser";
+import type {Track} from "../../types/Track";
+import type {LibraryPlaylist, Playlist} from "../../types/Playlist";
+import type {Library} from "../../types/Library";
+import type {LibraryItem} from "../../types/Library";
 import type {WithId} from "mongodb";
-import type {LibraryTrack} from "../../shared/types/Track";
-import type {LibraryArtist} from "../../shared/types/Artist";
+import type {LibraryTrack} from "../../types/Track";
+import type {LibraryArtist} from "../../types/Artist";
 
 
 interface ClientTemplate {

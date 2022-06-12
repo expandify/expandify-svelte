@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type {Album} from "$lib/shared/types/Album";
+  import type {Album} from "$lib/types/Album";
 
   export let album: Album
 

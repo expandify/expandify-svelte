@@ -1,5 +1,5 @@
 import type {LibraryTrack} from "./Track";
-import {formatDate, imageSelector, joinOn, msToTime} from "../helpers";
+import {formatDate, imageSelector, joinOn, msToTime} from "../client/functions/helpers";
 
 export interface TableTrack {
   name: string
@@ -17,7 +17,7 @@ export interface TableTrack {
   artists_joined_lower_case: string
 }
 
-export function toTableTrack(track: LibraryTrack) {
+export function toTableTrack(track: LibraryTrack): TableTrack {
   return {
     name: track.track.name,
     artists: track.track.artists.map(artist => ({id: artist.id, name: artist.name})),

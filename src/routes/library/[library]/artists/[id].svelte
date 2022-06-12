@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type {Artist} from "$lib/shared/types/Artist";
+  import type {Artist} from "$lib/types/Artist";
 
   export let artist: Artist
 

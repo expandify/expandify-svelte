@@ -6,7 +6,7 @@
 declare namespace App {
 	interface Locals {
 		loggedIn: boolean
-		exportifyUser: import('src/lib/shared/types').ExportifyUser
+		exportifyUser: import('src/lib/types').ExportifyUser
 		BASE_URL: string
 		jwt: string
 		cookies: Record<string, string>

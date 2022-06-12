@@ -3,7 +3,7 @@
   import {onMount} from "svelte";
   import {initTheme} from "$lib/client/stores/theme";
   import Footer from "../lib/client/components/Footer.svelte";
-  import MenuBar from "../lib/client/components/MenuBar.svelte";
+  import Header from "../lib/client/components/Header.svelte";
   import SideBar from "../lib/client/components/SideBar.svelte";
   import {session} from "$app/stores";
 
@@ -13,7 +13,7 @@
 
 <div class="wrapper">
   <div class="fill-page">
-    <MenuBar/>
+    <Header/>
     <div class="row">
       {#if $session.loggedIn}
         <div class="sidebar"><SideBar/></div>

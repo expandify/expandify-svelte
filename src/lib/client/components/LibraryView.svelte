@@ -1,7 +1,7 @@
 <script lang="ts">
-  import {LibraryStatus} from "../../shared/types/Library";
+  import {LibraryStatus} from "../../types/Library";
   import LoadingDots from "./LoadingDots.svelte";
-  import {formatDate} from "../../shared/helpers";
+  import {formatDate} from "../functions/helpers";
   import SearchBar from "./SearchBar.svelte";
 
   export let title: string

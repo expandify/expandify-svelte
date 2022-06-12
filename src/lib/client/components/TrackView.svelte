@@ -1,14 +1,13 @@
 <script lang="ts">
   import {goto} from "$app/navigation";
-  import type {TableTrack} from "../../shared/types/TableTrack";
+  import type {TableTrack} from "../../types/TableTrack";
 
   export let hrefBasePath: string | null = null
   export let tracks: TableTrack[] = []
   export let search: string = ""
   let delayedSearch = search
 
-  let delaySearch: any
-  $: delaySearch = setTimeout(() => delayedSearch = search, 300)
+  $: setTimeout(() => delayedSearch = search, 300)
 
   let reactiveTracks: TableTrack[]
   $: reactiveTracks = searchTracks(delayedSearch)
@@ -65,8 +64,7 @@
     flex-direction: column;
 
     .header {
-      background-color: var(--bg-main-100);
-      border-bottom: 0.2rem solid var(--accent);
+      border-bottom: 0.1rem solid var(--bg-main-50);
     }
 
     .row {
@@ -74,6 +72,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
+
 
       .cell {
         padding: 0.5rem;
@@ -86,10 +85,12 @@
     .row:not(.header) {
       margin-top: 0.5rem;
       padding: 0.5rem 0 0.5rem 0;
+      border: 0.1rem solid rgba(0,0,0,0);
     }
 
     .row:hover:not(.header) {
-      background-color: var(--bg-main-100);
+      //background-color: var(--bg-main-100);
+      border: 0.1rem solid var(--accent);
       border-radius: 0.5rem;
       cursor: pointer;
     }

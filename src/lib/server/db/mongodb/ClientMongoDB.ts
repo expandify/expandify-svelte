@@ -1,10 +1,10 @@
 import type ClientTemplate from "../ClientTemplate";
-import type {Album} from "../../../shared/types/Album";
-import type {Artist} from "../../../shared/types/Artist";
-import type {ExportifyUser} from "../../../shared/types/ExportifyUser";
-import type {Playlist} from "../../../shared/types/Playlist";
-import type {LibraryTrack, Track} from "../../../shared/types/Track";
-import type {SpotifyUser} from "../../../shared/types/SpotifyUser";
+import type {Album} from "../../../types/Album";
+import type {Artist} from "../../../types/Artist";
+import type {ExportifyUser} from "../../../types/ExportifyUser";
+import type {Playlist} from "../../../types/Playlist";
+import type {LibraryTrack, Track} from "../../../types/Track";
+import type {SpotifyUser} from "../../../types/SpotifyUser";
 import {
   albumCollection,
   artistCollection,
@@ -20,11 +20,11 @@ import {
   LibraryItem,
   LibraryStatus,
   LibraryType
-} from "../../../shared/types/Library";
+} from "../../../types/Library";
 import {ObjectId} from "mongodb";
-import type {LibraryAlbum} from "../../../shared/types/Album";
-import type {LibraryArtist} from "../../../shared/types/Artist";
-import type {LibraryPlaylist} from "../../../shared/types/Playlist";
+import type {LibraryAlbum} from "../../../types/Album";
+import type {LibraryArtist} from "../../../types/Artist";
+import type {LibraryPlaylist} from "../../../types/Playlist";
 
 
 

@@ -1,9 +1,9 @@
 import {get, writable} from "svelte/store";
-import {LibraryItem, LibraryStatus, LibraryType} from "../../shared/types/Library";
-import type {LibraryArtist} from "../../shared/types/Artist";
-import type {LibraryPlaylist} from "../../shared/types/Playlist";
-import type {LibraryTrack} from "../../shared/types/Track";
-import type {LibraryAlbum} from "../../shared/types/Album";
+import {LibraryItem, LibraryStatus, LibraryType} from "../../types/Library";
+import type {LibraryArtist} from "../../types/Artist";
+import type {LibraryPlaylist} from "../../types/Playlist";
+import type {LibraryTrack} from "../../types/Track";
+import type {LibraryAlbum} from "../../types/Album";
 import type {Writable} from "svelte/types/runtime/store";
 
 const albumStore = writable<LibraryItem<LibraryAlbum[]>>(new LibraryItem(LibraryStatus.ready, null, []))
