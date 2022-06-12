@@ -26,6 +26,9 @@ export interface LibraryPlaylist{
     owner: {id: string, name: string | undefined}
     images?: Image[]
   },
+  // This field is used when two libraries are compared, to indicate on which library the album is present.
+  // Null indicates, it is present on both libraries
+  library?: string | null
 }
 
 export function toPlaylist(playlist: SpotifyApi.PlaylistObjectSimplified): Playlist {
@@ -53,6 +56,7 @@ export function toLibraryPlaylist(playlist: SpotifyApi.PlaylistObjectSimplified)
       name: playlist.name,
       owner: {id: playlist.owner.id, name: playlist.owner.display_name},
       images: playlist.images
-    }
+    },
+    library: null
   }
 }

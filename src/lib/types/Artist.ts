@@ -21,6 +21,9 @@ export interface LibraryArtist {
     name: string
     images?: Image[]
   }
+  // This field is used when two libraries are compared, to indicate on which library the album is present.
+  // Null indicates, it is present on both libraries
+  library?: string | null
 }
 
 export function toArtist(artist: SpotifyApi.ArtistObjectFull): Artist {
@@ -44,6 +47,7 @@ export function toLibraryArtist(artist: SpotifyApi.ArtistObjectFull): LibraryArt
       id: artist.id,
       name: artist.name,
       images: artist.images
-    }
+    },
+    library: null
   }
 }

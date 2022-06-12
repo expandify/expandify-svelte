@@ -10,6 +10,7 @@ export interface TableTrack {
   duration: string
   image: string
   id: string
+  libraryId?: string | null
 
   // These are for search optimizations, so that .toLowerCase() does not need to be called every time
   album_lower_case: string
@@ -29,6 +30,7 @@ export function toTableTrack(track: LibraryTrack): TableTrack {
     id: track.track.id,
     name_lower_case: track.track.name.toLowerCase(),
     artists_joined_lower_case: joinOn(track.track.artists, "name").toLowerCase(),
-    album_lower_case: track.track.album.name.toLowerCase()
+    album_lower_case: track.track.album.name.toLowerCase(),
+    libraryId: track.library
   }
 }

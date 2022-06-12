@@ -1,6 +1,8 @@
 <script lang="ts">
   import {goto} from "$app/navigation";
   import type {TableTrack} from "../../types/TableTrack";
+  import {libraryStore} from "../stores/library.js";
+  import {fade} from "svelte/transition";
 
   export let hrefBasePath: string | null = null
   export let tracks: TableTrack[] = []
@@ -33,7 +35,7 @@
 
 </script>
 
-<div class="table">
+<div class="table" in:fade>
   <div class="header row">
     <div class="cell title-col">Title</div>
     <div class="cell album-col">Album</div>
@@ -42,7 +44,10 @@
   </div>
   {#each reactiveTracks as track}
     <div class="row" on:click={() => gotoId(track.id)}>
-      <div class="cell title-col">
+      <div class="cell title-col"
+           class:accent-green={track.libraryId === $libraryStore.activeLibrary.id}
+           class:accent-blue={track.libraryId === $libraryStore.compareTo?.id}
+           class:accent-cell={track.libraryId}>
         <img src="{track.image}" class="image" alt="{track.name}">
         <div class="title">
           <span class="name">{track.name}</span>
@@ -83,6 +88,7 @@
     }
 
     .row:not(.header) {
+
       margin-top: 0.5rem;
       padding: 0.5rem 0 0.5rem 0;
       border: 0.1rem solid rgba(0,0,0,0);
@@ -93,6 +99,9 @@
       border: 0.1rem solid var(--accent);
       border-radius: 0.5rem;
       cursor: pointer;
+    }
+    .accent-cell {
+      color: var(--accent);
     }
 
     .title-col {

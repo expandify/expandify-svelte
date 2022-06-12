@@ -56,3 +56,25 @@ a {
 a:hover {
   color: var(--accent);
 }
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+.scrollbar {
+  scrollbar-width: none;
+  scrollbar-color: rgba(0,0,0,0) rgba(0,0,0,0);
+}
+
+/* Chrome, Edge, and Safari */
+.scrollbar::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0);
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-radius: 1rem;
+  border: 3px solid rgba(0,0,0,0);
+}

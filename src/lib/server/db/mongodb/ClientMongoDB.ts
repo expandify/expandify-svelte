@@ -180,7 +180,7 @@ class ClientMongoDB implements ClientTemplate {
 
     const libOwner = new LibraryItem(LibraryStatus.ready, new Date().toString(), owner.id)
     const type = LibraryType.current
-    const library = new Library(libOwner, type)
+    const library = new Library(libOwner, type, new Date().toString())
     const result = await libraryCollection.insertOne(library)
     return Promise.resolve(result.acknowledged);
   }

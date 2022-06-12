@@ -2,6 +2,7 @@
   import {session} from "$app/stores";
   import SpotifyButton from "../lib/client/components/SpotifyButton.svelte";
   import FeatureBar from "../lib/client/components/FeatureBar.svelte";
+  import {fade} from "svelte/transition";
 
   const features = [
     {
@@ -67,14 +68,14 @@
 
 </script>
 
-<div class="index">
+<div class="index" in:fade>
   <div class="index-top">
     <div class="title">Export and back up your Spotify library.</div>
     {#if !$session.loggedIn}
       <SpotifyButton goto="/auth/login">Login With Spotify</SpotifyButton>
     {:else}
       <p class="logged-in">You are already Logged In</p>
-      <SpotifyButton goto="/library/current/albums">Go To Library</SpotifyButton>
+      <SpotifyButton goto="/libraries/current/albums">Go To Library</SpotifyButton>
     {/if}
   </div>
 

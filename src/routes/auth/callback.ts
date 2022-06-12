@@ -37,7 +37,7 @@ export const get: RequestHandler = async function (request) {
     status: 302,
     headers: {
       ...createCookieHeader("jwt", token),
-      location: "/library"
+      location: "/libraries/current/albums"
     }
   }
 }

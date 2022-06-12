@@ -9,6 +9,7 @@ export interface Card {
   subtitle?: string | null
   href?: string | null
   id?: string | null
+  libraryId?: string | null
 }
 
 export function albumToCard(album: LibraryAlbum): Card {
@@ -16,7 +17,8 @@ export function albumToCard(album: LibraryAlbum): Card {
     title: album.album.name,
     subtitle: joinOn(album.album.artists, "name"),
     image:  imageSelector(album.album.images),
-    id: album.album.id
+    id: album.album.id,
+    libraryId: album.library
   }
 }
 
@@ -24,7 +26,8 @@ export function artistToCard(artist: LibraryArtist): Card {
   return {
     title: artist.artist.name,
     image: imageSelector(artist.artist.images),
-    id: artist.artist.id
+    id: artist.artist.id,
+    libraryId: artist.library
   }
 }
 
@@ -33,6 +36,7 @@ export function playlistToCard(playlist: LibraryPlaylist): Card {
     title: playlist.playlist.name,
     subtitle: playlist.playlist.owner.name,
     image:imageSelector(playlist.playlist.images),
-    id: playlist.playlist.id
+    id: playlist.playlist.id,
+    libraryId: playlist.library
   }
 }

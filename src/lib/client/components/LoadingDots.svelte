@@ -13,7 +13,7 @@
   onDestroy(() => clearInterval(interval));
 </script>
 
-<div class="title">Loading <slot/> {progressDots}</div>
+<div class="title"><slot/> {progressDots}</div>
 
 
 <style lang="scss">

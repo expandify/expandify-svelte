@@ -32,6 +32,9 @@ export interface LibraryAlbum{
     images?: Image[]
   },
   added_at: string
+  // This field is used when two libraries are compared, to indicate on which library the album is present.
+  // Null indicates, it is present on both libraries
+  library?: string | null
 }
 
 export function toAlbum(album: SpotifyApi.SavedAlbumObject): Album {
@@ -66,6 +69,7 @@ export function toLibraryAlbum(album: SpotifyApi.SavedAlbumObject): LibraryAlbum
       total_tracks: album.album.total_tracks,
       images: album.album.images
     },
-    added_at: album.added_at
+    added_at: album.added_at,
+    library: null
   }
 }

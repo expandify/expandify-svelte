@@ -7,16 +7,14 @@
     artistStore,
     libraryStore,
     playlistStore,
-    refreshCurrentLibrary,
     trackStore
   } from "../stores/library.js";
-  import {LibraryStatus, LibraryType} from "../../types/Library.js";
+  import {LibrarySimplified, LibraryStatus, LibraryType} from "../../types/Library";
+  import {refreshCurrentLibrary} from "../functions/library";
 
   let currentPath: string
-  let currentLibrary: string
-  $: currentPath = $page.url.pathname
-  $: currentLibrary = $libraryStore.currentLibrary
-
+  let activeLibrary: string
+  $: currentPath = $page.url.pathname + $page.url.search
   let loading: boolean
   $: loading = $albumStore.status === LibraryStatus.loading
     || $artistStore.status === LibraryStatus.loading
@@ -27,25 +25,33 @@
   $: entries = [
     {
       text: "Albums",
-      href: `/library/${currentLibrary}/albums`,
+      href: calcHref("albums", $libraryStore.activeLibrary, $libraryStore.compareTo),
       icon: DiscIcon
     },
     {
       text: "Artist",
-      href: `/library/${currentLibrary}/artists`,
+      href: calcHref("artists", $libraryStore.activeLibrary, $libraryStore.compareTo),
       icon: UsersIcon
     },
     {
       text: "Playlists",
-      href: `/library/${currentLibrary}/playlists`,
+      href: calcHref("playlists", $libraryStore.activeLibrary, $libraryStore.compareTo),
       icon: ListIcon
     },
     {
       text: "Tracks",
-      href: `/library/${currentLibrary}/tracks`,
+      href: calcHref("tracks", $libraryStore.activeLibrary, $libraryStore.compareTo),
       icon: MusicIcon
     }
   ]
+
+  function calcHref(endpoint: string, activeLib: LibrarySimplified, compareTo: LibrarySimplified | null) {
+    let href = `/libraries/${activeLib.id}/${endpoint}`
+    if (compareTo) {
+      return `${href}?compare-to=${compareTo.id}`
+    }
+    return href
+  }
 
 </script>
 <div class="menu">
@@ -57,10 +63,16 @@
         </MenuEntry>
       </div>
     {/each}
-    {#if $libraryStore.currentLibrary === LibraryType.current && !loading}
-      <div class="menu-entry refresh-library" on:click={() => refreshCurrentLibrary($session)}>
-        <MenuEntry icon={RefreshCwIcon}>Refresh Library</MenuEntry>
-      </div>
+    {#if $page.params?.library === LibraryType.current}
+      {#if  !loading}
+        <div class="menu-entry refresh-library" on:click={() => refreshCurrentLibrary($session)}>
+          <MenuEntry icon={RefreshCwIcon}>Refresh Library</MenuEntry>
+        </div>
+      {:else}
+        <div class="menu-entry refresh-library">
+          <RefreshCwIcon class="rotate"/>Refreshing
+        </div>
+      {/if}
     {/if}
   </div>
 </div>
@@ -87,11 +99,29 @@
         flex-grow: 1;
         max-width: 10rem;
         padding: 1rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        height: fit-content;
+        :global(.rotate) {
+          margin-right: 1rem;
+          animation: rotation 2s infinite linear
+        }
       }
     }
     .refresh-library {
       justify-self: flex-end;
       margin-left: auto;
+    }
+  }
+
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
     }
   }
 </style>

@@ -34,6 +34,9 @@ export interface LibraryTrack{
     id: string
   };
   added_at: string;
+  // This field is used when two libraries are compared, to indicate on which library the album is present.
+  // Null indicates, it is present on both libraries
+  library?: string | null
 }
 
 export function toTrack(track: SpotifyApi.SavedTrackObject): Track {
@@ -69,6 +72,7 @@ export function toLibraryTrack(track: SpotifyApi.SavedTrackObject): LibraryTrack
       duration_ms: track.track.duration_ms,
       id: track.track.id
     },
-    added_at: track.added_at
+    added_at: track.added_at,
+    library: null
   }
 }

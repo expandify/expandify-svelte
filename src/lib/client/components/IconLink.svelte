@@ -1,16 +1,16 @@
 <script lang="ts">
   export let icon: any;
   export let href: string | null = null;
-
+  export let func: () => void = () => {}
 </script>
 
 {#if href === null}
-  <div class="menu-entry">
+  <div class="menu-entry" on:click={func}>
     <svelte:component this={icon} class="icon"/>
     <slot></slot>
   </div>
 {:else}
-<a class="menu-entry" href={href}>
+<a class="menu-entry" href={href} on:click={func}>
   <svelte:component this={icon} class="icon"/>
   <slot></slot>
 </a>

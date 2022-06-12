@@ -1,12 +1,11 @@
 <script lang="ts">
   import CardComponent from "./Card.svelte";
   import type {Card} from "../../types/Card";
-
+  import { fade } from 'svelte/transition';
 
   export let hrefBasePath: string | null = null
   export let cards: Card[] = []
   export let search: string = ""
-
 
   let reactiveCards: Card[]
   $: reactiveCards = filterCards(search, cards.map(value => ({...value, href: `${hrefBasePath}/${value.id}`})))
@@ -18,7 +17,7 @@
 </script>
 
 
-<div class="cards">
+<div class="cards" in:fade>
   {#each reactiveCards as card}
     <CardComponent card="{card}"/>
   {/each}
