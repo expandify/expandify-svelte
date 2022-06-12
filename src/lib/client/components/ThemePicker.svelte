@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {themeStore, setDarkMode} from "../../stores/theme";
+  import {themeStore, setDarkMode} from "../stores/theme";
   import {SunIcon, MoonIcon} from 'svelte-feather-icons'
   import MenuEntry from "./IconLink.svelte";
 

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import {LibraryStatus} from "../../../shared/types/Library";
+  import {LibraryStatus} from "../../shared/types/Library";
   import LoadingDots from "./LoadingDots.svelte";
-  import {formatDate} from "../../../shared/helpers";
+  import {formatDate} from "../../shared/helpers";
   import SearchBar from "./SearchBar.svelte";
 
   export let title: string
@@ -13,7 +13,7 @@
 
 <div class="top">
   <h1>{title}</h1>
-  {#if lastUpdated !== null}
+  {#if state === LibraryStatus.ready && lastUpdated !== null}
     <span>Last Updated: {formatDate(lastUpdated)}</span>
   {/if}
   <SearchBar searchIn="{title.toLowerCase()}" bind:search={search}/>

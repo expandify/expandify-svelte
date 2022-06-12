@@ -1,7 +1,7 @@
 <script lang="ts">
   import {session} from "$app/stores";
-  import SpotifyButton from "$lib/client/components/elements/SpotifyButton.svelte";
-  import FeatureBar from "$lib/client/components/page-elements/FeatureBar.svelte";
+  import SpotifyButton from "../lib/client/components/SpotifyButton.svelte";
+  import FeatureBar from "../lib/client/components/FeatureBar.svelte";
 
   const features = [
     {
@@ -74,7 +74,7 @@
       <SpotifyButton goto="/auth/login">Login With Spotify</SpotifyButton>
     {:else}
       <p class="logged-in">You are already Logged In</p>
-      <SpotifyButton goto="/library">Go To Library</SpotifyButton>
+      <SpotifyButton goto="/library/current/albums">Go To Library</SpotifyButton>
     {/if}
   </div>
 

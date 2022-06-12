@@ -1,5 +1,5 @@
 export interface ExternalIds {
-  isrc: string | null
-  ean: string | null
-  upc: string | null
+  isrc?: string | undefined
+  ean?: string | undefined
+  upc?: string | undefined
 }

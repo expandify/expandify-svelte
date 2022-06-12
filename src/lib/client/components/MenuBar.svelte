@@ -1,17 +1,18 @@
 <script lang="ts">
   import {MenuIcon} from "svelte-feather-icons"
-  import LogoutButton from "../elements/LogoutButton.svelte";
-  import ThemePicker from "../elements/ThemePicker.svelte";
-  import AccentPicker from "../elements/AccentPicker.svelte";
-  import {clickOutside} from "../../directives/clickOutside";
+  import LogoutButton from "./LogoutButton.svelte";
+  import ThemePicker from "./ThemePicker.svelte";
+  import AccentPicker from "./AccentPicker.svelte";
+  import {clickOutside} from "../directives/clickOutside";
   import {session} from "$app/stores";
-  import MenuEntry from "../elements/IconLink.svelte";
+  import MenuEntry from "./IconLink.svelte";
 
   let menuOpen = false
 
 </script>
 
 <div class="menu-bar">
+  <a href="/" class="title">Exportify</a>
   <div class="dropdown-menu">
     {#if !menuOpen}
       <div class="menu-icon" on:click={() => menuOpen = true}>
@@ -40,9 +41,6 @@
       </div>
     {/if}
   </div>
-
-
-  <a href="/" class="title">Exportify</a>
 </div>
 
 <style lang="scss">
@@ -57,20 +55,19 @@
     border-bottom: 0.2rem solid var(--accent);
 
     .dropdown-menu {
+
       .menu-icon {
         padding: 1rem;
       }
 
-
       .dropdown-content {
         display: flex;
         flex-direction: column;
-
         background-color: var(--bg-main-50);
         position: absolute;
         margin-left: 1rem;
         z-index: 1;
-
+        right: 2rem;
         .dropdown-selector {
           padding: 1rem;
         }

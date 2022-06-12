@@ -19,5 +19,9 @@ declare namespace App {
 		BASE_URL: string
 	}
 
+	interface Params {
+		library: string
+	}
+
 	// interface Stuff {}
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
   import {goto} from "$app/navigation";
-  import type {Card} from "../../../shared/types/Card";
+  import type {Card} from "../../shared/types/Card";
 
   export let card: Card
 

@@ -1,6 +1,6 @@
 <script lang="ts">
   import CardComponent from "./Card.svelte";
-  import type {Card} from "../../../shared/types/Card";
+  import type {Card} from "../../shared/types/Card";
 
 
   export let hrefBasePath: string | null = null

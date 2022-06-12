@@ -55,4 +55,8 @@ function imageSelector(images: Image[] | null | undefined, fallbackImage = "/ima
   return _.maxBy(images, ["height", "width"])?.url || fallbackImage
 }
 
-export {msToTime, delay, randomString, formatDate, imageSelector}
+function joinOn(list: any[], key: string) {
+  return list.map(value => value[key]).join(", ")
+}
+
+export {msToTime, delay, randomString, formatDate, imageSelector, joinOn}

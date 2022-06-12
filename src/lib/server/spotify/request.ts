@@ -3,12 +3,18 @@ import {delay} from "../../shared/helpers";
 import {DBClient} from "../db/client";
 import type {ExportifyUser} from "../../shared/types/ExportifyUser";
 import type SpotifyWebApi from "spotify-web-api-node";
+
 const clientId = process.env.VITE_SPOTIFY_CLIENT_ID || import.meta.env.VITE_SPOTIFY_CLIENT_ID
 const clientSecret = process.env.VITE_SPOTIFY_CLIENT_SECRET || import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
 
-type requestFunc = (_: SpotifyWebApi) =>  any
+type Response<T> = {
+  body: T;
+  headers: Record<string, string>;
+  statusCode: number;
+}
+type RequestFunc<T> = (api: SpotifyWebApi) => Promise<Response<T>>
 
-async function makeRequest(exportifyUser: ExportifyUser, func: requestFunc) {
+async function makeRequest<T>(exportifyUser: ExportifyUser, func: RequestFunc<T>): Promise<Response<T>> {
 
   let spotifyApi = getSpotifyApi(exportifyUser)
 
@@ -16,8 +22,8 @@ async function makeRequest(exportifyUser: ExportifyUser, func: requestFunc) {
 
   if (data.statusCode === 401) {
     const response = await refreshAccessToken(exportifyUser)
-    if (response.statusCode !== 200) {
-      return response
+    if (response.statusCode !== 200 || response.exportifyUser === null) {
+      return Promise.reject(response)
     }
 
     spotifyApi = getSpotifyApi(response.exportifyUser)
@@ -34,9 +40,8 @@ async function refreshAccessToken(exportifyUser: ExportifyUser) {
   const data = await rateLimitRequest(spotifyApi, async (api) => await api.refreshAccessToken())
 
   if (200 > data.statusCode && data.statusCode > 299) {
-    return data
+    return {statusCode: data.statusCode, exportifyUser: null}
   }
-
 
   let newExportifyUser: ExportifyUser | null = exportifyUser
   newExportifyUser.access_token = data.body["access_token"]
@@ -50,22 +55,21 @@ async function refreshAccessToken(exportifyUser: ExportifyUser) {
   }
 }
 
-async function rateLimitRequest(spotifyApi: SpotifyWebApi, func: requestFunc) {
-  let data = await request(spotifyApi, func)
-
-  if (data.statusCode === 429) {
-    const retry = data.headers["Retry-After"]
-    await delay(retry * 1000)
-    data = await request(spotifyApi, func)
-  }
-  return data;
-}
-
-async function request(spotifyApi: SpotifyWebApi, func: requestFunc) {
-  try {
-    return await func(spotifyApi)
-  } catch (err) {
-    return  err
+async function rateLimitRequest<T>(spotifyApi: SpotifyWebApi, func: RequestFunc<T>): Promise<Response<T>> {
+  try{
+    let data = await func(spotifyApi)
+    if (data.statusCode === 429) {
+      const retry = data.headers["Retry-After"]
+      await delay(Number(retry) * 1000)
+      data = await func(spotifyApi)
+    }
+    return data;
+  } catch (err: any) {
+    return {
+      statusCode: err.body.error.status,
+      body: err.body,
+      headers: err.headers
+    }
   }
 }
 

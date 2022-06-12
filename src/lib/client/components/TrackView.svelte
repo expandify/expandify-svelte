@@ -1,17 +1,29 @@
 <script lang="ts">
   import {goto} from "$app/navigation";
-  import type {TableTrack} from "../../../shared/types/TableTrack";
+  import type {TableTrack} from "../../shared/types/TableTrack";
 
   export let hrefBasePath: string | null = null
   export let tracks: TableTrack[] = []
   export let search: string = ""
+  let delayedSearch = search
+
+  let delaySearch: any
+  $: delaySearch = setTimeout(() => delayedSearch = search, 300)
+
   let reactiveTracks: TableTrack[]
-  $: reactiveTracks = searchTracks(search, tracks)
+  $: reactiveTracks = searchTracks(delayedSearch)
 
-  function searchTracks(filter: string, toFilter: TableTrack[]) {
-    let inSearch = (str: string) => str.toLowerCase().includes(filter.toLowerCase())
-
-    return toFilter.filter(s => inSearch(s.name) || inSearch(s?.album.name) || s?.artists?.some(a => inSearch(a.name)));
+  function searchTracks(filter: string) {
+    filter = filter.toLowerCase()
+    const filteredTracks = []
+    for (let i = 0; i < tracks.length; i++) {
+      if (tracks[i].name_lower_case.indexOf(filter) !== -1 ||
+        tracks[i].artists_joined_lower_case.indexOf(filter) !== -1 ||
+        tracks[i].album_lower_case.indexOf(filter) !== -1) {
+        filteredTracks.push(tracks[i])
+      }
+    }
+    return filteredTracks
   }
 
   function gotoId(id: string) {
@@ -35,10 +47,10 @@
         <img src="{track.image}" class="image" alt="{track.name}">
         <div class="title">
           <span class="name">{track.name}</span>
-          <span class="artist">{track.artists}</span>
+          <span class="artist">{track.artists_joined}</span>
         </div>
       </div>
-      <div class="cell album-col">{track.album}</div>
+      <div class="cell album-col">{track.album.name}</div>
       <div class="cell date-col">{track.added_at}</div>
       <div class="cell duration-col">{track.duration}</div>
     </div>
@@ -51,24 +63,17 @@
   .table {
     display: flex;
     flex-direction: column;
-    margin-left: auto;
-    margin-right: auto;
 
     .header {
-      position: sticky;
-      top: 3.5rem;
       background-color: var(--bg-main-100);
       border-bottom: 0.2rem solid var(--accent);
-
     }
 
     .row {
       height: 3rem;
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
       align-items: center;
-
 
       .cell {
         padding: 0.5rem;
@@ -82,6 +87,7 @@
       margin-top: 0.5rem;
       padding: 0.5rem 0 0.5rem 0;
     }
+
     .row:hover:not(.header) {
       background-color: var(--bg-main-100);
       border-radius: 0.5rem;
@@ -107,11 +113,13 @@
         flex-direction: column;
         gap: 0.5rem;
         overflow: hidden;
+
         .name {
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
         }
+
         .artist {
           text-overflow: ellipsis;
           overflow: hidden;

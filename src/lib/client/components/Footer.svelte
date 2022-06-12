@@ -1,6 +1,6 @@
 <script>
   import { GithubIcon } from 'svelte-feather-icons'
-  import MenuEntry from "../elements/IconLink.svelte";
+  import MenuEntry from "./IconLink.svelte";
 </script>
 
 

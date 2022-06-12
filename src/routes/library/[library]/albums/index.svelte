@@ -1,31 +1,22 @@
 <script lang="ts">
-  import CardView from "$lib/client/components/elements/CardView.svelte";
+  import CardView from "../../../../lib/client/components/CardView.svelte";
   import {page} from "$app/stores";
   import {albumStore} from "$lib/client/stores/library";
-  import {imageSelector} from "$lib/shared/helpers";
-  import LibraryView from "$lib/client/components/elements/LibraryView.svelte";
-  import type {Album} from "$lib/shared/types/Album";
+  import LibraryView from "../../../../lib/client/components/LibraryView.svelte";
   import type {Card} from "$lib/shared/types/Card";
+  import {LibraryItem} from "../../../../lib/shared/types/Library";
+  import {albumToCard} from "$lib/shared/types/Card";
+  import type {LibraryAlbum} from "../../../../lib/shared/types/Album";
 
-  export let items: Album[] = []
-  export let last_updated: string | null
-  $albumStore.albums = items
+  export let libraryItem: LibraryItem<LibraryAlbum[]>
+  $albumStore = libraryItem
   let cards: Card[]
-  $: cards = parseAlbums($albumStore.albums)
+  $: cards = $albumStore.item.map(albumToCard)
   let search = ""
-
-  function parseAlbums(albums: Album[]): Card[] {
-    return albums.map(album => ({
-      title: album.name,
-      subtitle: album.artists.map(artist => artist.name).join(),
-      image:  imageSelector(album.images),
-      id: album.id
-    }))
-  }
 
 </script>
 
-<LibraryView title="Albums" state="{$albumStore.state}" lastUpdated="{last_updated}" bind:search>
+<LibraryView title="Albums" state="{$albumStore.status}" lastUpdated="{$albumStore.last_updated}" bind:search>
   <CardView cards="{cards}" hrefBasePath="{$page.url.href}" search="{search}"/>
 </LibraryView>
 

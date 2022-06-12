@@ -2,8 +2,10 @@
   import "../app.scss";
   import {onMount} from "svelte";
   import {initTheme} from "$lib/client/stores/theme";
-  import Footer from "$lib/client/components/page-elements/Footer.svelte";
-  import MenuBar from "$lib/client/components/page-elements/MenuBar.svelte";
+  import Footer from "../lib/client/components/Footer.svelte";
+  import MenuBar from "../lib/client/components/MenuBar.svelte";
+  import SideBar from "../lib/client/components/SideBar.svelte";
+  import {session} from "$app/stores";
 
 
   onMount(() => initTheme())
@@ -12,8 +14,11 @@
 <div class="wrapper">
   <div class="fill-page">
     <MenuBar/>
-    <div class="slot">
-      <slot/>
+    <div class="row">
+      {#if $session.loggedIn}
+        <div class="sidebar"><SideBar/></div>
+      {/if}
+      <div class="slot"><slot/></div>
     </div>
   </div>
   <Footer/>
@@ -23,13 +28,19 @@
   .wrapper {
     display: flex;
     flex-direction: column;
-
     .fill-page {
       min-height: 100vh;
-
-      .slot {
+      width: 100%;
+      .row {
+        display: flex;
+        flex-direction: row;
         width: 100%;
-        box-sizing: border-box;
+        justify-content: flex-start;
+        .slot {
+          min-width: 0;
+          width: 100%;
+          box-sizing: border-box;
+        }
       }
     }
   }

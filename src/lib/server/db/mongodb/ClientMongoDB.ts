@@ -3,7 +3,7 @@ import type {Album} from "../../../shared/types/Album";
 import type {Artist} from "../../../shared/types/Artist";
 import type {ExportifyUser} from "../../../shared/types/ExportifyUser";
 import type {Playlist} from "../../../shared/types/Playlist";
-import type {Track} from "../../../shared/types/Track";
+import type {LibraryTrack, Track} from "../../../shared/types/Track";
 import type {SpotifyUser} from "../../../shared/types/SpotifyUser";
 import {
   albumCollection,
@@ -19,10 +19,13 @@ import {
   Library,
   LibraryItem,
   LibraryStatus,
-  type LibraryTrack,
   LibraryType
 } from "../../../shared/types/Library";
 import {ObjectId} from "mongodb";
+import type {LibraryAlbum} from "../../../shared/types/Album";
+import type {LibraryArtist} from "../../../shared/types/Artist";
+import type {LibraryPlaylist} from "../../../shared/types/Playlist";
+
 
 
 class ClientMongoDB implements ClientTemplate {
@@ -44,17 +47,9 @@ class ClientMongoDB implements ClientTemplate {
     return await albumCollection.findOne({id: id})
   }
 
-  async getLibraryAlbums(user: ExportifyUser, libraryId: string): Promise<LibraryItem<WithId<Album>[]>> {
+  async getLibraryAlbums(user: ExportifyUser, libraryId: string): Promise<LibraryItem<LibraryAlbum[]>> {
     const library = await this.getLibrary(user, libraryId)
-    const status = library?.saved_albums?.status || LibraryStatus.error
-    const last_updated = library?.saved_albums?.last_updated || null
-
-    if (status !== LibraryStatus.ready) {
-      return Promise.resolve(new LibraryItem(status, last_updated, []))
-    }
-    const albumIds = library?.saved_albums?.item || []
-    const albums: WithId<Album>[] = await albumCollection.find({id: {$in: albumIds}}).toArray()
-    return Promise.resolve(new LibraryItem(status, last_updated, albums))
+    return Promise.resolve(library.saved_albums)
   }
 
   async saveAlbum(album: Album): Promise<boolean> {
@@ -68,13 +63,10 @@ class ClientMongoDB implements ClientTemplate {
     return Promise.resolve(result.isOk())
   }
 
-  async updateCurrentLibraryAlbums(owner: ExportifyUser, albums: Album[], state: number): Promise<boolean> {
+  async updateCurrentLibraryAlbums(owner: ExportifyUser, albums: LibraryAlbum[], state: number): Promise<boolean> {
     const currentLibrary = await this.getCurrentLibrary(owner)
-    if (currentLibrary === null) {
-      throw new Error("No Current Library found")
-    }
     let date = new Date().toString()
-    const item = new LibraryItem(state, date, albums.map(value => value.id).filter(x => !!x)) as LibraryItem<string[]>
+    const item = new LibraryItem(state, date, albums)
     const result = await libraryCollection.updateOne({_id: currentLibrary._id}, {$set: {saved_albums: item}})
     return Promise.resolve(result.acknowledged);
   }
@@ -87,16 +79,9 @@ class ClientMongoDB implements ClientTemplate {
     return await artistCollection.findOne({id: id})
   }
 
-  async getLibraryArtists(user: ExportifyUser, libraryId: string): Promise<LibraryItem<WithId<Artist>[]>> {
+  async getLibraryArtists(user: ExportifyUser, libraryId: string): Promise<LibraryItem<LibraryArtist[]>> {
     const library = await this.getLibrary(user, libraryId)
-    const status = library?.followed_artists?.status || LibraryStatus.error
-    const last_updated = library?.followed_artists?.last_updated || null
-    if (status !== LibraryStatus.ready) {
-      return Promise.resolve(new LibraryItem(status, last_updated, []))
-    }
-    const artistsIds = library?.followed_artists?.item || []
-    const artists: WithId<Artist>[] = await artistCollection.find({id: {$in: artistsIds}}).toArray()
-    return Promise.resolve(new LibraryItem(status, last_updated, artists))
+    return Promise.resolve(library.followed_artists)
   }
 
   async saveArtist(artist: Artist): Promise<boolean> {
@@ -110,13 +95,10 @@ class ClientMongoDB implements ClientTemplate {
     return Promise.resolve(result.isOk())
   }
 
-  async updateCurrentLibraryArtists(owner: ExportifyUser, artists: Artist[], state: number): Promise<boolean> {
+  async updateCurrentLibraryArtists(owner: ExportifyUser, artists: LibraryArtist[], state: number): Promise<boolean> {
     const currentLibrary = await this.getCurrentLibrary(owner)
-    if (currentLibrary === null) {
-      throw new Error("No Current Library found")
-    }
     let date = new Date().toString()
-    const item = new LibraryItem(state, date, artists.map(value => value.id).filter(x => !!x)) as LibraryItem<string[]>
+    const item = new LibraryItem(state, date, artists)
     const result = await libraryCollection.updateOne({_id: currentLibrary._id}, {$set: {followed_artists: item}})
     return Promise.resolve(result.acknowledged);
   }
@@ -129,16 +111,9 @@ class ClientMongoDB implements ClientTemplate {
     return await playlistCollection.findOne({id: id})
   }
 
-  async getLibraryPlaylists(user: ExportifyUser, libraryId: string): Promise<LibraryItem<WithId<Playlist>[]>> {
+  async getLibraryPlaylists(user: ExportifyUser, libraryId: string): Promise<LibraryItem<LibraryPlaylist[]>> {
     const library = await this.getLibrary(user, libraryId)
-    const status = library?.playlists?.status || LibraryStatus.error
-    const last_updated = library?.playlists?.last_updated || null
-    if (status !== LibraryStatus.ready) {
-      return Promise.resolve(new LibraryItem(status, last_updated, []))
-    }
-    const playlistIds: string[] = library?.playlists?.item || []
-    const playlists: WithId<Playlist>[] = await playlistCollection.find({id: {$in: playlistIds}}).toArray()
-    return Promise.resolve(new LibraryItem(status, last_updated, playlists))
+    return Promise.resolve(library.playlists)
   }
 
   async savePlaylist(playlist: Playlist): Promise<boolean> {
@@ -152,13 +127,10 @@ class ClientMongoDB implements ClientTemplate {
     return Promise.resolve(result.isOk())
   }
 
-  async updateCurrentLibraryPlaylists(owner: ExportifyUser, playlists: Playlist[], state: number): Promise<boolean> {
+  async updateCurrentLibraryPlaylists(owner: ExportifyUser, playlists: LibraryPlaylist[], state: number): Promise<boolean> {
     const currentLibrary = await this.getCurrentLibrary(owner)
-    if (currentLibrary === null) {
-      throw new Error("No Current Library found")
-    }
     let date = new Date().toString()
-    const item = new LibraryItem(state, date, playlists.map(value => value.id).filter(x => !!x)) as LibraryItem<string[]>
+    const item = new LibraryItem(state, date, playlists)
     const result = await libraryCollection.updateOne({_id: currentLibrary._id}, {$set: {playlists: item}})
     return Promise.resolve(result.acknowledged);
   }
@@ -171,21 +143,9 @@ class ClientMongoDB implements ClientTemplate {
     return await trackCollection.findOne({id: id})
   }
 
-  async getLibraryTracks(user: ExportifyUser, libraryId: string): Promise<LibraryItem<WithId<Track>[]>> {
+  async getLibraryTracks(user: ExportifyUser, libraryId: string): Promise<LibraryItem<LibraryTrack[]>> {
     const library = await this.getLibrary(user, libraryId)
-    const status = library?.saved_tracks?.status || LibraryStatus.error
-    const last_updated = library?.saved_tracks?.last_updated || null
-    if (status !== LibraryStatus.ready) {
-      return Promise.resolve(new LibraryItem(status, last_updated, []))
-    }
-    const libraryTracks = library?.saved_tracks?.item || []
-    const trackIds = libraryTracks.map(value => value.id)
-
-    const tracks: WithId<Track>[] = await trackCollection.find({id: {$in: trackIds}}).toArray()
-
-    const tracksWithDate = tracks.map(t1 => ({...t1, ...libraryTracks.find(t2 => t2.id === t1.id)}))
-
-    return Promise.resolve(new LibraryItem(status, last_updated, tracksWithDate))
+    return Promise.resolve(library.saved_tracks)
   }
 
   async saveTrack(track: Track): Promise<boolean> {
@@ -194,23 +154,15 @@ class ClientMongoDB implements ClientTemplate {
   }
 
   async saveTracks(tracks: Track[]): Promise<boolean> {
-    let bulkUpsertOptions = tracks.map((item) => {
-      // added_at is user specific and should not be persisted to the global track document
-      delete item.added_at
-      return ClientMongoDB._createUpsertOption(item)
-    })
+    let bulkUpsertOptions = tracks.map((item) => ClientMongoDB._createUpsertOption(item))
     const result = await trackCollection.bulkWrite(bulkUpsertOptions)
     return Promise.resolve(result.isOk())
   }
 
-  async updateCurrentLibraryTracks(owner: ExportifyUser, tracks: Track[], state: number): Promise<boolean> {
+  async updateCurrentLibraryTracks(owner: ExportifyUser, tracks: LibraryTrack[], state: number): Promise<boolean> {
     const currentLibrary = await this.getCurrentLibrary(owner)
-    if (currentLibrary === null) {
-      throw new Error("No Current Library found")
-    }
     let date = new Date().toString()
-    const libraryTracks = tracks.map(value => ({id: value.id, added_at: value.added_at}))
-    const item = new LibraryItem(state, date, libraryTracks.filter(x => !!x)) as LibraryItem<LibraryTrack[]>
+    const item = new LibraryItem(state, date, tracks)
     const result = await libraryCollection.updateOne({_id: currentLibrary._id}, {$set: {saved_tracks: item}})
     return Promise.resolve(result.acknowledged);
   }
@@ -242,16 +194,19 @@ class ClientMongoDB implements ClientTemplate {
     return await libraryCollection.find({"owner.item": owner.id}).toArray()
   }
 
-  async getCurrentLibrary(owner: ExportifyUser): Promise<WithId<Library> | null> {
-    return await libraryCollection.findOne({"owner.item": owner.id, type: LibraryType.current})
+  async getCurrentLibrary(owner: ExportifyUser): Promise<WithId<Library>> {
+    const library = await libraryCollection.findOne({"owner.item": owner.id, type: LibraryType.current})
+    if (library === null) throw new Error("Library Id not found")
+    return library
   }
 
-  async getLibrary(owner: ExportifyUser, libraryId: string): Promise<WithId<Library> | null> {
+  async getLibrary(owner: ExportifyUser, libraryId: string): Promise<WithId<Library>> {
     if (libraryId === LibraryType.current) {
       return await this.getCurrentLibrary(owner)
     }
-
-    return await libraryCollection.findOne({_id: new ObjectId(libraryId)})
+    const library = await libraryCollection.findOne({_id: new ObjectId(libraryId)})
+    if (library === null) throw new Error("Library Id not found")
+    return library
   }
 
 
