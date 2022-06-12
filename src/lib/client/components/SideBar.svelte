@@ -33,6 +33,13 @@
     {#each libraries as lib}
       {#if lib.type !== LibraryType.current}
         <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
+        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
+        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
+        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
+        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
+        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
+        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
+        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
       {/if}
     {/each}
   </div>
@@ -83,7 +90,27 @@
       flex-direction: column;
       gap: 1rem;
       overflow-y: scroll;
-      scrollbar-color: red
+    }
+
+    /* Firefox */
+    .scrollbar {
+      scrollbar-width: 0.5rem;
+      scrollbar-color:  var(--bg-main-50) rgba(0,0,0,0);
+    }
+
+    /* Chrome, Edge, and Safari */
+    .scrollbar::-webkit-scrollbar {
+      width: 0.5rem;
+    }
+
+    .scrollbar::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0);
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb {
+      background-color: var(--bg-main-50);
+      border-radius: 1rem;
+      border: 3px solid rgba(0,0,0,0);
     }
   }
 
