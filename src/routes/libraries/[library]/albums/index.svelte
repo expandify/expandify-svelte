@@ -21,7 +21,7 @@
 </script>
 
 <LibraryView title="Albums" libItem="{$albumStore}" bind:search>
-  <CardView cards="{cards}" hrefBasePath="{$page.url.href}" search="{search}"/>
+  <CardView cards="{cards}" hrefBasePath="/libraries/albums" search="{search}"/>
 </LibraryView>
 
 

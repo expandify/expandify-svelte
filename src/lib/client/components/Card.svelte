@@ -1,18 +1,12 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
   import type { Card } from "../../types/Card";
   import ComparingDiv from "./ComparingDiv.svelte";
 
   export let card: Card;
 
-  function handleClick() {
-    if (card.href) {
-      goto(card.href);
-    }
-  }
 </script>
 
-<div class="card" on:click={handleClick}>
+<a class="card" href={card.href || ""}>
   <img src={card.image} class="image" alt={card.title} />
   <ComparingDiv libraryId={card.libraryId}>
     <div class="card-bottom">
@@ -20,9 +14,10 @@
       <div class="subtitle">{card.subtitle || ""}</div>
     </div>
   </ComparingDiv>
-</div>
+</a>
 
 <style lang="scss">
+
 
   .card {
     width: 10rem;
@@ -60,5 +55,6 @@
   .card:hover {
     border: 0.1rem solid var(--accent);
     cursor: pointer;
+    color: unset;
   }
 </style>

@@ -55,7 +55,7 @@ async function _getAlbums(exportifyUser: ExportifyUser) {
 }
 
 async function _save(savedAlbums: SpotifyApi.SavedAlbumObject[], exportifyUser: ExportifyUser) {
-  const albums: Album[] = savedAlbums.map(toAlbum)
+  const albums: Album[] = savedAlbums.map(a => toAlbum(a.album))
   const libraryAlbums: LibraryAlbum[] = savedAlbums.map(toLibraryAlbum)
   await DBClient.saveAlbums(albums)
   await DBClient.updateCurrentLibraryAlbums(exportifyUser, libraryAlbums, LibraryStatus.ready)

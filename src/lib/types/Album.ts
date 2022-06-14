@@ -20,7 +20,8 @@ export interface Album {
   tracks: { id: string, name: string }[]
   genres?: string[] | undefined
   popularity?: number | undefined
-  uri: string;
+  uri: string
+  complete: boolean
 }
 
 export interface LibraryAlbum{
@@ -37,26 +38,27 @@ export interface LibraryAlbum{
   library?: string | null
 }
 
-export function toAlbum(album: SpotifyApi.SavedAlbumObject): Album {
+export function toAlbum(album: SpotifyApi.AlbumObjectFull): Album {
   return {
-    album_type: album.album.album_type,
-    total_tracks: album.album.total_tracks,
-    available_markets: album.album.available_markets,
-    external_urls: album.album.external_urls,
-    href: album.album.href,
-    id: album.album.id,
-    images: album.album.images,
-    label: album.album.label,
-    name: album.album.name,
-    release_date: album.album.release_date,
-    release_date_precision: album.album.release_date_precision,
-    restrictions: album.album.restrictions,
-    type: album.album.type,
-    artists: album.album.artists.map(a => ({id: a.id, name: a.name})),
+    album_type: album.album_type,
+    total_tracks: album.total_tracks,
+    available_markets: album.available_markets,
+    external_urls: album.external_urls,
+    href: album.href,
+    id: album.id,
+    images: album.images,
+    label: album.label,
+    name: album.name,
+    release_date: album.release_date,
+    release_date_precision: album.release_date_precision,
+    restrictions: album.restrictions,
+    type: album.type,
+    artists: album.artists.map(a => ({id: a.id, name: a.name})),
     tracks: [],
-    genres: album.album.genres,
-    popularity: album.album.popularity,
-    uri: album.album.uri
+    genres: album.genres,
+    popularity: album.popularity,
+    uri: album.uri,
+    complete: false
   }
 }
 
