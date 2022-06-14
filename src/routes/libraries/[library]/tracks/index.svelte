@@ -1,3 +1,7 @@
+<svelte:head>
+  <title>Exportify Tracks</title>
+</svelte:head>
+
 <script lang="ts">
   import {page} from "$app/stores";
   import {trackStore} from "$lib/client/stores/library";
@@ -14,6 +18,6 @@
   $: tracks = ($trackStore.item || []).map(toTableTrack)
 </script>
 
-<LibraryView title="Tracks" state="{$trackStore.status}" lastUpdated="{$trackStore.last_updated}" bind:search>
+<LibraryView title="Tracks" libItem={$trackStore} bind:search>
   <TrackView tracks="{tracks}" hrefBasePath="{$page.url.href}" search="{search}"/>
 </LibraryView>

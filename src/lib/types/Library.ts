@@ -2,7 +2,6 @@ import type {LibraryAlbum} from "./Album";
 import type {LibraryTrack} from "./Track";
 import type {LibraryArtist} from "./Artist";
 import type {LibraryPlaylist} from "./Playlist";
-import {find} from "lodash";
 
 export enum LibraryStatus {
   loading = 202,

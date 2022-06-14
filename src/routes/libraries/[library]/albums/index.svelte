@@ -1,3 +1,7 @@
+<svelte:head>
+  <title>Exportify Albums</title>
+</svelte:head>
+
 <script lang="ts">
   import CardView from "../../../../lib/client/components/CardView.svelte";
   import {page} from "$app/stores";
@@ -16,7 +20,7 @@
 
 </script>
 
-<LibraryView title="Albums" state="{$albumStore.status}" lastUpdated="{$albumStore.last_updated}" bind:search>
+<LibraryView title="Albums" libItem="{$albumStore}" bind:search>
   <CardView cards="{cards}" hrefBasePath="{$page.url.href}" search="{search}"/>
 </LibraryView>
 

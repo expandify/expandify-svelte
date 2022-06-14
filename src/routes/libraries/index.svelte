@@ -1,6 +1,9 @@
+<svelte:head>
+  <title>Exportify Libraries</title>
+</svelte:head>
 
 <script lang="ts">
-  import {LibrarySimplified} from "../../lib/types/Library";
+  import {LibraryType, type LibrarySimplified} from "../../lib/types/Library";
   import LibraryPicker from "../../lib/client/components/LibraryPicker.svelte";
   import {libraryStore} from "../../lib/client/stores/library";
   import {fade} from "svelte/transition";
@@ -19,12 +22,16 @@
   $: url = getUrl(left, right)
 
   function getUrl(l: LibrarySimplified | null, r: LibrarySimplified | null) {
-    return (l && r) ? `/libraries/${l.id}/artists?compare-to=${r.id}` : "";
+    const lId = l?.type === LibraryType.current ? "current" : l?.id
+    const rId = r?.type === LibraryType.current ? "current" : r?.id
+    return (l && r) ? `/libraries/${lId}/artists?compare-to=${rId}` : "";
   }
 
   function handleCompare() {
-    $libraryStore.activeLibrary = left
-    $libraryStore.compareTo = right
+    if (left && right) {
+      $libraryStore.activeLibrary = left 
+      $libraryStore.compareTo = right
+    }
   }
 </script>
 

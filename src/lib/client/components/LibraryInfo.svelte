@@ -1,7 +1,7 @@
 <script lang="ts">
   import {LibrarySimplified, LibraryType} from "../../types/Library.js";
   import {formatDate} from "../functions/helpers.js";
-  import {libraryStore} from "../stores/library.js";
+  import ComparingDiv from "./ComparingDiv.svelte";
 
   export let title: string
   export let library: LibrarySimplified
@@ -9,9 +9,10 @@
 </script>
 
 <div class="info current">
-  <h1 class:accent-green={library.id === $libraryStore.activeLibrary.id}
-      class:accent-blue={library.id === $libraryStore.compareTo?.id}
-      class:accent-info={$libraryStore.compareTo?.id}>{title}</h1>
+  <ComparingDiv libraryId={library.id}>
+    <h1>{title}</h1>
+  </ComparingDiv>
+  
 
   <div class="item">
     <span class="key">Library Type: </span>
@@ -34,10 +35,6 @@
 </div>
 
 <style lang="scss">
-
-  .accent-info {
-    color: var(--accent);
-  }
 
   .info {
     width: 100%;

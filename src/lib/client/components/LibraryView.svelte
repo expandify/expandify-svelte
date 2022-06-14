@@ -1,28 +1,14 @@
 <script lang="ts">
-  import {LibraryStatus, LibraryType} from "../../types/Library";
+  import {LibraryItem, LibraryStatus} from "../../types/Library";
   import LoadingDots from "./LoadingDots.svelte";
-  import {formatDate} from "../functions/helpers";
   import SearchBar from "./SearchBar.svelte";
   import {libraryStore} from "../stores/library.js";
   import LibraryInfo from "./LibraryInfo.svelte";
 
   export let title: string
-  export let state: number
-  export let lastUpdated: string | null
   export let search: string = ""
+  export let libItem: LibraryItem<any>
 
-  let libraryDate: string
-  // Parameter for reactivity
-  $: libraryDate = calcLibraryDate($libraryStore)
-
-  function calcLibraryDate(_) {
-    if (!$libraryStore.compareTo && $libraryStore.activeLibrary.type === LibraryType.current) {
-      return "Current Library. Last Refreshed: " + formatDate(lastUpdated)
-    }
-    if (!$libraryStore.compareTo) {
-      return "Library Snapshot from: " + formatDate(lastUpdated)
-    }
-  }
 
 </script>
 
@@ -39,9 +25,9 @@
   <SearchBar searchIn="{title.toLowerCase()}" bind:search={search}/>
 </div>
 
-{#if state === LibraryStatus.loading}
+{#if libItem.status === LibraryStatus.loading}
   <LoadingDots>Loading {title}</LoadingDots>
-{:else if state === LibraryStatus.error}
+{:else if libItem.status === LibraryStatus.error}
   <h1>{Error}</h1>
   Please try to reload the page.
 {:else}

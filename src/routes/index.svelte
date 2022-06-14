@@ -1,3 +1,7 @@
+<svelte:head>
+  <title>Exportify Home</title>
+</svelte:head>
+
 <script lang="ts">
   import {session} from "$app/stores";
   import SpotifyButton from "../lib/client/components/SpotifyButton.svelte";

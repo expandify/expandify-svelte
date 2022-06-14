@@ -1,8 +1,8 @@
 <script lang="ts">
   import {goto} from "$app/navigation";
   import type {TableTrack} from "../../types/TableTrack";
-  import {libraryStore} from "../stores/library.js";
   import {fade} from "svelte/transition";
+  import ComparingDiv from "./ComparingDiv.svelte";
 
   export let hrefBasePath: string | null = null
   export let tracks: TableTrack[] = []
@@ -44,16 +44,15 @@
   </div>
   {#each reactiveTracks as track}
     <div class="row" on:click={() => gotoId(track.id)}>
-      <div class="cell title-col"
-           class:accent-green={track.libraryId === $libraryStore.activeLibrary.id}
-           class:accent-blue={track.libraryId === $libraryStore.compareTo?.id}
-           class:accent-cell={track.libraryId}>
+      <ComparingDiv libraryId={track.libraryId}>
+        <div class="cell title-col">
         <img src="{track.image}" class="image" alt="{track.name}">
         <div class="title">
           <span class="name">{track.name}</span>
           <span class="artist">{track.artists_joined}</span>
         </div>
       </div>
+      </ComparingDiv>
       <div class="cell album-col">{track.album.name}</div>
       <div class="cell date-col">{track.added_at}</div>
       <div class="cell duration-col">{track.duration}</div>
@@ -95,13 +94,9 @@
     }
 
     .row:hover:not(.header) {
-      //background-color: var(--bg-main-100);
       border: 0.1rem solid var(--accent);
       border-radius: 0.5rem;
       cursor: pointer;
-    }
-    .accent-cell {
-      color: var(--accent);
     }
 
     .title-col {

@@ -13,7 +13,6 @@
   import {refreshCurrentLibrary} from "../functions/library";
 
   let currentPath: string
-  let activeLibrary: string
   $: currentPath = $page.url.pathname + $page.url.search
   let loading: boolean
   $: loading = $albumStore.status === LibraryStatus.loading

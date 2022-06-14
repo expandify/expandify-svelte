@@ -5,16 +5,18 @@
   import {CheckSquareIcon, SquareIcon} from "svelte-feather-icons";
 
   export let libraries: LibrarySimplified[] = []
-  export let selected: LibrarySimplified
+  export let selected: LibrarySimplified | null
 
-  let libs: {id: string, text: string}[]
+  let libs: {id: string, text: string, library: LibrarySimplified}[]
   $: libs = libraries.map(l => ({
     id: l.id,
-    text: l.type === LibraryType.current ? "Current" : formatDate(l.date)
+    text: l.type === LibraryType.current ? "Current" : formatDate(l.date),
+    library: l
+
   }))
 
-  function handleClick(lib: LibrarySimplified) {
-    selected = (selected && selected.id === lib.id) ? null : lib;
+  function handleClick(lib: {id: string, text: string, library: LibrarySimplified}) {
+    selected = (selected && selected.id === lib.id) ? null : lib.library;
   }
 </script>
 
@@ -37,8 +39,5 @@
     flex-direction: column;
     gap: 2rem;
 
-    .selected {
-
-    }
   }
 </style>

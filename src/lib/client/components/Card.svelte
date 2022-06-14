@@ -1,34 +1,28 @@
 <script lang="ts">
-  import {goto} from "$app/navigation";
-  import type {Card} from "../../types/Card";
-  import {libraryStore} from "../stores/library";
+  import { goto } from "$app/navigation";
+  import type { Card } from "../../types/Card";
+  import ComparingDiv from "./ComparingDiv.svelte";
 
-  export let card: Card
+  export let card: Card;
 
   function handleClick() {
     if (card.href) {
-      goto(card.href)
+      goto(card.href);
     }
   }
-
 </script>
-<div class="card" on:click={handleClick}>
-  <img src="{card.image}" class="image" alt="{card.title}">
-  <div class="card-bottom"
-       class:accent-green={card.libraryId === $libraryStore.activeLibrary.id}
-       class:accent-blue={card.libraryId === $libraryStore.compareTo?.id}
-       class:accent-card={card.libraryId}>
 
-    <div class="title">{card.title}</div>
-    <div class="subtitle">{card.subtitle || ""}</div>
-  </div>
+<div class="card" on:click={handleClick}>
+  <img src={card.image} class="image" alt={card.title} />
+  <ComparingDiv libraryId={card.libraryId}>
+    <div class="card-bottom">
+      <div class="title">{card.title}</div>
+      <div class="subtitle">{card.subtitle || ""}</div>
+    </div>
+  </ComparingDiv>
 </div>
 
 <style lang="scss">
-
-  .accent-card {
-    color: var(--accent);
-  }
 
   .card {
     width: 10rem;
@@ -46,7 +40,6 @@
     }
 
     .card-bottom {
-
       .title {
         font-size: 1.2rem;
         margin-bottom: 0.7rem;
@@ -65,10 +58,7 @@
   }
 
   .card:hover {
-    //background-color: var(--bg-main-100);
     border: 0.1rem solid var(--accent);
     cursor: pointer;
   }
-
-
 </style>

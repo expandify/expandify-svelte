@@ -1,3 +1,7 @@
+<svelte:head>
+  <title>Exportify User</title>
+</svelte:head>
+
 <script lang="ts">
   import type {SpotifyUser} from "$lib/types/SpotifyUser";
 

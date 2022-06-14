@@ -33,13 +33,6 @@
     {#each libraries as lib}
       {#if lib.type !== LibraryType.current}
         <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
-        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
-        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
-        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
-        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
-        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
-        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
-        <a href="/libraries/{lib.id}/albums">{formatDate(lib.date)}</a>
       {/if}
     {/each}
   </div>
