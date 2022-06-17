@@ -45,7 +45,7 @@
   ]
 
   function calcHref(endpoint: string, activeLib: LibrarySimplified, compareTo: LibrarySimplified | null) {
-    let href = `/libraries/${activeLib.id}/${endpoint}`
+    let href = `/libraries/${activeLib?.id}/${endpoint}`
     if (compareTo) {
       return `${href}?compare-to=${compareTo.id}`
     }

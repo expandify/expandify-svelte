@@ -76,7 +76,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-
+      
 
       .cell {
         padding: 0.5rem;

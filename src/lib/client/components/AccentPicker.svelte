@@ -7,7 +7,6 @@
 </script>
 
 <div>
-
   <div on:click={() => themeSelector = !themeSelector}>
     <MenuEntry icon={SettingsIcon}>Accent Color</MenuEntry>
   </div>
