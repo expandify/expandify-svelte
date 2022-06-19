@@ -5,10 +5,10 @@
 <script lang="ts">
   import {page} from "$app/stores";
   import {trackStore} from "$lib/client/stores/library";
-  import LibraryView from "../../../../lib/client/components/LibraryView.svelte";
-  import TrackView from "../../../../lib/client/components/TrackView.svelte";
+  import LibraryView from "$lib/client/components/LibraryView.svelte";
+  import TrackView from "$lib/client/components/TrackView.svelte";
   import type {LibraryTrack} from "$lib/types/Track";
-  import type {LibraryItem} from "../../../../lib/types/Library";
+  import type {LibraryItem} from "$lib/types/Library";
   import {toTableTrack} from "$lib/types/TableTrack";
 
 

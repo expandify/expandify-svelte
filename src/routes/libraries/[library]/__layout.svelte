@@ -1,7 +1,7 @@
 <script lang="ts">
   import {page, session} from "$app/stores";
   import {LibrarySimplified, LibraryType} from "$lib/types/Library";
-  import {libraryStore} from "$lib/client/stores/library.js";
+  import {libraryStore} from "$lib/client/stores/library";
   import {onMount} from "svelte";
   import type { Page } from "@sveltejs/kit";
 

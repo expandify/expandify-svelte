@@ -19,7 +19,7 @@
     "@types/lodash": "^4.14.182",
     "@types/spotify-web-api-node": "^5.0.7",
     "sass": "^1.49.11",
-    "svelte": "^3.44.0",
+    "svelte": "^3.48.0",
     "svelte-check": "^2.7.2",
     "svelte-feather-icons": "^4.0.0",
     "svelte-preprocess": "^4.10.5",

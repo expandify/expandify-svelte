@@ -1,11 +1,11 @@
 <script lang="ts">
   import IconLink from "./IconLink.svelte";
   import {FolderIcon, HomeIcon, UploadCloudIcon, UserIcon, ShuffleIcon} from "svelte-feather-icons";
-  import {backupCurrentLibrary} from "../functions/library";
+  import {backupCurrentLibrary} from "$lib/client/functions/library";
   import {session} from "$app/stores";
   import {onMount} from "svelte";
-  import {LibrarySimplified, LibraryType} from "../../types/Library";
-  import {formatDate} from "../functions/helpers";
+  import {LibrarySimplified, LibraryType} from "$lib/types/Library";
+  import {formatDate} from "$lib/client/functions/helpers";
 
   let libraries: LibrarySimplified[] = []
 

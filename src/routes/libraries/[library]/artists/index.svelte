@@ -4,9 +4,9 @@
 
 <script lang="ts">
   import {page} from "$app/stores";
-  import CardView from "../../../../lib/client/components/CardView.svelte";
+  import CardView from "$lib/client/components/CardView.svelte";
   import {artistStore} from "$lib/client/stores/library";
-  import LibraryView from "../../../../lib/client/components/LibraryView.svelte";
+  import LibraryView from "$lib/client/components/LibraryView.svelte";
   import type {LibraryArtist} from "$lib/types/Artist";
   import type {Card} from "$lib/types/Card";
   import type {LibraryItem} from "$lib/types/Library";

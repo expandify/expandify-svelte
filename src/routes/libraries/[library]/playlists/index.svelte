@@ -4,12 +4,12 @@
 
 <script lang="ts">
   import {page} from "$app/stores";
-  import CardView from "../../../../lib/client/components/CardView.svelte";
+  import CardView from "$lib/client/components/CardView.svelte";
   import {playlistStore} from "$lib/client/stores/library";
   import type {LibraryPlaylist} from "$lib/types/Playlist";
-  import LibraryView from "../../../../lib/client/components/LibraryView.svelte";
+  import LibraryView from "$lib/client/components/LibraryView.svelte";
   import type  {Card} from "$lib/types/Card";
-  import type {LibraryItem} from "../../../../lib/types/Library";
+  import type {LibraryItem} from "$lib/types/Library";
   import {playlistToCard} from "$lib/types/Card";
 
   export let libraryItem: LibraryItem<LibraryPlaylist[]>

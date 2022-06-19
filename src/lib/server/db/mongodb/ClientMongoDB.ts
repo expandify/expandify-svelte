@@ -1,10 +1,10 @@
-import type ClientTemplate from "../ClientTemplate";
-import type {Album} from "../../../types/Album";
-import type {Artist} from "../../../types/Artist";
-import type {ExportifyUser} from "../../../types/ExportifyUser";
-import type {Playlist} from "../../../types/Playlist";
-import type {LibraryTrack, Track} from "../../../types/Track";
-import type {SpotifyUser} from "../../../types/SpotifyUser";
+import type ClientTemplate from "$lib/server/db/ClientTemplate";
+import type {Album} from "$lib/types/Album";
+import type {Artist} from "$lib/types/Artist";
+import type {ExportifyUser} from "$lib/types/ExportifyUser";
+import type {Playlist} from "$lib/types/Playlist";
+import type {LibraryTrack, Track} from "$lib/types/Track";
+import type {SpotifyUser} from "$lib/types/SpotifyUser";
 import {
   albumCollection,
   artistCollection,
@@ -20,11 +20,11 @@ import {
   LibraryItem,
   LibraryStatus,
   LibraryType
-} from "../../../types/Library";
+} from "$lib//types/Library";
 import {ObjectId} from "mongodb";
-import type {LibraryAlbum} from "../../../types/Album";
-import type {LibraryArtist} from "../../../types/Artist";
-import type {LibraryPlaylist} from "../../../types/Playlist";
+import type {LibraryAlbum} from "$lib/types/Album";
+import type {LibraryArtist} from "$lib/types/Artist";
+import type {LibraryPlaylist} from "$lib/types/Playlist";
 
 
 

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import type {Image} from "../../types/Image";
+import type {Image} from "$lib/types/Image";
 
 function msToTime(s: number, milli = false) {
 

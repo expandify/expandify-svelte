@@ -1,8 +1,8 @@
 <script lang="ts">
-  import {LibraryItem, LibraryStatus} from "../../types/Library";
+  import {LibraryItem, LibraryStatus} from "$lib/types/Library";
   import LoadingDots from "./LoadingDots.svelte";
   import SearchBar from "./SearchBar.svelte";
-  import {libraryStore} from "../stores/library.js";
+  import {libraryStore} from "$lib/client/stores/library.js";
   import LibraryInfo from "./LibraryInfo.svelte";
 
   export let title: string

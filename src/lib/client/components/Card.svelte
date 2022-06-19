@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Card } from "../../types/Card";
+  import type { Card } from "$lib/types/Card";
   import ComparingDiv from "./ComparingDiv.svelte";
 
   export let card: Card;

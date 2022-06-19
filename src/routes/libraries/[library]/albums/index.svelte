@@ -3,14 +3,13 @@
 </svelte:head>
 
 <script lang="ts">
-  import CardView from "../../../../lib/client/components/CardView.svelte";
-  import {page} from "$app/stores";
+  import CardView from "$lib/client/components/CardView.svelte";
   import {albumStore} from "$lib/client/stores/library";
-  import LibraryView from "../../../../lib/client/components/LibraryView.svelte";
+  import LibraryView from "$lib/client/components/LibraryView.svelte";
   import type {Card} from "$lib/types/Card";
-  import type {LibraryItem} from "../../../../lib/types/Library";
+  import type {LibraryItem} from "$lib/types/Library";
   import {albumToCard} from "$lib/types/Card";
-  import type {LibraryAlbum} from "../../../../lib/types/Album";
+  import type {LibraryAlbum} from "$lib/types/Album";
 
   export let libraryItem: LibraryItem<LibraryAlbum[]>
   $albumStore = libraryItem

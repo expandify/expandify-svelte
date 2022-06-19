@@ -1,5 +1,5 @@
-import {DBClient} from "../db/client";
-import type {ExportifyUser} from "../../types/ExportifyUser";
+import {DBClient} from "$lib/server/db/client";
+import type {ExportifyUser} from "$lib/types/ExportifyUser";
 import SpotifyWebApi from "spotify-web-api-node";
 
 const clientId = process.env.VITE_SPOTIFY_CLIENT_ID || import.meta.env.VITE_SPOTIFY_CLIENT_ID

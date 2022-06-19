@@ -21,4 +21,4 @@
 
 </script>
 
-<span>qweqwe</span>
+<span>{albumStruct}</span>

@@ -1,5 +1,5 @@
 import type {LibraryTrack} from "./Track";
-import {formatDate, imageSelector, joinOn, msToTime} from "../client/functions/helpers";
+import {formatDate, imageSelector, joinOn, msToTime} from "$lib/client/functions/helpers";
 
 export interface TableTrack {
   name: string

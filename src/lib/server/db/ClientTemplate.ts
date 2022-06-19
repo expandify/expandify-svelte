@@ -1,14 +1,14 @@
-import type {Album, LibraryAlbum} from "../../types/Album";
-import type {Artist} from "../../types/Artist";
-import type {ExportifyUser} from "../../types/ExportifyUser";
-import type {SpotifyUser} from "../../types/SpotifyUser";
-import type {Track} from "../../types/Track";
-import type {LibraryPlaylist, Playlist} from "../../types/Playlist";
-import type {Library} from "../../types/Library";
-import type {LibraryItem} from "../../types/Library";
+import type {Album, LibraryAlbum} from "$lib/types/Album";
+import type {Artist} from "$lib/types/Artist";
+import type {ExportifyUser} from "$lib/types/ExportifyUser";
+import type {SpotifyUser} from "$lib/types/SpotifyUser";
+import type {Track} from "$lib/types/Track";
+import type {LibraryPlaylist, Playlist} from "$lib/types/Playlist";
+import type {Library} from "$lib/types/Library";
+import type {LibraryItem} from "$lib/types/Library";
 import type {WithId} from "mongodb";
-import type {LibraryTrack} from "../../types/Track";
-import type {LibraryArtist} from "../../types/Artist";
+import type {LibraryTrack} from "$lib/types/Track";
+import type {LibraryArtist} from "$lib/types/Artist";
 
 
 interface ClientTemplate {

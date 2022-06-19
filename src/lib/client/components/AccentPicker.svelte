@@ -1,14 +1,14 @@
 <script lang="ts">
-  import {setAccent, SUPPORTED_ACCENTS} from "../stores/theme";
+  import {setAccent, SUPPORTED_ACCENTS} from "$lib/client/stores/theme";
   import {SettingsIcon} from 'svelte-feather-icons'
-  import MenuEntry from "./IconLink.svelte";
+  import IconLink from "./IconLink.svelte";
 
   let themeSelector = false
 </script>
 
 <div>
   <div on:click={() => themeSelector = !themeSelector}>
-    <MenuEntry icon={SettingsIcon}>Accent Color</MenuEntry>
+    <IconLink icon={SettingsIcon}>Accent Color</IconLink>
   </div>
 
   {#if themeSelector}

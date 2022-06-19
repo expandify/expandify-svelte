@@ -1,4 +1,4 @@
-import {imageSelector, joinOn} from "../client/functions/helpers";
+import {imageSelector, joinOn} from "$lib/client/functions/helpers";
 import type {LibraryAlbum} from "./Album";
 import type {LibraryArtist} from "./Artist";
 import type {LibraryPlaylist} from "./Playlist";

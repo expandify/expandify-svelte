@@ -8,9 +8,9 @@
     libraryStore,
     playlistStore,
     trackStore
-  } from "../stores/library.js";
-  import {LibrarySimplified, LibraryStatus, LibraryType} from "../../types/Library";
-  import {refreshCurrentLibrary} from "../functions/library";
+  } from "$lib/client/stores/library.js";
+  import {LibrarySimplified, LibraryStatus, LibraryType} from "$lib/types/Library";
+  import {refreshCurrentLibrary} from "$lib/client/functions/library";
 
   let currentPath: string
   $: currentPath = $page.url.pathname + $page.url.search

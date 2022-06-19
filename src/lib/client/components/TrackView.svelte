@@ -1,6 +1,6 @@
 <script lang="ts">
   import {goto} from "$app/navigation";
-  import type {TableTrack} from "../../types/TableTrack";
+  import type {TableTrack} from "$lib/types/TableTrack";
   import {fade} from "svelte/transition";
   import ComparingDiv from "./ComparingDiv.svelte";
 

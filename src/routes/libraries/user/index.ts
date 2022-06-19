@@ -1,4 +1,4 @@
-import * as Spotify from "../../../lib/server/functions/request";
+import * as Spotify from "$lib/server/functions/request";
 import type {RequestHandler} from './__types';
 
 // @ts-ignore

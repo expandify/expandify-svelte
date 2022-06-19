@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type {Feature} from "../../types/Feature";
+  import type {Feature} from "$lib/types/Feature";
 
   export let features: Feature[];
 

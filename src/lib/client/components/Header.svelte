@@ -3,7 +3,7 @@
   import LogoutButton from "./LogoutButton.svelte";
   import ThemePicker from "./ThemePicker.svelte";
   import AccentPicker from "./AccentPicker.svelte";
-  import {clickOutside} from "../directives/clickOutside";
+  import {clickOutside} from "$lib/client/directives/clickOutside";
   import {session} from "$app/stores";
   import MenuEntry from "./IconLink.svelte";
 

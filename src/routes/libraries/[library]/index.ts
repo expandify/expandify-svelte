@@ -1,6 +1,6 @@
 import type {RequestHandler} from './__types/index';
-import {Library, LibrarySimplified, LibraryType} from "../../../lib/types/Library";
-import {DBClient} from "../../../lib/server/db/client";
+import {Library, LibrarySimplified, LibraryType} from "$lib/types/Library";
+import {DBClient} from "$lib/server/db/client";
 
 // @ts-ignore
 export const get: RequestHandler = async function ({locals, params}) {

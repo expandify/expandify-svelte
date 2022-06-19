@@ -1,6 +1,6 @@
 <script lang="ts">
-  import {LibrarySimplified, LibraryType} from "../../types/Library.js";
-  import {formatDate} from "../functions/helpers.js";
+  import {LibrarySimplified, LibraryType} from "$lib/types/Library.js";
+  import {formatDate} from "$lib/client/functions/helpers.js";
   import ComparingDiv from "./ComparingDiv.svelte";
 
   export let title: string

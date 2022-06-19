@@ -2,8 +2,8 @@
   import "../app.scss";
   import {onMount} from "svelte";
   import {initTheme} from "$lib/client/stores/theme";
-  import Footer from "../lib/client/components/Footer.svelte";
-  import Header from "../lib/client/components/Header.svelte";
+  import Footer from "$lib/client/components/Footer.svelte";
+  import Header from "$lib/client/components/Header.svelte";
   import {navigating} from "$app/stores";
   import PageLoader from "$lib/client/components/PageLoader.svelte";
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { libraryStore } from "../stores/library";
+  import { libraryStore } from "$lib/client/stores/library";
 
   export let libraryId: string | null | undefined
   

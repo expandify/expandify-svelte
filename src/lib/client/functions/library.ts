@@ -1,7 +1,7 @@
-import {LibraryItem, LibraryStatus} from "../../types/Library";
+import {LibraryItem, LibraryStatus} from "$lib/types/Library";
 import type {Writable} from "svelte/types/runtime/store";
 import {get} from "svelte/store";
-import {albumStore, artistStore, playlistStore, trackStore} from "../stores/library";
+import {albumStore, artistStore, playlistStore, trackStore} from "$lib/client/stores/library";
 
 async function refreshCurrentLibrary(session: App.Session) {
   _lockAll()

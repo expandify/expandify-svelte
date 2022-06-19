@@ -4,8 +4,8 @@
 
 <script lang="ts">
   import {session} from "$app/stores";
-  import SpotifyButton from "../lib/client/components/SpotifyButton.svelte";
-  import FeatureBar from "../lib/client/components/FeatureBar.svelte";
+  import SpotifyButton from "$lib/client/components/SpotifyButton.svelte";
+  import FeatureBar from "$lib/client/components/FeatureBar.svelte";
   import {fade} from "svelte/transition";
 
   const features = [

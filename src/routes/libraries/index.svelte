@@ -3,9 +3,9 @@
 </svelte:head>
 
 <script lang="ts">
-  import {LibraryType, type LibrarySimplified} from "../../lib/types/Library";
-  import LibraryPicker from "../../lib/client/components/LibraryPicker.svelte";
-  import {libraryStore} from "../../lib/client/stores/library";
+  import {LibraryType, type LibrarySimplified} from "$lib/types/Library";
+  import LibraryPicker from "$lib/client/components/LibraryPicker.svelte";
+  import {libraryStore} from "$lib/client/stores/library";
   import {fade} from "svelte/transition";
 
   export let libraries: LibrarySimplified[] = []

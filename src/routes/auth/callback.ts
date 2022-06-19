@@ -1,5 +1,5 @@
-import { createJwt} from "../../lib/server/functions/jwt";
-import { createCookieHeader} from "../../lib/server/functions/cookies";
+import { createJwt} from "$lib/server/functions/jwt";
+import { createCookieHeader} from "$lib/server/functions/cookies";
 import {DBClient} from "$lib/server/db/client";
 import type {ExportifyUser} from "$lib/types/ExportifyUser";
 import SpotifyWebApi from "spotify-web-api-node";

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import {LibrarySimplified, LibraryType} from "../../types/Library";
-  import {formatDate} from "../functions/helpers";
+  import {LibrarySimplified, LibraryType} from "$lib/types/Library";
+  import {formatDate} from "$lib/client/functions/helpers";
   import IconLink from "./IconLink.svelte";
   import {CheckSquareIcon, SquareIcon} from "svelte-feather-icons";
 

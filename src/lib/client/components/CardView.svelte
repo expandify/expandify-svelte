@@ -1,6 +1,6 @@
 <script lang="ts">
   import CardComponent from "./Card.svelte";
-  import type {Card} from "../../types/Card";
+  import type {Card} from "$lib/types/Card";
   import { fade } from 'svelte/transition';
 
   export let hrefBasePath: string | null = null
