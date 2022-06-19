@@ -8,6 +8,7 @@
   export let tracks: TableTrack[] = []
   export let search: string = ""
   let delayedSearch = search
+  
 
   $: setTimeout(() => delayedSearch = search, 300)
 
@@ -44,15 +45,17 @@
   </div>
   {#each reactiveTracks as track}
     <div class="row" on:click={() => gotoId(track.id)}>
-      <ComparingDiv libraryId={track.libraryId}>
-        <div class="cell title-col">
-        <img src="{track.image}" class="image" alt="{track.name}">
-        <div class="title">
-          <span class="name">{track.name}</span>
-          <span class="artist">{track.artists_joined}</span>
-        </div>
+      <div class="cell title-col">
+        <ComparingDiv libraryId={track.libraryId}>
+          <div class="wrapper">
+            <img src="{track.image}" class="image" alt="{track.name}">
+            <div class="title">
+              <span class="name">{track.name}</span>
+              <span class="artist">{track.artists_joined}</span>
+            </div>  
+          </div>
+        </ComparingDiv>  
       </div>
-      </ComparingDiv>
       <div class="cell album-col">{track.album.name}</div>
       <div class="cell date-col">{track.added_at}</div>
       <div class="cell duration-col">{track.duration}</div>
@@ -102,36 +105,41 @@
     .title-col {
       width: 50%;
       height: 100%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
 
-      .image {
+      .wrapper {        
         height: 100%;
-        object-fit: cover;
-        aspect-ratio: 1/1;
-        margin-right: 1rem;
-      }
-
-      .title {
         display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        overflow: hidden;
+        flex-direction: row;
+        align-items: center;
 
-        .name {
-          text-overflow: ellipsis;
-          overflow: hidden;
-          white-space: nowrap;
+        .image {
+          height: 100%;
+          object-fit: cover;
+          aspect-ratio: 1/1;
+          margin-right: 1rem;
         }
 
-        .artist {
-          text-overflow: ellipsis;
+        .title {
+          display: flex;
+          flex-direction: column;
+          
           overflow: hidden;
-          white-space: nowrap;
-          font-size: small;
+          
+          
+          .name {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+          }
+
+          .artist {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            font-size: small;
+          }
         }
-      }
+      }      
     }
 
     .album-col {

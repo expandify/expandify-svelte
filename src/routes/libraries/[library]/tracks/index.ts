@@ -55,7 +55,7 @@ async function _getTracks(exportifyUser: ExportifyUser) {
 }
 
 async function _save(savedTracks:  SpotifyApi.SavedTrackObject[], exportifyUser: ExportifyUser) {
-  const tracks: Track[] = savedTracks.map(toTrack)
+  const tracks: Track[] = savedTracks.map(t => toTrack(t.track))
   const libraryTracks: LibraryTrack[] = savedTracks.map(toLibraryTrack)
   await DBClient.saveTracks(tracks)
   await DBClient.updateCurrentLibraryTracks(exportifyUser, libraryTracks, LibraryStatus.ready)

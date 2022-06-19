@@ -1,6 +1,6 @@
 import { DBClient } from "$lib/server/db/client";
 import * as Spotify from "$lib/server/functions/request.js";
-import { toAlbum } from "$lib/types/Album";
+import { toTrack } from "$lib/types/Track";
 import type {RequestHandler} from './__types/[id]';
 
 // @ts-ignore
@@ -13,29 +13,27 @@ export const get: RequestHandler = async function ({locals, params}) {
 
   const exportifyUser = locals.exportifyUser
 
-  let dbAlbum = await DBClient.getAlbum(params.id)    
-  if (dbAlbum && dbAlbum.complete) {
+  let dbTrack = await DBClient.getTrack(params.id)
+  if (dbTrack && dbTrack.complete) {
     return {
       status: 200,
-      body: {album: dbAlbum}
-    }  
+      body: {track: dbTrack}
+    }
   }
 
+  let response = await Spotify.makeRequest(exportifyUser, async (api) => await api.getTrack(params.id))
+  const track = toTrack(response.body)
 
-  let response = await Spotify.makeRequest(exportifyUser, async (api) => await api.getAlbum(params.id))
-  const album = toAlbum(response.body)
 
-  // Get Album Tracks
-  // Set album to complete 
-  // (Do NOT set Tracks to complete)
+  // Get Artists
+  // Set Track to complete
   
-  DBClient.saveAlbum(album)
-
+  DBClient.saveTrack(track)
 
   return {
     status: response.statusCode,
     body: {
-      album: album
+      track: track
     }
   }
 }

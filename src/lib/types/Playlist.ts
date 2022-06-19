@@ -16,7 +16,8 @@ export interface Playlist {
   snapshot_id: string
   tracks: { id: string, name: string }[]
   type: "playlist"
-  uri: string
+  uri: string,
+  complete: boolean
 }
 
 export interface LibraryPlaylist{
@@ -45,7 +46,8 @@ export function toPlaylist(playlist: SpotifyApi.PlaylistObjectSimplified): Playl
     snapshot_id: playlist.snapshot_id,
     tracks: [],
     type: playlist.type,
-    uri: playlist.uri
+    uri: playlist.uri,
+    complete: false
   }
 }
 

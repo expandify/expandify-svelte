@@ -22,7 +22,8 @@ export interface Track {
   track_number: number
   type: "track"
   uri: string
-  is_local?: boolean | undefined
+  is_local?: boolean | undefined,
+  complete: boolean
 }
 
 export interface LibraryTrack{
@@ -39,27 +40,28 @@ export interface LibraryTrack{
   library?: string | null
 }
 
-export function toTrack(track: SpotifyApi.SavedTrackObject): Track {
+export function toTrack(track: SpotifyApi.TrackObjectFull): Track {
   return {
-    album: {id: track.track.album.id, name: track.track.album.name, images: track.track.album.images},
-    artists: track.track.artists.map(a => ({id: a.id, name: a.name})),
-    available_markets: track.track.available_markets,
-    disc_number: track.track.disc_number,
-    duration_ms: track.track.duration_ms,
-    explicit: track.track.explicit,
-    external_ids: track.track.external_ids,
-    external_urls: track.track.external_urls,
-    href: track.track.href,
-    id: track.track.id,
-    is_playable: track.track.is_playable,
-    restrictions: track.track.restrictions,
-    name: track.track.name,
-    popularity: track.track.popularity,
-    preview_url: track.track.preview_url,
-    track_number: track.track.track_number,
-    type: track.track.type,
-    uri: track.track.uri,
-    is_local: track.track.is_local
+    album: {id: track.album.id, name: track.album.name, images: track.album.images},
+    artists: track.artists.map(a => ({id: a.id, name: a.name})),
+    available_markets: track.available_markets,
+    disc_number: track.disc_number,
+    duration_ms: track.duration_ms,
+    explicit: track.explicit,
+    external_ids: track.external_ids,
+    external_urls: track.external_urls,
+    href: track.href,
+    id: track.id,
+    is_playable: track.is_playable,
+    restrictions: track.restrictions,
+    name: track.name,
+    popularity: track.popularity,
+    preview_url: track.preview_url,
+    track_number: track.track_number,
+    type: track.type,
+    uri: track.uri,
+    is_local: track.is_local,
+    complete: false
   }
 }
 

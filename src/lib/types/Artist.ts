@@ -12,7 +12,8 @@ export interface Artist {
   name: string
   popularity: number
   type: "artist"
-  uri: string
+  uri: string,
+  complete: boolean
 }
 
 export interface LibraryArtist {
@@ -37,7 +38,8 @@ export function toArtist(artist: SpotifyApi.ArtistObjectFull): Artist {
     name: artist.name,
     popularity: artist.popularity,
     type: artist.type,
-    uri: artist.uri
+    uri: artist.uri,
+    complete: false
   }
 }
 

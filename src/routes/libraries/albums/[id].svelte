@@ -21,4 +21,4 @@
 
 </script>
 
-<span>{albumStruct}</span>
+<span>{albumStruct.toString()}</span>

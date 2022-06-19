@@ -3,7 +3,6 @@
 </svelte:head>
 
 <script lang="ts">
-  import {page} from "$app/stores";
   import {trackStore} from "$lib/client/stores/library";
   import LibraryView from "$lib/client/components/LibraryView.svelte";
   import TrackView from "$lib/client/components/TrackView.svelte";
@@ -19,5 +18,5 @@
 </script>
 
 <LibraryView title="Tracks" libItem={$trackStore} bind:search>
-  <TrackView tracks="{tracks}" hrefBasePath="{$page.url.href}" search="{search}"/>
+  <TrackView tracks="{tracks}" hrefBasePath="/libraries/tracks" search="{search}"/>
 </LibraryView>

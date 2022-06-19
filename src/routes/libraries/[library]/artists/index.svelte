@@ -3,7 +3,6 @@
 </svelte:head>
 
 <script lang="ts">
-  import {page} from "$app/stores";
   import CardView from "$lib/client/components/CardView.svelte";
   import {artistStore} from "$lib/client/stores/library";
   import LibraryView from "$lib/client/components/LibraryView.svelte";
@@ -21,6 +20,6 @@
 
 
 <LibraryView title="Artists" libItem={$artistStore} bind:search>
-  <CardView cards="{cards}" hrefBasePath="{$page.url.href}" search="{search}"/>
+  <CardView cards="{cards}" hrefBasePath="/libraries/artists" search="{search}"/>
 </LibraryView>
 
