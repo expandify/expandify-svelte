@@ -2,7 +2,7 @@
   import {LibraryItem, LibraryStatus} from "$lib/types/Library";
   import LoadingDots from "./LoadingDots.svelte";
   import SearchBar from "./SearchBar.svelte";
-  import {libraryStore} from "$lib/client/stores/library.js";
+  import {libraryStore} from "$lib/client/stores/library";
   import LibraryInfo from "./LibraryInfo.svelte";
 
   export let title: string

@@ -13,7 +13,7 @@ import {
   playlistCollection,
   trackCollection,
   spotifyUserCollection
-} from "./collections.js"
+} from "./collections"
 import type {WithId} from "mongodb";
 import {
   Library,

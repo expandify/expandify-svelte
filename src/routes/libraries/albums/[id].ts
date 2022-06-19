@@ -1,5 +1,5 @@
 import { DBClient } from "$lib/server/db/client";
-import * as Spotify from "$lib/server/functions/request.js";
+import * as Spotify from "$lib/server/functions/request";
 import { toAlbum } from "$lib/types/Album";
 import type {RequestHandler} from './__types/[id]';
 

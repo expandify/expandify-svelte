@@ -8,7 +8,7 @@
     libraryStore,
     playlistStore,
     trackStore
-  } from "$lib/client/stores/library.js";
+  } from "$lib/client/stores/library";
   import {LibrarySimplified, LibraryStatus, LibraryType} from "$lib/types/Library";
   import {refreshCurrentLibrary} from "$lib/client/functions/library";
 
