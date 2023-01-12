@@ -32,6 +32,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("se.michaelthelin.spotify:spotify-web-api-java:7.0.0")
     implementation("org.litote.kmongo:kmongo-serialization:4.5.0")
+    implementation("io.ktor:ktor-server-cors:$ktor_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
