@@ -1,4 +1,4 @@
-export class ExternalUrl {
+export class ExternalUrl implements SpotifyData {
   spotify!: string;
 
   private constructor() {

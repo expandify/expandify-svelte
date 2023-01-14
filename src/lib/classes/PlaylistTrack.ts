@@ -2,7 +2,7 @@ import { Episode } from "./Episode";
 import { Track } from "./Track";
 import { User } from "./User";
 
-export class PlaylistTrack {
+export class PlaylistTrack implements SpotifyData {
   added_at!: string;
   added_by!: User;
   is_local!: boolean;

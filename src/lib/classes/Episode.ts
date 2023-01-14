@@ -3,7 +3,7 @@ import { ResumePoint } from "./ResumePoint";
 import { Show } from "./Show";
 import { SpotifyImage } from "./SpotifyImage";
 
-export class Episode {
+export class Episode implements SpotifyData {
   // Episode Full
   show?: Show;
 

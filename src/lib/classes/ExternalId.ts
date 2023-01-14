@@ -1,4 +1,4 @@
-export class ExternalId {
+export class ExternalId implements SpotifyData {
   isrc?: string;
   ean?: string;
   upc?: string;

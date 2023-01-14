@@ -1,6 +1,6 @@
 import { ExternalUrl } from "./ExternalUrl";
 
-export class TrackLink {
+export class TrackLink implements SpotifyData {
   external_urls!: ExternalUrl;
   href!: string;
   id!: string;

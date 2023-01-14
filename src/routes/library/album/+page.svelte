@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { reloadSavedAlbumsWithTracks } from "$lib/spotify/album";
 	import { albumCache } from "$lib/stores/cache";
+
 </script>
 
 <p>Albums</p>
 
 <button on:click={reloadSavedAlbumsWithTracks}>Refresh Albums</button>  
 
-
 <div class="albums">
-  {#each $albumCache as album}
+  {#each $albumCache.items as album}
 
   <h1>{album.name}</h1>
 

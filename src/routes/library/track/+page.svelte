@@ -9,7 +9,7 @@
 
 
 <div class="tracks">
-  {#each $trackCache as track}
+  {#each $trackCache.items as track}
   <p>
     {track.name}
   </p>

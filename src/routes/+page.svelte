@@ -6,7 +6,7 @@
 	import { goto } from '$app/navigation';
 	import { clearAuthData } from "$lib/stores/authData";
 	import { state } from "$lib/stores/state";
-	import { clearCache } from "$lib/stores/cache";
+	import { Cache } from "$lib/stores/cache";
 	import { error } from "@sveltejs/kit";
 
   if (browser) { getToken();}
@@ -23,7 +23,7 @@
 
   function logout() {
     clearAuthData();
-    clearCache();
+    Cache.clearAll();
   }
 
   function gf() {

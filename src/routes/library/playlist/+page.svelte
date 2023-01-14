@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { reloadUserPlaylists } from "$lib/spotify/playlist";
+	import { reloadUserPlaylistsWithTracks } from "$lib/spotify/playlist";
 	import { playlistCache } from "$lib/stores/cache";
 </script>
 
 <p>Playlists</p>
 
-<button on:click={reloadUserPlaylists}>Refresh Playlists</button>  
+<button on:click={reloadUserPlaylistsWithTracks}>Refresh Playlists</button>  
 
 
 <div class="playlists">
-  {#each $playlistCache as playlist}
+  {#each $playlistCache.items as playlist}
 
   <h1>{playlist.name}</h1>
 

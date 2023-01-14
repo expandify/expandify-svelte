@@ -1,4 +1,4 @@
-export class Copyright {
+export class Copyright implements SpotifyData {
   text!: string;
   type!: 'C' | 'P';
 

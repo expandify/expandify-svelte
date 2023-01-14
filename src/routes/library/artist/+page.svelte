@@ -9,7 +9,7 @@
 
 
 <div class="artists">
-  {#each $artistCache as artist}
+  {#each $artistCache.items as artist}
   <p>
     {artist.name}
   </p>

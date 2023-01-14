@@ -3,9 +3,8 @@ import { Artist } from "./Artist";
 import { ExternalId } from "./ExternalId";
 import { ExternalUrl } from "./ExternalUrl";
 import { TrackLink } from "./TrackLink";
-import type { User } from "./User";
 
-export class Track {
+export class Track implements SpotifyData {
   // Saved Track 
   added_at?: string;
 

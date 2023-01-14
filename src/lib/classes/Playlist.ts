@@ -2,10 +2,9 @@ import { ExternalUrl } from "./ExternalUrl";
 import { Followers } from "./Followers";
 import type { PlaylistTrack } from "./PlaylistTrack";
 import { SpotifyImage } from "./SpotifyImage";
-import type { Track } from "./Track";
 import { User } from "./User";
 
-export class Playlist {
+export class Playlist implements SpotifyData {
   // Playlist Full
   followers?: Followers;
   tracks: PlaylistTrack[] = [];

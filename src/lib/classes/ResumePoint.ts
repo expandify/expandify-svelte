@@ -1,4 +1,4 @@
-export class ResumePoint {
+export class ResumePoint implements SpotifyData {
   full_played!: boolean;
   resume_position_ms!: number;
 

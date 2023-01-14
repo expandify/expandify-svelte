@@ -5,7 +5,7 @@ import { ExternalUrl } from "./ExternalUrl";
 import { SpotifyImage } from "./SpotifyImage";
 import type { Track } from "./Track";
 
-export class Album {
+export class Album implements SpotifyData {
   // Saved Album
   added_at?: string;
 

@@ -29,7 +29,7 @@
     filter = filter.toLowerCase()
     const filteredTracks = []
     
-    for (const track of $trackCache) {
+    for (const track of $trackCache.items) {
       const name = track.name.toLowerCase();
       const artists = track.artists.map(x => x.name).join(", ").toLowerCase();
       const album = track.album?.name.toLowerCase();
@@ -47,7 +47,7 @@
     filter = filter.toLowerCase()
     const filteredPlaylists = []
 
-    for (const playlist of $playlistCache) {
+    for (const playlist of $playlistCache.items) {
       const name = playlist.name.toLowerCase();
       
       const tracks = searchPlaylistTracks(filter, playlist.tracks)

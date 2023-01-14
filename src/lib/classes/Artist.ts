@@ -2,7 +2,7 @@ import { ExternalUrl } from "./ExternalUrl";
 import { Followers } from "./Followers";
 import { SpotifyImage } from "./SpotifyImage";
 
-export class Artist {
+export class Artist implements SpotifyData {
   // Artist Full
   followers?: Followers;
   genres?: string[];

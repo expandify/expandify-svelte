@@ -2,7 +2,7 @@ import { ExternalUrl } from "./ExternalUrl";
 import { Followers } from "./Followers";
 import { SpotifyImage } from "./SpotifyImage";
 
-export class User {
+export class User implements SpotifyData {
   // User Private
   birthdate?: string;
   country?: string;

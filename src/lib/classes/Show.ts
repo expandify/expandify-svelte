@@ -3,7 +3,7 @@ import { Episode } from "./Episode";
 import { ExternalUrl } from "./ExternalUrl";
 import { SpotifyImage } from "./SpotifyImage";
 
-export class Show {
+export class Show implements SpotifyData {
   // Show Full
   episodes?: Episode[];
 

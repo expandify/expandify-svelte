@@ -1,4 +1,4 @@
-export class SpotifyImage {
+export class SpotifyImage implements SpotifyData {
   height?: number;
   url!: string;
   width?: number;

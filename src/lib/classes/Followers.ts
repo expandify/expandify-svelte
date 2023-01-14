@@ -1,4 +1,4 @@
-export class Followers {
+export class Followers implements SpotifyData {
   href!: string;
   total!: number;
 
