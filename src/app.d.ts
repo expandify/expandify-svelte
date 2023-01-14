@@ -7,3 +7,23 @@ declare namespace App {
 	// interface PageData {}
 	// interface Platform {}
 }
+
+declare interface TokenApiResult {
+	access_token: string
+  scope: string
+  expires_in: number
+  refresh_token: string
+}
+
+declare interface AuthData {
+  codeVerifier?: string;
+  state?: string;
+  token?: string;
+  refresh_token?: string;
+  tokenExpires?: string;
+  tokenScope?: string;
+};
+
+declare interface State {
+  authenticated: boolean;  
+};
