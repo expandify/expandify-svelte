@@ -1,7 +1,15 @@
 <script>
+  //import "@picocss/pico/css/pico.css";
+  import "../app.css";
+	import { browser } from "$app/environment";
+	import { goto } from "$app/navigation";
 	import NavBar from "$lib/components/NavBar.svelte";
 	import { state } from "$lib/stores/state";
-  
+
+  if (browser && !$state.authenticated) {
+    goto("/");
+  }
+
 </script>
 
 <div class="page">

@@ -7,6 +7,7 @@
 	import { clearAuthData } from "$lib/stores/authData";
 	import { state } from "$lib/stores/state";
 	import { clearCache } from "$lib/stores/cache";
+	import { error } from "@sveltejs/kit";
 
   if (browser) { getToken();}
 
@@ -25,6 +26,12 @@
     clearCache();
   }
 
+  function gf() {
+    throw error(404, {
+      message: "qweqwe"
+    })
+  }
+
 </script>
 
 <h1>Welcome to Expandify</h1>
@@ -34,6 +41,8 @@
 {:else}
   <button on:click={logout}>Logout</button>  
 {/if}
+
+<button on:click={gf}>Throw Error</button>  
 
 
 
