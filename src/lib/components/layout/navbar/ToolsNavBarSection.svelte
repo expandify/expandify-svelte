@@ -6,6 +6,8 @@
 
 
 <NavBarSection title="Tools">
+  <IconLink icon={DownloadIcon} href="/tools/release-tracker">Release Tracker</IconLink>
   <IconLink icon={MusicIcon} href="/tools/song-finder">Song Finder</IconLink>
-  <IconLink icon={DownloadIcon} href="/tools/backup">Backup</IconLink>
+  <IconLink icon={MusicIcon} href="/tools/library-value">Library Value</IconLink>
+  <IconLink icon={DownloadIcon} href="/tools/backup">Backup</IconLink>  
 </NavBarSection>

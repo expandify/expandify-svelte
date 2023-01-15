@@ -23,7 +23,8 @@
     display: flex;
     justify-content: center;
     border-radius: 100rem;
-
+    outline: none;
+    border: none;
     
     margin: 0.5rem;
 

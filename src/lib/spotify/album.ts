@@ -2,7 +2,7 @@ import { Album } from '$lib/classes/Album';
 import { Track } from '$lib/classes/Track';
 import { Cache } from '$lib/stores/cache';
 import type SpotifyWebApi from 'spotify-web-api-js';
-import { makePagingRequest } from './request';
+import { handleRequest, makePagingRequest } from './request';
 import { error } from '@sveltejs/kit';
 
 export async function reloadSavedAlbumsWithTracks() {
@@ -42,4 +42,12 @@ export async function reloadSavedAlbumsWithTracks() {
 		console.error(err);
 		throw error(500, "Error on loading Albums")
 	}
+}
+
+
+export async function getAlbumNoTracks(id: string): Promise<Album> {
+
+	const album = await handleRequest((api) => api.getAlbum(id));
+
+	return Album.fromFullAlbum(album, []);
 }
