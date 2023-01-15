@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PlaylistView from '$lib/components/PlaylistView.svelte';
+	import PlaylistView from '$lib/components/views/PlaylistView.svelte';
 	import { reloadUserPlaylistsWithTracks } from '$lib/spotify/playlist';
 	import { playlistCache } from '$lib/stores/cache';
 </script>

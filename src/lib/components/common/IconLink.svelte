@@ -18,6 +18,10 @@
     justify-content: flex-start;
     align-items: center;
 
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--text-subdued);
+
     // Needs the :global modifier, because classes cannot be passed down to child components.
     // Together with the scoped .menu-list, this will still be scoped
     :global(.icon) {
@@ -25,6 +29,11 @@
       height: 1.5rem;
       margin-right: 0.5rem;
     }
+  }
+
+  .menu-entry:hover {
+    color: var(--text-base);
+    cursor: pointer;
   }
 
 

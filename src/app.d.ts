@@ -28,5 +28,4 @@ declare interface SpotifyData {}
 
 declare interface State {
 	authenticated: boolean;
-	darkTheme: boolean;
 }

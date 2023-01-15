@@ -36,7 +36,6 @@ export async function reloadUserPlaylistsWithTracks() {
 			const tracks = playlistTracks.map((t) => Track.fromPlaylistTrack(t));
 
 			const toCache = Playlist.fromFullPlaylist(playlistFull, tracks);
-      console.log(toCache);
 
 			currentLoaded++;
 			Cache.setLoadedItems(Cache.playlists, currentLoaded);

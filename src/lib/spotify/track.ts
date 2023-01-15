@@ -4,7 +4,7 @@ import type SpotifyWebApi from 'spotify-web-api-js';
 import { makePagingRequest } from './request';
 import { error } from '@sveltejs/kit';
 
-export async function realoadSavedTracks() {
+export async function reloadSavedTracks() {
 	try {
 		Cache.clear(Cache.tracks);
 		Cache.setState(Cache.tracks, Cache.State.Loading);

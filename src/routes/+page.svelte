@@ -5,6 +5,7 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { state } from '$lib/stores/state';
+	import ButtonSpotify from '$lib/components/buttons/ButtonSpotify.svelte';
 
 	if (browser) {
 		getToken();
@@ -24,7 +25,7 @@
 <h1>Welcome to Expandify</h1>
 
 {#if !$state.authenticated}
-	<button on:click={authorize}>Login with Spotify</button>
+	<ButtonSpotify on:click={authorize}><h3>Login with Spotify</h3></ButtonSpotify>
 {/if}
 
 <style lang="scss">

@@ -5,12 +5,12 @@ import type { Playlist } from '$lib/classes/Playlist';
 import type { Track } from '$lib/classes/Track';
 import { get, writable, type Writable } from 'svelte/store';
 
-const ALBUM_CACHE_NAME = 'albumCache';
-const ARTIST_CACHE_NAME = 'artistCache';
-const PLAYLIST_CACHE_NAME = 'playlistCache';
-const TRACK_CACHE_NAME = 'trackCache';
-
 export namespace Cache {
+	export const ALBUM_CACHE_NAME = 'albumCache';
+	export const ARTIST_CACHE_NAME = 'artistCache';
+	export const PLAYLIST_CACHE_NAME = 'playlistCache';
+	export const TRACK_CACHE_NAME = 'trackCache';
+
 	export declare interface Data<T extends SpotifyData> {
 		// The name of the cache
 		name: string;
@@ -135,10 +135,10 @@ export const playlistCache = Cache.playlists;
 export const trackCache = Cache.tracks;
 
 if (browser) {
-	let albums = window.sessionStorage.getItem(ALBUM_CACHE_NAME);
-	let artists = window.sessionStorage.getItem(ARTIST_CACHE_NAME);
-	let playlists = window.sessionStorage.getItem(PLAYLIST_CACHE_NAME);
-	let tracks = window.sessionStorage.getItem(TRACK_CACHE_NAME);
+	let albums = window.sessionStorage.getItem(Cache.ALBUM_CACHE_NAME);
+	let artists = window.sessionStorage.getItem(Cache.ARTIST_CACHE_NAME);
+	let playlists = window.sessionStorage.getItem(Cache.PLAYLIST_CACHE_NAME);
+	let tracks = window.sessionStorage.getItem(Cache.TRACK_CACHE_NAME);
 
 	try {
 		Cache.albums.set(JSON.parse(albums ?? ''));
