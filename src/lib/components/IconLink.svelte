@@ -27,8 +27,5 @@
     }
   }
 
-  .menu-entry:hover {
-    
-  }
 
 </style>

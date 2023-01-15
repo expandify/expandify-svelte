@@ -13,8 +13,5 @@
 
 
 <style lang="scss">
-	.playlists {
-		display: flex;
-		flex-direction: column;
-	}
+
 </style>
