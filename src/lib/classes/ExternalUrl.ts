@@ -1,12 +1,11 @@
 export class ExternalUrl implements SpotifyData {
-  spotify!: string;
+	spotify!: string;
 
-  private constructor() {
-  }
+	private constructor() {}
 
-  public static fromExternalUrlObject(euo: SpotifyApi.ExternalUrlObject): ExternalUrl {
-    const externalUrl = new ExternalUrl();
-    externalUrl.spotify = euo.spotify;
-    return externalUrl;
-  }
+	public static fromExternalUrlObject(euo: SpotifyApi.ExternalUrlObject): ExternalUrl {
+		const externalUrl = new ExternalUrl();
+		externalUrl.spotify = euo.spotify;
+		return externalUrl;
+	}
 }

@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<p>Track The Newest Releases Of Your Artists</p>
+<p>Information About Any Artist</p>
 <span>Under Construction</span>
 
 <style lang="scss">

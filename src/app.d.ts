@@ -9,26 +9,24 @@ declare namespace App {
 }
 
 declare interface TokenApiResult {
-	access_token: string
-  scope: string
-  expires_in: number
-  refresh_token: string
+	access_token: string;
+	scope: string;
+	expires_in: number;
+	refresh_token: string;
 }
 
 declare interface AuthData {
-  codeVerifier?: string;
-  state?: string;
-  token?: string;
-  refresh_token?: string;
-  tokenExpires?: string;
-  tokenScope?: string;
-};
-
-declare interface SpotifyData {
-
+	codeVerifier?: string;
+	state?: string;
+	token?: string;
+	refresh_token?: string;
+	tokenExpires?: string;
+	tokenScope?: string;
 }
 
-declare interface State {
-  authenticated: boolean;  
-};
+declare interface SpotifyData {}
 
+declare interface State {
+	authenticated: boolean;
+	darkTheme: boolean;
+}

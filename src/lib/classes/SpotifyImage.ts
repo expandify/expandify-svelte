@@ -1,16 +1,15 @@
 export class SpotifyImage implements SpotifyData {
-  height?: number;
-  url!: string;
-  width?: number;
+	height?: number;
+	url!: string;
+	width?: number;
 
-  private constructor() {
-  }
+	private constructor() {}
 
-  public static fromImageObject(image: SpotifyApi.ImageObject): SpotifyImage {
-    const spotifyImage = new SpotifyImage();
-    spotifyImage.height = image.height;
-    spotifyImage.url = image.url;
-    spotifyImage.width = image.width;
-    return spotifyImage;
-  }
+	public static fromImageObject(image: SpotifyApi.ImageObject): SpotifyImage {
+		const spotifyImage = new SpotifyImage();
+		spotifyImage.height = image.height;
+		spotifyImage.url = image.url;
+		spotifyImage.width = image.width;
+		return spotifyImage;
+	}
 }
