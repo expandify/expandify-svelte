@@ -29,8 +29,10 @@ export async function reloadSavedAlbumsWithTracks() {
 				api.getAlbumTracks(album.album.id, { limit: 50, offset });
 			const albumTracks = await makePagingRequest(tracksFunc, (_) => {}, album.album.tracks);
 			const tracks = albumTracks.map((t) => Track.fromSimplifiedTrack(t));
-
 			const toCache = Album.fromSavedAlbum(album, tracks);
+			const simpleAlbum = Album.fromSimplifiedAlbum(album.album);
+			tracks.forEach(t => t.album = simpleAlbum);
+			
 			currentLoaded++;
 			Cache.setLoadedItems(Cache.albums, currentLoaded);
 			Cache.addItem(Cache.albums, toCache);
