@@ -1,8 +1,28 @@
-import { authenticate } from '$lib/auth/authorize';
-import { authData } from '$lib/stores/authData';
 import { error } from '@sveltejs/kit';
 import SpotifyWebApi from 'spotify-web-api-js';
 import { get } from 'svelte/store';
+
+import { PUBLIC_SPOTIFY_ID } from '$env/static/public';
+import { Spotify, spotifyData } from '$lib/stores/spotify';
+const TOKEN_API_URL = 'https://accounts.spotify.com/api/token';	
+
+
+
+export async function paginagedRequest<T>(
+	func: (api: SpotifyWebApi.SpotifyWebApiJs, offset: number) => Promise<SpotifyApi.PagingObject<T>>,
+	callback: (page: SpotifyApi.PagingObject<T>) => void = (_) => {},
+	offset = 0,
+	next = 'NonNullPlaceholder',
+	payload: T[] = [],
+): Promise<T[]> {
+	return handleRequest((api) => func(api, offset))
+		.then((data) => {callback(data); return data})
+		.then((data) => { 
+			if (!next) { return [...payload, ...data.items] };	
+			return paginagedRequest(func, callback, offset + data.limit, data.next, [...payload, ...data.items]);
+		 })
+		.catch(() => Promise.reject({status: 500, message: "Error fetching paginated data from spotify."}))
+}
 
 /**
  * Makes a paginated request to spotify.
@@ -72,57 +92,52 @@ export async function makeCursorRequest<T>(
  * @returns The function's return value
  */
 export async function handleRequest<T>(func: (api: SpotifyWebApi.SpotifyWebApiJs) => Promise<T>) {
-	let api = await getAuthenticatedApi();
+	let api = new SpotifyWebApi();
+	api.setAccessToken(get(Spotify.data).token!);
 
-	let httpRequest: XMLHttpRequest;
-	try {
-		// Make the initial request.
-		return await func(api);
-	} catch (err: any) {
-		httpRequest = err;
-	}
+	return func(api)
+		.catch(async (err) => {
+			switch (err.status) {
+				case 401:
+					await refreshToken();
+					api.setAccessToken(get(Spotify.data).token!);
+					break;
+				case 429:
+					const retry = err.getResponseHeader('Retry-After');
+					await new Promise((r) => setTimeout(r, Number(retry) * 1000))
+					break;
+				default:
+					return Promise.reject({status: 500, message: `Error fetching data from spotify. Spotify code: ${err.status}`})
+			}
 
-	try {
-		// Try to handle the errors and retry the request.
-		await handleRequestErrors(httpRequest);
-		api = await getAuthenticatedApi();
-		return await func(api);
-	} catch (err: any) {
-		// Throw an error, when the second request also fails.
-		throw error(500, { message: 'Error making the request.' });
-	}
+			return func(api);
+		})
+		.catch((err) => Promise.reject({status: 500, message: `Error fetching data from spotify. Spotify code: ${err.status}`}))
 }
 
-/**
- * Creats an SpotifyWebApi with the current access token from the auth data.
- * @returns The SpotifyWebApi
- */
-async function getAuthenticatedApi() {
-	await authenticate();
-	const spotifyApi = new SpotifyWebApi();
-	spotifyApi.setAccessToken(get(authData).token!);
-	return spotifyApi;
-}
+async function refreshToken() {
+	const response = await fetch(TOKEN_API_URL, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		body: new URLSearchParams({
+			grant_type: 'refresh_token',
+			client_id: PUBLIC_SPOTIFY_ID,
+			refresh_token: get(Spotify.data).refresh_token!
+		})
+	});
 
-/**
- * Handles known errors.
- *
- * Refreshes the access token, when it is expired.
- * Waits for the specified time, when the request is rate limited.
- *
- * @param err The Request
- * @returns Nothing
- */
-async function handleRequestErrors(err: XMLHttpRequest) {
-	if (err.status === 401) {
-		// Authentication will renew the access_token, when possible
-		await authenticate();
-		return;
+	if (!response.ok) {
+		return Promise.reject({status: 401, message: "Cloud not refresh access token"});
 	}
 
-	if (err.status === 429) {
-		const retry = err.getResponseHeader('Retry-After');
-		await new Promise((r) => setTimeout(r, Number(retry) * 1000));
-		return;
-	}
+	const json: TokenApiResult = await response.json();
+
+	Spotify.data.update((value) => ({
+		...value,
+		token: json.access_token,
+		tokenScope: json.scope,
+		tokenExpires: new Date(Date.now() + Number(json.expires_in) * 1000).toISOString()
+	}));
+	
+	return Promise.resolve();
 }

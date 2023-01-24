@@ -6,7 +6,7 @@
 
 </script>
 
-<aside id=container>
+<aside class="sidebar">
 	<div class="nav">
 		<nav>
 			<h1><a id=title href="/">Expandify</a></h1>
@@ -39,7 +39,7 @@
 		background: var(--text-subdued);
 	}
 
-	#container {		
+	.sidebar {		
 		display: flex;
 		flex-direction: column;
 		background-color: var(--background-press);		
@@ -49,7 +49,7 @@
 		top: 0;
 		left: 0;		
 		height: 100vh;
-		width: 20rem;
+		width: 21rem;
 
 		.nav {
 			padding: var(--base-padding);

@@ -10,7 +10,6 @@
   <ArtistCacheIndicator/>
   <PlaylistCacheIndicator/>
   <TrackCacheIndicator/>
-
 </div>
 
 <style lang="scss">
