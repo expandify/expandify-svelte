@@ -1,5 +1,5 @@
 <script lang="ts">
-	  import { reloadSavedAlbumsWithTracks } from '$lib/spotify/album';
+	import { reloadSavedAlbumsWithTracks } from '$lib/spotify/album';
 	import { reloadFollowedArtists } from '$lib/spotify/artist';
 	import { reloadUserPlaylistsWithTracks } from '$lib/spotify/playlist';
 	import { reloadSavedTracks } from "$lib/spotify/track";
@@ -23,8 +23,8 @@
 	} 
 </script>
   <section id=section>
-    <ButtonSpotify on:click={reloadLibrary}><h4>Reload Library</h4></ButtonSpotify>
-    <ButtonSimple on:click={logout}><h4>Logout</h4></ButtonSimple>
+    <ButtonSpotify on:click={reloadLibrary}><h5>Reload</h5></ButtonSpotify>
+    <ButtonSimple on:click={logout}><h5>Logout</h5></ButtonSimple>
   </section>
 
 
@@ -32,6 +32,15 @@
 	
 	#section {
     display: flex;
-    flex-direction: column;     
-  }
+    flex-direction: row;
+
+		h5 {
+			margin: 1rem 0;
+			padding: 0;
+		}
+	}
+
+	@media screen and (max-height: 500px) {
+	
+}
 </style>

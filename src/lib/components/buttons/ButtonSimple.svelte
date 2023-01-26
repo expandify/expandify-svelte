@@ -25,7 +25,7 @@
     border-radius: 100rem;
     outline: none;
     border: none;
-    
+    padding: 0 2rem ;
     margin: 0.5rem;
 
     .content {
