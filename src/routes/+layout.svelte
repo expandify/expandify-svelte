@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.scss';
-	import FloatingCacheIndicators from '$lib/components/layout/FloatingCacheIndicators.svelte';
+	import FloatingCacheIndicators from '$lib/components/indicators/FloatingCacheIndicators.svelte';
 </script>
 
 <div class="page">

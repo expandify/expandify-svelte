@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';	
 	import { PUBLIC_SPOTIFY_ID, PUBLIC_SPOTIFY_REDIRECT_URI } from '$env/static/public';
 	import { Spotify, spotifyData } from '$lib/stores/spotify';
 	import { browser } from '$app/environment';
@@ -8,9 +8,6 @@
 	const code = $page.url.searchParams.get('code');
 
 	if (browser) {
-		console.log(code);
-		console.log(JSON.stringify($spotifyData, null, 2));
-		
 		
 		if (!code || !$spotifyData.codeVerifier) {
 			// TODO error handling

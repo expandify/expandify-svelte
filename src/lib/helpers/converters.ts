@@ -23,3 +23,17 @@ export function msToTime(s: number, milli = false) {
   }
   return res;
 }
+
+
+export function formateDate(dateString?: string) {
+
+  if (!dateString) {
+    return "unknown"
+  }
+  const date = new Date(dateString);
+  const month = date.toLocaleString('en-US', { month: 'short' });
+  const day = date.getDay();
+  const year = date.getFullYear();
+
+  return `${month} ${day} ${year}`
+}

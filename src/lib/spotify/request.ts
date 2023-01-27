@@ -97,10 +97,12 @@ export async function handleRequest<T>(func: (api: SpotifyWebApi.SpotifyWebApiJs
 
 	return func(api)
 		.catch(async (err) => {
+			
 			switch (err.status) {
 				case 401:
 					await refreshToken();
 					api.setAccessToken(get(Spotify.data).token!);
+					
 					break;
 				case 429:
 					const retry = err.getResponseHeader('Retry-After');
@@ -116,6 +118,7 @@ export async function handleRequest<T>(func: (api: SpotifyWebApi.SpotifyWebApiJs
 }
 
 async function refreshToken() {
+	
 	const response = await fetch(TOKEN_API_URL, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -123,7 +126,7 @@ async function refreshToken() {
 			grant_type: 'refresh_token',
 			client_id: PUBLIC_SPOTIFY_ID,
 			refresh_token: get(Spotify.data).refresh_token!
-		})
+		}).toString()
 	});
 
 	if (!response.ok) {
@@ -131,7 +134,7 @@ async function refreshToken() {
 	}
 
 	const json: TokenApiResult = await response.json();
-
+	
 	Spotify.data.update((value) => ({
 		...value,
 		token: json.access_token,

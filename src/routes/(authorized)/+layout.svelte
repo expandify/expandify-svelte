@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { afterNavigate, goto } from '$app/navigation';
-	import NavBar from '$lib/components/layout/navbar/NavBar.svelte';
+	import NavBar from '$lib/components/navbar/NavBar.svelte';
 	import { Spotify } from '$lib/stores/spotify';
 
 	import type { AfterNavigate } from '@sveltejs/kit';
@@ -31,14 +31,10 @@
 		flex-direction: row;
 		min-height: 100vh;					
 		.content {									
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
+			width: 100%;
 			box-sizing: border-box;
 			padding: 2rem 2rem 2rem 1rem;
-			width: 100%;			
-			
+			width: 100%;						
 		}
 	}
 </style>

@@ -1,25 +1,31 @@
 <script lang="ts">
 	import { reloadSavedAlbumsWithTracks } from '$lib/spotify/album';
 	import { albumCache } from '$lib/stores/cache';
+	import ButtonSimpleElevated from '$lib/components/buttons/ButtonSimpleElevated.svelte';
+	import CardGrid from '$lib/components/layout/CardGrid.svelte';
+
+	$: albums = $albumCache.items.map(album => ({
+		title: album.name,
+		subtitle: album.artists?.map(a => a.name).join(", "),
+		image: album?.images?.at(0)?.url,
+		fallbackSvg: "album",
+		href: null
+	}))
+
 </script>
 
-<p>Albums</p>
-
-<button on:click={reloadSavedAlbumsWithTracks}>Refresh Albums</button>
-
-<div class="albums">
-	{#each $albumCache.items as album}
-		<h1>{album.name}</h1>
-
-		{#each album.tracks as track}
-			<span>{track.name}</span>
-		{/each}
-	{/each}
+<div class="header">
+	<h2>Albums</h2>
+	<ButtonSimpleElevated on:click={reloadSavedAlbumsWithTracks}>Reload Albums</ButtonSimpleElevated>
 </div>
 
+<CardGrid cards={albums} />
+
 <style lang="scss">
-	.albums {
+
+	.header {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
+		justify-content: space-between;
 	}
 </style>

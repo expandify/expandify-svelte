@@ -1,3 +1,4 @@
+
 <script lang="ts">
 	import { createEventDispatcher } from "svelte";
 
@@ -15,15 +16,16 @@
 
 <style lang="scss">
   .spotify-button {
-    background-color: var(--background-press);
+    background-color: var(--background-elevated-base);
     cursor: pointer;
     color: var(--text-base);
     font-weight: 600;
     display: flex;
     justify-content: center;
     border-radius: 100rem;
-
-    outline: 0.1rem solid var(--text-subdued);
+    outline: none;
+    border: none;
+    padding: 0 2rem ;
     margin: 0.5rem;
 
     .content {
@@ -32,6 +34,8 @@
     }
   }
   .spotify-button:hover {
-    outline: 0.1rem solid var(--text-base);
+    background-color: var(--background-elevated-highlight);
+
+    //outline: 0.1rem solid var(--text-base);
   }
 </style>
