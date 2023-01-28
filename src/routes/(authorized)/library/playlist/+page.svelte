@@ -21,11 +21,7 @@
 	<ButtonSimpleElevated on:click={Playlists.loadAll}>Reload Playlists</ButtonSimpleElevated>
 </div>
 
-<h3>Playlists - {playlists.length}</h3>
 <CardGrid cards={playlists} />
-
-<h3>Playlists - {playlists.length}</h3>
-<CardGrid cards={playlists.slice(1,2)} />
 
 <style lang="scss">
 

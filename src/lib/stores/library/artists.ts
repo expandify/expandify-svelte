@@ -1,41 +1,51 @@
-
 import { makeRequest } from "$lib/spotify/api";
 import { artist } from "$lib/spotify/converter";
 import { writable } from "svelte/store";
-import { Indicator } from "../indicators";
-
-const enum State {
-  Uninitialized = 'Uninitialized',
-  Ready = 'Ready',
-  Error = 'Error',  
-}
+import { StoreState } from "$lib/stores/types";
 
 type ArtistStore = {  
 
   artists: Artist[];
-  
+  total_artists?: number;
   lastUpdated: Date | null;
-  status: State
+  status: StoreState
 }
 
 export const artistStore = writable<ArtistStore>({
   artists: [],
+  total_artists: 0,
   lastUpdated: null,
-  status: State.Uninitialized
+  status: StoreState.Uninitialized
 })
 
+function upadteStatus(status: StoreState) {
+  artistStore.update((s) => ({...s, status: status}))
+}
+
+function addArtists(as: Artist[]) {
+  artistStore.update((s) => ({...s, artists: [...s.artists, ...as]}));
+}
+
+function setTotal(total?: number) {
+  artistStore.update((p) => ({...p, total_artists: total}));
+}
+
+function refreshLastUpdated() {
+  artistStore.update((s) => ({...s, lastUpdated: new Date(Date.now())}));
+}
 
 export module Artists {
   
   export async function loadAll() {
     try {
-      artistStore.update((s) => ({...s, status: State.Uninitialized}))
-      const as = await getAll();
-      await fillStore(as);
-      Indicator.addSuccess("Artists ready!")
+      upadteStatus(StoreState.Loading);
+
+      await getAll();
+
+      refreshLastUpdated();
+      upadteStatus(StoreState.Ready);
     } catch (error) {
-      artistStore.update((s) => ({...s, status: State.Error}))
-      Indicator.addError("Error Loading Artists");
+      upadteStatus(StoreState.Error);
     }
   }
 
@@ -44,26 +54,15 @@ export module Artists {
     let next: string;
     let artists: Artist[] = []
 
-    let {update, stop} = Indicator.addLoading("Loading Artists");
     do {
       const data = await makeRequest((api) => api.getFollowedArtists({ limit: 50, ...(after && { after: after }) }));
       after = data.artists.cursors.after
-		  next = data.artists.next;
-      artists = [...artists, ...data.artists.items.map((d) => artist(d))];
-      update(artists.length, data.artists.total || 0);
+		  next = data.artists.next;      
+      addArtists(data.artists.items.map((d) => artist(d)));
+      setTotal(data.artists.total);
     } while(next)
 
-    stop();
-    Indicator.addAnnouncement("Artists Loaded");
     return artists;
-  }
-
-  async function fillStore(as: Artist[]) {
-    artistStore.set({
-      artists: as,      
-      lastUpdated: new Date(Date.now()),
-      status: State.Ready
-    })
   }
 
 }

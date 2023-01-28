@@ -1,50 +1,41 @@
-
 import { makeRequest } from "$lib/spotify/api";
 import { userPrivate } from "$lib/spotify/converter";
 import { writable } from "svelte/store";
-import { Indicator } from "../indicators";
+import { StoreState } from "$lib/stores/types";
 
-const enum State {
-  Uninitialized = 'Uninitialized',
-  Ready = 'Ready',
-  Error = 'Error',  
-}
 
 type UserStore = {  
-
   user: UserPrivate | null;
-  
   lastUpdated: Date | null;
-  status: State
+  status: StoreState
 }
 
 export const userStore = writable<UserStore>({
   user: null,
   lastUpdated: null,
-  status: State.Uninitialized
+  status: StoreState.Uninitialized
 })
+
+function upadteStatus(status: StoreState) {
+  userStore.update((s) => ({...s, status: status}))
+}
 
 
 export module User {
   
+
   export async function laod() {
     try {
-      userStore.update((s) => ({...s, status: State.Uninitialized}))
-      const u = userPrivate(await makeRequest((api) => api.getMe()));  
-      await fillStore(u);
-      Indicator.addSuccess("User Data loaded")
-    } catch (error) {
-      userStore.update((s) => ({...s, status: State.Error}))
-      Indicator.addError("Error Loading User Data");
-    }
-  }
+      upadteStatus(StoreState.Loading);
 
-  async function fillStore(u: UserPrivate) {
-    userStore.set({
-      user: u,      
-      lastUpdated: new Date(Date.now()),
-      status: State.Ready
-    })
+      const u = userPrivate(await makeRequest((api) => api.getMe()));  
+
+      userStore.update((s) => ({...s, lastUpdated: new Date(Date.now())}))
+      userStore.update((s) => ({...s, user: u}))
+      upadteStatus(StoreState.Ready);
+    } catch (error) {
+      upadteStatus(StoreState.Error);
+    }
   }
 
 }

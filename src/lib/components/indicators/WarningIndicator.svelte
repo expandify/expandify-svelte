@@ -2,10 +2,12 @@
 	import Indicator from "./Indicator.svelte";
 
 	export let message: string;
+
+	const TIMEOUT = 8000;
 </script>
 
 
-<Indicator color="var(--text-warning)">
+<Indicator color="var(--text-warning)" timeout={TIMEOUT}>
 	<span>{message}</span>
 </Indicator>
 

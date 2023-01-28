@@ -1,65 +1,70 @@
-
+import { StoreState } from "$lib/stores/types";
 import { makeRequest } from "$lib/spotify/api";
-import { playlist, playlistSimplified, playlistTrack, userPrivate } from "$lib/spotify/converter";
-import { get, writable } from "svelte/store";
-import { Indicator } from "../indicators";
-import { User, userStore } from "./user";
+import { playlist, playlistSimplified, playlistTrack } from "$lib/spotify/converter";
+import { writable } from "svelte/store";
 
-const enum State {
-  Uninitialized = 'Uninitialized',
-  Ready = 'Ready',
-  Error = 'Error',  
-}
+
 
 type PlaylistStore = {  
   playlists: Playlist[];
+  total_playlists: number;
   lastUpdated: Date | null;
-  status: State
+  status: StoreState
 }
 
 export const playlistStore = writable<PlaylistStore>({
   playlists: [],  
+  total_playlists: 0,
   lastUpdated: null,
-  status: State.Uninitialized
+  status: StoreState.Uninitialized
 })
 
+function upadteStatus(status: StoreState) {
+  playlistStore.update((s) => ({...s, status: status}))
+}
+
+function addPlaylist(playlist: Playlist) {
+  playlistStore.update((s) => ({...s, playlists: [...s.playlists, playlist]}));
+}
+
+function setTotal(total: number) {
+  playlistStore.update((p) => ({...p, total_playlists: total}));
+}
+
+function refreshLastUpdated() {
+  playlistStore.update((s) => ({...s, lastUpdated: new Date(Date.now())}));
+}
 
 export module Playlists {
-  
+
   export async function loadAll() {
     try {
-      playlistStore.update((s) => ({...s, status: State.Uninitialized}))
-      const ps = await getAllWithTracks();
-      await fillStore(ps);
-      Indicator.addSuccess("Playlists ready!")
+      upadteStatus(StoreState.Loading);
+
+      await loadAllWithTracks();
+
+      refreshLastUpdated();
+      upadteStatus(StoreState.Ready);
     } catch (error) {
-      playlistStore.update((s) => ({...s, status: State.Error}))
-      Indicator.addError("Error loading Playlists");
+      upadteStatus(StoreState.Error);
     }
   }
 
-  async function getAllWithTracks() {
-    const playlists: Playlist[] = []
+  async function loadAllWithTracks() {
     const simplePlaylists = await getUserPlaylists();
-    
-    let {update, stop} = Indicator.addLoading("Loading Playlist Tracks");
-    let i = 1;
+    setTotal(simplePlaylists.length);
+
     for (const simplePlaylist of simplePlaylists) {
       const playlist = await getPlaylistWithTracks(simplePlaylist);
-      playlists.push(playlist);
-      update(++i, simplePlaylists.length);
+      addPlaylist(playlist);
     } 
-    stop();
-    Indicator.addAnnouncement("All Playlist Tracks Loaded");
-    return playlists;
   }
 
   async function getUserPlaylists() {
     let offset = 0;
     let next: string;
     let playlists: PlaylistSimplified[] = []
-
-    let {update, stop} = Indicator.addLoading("Loading Playlists");
+    
     do {
       // Typescript throws a warning: {} not assignable to string
       // This can be ignored, since the library does some fuckery
@@ -68,11 +73,7 @@ export module Playlists {
       offset += data.limit;
 		  next = data.next;
       playlists = [...playlists, ...data.items.map(d => playlistSimplified(d))];
-      update(playlists.length, data.total);
     } while(next)
-
-    stop();
-    Indicator.addAnnouncement("Playlists Loaded");
     return playlists;
   }
 
@@ -91,14 +92,6 @@ export module Playlists {
     }
 
     return playlist(playlistFull, tracks);
-  }
-
-  async function fillStore(ps: Playlist[]) { 
-    playlistStore.set({
-      playlists: ps,
-      lastUpdated: new Date(Date.now()),
-      status: State.Ready
-    })
   }
 
 }

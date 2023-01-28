@@ -6,10 +6,11 @@ import Indicator from "./Indicator.svelte";
 	export let message: string;
 	export let value: number | null = null;
 	export let max: number | null = null;
+
 </script>
 
 
-<Indicator>
+<Indicator alwaysVisible={true}>
 	<div class="content">
 		{#if value && max}
 		<span>{message}</span>		

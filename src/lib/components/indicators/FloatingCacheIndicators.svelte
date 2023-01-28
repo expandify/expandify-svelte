@@ -1,32 +1,59 @@
 <script lang="ts">
-	import { indicators, Indicator } from "$lib/stores/indicators";
-	import AnnouncementIndicator from "./AnnouncementIndicator.svelte";
-	import ErrorIndicator from "./ErrorIndicator.svelte";
-	import LoadingIndicator from "./LoadingIndicator.svelte";
-	import SuccessIndicator from "./SuccessIndicator.svelte";
-	import WarningIndicator from "./WarningIndicator.svelte";
+	import { albumStore } from "$lib/stores/library/albums";
+	import { artistStore } from "$lib/stores/library/artists";
+	import { playlistStore } from "$lib/stores/library/playlists";	
+	import { trackStore } from "$lib/stores/library/tracks";
+	import { userStore } from "$lib/stores/library/user";
+  import StoreStateIndicator from "./StoreStateIndicator.svelte"
+
 </script>
 
 
 <div class="floating-indicators">
-  {#each $indicators as indicator}
-  {#if indicator.type === Indicator.Type.Announcement }
-  <AnnouncementIndicator message={indicator.message}/>
 
-  {:else if indicator.type === Indicator.Type.Error }
-  <ErrorIndicator message={indicator.message}/>
+  <StoreStateIndicator 
+    state={$userStore.status}
+    successMsg="Playlist Ready" 
+    loadingMsg="Loading Playlists" 
+    errorMsg="Error Loading Playlists" 
+    value={null}
+    max={null}/>
 
-  {:else if indicator.type === Indicator.Type.Loading }
-  <LoadingIndicator message={indicator.message} value={indicator.value} max={indicator.max}/>
 
-  {:else if indicator.type === Indicator.Type.Success }
-  <SuccessIndicator message={indicator.message}/>
+  <StoreStateIndicator 
+    state={$albumStore.status}
+    successMsg="Albums Ready" 
+    loadingMsg="Loading Albums" 
+    errorMsg="Error Loading Albums" 
+    value={$albumStore.albums.length} 
+    max={$albumStore.total_albums} />
 
-  {:else if indicator.type === Indicator.Type.Warning }
-  <WarningIndicator message={indicator.message}/>
 
-  {/if}
-  {/each}
+  <StoreStateIndicator 
+    state={$artistStore.status}
+    successMsg="Artists Ready" 
+    loadingMsg="Loading Artists" 
+    errorMsg="Error Loading Artists" 
+    value={$artistStore.artists.length} 
+    max={$artistStore.total_artists || null} />
+
+
+  <StoreStateIndicator 
+    state={$playlistStore.status}
+    successMsg="Playlists Ready" 
+    loadingMsg="Loading Playlists" 
+    errorMsg="Error Loading Playlists" 
+    value={$playlistStore.playlists.length} 
+    max={$playlistStore.total_playlists} />
+
+
+  <StoreStateIndicator 
+    state={$trackStore.status}
+    successMsg="Tracks Ready" 
+    loadingMsg="Loading Tracks" 
+    errorMsg="Error Loading Tracks" 
+    value={$trackStore.tracks.length} 
+    max={$trackStore.total_tracks} />
 </div>
 
 <style lang="scss">

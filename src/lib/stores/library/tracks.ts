@@ -1,69 +1,66 @@
-
 import { makeRequest } from "$lib/spotify/api";
 import { savedTrack } from "$lib/spotify/converter";
 import { writable } from "svelte/store";
-import { Indicator } from "../indicators";
+import { StoreState } from "$lib/stores/types";
 
-const enum State {
-  Uninitialized = 'Uninitialized',
-  Ready = 'Ready',
-  Error = 'Error',  
-}
 
 type TrackStore = {  
 
   tracks: SavedTrack[];
-  
+  total_tracks: number;
   lastUpdated: Date | null;
-  status: State
+  status: StoreState
 }
 
 export const trackStore = writable<TrackStore>({
   tracks: [],
+  total_tracks: 0,
   lastUpdated: null,
-  status: State.Uninitialized
+  status: StoreState.Uninitialized
 })
 
+function upadteStatus(status: StoreState) {
+  trackStore.update((s) => ({...s, status: status}))
+}
+
+function addTracks(ts: SavedTrack[]) {
+  trackStore.update((s) => ({...s, tracks: [...s.tracks, ...ts]}));
+}
+
+function setTotal(total: number) {
+  trackStore.update((p) => ({...p, total_tracks: total}));
+}
+
+function refreshLastUpdated() {
+  trackStore.update((s) => ({...s, lastUpdated: new Date(Date.now())}));
+}
 
 export module Tracks {
   
   export async function loadAll() {
     try {
-      trackStore.update((t) => ({...t, status: State.Uninitialized}))
-      const ts = await getAll();
-      await fillStore(ts);
-      Indicator.addSuccess("Tracks ready!")
+      upadteStatus(StoreState.Loading);
+
+      await getAll();
+      
+      refreshLastUpdated();
+      upadteStatus(StoreState.Ready);
     } catch (error) {
-      trackStore.update((s) => ({...s, status: State.Error}))
-      Indicator.addError("Error Loading Tracks");
+      upadteStatus(StoreState.Error);
     }
   }
 
   async function getAll() {
     let offset = 0;
     let next: string;
-    let tracks: SavedTrack[] = []
 
-    let {update, stop} = Indicator.addLoading("Loading Tracks");
     do {
       const data = await makeRequest((api) => api.getMySavedTracks({ limit: 50, offset }));
       offset += data.limit;
 		  next = data.next;
-      tracks = [...tracks, ...data.items.map((d) => savedTrack(d))];
-      update(tracks.length, data.total);
+      addTracks(data.items.map((d) => savedTrack(d)));
+      setTotal(data.total);
     } while(next)
-
-    stop();
-    Indicator.addAnnouncement("Tracks Loaded");
-    return tracks;
-  }
-
-  async function fillStore(ts: SavedTrack[]) {
-    trackStore.set({
-      tracks: ts,      
-      lastUpdated: new Date(Date.now()),
-      status: State.Ready
-    })
   }
 
 }
