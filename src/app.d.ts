@@ -24,7 +24,6 @@ declare interface AuthData {
 	tokenScope?: string;
 }
 
-declare interface SpotifyData {}
 
 declare interface State {
 	authenticated: boolean;

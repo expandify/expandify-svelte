@@ -36,8 +36,7 @@
   }
 
   .picture {    
-    max-width:100%;
-    max-height:100%;
+    width: 100%;
     aspect-ratio: 1/1;      
     
     .fallback {

@@ -4,7 +4,8 @@
 	import { PUBLIC_SPOTIFY_ID, PUBLIC_SPOTIFY_REDIRECT_URI } from '$env/static/public';
 	import { Spotify, spotifyData } from '$lib/stores/spotify';
 	import { browser } from '$app/environment';
-
+	import { User } from '$lib/stores/library/user';
+	
 	const code = $page.url.searchParams.get('code');
 
 	if (browser) {
@@ -15,6 +16,7 @@
 		}
 
 		tokenRequest().then(() => {
+			User.laod();
 			goto("/dashboard");
 		})
 	}

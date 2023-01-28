@@ -14,12 +14,14 @@
 
 <div class="cards" in:fade>
   {#each cards as card}
+  <div class="card">
     <Card title={card.title} 
           subtitle={card.subtitle} 
           href={card.href}
           image={card.image}
           fallbackSvg={card.fallbackSvg}
-          imgRounded={imgRounded}/>
+          imgRounded={imgRounded}/>    
+  </div>
   {/each}
 </div>
 
@@ -28,8 +30,12 @@
 	.cards {
 		display: grid;
     grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-    gap: 1rem;
+    gap: 2rem;
     justify-content: space-between;
 		
+    .card {
+      max-width: 15rem;
+      
+    }
 	}
 </style>

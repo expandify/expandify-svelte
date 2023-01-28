@@ -1,15 +1,32 @@
 <script lang="ts">
-  import AlbumCacheIndicator from "./cacheStateIndicators/AlbumCacheIndicator.svelte";
-	import ArtistCacheIndicator from "./cacheStateIndicators/ArtistCacheIndicator.svelte";
-	import PlaylistCacheIndicator from "./cacheStateIndicators/PlaylistCacheIndicator.svelte";
-	import TrackCacheIndicator from "./cacheStateIndicators/TrackCacheIndicator.svelte";
+	import { indicators, Indicator } from "$lib/stores/indicators";
+	import AnnouncementIndicator from "./AnnouncementIndicator.svelte";
+	import ErrorIndicator from "./ErrorIndicator.svelte";
+	import LoadingIndicator from "./LoadingIndicator.svelte";
+	import SuccessIndicator from "./SuccessIndicator.svelte";
+	import WarningIndicator from "./WarningIndicator.svelte";
 </script>
 
+
 <div class="floating-indicators">
-  <AlbumCacheIndicator/>
-  <ArtistCacheIndicator/>
-  <PlaylistCacheIndicator/>
-  <TrackCacheIndicator/>
+  {#each $indicators as indicator}
+  {#if indicator.type === Indicator.Type.Announcement }
+  <AnnouncementIndicator message={indicator.message}/>
+
+  {:else if indicator.type === Indicator.Type.Error }
+  <ErrorIndicator message={indicator.message}/>
+
+  {:else if indicator.type === Indicator.Type.Loading }
+  <LoadingIndicator message={indicator.message} value={indicator.value} max={indicator.max}/>
+
+  {:else if indicator.type === Indicator.Type.Success }
+  <SuccessIndicator message={indicator.message}/>
+
+  {:else if indicator.type === Indicator.Type.Warning }
+  <WarningIndicator message={indicator.message}/>
+
+  {/if}
+  {/each}
 </div>
 
 <style lang="scss">

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from "svelte/transition";
 	import Image from "./Image.svelte";
 
   
@@ -13,96 +14,53 @@
   
 </script>
 
-<a class="card" href={href}>
-
-  <Image image={image} 
-         fallbackSvg={fallbackSvg} 
-         rounded={imgRounded}
-         imageAlt={title}/>  
-  
-  
-  <div class="card-bottom">
-    <div class="title">{title}</div>
-    <div class="subtitle">{subtitle || ""}</div>
+<a in:fade href={href}>
+  <div class="card" >
+    <Image image={image} 
+          fallbackSvg={fallbackSvg} 
+          rounded={imgRounded}
+          imageAlt={title}/>  
+    
+    
+    <div class="card-bottom">
+      <div class="title">{title}</div>
+      <div class="subtitle">{subtitle || ""}</div>
+    </div>
   </div>
 </a>
-
 <style lang="scss">
 
 
   .card {    
     padding: 1rem;
     border-radius: 0.3rem;
-    background-color: var(--background-elevated-base);
-    transition: 0.3s;
-    text-decoration: none;
-    
-    .rounded {
-      border-radius: 100%;
-    }
+    background-color: var(--background-elevated-base); 
 
-    .picture {
-      border-radius: 0.2rem;
 
-      .fallback {
-        background-color: var(--background-elevated-highlight);
-        box-shadow: 0 0 1rem 1rem var(--background-base);
-        position: relative;
-        width: 100%;      
-        margin-bottom: 0.7rem;
-
-        .svg-sizer {        
-          position:absolute;
-          width: 100%;  
-          height: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          :global(.svg) {       
-            width: 40%;
-          }
-        }
+      .card-bottom {
         
-      }
+        margin-top: 0.7rem;
+        .title {
+          font-size: 1.2rem;
+          margin-bottom: 0.2rem;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          color: var(--text-base);
+        }
 
-      .fallback:after {
-        content: "";
-        display: block;
-        padding-bottom: 100%;
-      }
-
-      .image {
-        width: 100%;
-        object-fit: cover;
-        aspect-ratio: 1/1;        
-        margin-bottom: 0.7rem;
-      }
+        .subtitle {
+          font-size: 0.8rem;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          color: var(--text-subdued);
+        }
     }    
-
-    .card-bottom {
-      margin-top: 0.7rem;
-      .title {
-        font-size: 1.2rem;
-        margin-bottom: 0.2rem;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        color: var(--text-base);
-      }
-
-      .subtitle {
-        font-size: 0.8rem;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        color: var(--text-subdued);
-      }
-    }
   }
 
   .card:hover {
     cursor: pointer;
-    color: unset;
     background-color: var(--background-elevated-highlight);
     
   }

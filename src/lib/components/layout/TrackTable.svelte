@@ -1,10 +1,9 @@
 <script lang="ts">
-	import type { Track } from "$lib/classes/Track";
 	import Image from "$lib/components/common/Image.svelte";
 	import { formateDate, msToTime } from "$lib/helpers/converters";
 	import { ClockIcon } from "svelte-feather-icons";
   
-  export let tracks: Track[];
+  export let tracks: SavedTrack[];
 
   let firstVisibleTrack = 0;
   let visibleRows = 0;

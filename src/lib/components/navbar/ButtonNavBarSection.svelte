@@ -1,24 +1,22 @@
 <script lang="ts">
-	import { reloadSavedAlbumsWithTracks } from '$lib/spotify/album';
-	import { reloadFollowedArtists } from '$lib/spotify/artist';
-	import { reloadUserPlaylistsWithTracks } from '$lib/spotify/playlist';
-	import { reloadSavedTracks } from "$lib/spotify/track";
-	import { Cache } from "$lib/stores/cache";
 	import { goto } from "$app/navigation";
 	import ButtonSimple from "$lib/components/buttons/ButtonSimple.svelte";
 	import ButtonSpotify from "$lib/components/buttons/ButtonSpotify.svelte";
+	import { Albums } from "$lib/stores/library/albums";
+	import { Artists } from "$lib/stores/library/artists";
+	import { Playlists } from "$lib/stores/library/playlists";
+	import { Tracks } from "$lib/stores/library/tracks";
 	import { Spotify } from '$lib/stores/spotify';
 
   function reloadLibrary() {
-		reloadUserPlaylistsWithTracks();
-		reloadSavedAlbumsWithTracks();
-    reloadSavedTracks();
-		reloadFollowedArtists();
+		Playlists.loadAll();
+		Albums.loadAll();
+		Artists.loadAll();
+		Tracks.loadAll();
 	}
 
 	function logout() {
 		Spotify.logout();
-		Cache.clearAll();
     goto("/");
 	} 
 </script>
