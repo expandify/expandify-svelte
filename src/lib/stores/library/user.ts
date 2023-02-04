@@ -1,5 +1,3 @@
-import { makeRequest } from "$lib/spotify/api";
-import { userPrivate } from "$lib/spotify/converter";
 import { writable } from "svelte/store";
 import { StoreState } from "$lib/stores/types";
 
@@ -16,26 +14,22 @@ export const userStore = writable<UserStore>({
   status: StoreState.Uninitialized
 })
 
-function upadteStatus(status: StoreState) {
+export function clearUser() {
+  userStore.set({
+    user: null,
+    lastUpdated: null,
+    status: StoreState.Uninitialized
+  });
+}
+
+export function updateStatus(status: StoreState) {
   userStore.update((s) => ({...s, status: status}))
 }
 
+export function setUser(user: UserPrivate) {
+  userStore.update((s) => ({...s, user: user}))
+}
 
-export module User {
-  
-
-  export async function laod() {
-    try {
-      upadteStatus(StoreState.Loading);
-
-      const u = userPrivate(await makeRequest((api) => api.getMe()));  
-
-      userStore.update((s) => ({...s, lastUpdated: new Date(Date.now())}))
-      userStore.update((s) => ({...s, user: u}))
-      upadteStatus(StoreState.Ready);
-    } catch (error) {
-      upadteStatus(StoreState.Error);
-    }
-  }
-
+export function setUpdatedNow() {
+  userStore.update((s) => ({...s, lastUpdated: new Date(Date.now())}));
 }

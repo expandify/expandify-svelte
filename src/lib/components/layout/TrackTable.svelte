@@ -1,8 +1,7 @@
 <script lang="ts">
-	import Image from "$lib/components/common/Image.svelte";
-	import { formateDate, msToTime } from "$lib/helpers/converters";
-	import { ClockIcon } from "svelte-feather-icons";
-  
+	import { formateDate, msToTime } from "$lib/helpers/converters";  
+	import AlbumImage from "../images/AlbumImage.svelte";
+
   export let tracks: SavedTrack[];
 
   let firstVisibleTrack = 0;
@@ -51,17 +50,14 @@
     <span class="col-image"></span>    
     <span class="col-album">ALBUM</span>
     <span class="col-date">DATE ADDED</span>
-    <ClockIcon class="time"/>
+    <span class="col-time">TIME</span>
   </div>
   {#key firstVisibleTrack}
   {#each tracks as track, i}
   {#if indexInView(i)}
   <div class="row content-row">
     <span class="col-position">{i + 1}</span>
-    <Image image={track.album?.images.at(0)?.url}
-          fallbackSvg={"album"}
-          imageAlt={track.album?.name}
-          rounded={"none"}/>
+    <AlbumImage album={track.album} borderRadius="0"/>
     <div class="title-box overflow">      
       <span class="title overflow">{track.name}</span> 
       <span class="artists">{track.artists.map(a => a.name).join(", ")}</span> 

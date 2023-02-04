@@ -1,33 +1,36 @@
 <script lang="ts">
-	import type { Album } from '$lib/classes/Album';
-	import type { Artist } from '$lib/classes/Artist';
-	import type { Playlist } from '$lib/classes/Playlist';
-	import type { Track } from '$lib/classes/Track';
-	import { albumCache, artistCache, playlistCache, trackCache } from '$lib/stores/cache';
+	import { track } from "$lib/spotify/converter";
+	import { albumStore } from "$lib/stores/library/albums";
+	import { artistStore } from "$lib/stores/library/artists";
+	import { playlistStore } from "$lib/stores/library/playlists";
+	import { trackStore } from "$lib/stores/library/tracks";
 
+
+	
 	let search: string = '';
 	let delayedSearch = search;
 	$: setTimeout(() => (delayedSearch = search), 500);
-
+	
 	let playlists: Playlist[];
 	let playlistsTracks: { [id: string]: Track[] } = {};
-	$: $playlistCache, playlists = searchPlaylists(delayedSearch);
+	$: $playlistStore, playlists = searchPlaylists(delayedSearch);
 
 	let tracks: Track[];
-	$: $trackCache, tracks = searchTracks(delayedSearch, $trackCache.items);
+	$: $trackStore, tracks = searchTracks(delayedSearch, $trackStore.tracks);
 
 	let albums: Album[];
 	let albumTracks: { [id: string]: Track[] } = {};
-	$: $albumCache, albums = searchAlbums(delayedSearch);
+	$: $albumStore, albums = searchAlbums(delayedSearch);
 
+	
 	let artists: Artist[];
-	$: $artistCache, artists = searchArtists(delayedSearch);
+	$: $artistStore, artists = searchArtists(delayedSearch);
 
 	function searchArtists(filter: string) {
 		filter = filter.toLowerCase();
 		const filteredArtists = [];
 
-		for (const artist of $artistCache.items) {
+		for (const artist of $artistStore.artists) {
 			const name = artist.name.toLowerCase();
 
 			if (name.indexOf(filter) !== -1) {
@@ -47,6 +50,8 @@
 				.map((x) => x.name)
 				.join(', ')
 				.toLowerCase();
+
+			// Will be null for TrackSimplified. Is ok, since it will be ignored
 			const album = track.album?.name.toLowerCase();
 
 			if (
@@ -64,7 +69,7 @@
 		filter = filter.toLowerCase();
 		const filteredPlaylists = [];
 
-		for (const playlist of $playlistCache.items) {
+		for (const playlist of $playlistStore.playlists) {
 			const name = playlist.name.toLowerCase();
 
 			const tracks = searchTracks(filter, playlist.tracks);
@@ -81,10 +86,10 @@
 		filter = filter.toLowerCase();
 		const filterdAlbums = [];
 
-		for (const album of $albumCache.items) {
+		for (const album of $albumStore.albums) {
 			const name = album.name.toLowerCase();
-
-			const tracks = searchTracks(filter, album.tracks);
+			
+			const tracks = searchTracks(filter, album.tracks as Track[]);
 			albumTracks[album.id] = tracks;
 
 			if (name.indexOf(filter) !== -1 || tracks.length > 0) {

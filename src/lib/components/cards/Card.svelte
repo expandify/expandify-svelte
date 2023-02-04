@@ -1,26 +1,16 @@
 <script lang="ts">
 	import { fade } from "svelte/transition";
-	import Image from "./Image.svelte";
 
   
   export let title: string;
-  export let subtitle: string | null | undefined;
-  export let href: string | null | undefined = "";
-
-  export let image: string | undefined | null;
-  export let fallbackSvg: string;
-
-  export let imgRounded: "full" | "little" | "none" = "little";
+  export let subtitle: string | null;
+  export let href: string | null = "";
   
 </script>
 
 <a in:fade href={href}>
   <div class="card" >
-    <Image image={image} 
-          fallbackSvg={fallbackSvg} 
-          rounded={imgRounded}
-          imageAlt={title}/>  
-    
+    <slot></slot>    
     
     <div class="card-bottom">
       <div class="title">{title}</div>
@@ -28,21 +18,23 @@
     </div>
   </div>
 </a>
+
 <style lang="scss">
 
 
   .card {    
     padding: 1rem;
-    border-radius: 0.3rem;
-    background-color: var(--background-elevated-base); 
-
+    border-radius: 1rem;
+    background-color: var(--background-elevated-base);     
+    max-width: 12rem;
+    
 
       .card-bottom {
         
-        margin-top: 0.7rem;
+        margin-top: 1rem;
         .title {
           font-size: 1.2rem;
-          margin-bottom: 0.2rem;
+          margin-bottom: 0.5rem;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;

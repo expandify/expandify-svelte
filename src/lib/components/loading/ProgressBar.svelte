@@ -14,17 +14,17 @@
 <style lang="scss">
 
   progress {
-    border-radius: var(--border-radius); 
+    border-radius: 0.5rem; 
     height: 0.5rem;
     width: 100%;
   }
   progress::-webkit-progress-bar {
     background-color: var(--background-highlight);
-    border-radius: var(--border-radius);
+    border-radius: 0.5rem;
   }
   progress::-webkit-progress-value {
     background-color: var(--text-subdued);
-    border-radius: var(--border-radius);
+    border-radius: 0.5rem;
   }
 
   progress::-moz-progress-bar {

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import LoadingDots from "../common/LoadingDots.svelte";
-import ProgressBar from "../common/ProgressBar.svelte";
+	import LoadingDots from "../loading/LoadingDots.svelte";
+import ProgressBar from "../loading/ProgressBar.svelte";
 import Indicator from "./Indicator.svelte";
 
 	export let message: string;

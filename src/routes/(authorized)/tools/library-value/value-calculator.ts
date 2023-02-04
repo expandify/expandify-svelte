@@ -1,5 +1,3 @@
-import type { Album } from "$lib/classes/Album"
-import type { Track } from "$lib/classes/Track";
 import { getAlbumNoTracks } from "$lib/spotify/album";
 import { albumCache, playlistCache, trackCache } from "$lib/stores/cache"
 import { error } from "@sveltejs/kit";

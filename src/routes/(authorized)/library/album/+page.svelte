@@ -1,24 +1,23 @@
 <script lang="ts">
 	import ButtonSimpleElevated from '$lib/components/buttons/ButtonSimpleElevated.svelte';
-	import CardGrid from '$lib/components/layout/CardGrid.svelte';
-	import { Albums, albumStore } from '$lib/stores/library/albums';
-
-	$: albums = $albumStore.albums.map(album => ({
-		title: album.name,
-		subtitle: album.artists.map(a => a.name).join(", "),
-		image: album.images.at(0)?.url,
-		fallbackSvg: "album",
-		href: null
-	}))
+	import AlbumCard from '$lib/components/cards/AlbumCard.svelte';
+	import Grid from '$lib/components/layout/Grid.svelte';
+	import { loadSavedAlbumsWithTracks } from '$lib/spotify/api/albums';
+	import { albumStore } from '$lib/stores/library/albums';
+	
 
 </script>
 
 <div class="header">
-	<h2>Albums</h2>
-	<ButtonSimpleElevated on:click={Albums.loadAll}>Reload Albums</ButtonSimpleElevated>
+	<h2>Albums - {$albumStore.albums.length}</h2>
+	<ButtonSimpleElevated on:click={loadSavedAlbumsWithTracks}>Reload Albums</ButtonSimpleElevated>
 </div>
 
-<CardGrid cards={albums} />
+<Grid>
+	{#each $albumStore.albums as album}
+		<AlbumCard album={album}/>
+	{/each}
+</Grid>
 
 <style lang="scss">
 

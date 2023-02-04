@@ -1,27 +1,22 @@
 <script lang="ts">
 	import ButtonSimpleElevated from '$lib/components/buttons/ButtonSimpleElevated.svelte';
-	import CardGrid from '$lib/components/layout/CardGrid.svelte';
-	import { Playlists, playlistStore } from '$lib/stores/library/playlists';
-
-	function toCards(playlists: Playlist[]) {
-		return playlists.map(playlist => ({
-			title: playlist.name,
-			subtitle: `By ${playlist.owner.display_name}`,
-			image: playlist.images.at(0)?.url,
-			fallbackSvg: "playlist",
-			href: null
-		}))
-	}
-	$: playlists = toCards($playlistStore.playlists);
+	import PlaylistCard from '$lib/components/cards/PlaylistCard.svelte';
+	import Grid from '$lib/components/layout/Grid.svelte';
+	import { loadUserPlaylistsWithTracks } from '$lib/spotify/api/playlsits';
+	import { playlistStore } from '$lib/stores/library/playlists';
 
 </script>
 
 <div class="header">
-	<h2>Playlists - {playlists.length}</h2>
-	<ButtonSimpleElevated on:click={Playlists.loadAll}>Reload Playlists</ButtonSimpleElevated>
+	<h2>Playlists - {$playlistStore.playlists.length}</h2>
+	<ButtonSimpleElevated on:click={loadUserPlaylistsWithTracks}>Reload Playlists</ButtonSimpleElevated>
 </div>
 
-<CardGrid cards={playlists} />
+<Grid>
+	{#each $playlistStore.playlists as playlist}
+		<PlaylistCard playlist={playlist}/>
+	{/each}
+</Grid>
 
 <style lang="scss">
 

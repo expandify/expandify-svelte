@@ -8,8 +8,8 @@
 
 <aside class="sidebar">
 	<div class="nav">
-		<nav>
-			<h1><a id=title href="/">Expandify</a></h1>
+		<nav>	
+			<h2><a class="title" href="/">Expandify</a></h2>
 			<LibraryNavBarSection/>
 			<InformationNavBarSection/>
 			<ToolsNavBarSection/>				
@@ -49,10 +49,10 @@
 		top: 0;
 		left: 0;		
 		height: 100vh;
-		width: 21rem;
+		width: 18rem;
 
 		.nav {
-			padding: var(--base-padding);
+			padding: 2rem;
 			overflow-y: auto;					
 
 			display: flex;
@@ -60,9 +60,16 @@
 			flex-direction: column;			
 			justify-content: flex-start;
 
-			#title {
+			
+			.title {
+				display: flex;
+				flex-direction: row;
+				justify-content: start;
+				align-items: center;
+				gap: 0.5rem;
 				text-decoration: none;
       	color: var(--text-base);
+				margin-bottom: 0rem;
 			}			
 		}
 		.buttons {

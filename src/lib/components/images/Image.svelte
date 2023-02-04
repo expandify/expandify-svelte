@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Icon from "./Icon.svelte";
+	import Icon from "./FallbackSvg.svelte";
 
   export let image: string | undefined | null;
   export let imageAlt: string | undefined | null;
   export let fallbackSvg: string;
-  export let rounded: "full" | "little" | "none" = "little";
+  export let borderRadius = "0";
 
 </script>
 
@@ -14,11 +14,10 @@
   <img src={image} 
        class="image" 
        alt={imageAlt} 
-       class:rounded-full={rounded === "full"}
-       class:rounded-little={rounded === "little"}
-       loading="lazy"/>  
+       loading="lazy"
+       style="border-radius: {borderRadius};"/>  
   {:else}
-  <div class="fallback" class:rounded-full={rounded === "full"} class:rounded-little={rounded === "little"}>
+  <div class="fallback" style="border-radius: {borderRadius};">
     <Icon name={fallbackSvg} width={"auto"} height={"auto"} class="svg" ></Icon>
   </div>  
   {/if}
@@ -27,18 +26,11 @@
 
 <style lang="scss">
 
-  .rounded-full {
-    border-radius: 100%;
-  }
-
-  .rounded-little {
-    border-radius: 0.2rem;
-  }
-
   .picture {    
-    width: 100%;
-    aspect-ratio: 1/1;      
     
+    aspect-ratio: 1/1;      
+    height: 100%;
+
     .fallback {
       background-color: var(--background-elevated-highlight);
       box-shadow: 0 0 1rem 0.5rem var(--background-base);
@@ -60,6 +52,7 @@
       max-width:100%;
       max-height:100%;
       object-fit: cover;
+      aspect-ratio: 1/1;
     }
   }  
 

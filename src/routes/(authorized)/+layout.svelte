@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { afterNavigate, goto } from '$app/navigation';
 	import NavBar from '$lib/components/navbar/NavBar.svelte';
-	import { Spotify } from '$lib/stores/spotify';
+	import { hasSpotifyAccess } from '$lib/stores/spotify-access';
 
 	import type { AfterNavigate } from '@sveltejs/kit';
 
@@ -10,7 +10,7 @@
 	// This will NOT cause an infinite loop, since "/" does not use this layout.
 	// The callback will be destroyed, when this layout is not in use anymore.
 	afterNavigate((_: AfterNavigate) => {
-		if (!Spotify.isLoggedIn) { 
+		if (!hasSpotifyAccess) { 
 			goto("/"); 
 		};
 	})
@@ -19,7 +19,7 @@
 
 
 <div class="page">
-{#if Spotify.isLoggedIn}		
+{#if hasSpotifyAccess}		
 	<NavBar />
 	<main class="content"><slot /></main>
 {/if}
@@ -33,7 +33,7 @@
 		.content {									
 			width: 100%;
 			box-sizing: border-box;
-			padding: 2rem 2rem 2rem 1rem;
+			padding: 2rem 2rem 2rem 2rem;
 			width: 100%;						
 		}
 	}

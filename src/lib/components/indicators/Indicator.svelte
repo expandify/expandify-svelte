@@ -21,12 +21,13 @@
 
 <style lang="scss">
 	#indicator {
-    padding: 1rem;
-    min-width: 10rem;
+    font-size: var(--font-size-h3);
+    padding: 1.5rem;
+    min-width: 12rem;
 
     background-color: var(--background-elevated-highlight);
-    border-radius: var(--border-radius);
+    border-radius: 1rem;
 
-    box-shadow: 0 0 0.5rem 0rem var(--background-elevated-highlight);
+    box-shadow: 0 0 0.2rem 0rem var(--background-elevated-highlight);
   }
 </style>

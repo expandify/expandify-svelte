@@ -20,7 +20,7 @@
     #title {
       font-size: var(--font-size);
       margin-bottom: 0.5rem;
-      margin-top: 3rem;
+      margin-top: 2rem;
     }
 
     #divider {
