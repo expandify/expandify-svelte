@@ -1,7 +1,7 @@
 import { updateStatus, setUpdatedNow, setTotal, addTracks, clearTracks } from "$lib/stores/library/tracks"
 import { StoreState } from "$lib/stores/types";
 import { error } from "@sveltejs/kit";
-import { savedTrack } from "../converter";
+import { savedTrack, track } from "../converter";
 import { makeRequest } from "../request";
 
 
@@ -18,6 +18,22 @@ export async function loadSavedTracks() {
 
   setUpdatedNow();
     updateStatus(StoreState.Ready);
+}
+
+
+export async function getSeveralTracks(tracks: TrackSimplified[]) {
+  const chunkSize = 50;
+  const trackIds = tracks.map(t => t.id);
+
+  let result: Track[] = []
+  for (let i = 0; i < trackIds.length; i += chunkSize) {
+      const chunk = trackIds.slice(i, i + chunkSize);
+      
+      const data = await makeRequest((api) => api.getTracks(chunk));
+      result = [...result, ...data.tracks.map((t) => track(t))];
+  }
+
+  return result;
 }
 
 async function getAll() {

@@ -12,7 +12,7 @@ export function albumSimplified(album: SpotifyApi.AlbumObjectSimplified): AlbumS
   }
 }
 
-export function album(album: SpotifyApi.AlbumObjectFull, tracks: TrackSimplified[]): Album {
+export function album(album: SpotifyApi.AlbumObjectFull, tracks: Track[]): Album {
   return {
     ...albumSimplified(album),
     tracks: tracks,
@@ -27,7 +27,7 @@ export function album(album: SpotifyApi.AlbumObjectFull, tracks: TrackSimplified
 }
 
 
-export function savedAlbum(savedAlbum: SpotifyApi.SavedAlbumObject, tracks: TrackSimplified[]): SavedAlbum {
+export function savedAlbum(savedAlbum: SpotifyApi.SavedAlbumObject, tracks: Track[]): SavedAlbum {
   return {
     ...album(savedAlbum.album, tracks),
     added_at: savedAlbum.added_at

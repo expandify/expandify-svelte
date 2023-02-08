@@ -13,7 +13,7 @@ declare interface AlbumSimplified extends SpotifyData {
 }
 
 declare interface Album extends AlbumSimplified {
-	tracks: TrackSimplified[]
+	tracks: Track[]
 	artists: ArtistSimplified[];
 	copyrights: Copyright[];
 	external_ids: ExternalId;

@@ -2,7 +2,6 @@
 	import { page } from "$app/stores";
 	import AlbumImage from "$lib/components/images/AlbumImage.svelte";
 	import AlbumTrackTable from "$lib/components/layout/AlbumTrackTable.svelte";
-	import TrackTable from "$lib/components/layout/TrackTable.svelte";
 	import LoadingDots from "$lib/components/loading/LoadingDots.svelte";
 	import { formateDate, msToTime } from "$lib/helpers/converters";
 	import { getAlbumWithTracks } from "$lib/spotify/api/albums";
