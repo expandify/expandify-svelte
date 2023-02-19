@@ -1,6 +1,9 @@
 <script lang="ts">
 	import '../app.scss';
 	import FloatingCacheIndicators from '$lib/components/indicators/FloatingCacheIndicators.svelte';
+	import { startAutoRefresh } from '$lib/auth/auth';
+
+	startAutoRefresh();
 </script>
 
 <div class="page">
@@ -14,3 +17,4 @@
 		min-height: 100vh;
 	}
 </style>
+	

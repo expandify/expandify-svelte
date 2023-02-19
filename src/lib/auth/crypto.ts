@@ -1,13 +1,15 @@
 import { Base64 } from 'js-base64';
 
 const CODE_CHARSET = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~';
+
+
 /**
- * Generate cryptographically strong random code verifier
+ * Generate random code verifier
  *
  * @param {number} [length]
  * @returns {string}
  */
-export function generateCodeVerifier(length: number = 50): string {
+export function generateRandomString(length: number = 50): string {
 	const randomValues = window.crypto.getRandomValues(new Uint32Array(length));
 	const codeVerifier = Array.from(randomValues)
 		.map((value) => value / 0x100000000) // Scale all values to [0, 1)
