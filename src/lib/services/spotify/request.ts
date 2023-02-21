@@ -1,12 +1,12 @@
 import SpotifyWebApi from 'spotify-web-api-js';
 import { get } from 'svelte/store';
-import { session } from '$lib/stores/session';
+import { spotifySession } from '$lib/stores/spotifySession';
 
 export async function makeRequest<T>(func: (api: SpotifyWebApi.SpotifyWebApiJs) => Promise<T>): Promise<T> {
   let api = new SpotifyWebApi();
   try {   		
 
-    api.setAccessToken(get(session)?.token!);    
+    api.setAccessToken(get(spotifySession)?.token!);    
     const data = await func(api);
     return data;
 

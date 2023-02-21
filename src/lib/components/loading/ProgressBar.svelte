@@ -27,7 +27,8 @@
     border-radius: 0.5rem;
   }
 
-  progress::-moz-progress-bar {
-    /* style rules */
+  /*
+  progress::-moz-progress-bar {    
   }
+  */
 </style>

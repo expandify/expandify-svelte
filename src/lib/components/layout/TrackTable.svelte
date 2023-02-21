@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { formateDate, msToTime } from "$lib/helpers/converters";  
+	import type { SavedTrack } from "$lib/types/spotify";
+	import { formateDate, msToTime } from "$lib/utils/converter/date-time";  
 	import AlbumImage from "../images/AlbumImage.svelte";
 
   export let tracks: SavedTrack[];

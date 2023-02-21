@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { PlaylistSimplified } from "$lib/types/spotify";
 	import Image from "./Image.svelte";
 
   export let playlist: PlaylistSimplified;

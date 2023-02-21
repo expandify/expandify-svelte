@@ -1,35 +1,21 @@
+import type { UserPrivate } from "$lib/types/spotify";
+import type { StoreError, UserStore } from "$lib/types/library-stores";
 import { writable } from "svelte/store";
-import { StoreState } from "$lib/stores/types";
 
 
-type UserStore = {  
-  user: UserPrivate | null;
-  lastUpdated: Date | null;
-  status: StoreState
+
+function createStore() {  
+  const data: UserStore = {user: null, loading: false, updated: null, error: null };
+  const { subscribe, set, update } = writable(data);
+	return {
+		subscribe,
+    setUser: (user: UserPrivate | null) => update(s => ({...s, user: user})),
+		startLoading: () => update(_ => ({...data, loading: true})),
+    stopLoading: () => update(s => ({...s, loading: false, updated: new Date(Date.now())})),
+    setError: (e: StoreError | null) => update(s => ({...s, error: e})),
+		reset: () => set(data)
+	};
 }
 
-export const userStore = writable<UserStore>({
-  user: null,
-  lastUpdated: null,
-  status: StoreState.Uninitialized
-})
+export const user = createStore();
 
-export function clearUser() {
-  userStore.set({
-    user: null,
-    lastUpdated: null,
-    status: StoreState.Uninitialized
-  });
-}
-
-export function updateStatus(status: StoreState) {
-  userStore.update((s) => ({...s, status: status}))
-}
-
-export function setUser(user: UserPrivate) {
-  userStore.update((s) => ({...s, user: user}))
-}
-
-export function setUpdatedNow() {
-  userStore.update((s) => ({...s, lastUpdated: new Date(Date.now())}));
-}

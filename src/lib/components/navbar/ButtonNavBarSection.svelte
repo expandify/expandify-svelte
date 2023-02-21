@@ -3,7 +3,7 @@
 	import { logout } from "$lib/auth/auth";
 	import ButtonSimple from "$lib/components/buttons/ButtonSimple.svelte";
 	import ButtonSpotify from "$lib/components/buttons/ButtonSpotify.svelte";
-	import { reloadLibrary } from "$lib/spotify/api/library";
+	import { Spotify } from "$lib/data/spotify";
 
 
 	function logouts() {
@@ -12,7 +12,7 @@
 	} 
 </script>
   <section id=section>
-    <ButtonSpotify on:click={reloadLibrary}><h5>Reload</h5></ButtonSpotify>
+    <ButtonSpotify on:click={Spotify.loadLibraryToStores}><h5>Reload</h5></ButtonSpotify>
     <ButtonSimple on:click={logouts}><h5>Logout</h5></ButtonSimple>
   </section>
 

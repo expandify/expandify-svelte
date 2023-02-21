@@ -1,43 +1,22 @@
-import { StoreState } from "$lib/stores/types";
+import type { Album } from "$lib/types/spotify";
+import type { AlbumStore, StoreError } from "$lib/types/library-stores";
 import { writable } from "svelte/store";
 
-type AlbumStore = {  
 
-  albums: SavedAlbum[];
-  total_albums: number;
-  lastUpdated: Date | null;
-  status: StoreState
+
+function createStore() {  
+  const data: AlbumStore = {albums: [], total: 0, loading: false, updated: null, error: null };
+  const { subscribe, set, update } = writable(data);
+	return {
+		subscribe,
+    addAlbums: (albums: Album[]) => update(s => ({...s, albums: [...s.albums, ...albums]})),
+    addAlbum: (album: Album) => update(s => ({...s, albums: [...s.albums, album]})),
+		setTotal: (total: number) => update(s => ({...s, total: total})),
+		startLoading: () => update(_ => ({...data, loading: true})),
+    stopLoading: () => update(s => ({...s, loading: false, updated: new Date(Date.now())})),
+    setError: (e: StoreError | null) => update(s => ({...s, error: e})),
+	};
 }
 
-export const albumStore = writable<AlbumStore>({
-  albums: [],
-  total_albums: 0,
-  lastUpdated: null,
-  status: StoreState.Uninitialized
-})
-
-export function clearAlbums() {
- albumStore.set({
-    albums: [],
-    total_albums: 0,
-    lastUpdated: null,
-    status: StoreState.Uninitialized
-  });
-}
-
-export function updateStatus(status: StoreState) {
-  albumStore.update((s) => ({...s, status: status}))
-}
-
-export function addAlbum(album: SavedAlbum) {
-  albumStore.update((s) => ({...s, albums: [...s.albums, album]}));
-}
-
-export function setTotal(total: number) {
-  albumStore.update((p) => ({...p, total_albums: total}));
-}
-
-export function setUpdatedNow() {
-  albumStore.update((s) => ({...s, lastUpdated: new Date(Date.now())}));
-}
+export const albums = createStore();
 

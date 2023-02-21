@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Artist } from "$lib/types/spotify";
 	import Image from "./Image.svelte";
 
   export let artist: Artist;

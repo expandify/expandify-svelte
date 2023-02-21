@@ -1,28 +1,70 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import LoadingDependencyModal from '$lib/components/loading/LoadingDependencyModal.svelte';
 	import NavBar from '$lib/components/navbar/NavBar.svelte';
-	import { session } from '$lib/stores/session';
+	import { Spotify } from '$lib/data/spotify';
+	import { albums } from '$lib/stores/library/albums';
+	import { artists } from '$lib/stores/library/artists';
+	import { playlists } from '$lib/stores/library/playlists';
+	import { tracks } from '$lib/stores/library/tracks';
+	import { user } from '$lib/stores/library/user';
+	import { spotifySession } from '$lib/stores/spotifySession';
 	
 	
-	$: if (!($session)) goto("/");
+	$: if (!($spotifySession) && browser) goto("/");
+
+	
+	if (!$albums.updated && browser) {
+		Spotify.Album.loadSavedToStore();
+	}
+
+	if (!$artists.updated && browser) {
+		Spotify.Artist.loadFollowedToStore();
+	}
+
+	if (!$playlists.updated && browser) {
+		Spotify.Playlist.loadAllToStore();
+	}
+
+	if (!$tracks.updated && browser) {
+		Spotify.Track.loadSavedToStore();
+	}
+
+	if (!$user.updated && browser) {
+		Spotify.User.loadToStore();
+	}
 
 </script>
 
 
+
 <div class="page">
-{#if $session}		
+{#if $spotifySession}		
 	<NavBar />
-	<main class="content"><slot /></main>
+	
+	<div class="modal-wrapper">
+		<LoadingDependencyModal />		
+	</div>	
+	<main class="content">
+		
+		<slot />
+	</main>			
+		
+		
+	
 {/if}
 </div>
 
 <style lang="scss">
 	.page {
 		display: flex;
-		flex-direction: row;
-		min-height: 100vh;					
+		flex-direction: row;		
+		min-height: 100vh;	
+		width: 100%;
+		
+		
 		.content {									
-			width: 100%;
 			box-sizing: border-box;
 			padding: 2rem 2rem 2rem 2rem;
 			width: 100%;						

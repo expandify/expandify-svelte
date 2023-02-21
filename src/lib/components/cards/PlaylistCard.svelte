@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { PlaylistSimplified } from "$lib/types/spotify";
 	import PlaylistImage from "../images/PlaylistImage.svelte";
 	import Card from "./Card.svelte";
 

@@ -3,13 +3,14 @@
 	import InformationNavBarSection from './InformationNavBarSection.svelte';
 	import ToolsNavBarSection from './ToolsNavBarSection.svelte';
 	import ButtonNavBarSection from './ButtonNavBarSection.svelte';
+	import NavBarSection from './NavBarSection.svelte';
 
 </script>
 
 <aside class="sidebar">
 	<div class="nav">
 		<nav>	
-			<h2><a class="title" href="/">Expandify</a></h2>
+			<h2><a class="title" href="/dashboard">Expandify</a></h2>
 			<LibraryNavBarSection/>
 			<InformationNavBarSection/>
 			<ToolsNavBarSection/>				

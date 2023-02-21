@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Album } from "$lib/types/spotify";
 	import AlbumImage from "../images/AlbumImage.svelte";
 	import Card from "./Card.svelte";
 

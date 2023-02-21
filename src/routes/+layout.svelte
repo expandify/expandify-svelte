@@ -1,14 +1,14 @@
 <script lang="ts">
 	import '../app.scss';
-	import FloatingCacheIndicators from '$lib/components/indicators/FloatingCacheIndicators.svelte';
 	import { startAutoRefresh } from '$lib/auth/auth';
+	import FloatingNotifications from '$lib/components/notifications/FloatingNotifications.svelte';
 
 	startAutoRefresh();
 </script>
 
 <div class="page">
 	<slot />
-	<FloatingCacheIndicators></FloatingCacheIndicators>	
+	<FloatingNotifications />
 </div>
 
 

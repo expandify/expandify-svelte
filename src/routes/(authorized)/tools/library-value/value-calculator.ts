@@ -1,8 +1,9 @@
-import { makeRequest } from "$lib/spotify/request";
-import { albumStore } from "$lib/stores/library/albums"
-import { playlistStore } from "$lib/stores/library/playlists";
-import { trackStore } from "$lib/stores/library/tracks";
-import { userStore } from "$lib/stores/library/user";
+import { makeRequest } from "$lib/services/spotify/request";
+import { albums } from "$lib/stores/library/albums"
+import { playlists } from "$lib/stores/library/playlists";
+import { tracks } from "$lib/stores/library/tracks";
+import { user } from "$lib/stores/library/user";
+import type { PlaylistTrack, SavedTrack, Track } from "$lib/types/spotify";
 import { get } from "svelte/store"
 
 const ESTIMATED_ALBUM_COST = 12.99
@@ -19,32 +20,32 @@ export async function calculateLibraryValue(
   
     
   
-  let userId = get(userStore).user?.id;
+  let userId = get(user).user?.id;
   
   
   
   let savedAlbumTracks: Track[] = [];
   if (savedAlbums) {
-    savedAlbumTracks = get(albumStore).albums.flatMap(a => a.tracks);
+    savedAlbumTracks = get(albums).albums.flatMap(a => a.tracks);
   }
 
   let ownPlaylistTracks: PlaylistTrack[] = [];
   if (ownPlaylists) {
-    ownPlaylistTracks = get(playlistStore).playlists.filter(p => p.owner.id === userId).flatMap(p => p.tracks);
+    ownPlaylistTracks = get(playlists).playlists.filter(p => p.owner.id === userId).flatMap(p => p.tracks);
   }
 
   let followedPlaylistTracks: PlaylistTrack[] = [];
   if (followedPlaylists) {
-    ownPlaylistTracks = get(playlistStore).playlists.filter(p => p.owner.id !== userId).flatMap(p => p.tracks);
+    ownPlaylistTracks = get(playlists).playlists.filter(p => p.owner.id !== userId).flatMap(p => p.tracks);
   }
 
   let savedTracksList: SavedTrack[] = [];
   if (savedTracks) {
-    savedTracksList = get(trackStore).tracks;
+    savedTracksList = get(tracks).tracks;
   }
 
 
-  let tracks = [
+  let tracksToCalculate = [
     ...savedAlbumTracks,
     ...ownPlaylistTracks,
     ...followedPlaylistTracks,
@@ -53,7 +54,7 @@ export async function calculateLibraryValue(
 
   console.log("Loaded tracks");
   
-  const groupedTracks = groupTracksByAlbum(tracks);
+  const groupedTracks = groupTracksByAlbum(tracksToCalculate);
 
   console.log("Grouped Tracks by album ", Object.entries(groupedTracks).length);
   

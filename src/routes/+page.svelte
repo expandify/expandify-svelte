@@ -2,10 +2,10 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import ButtonSpotify from '$lib/components/buttons/ButtonSpotify.svelte';
-	import { session } from '$lib/stores/session';
+	import { spotifySession } from '$lib/stores/spotifySession';
 
 
-	if (browser && $session) { 
+	if (browser && $spotifySession) { 
 		goto("/dashboard"); 
 	};
 </script>

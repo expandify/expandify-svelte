@@ -1,7 +1,7 @@
 import { Base64 } from "js-base64";
 import { createCodeChallenge, generateRandomString } from "./crypto";
 import { PUBLIC_SPOTIFY_ID, PUBLIC_SPOTIFY_REDIRECT_URI } from '$env/static/public';
-import { session } from "$lib/stores/session";
+import { spotifySession } from "$lib/stores/spotifySession";
 import { get } from "svelte/store";
 
 const SCOPES = 'playlist-read-private playlist-read-collaborative user-library-read user-follow-read user-read-private';
@@ -50,8 +50,8 @@ export async function createUserSession(code: string, state: string) {
 
   if (!lsState || !codeVerifier || state !== lsState) {
     
-    session.set(null);
-    return Promise.reject();
+    spotifySession.set(null);
+    return Promise.resolve();
   }
 
 	const response = await fetch(TOKEN_API_URL, {
@@ -67,14 +67,14 @@ export async function createUserSession(code: string, state: string) {
 	});
 
 	if (!response.ok) {
-    session.set(null);
+    spotifySession.set(null);
 		return Promise.reject();
 	}
 
   type TokenApiResult = { access_token: string, scope: string, expires_in: number, refresh_token: string }
 	const json: TokenApiResult = await response.json();
 
-  session.set({
+  spotifySession.set({
     token: json.access_token,
 		tokenScope: json.scope,
 		refreshToken: json.refresh_token,
@@ -88,19 +88,19 @@ export async function createUserSession(code: string, state: string) {
  * 
  */
 export function logout() {
-  session.set(null);
+  spotifySession.set(null);
 }
 
 /**
  * 
  */
 export function startAutoRefresh() {  
-  session.subscribe(s => {
+  spotifySession.subscribe(s => {
     if(!s) { return; }
 
-    //const fiveMinInMs = 5 * 60 * 1000;
+    const fiveMinInMs = 5 * 60 * 1000;
     // Sets refresh timeout to 10sec for testing
-     const fiveMinInMs = (((59 * 60) + 50) * 1000);
+    //const fiveMinInMs = (((59 * 60) + 50) * 1000);
     const msToExpire = new Date(s.expirationDate).getTime() - Date.now();
     const msOneMinBeforeExpire = msToExpire - fiveMinInMs;
     const msTimer = Math.max(0, msOneMinBeforeExpire);
@@ -113,11 +113,11 @@ export function startAutoRefresh() {
 
 
 async function refreshUserSession() {
-  const refreshToken = get(session)?.refreshToken;
+  const refreshToken = get(spotifySession)?.refreshToken;
 
 
   if (!refreshToken) {
-    session.set(null);
+    spotifySession.set(null);
     return;
   }
 
@@ -132,7 +132,7 @@ async function refreshUserSession() {
 	});
 	
 	if (!response.ok) {
-    session.set(null);
+    spotifySession.set(null);
 		return;
 	}
 
@@ -140,7 +140,7 @@ async function refreshUserSession() {
 	const json: TokenApiResult = await response.json();
 	
   
-	session.set({
+	spotifySession.set({
     token: json.access_token,
 		tokenScope: json.scope,
 		refreshToken: json.refresh_token,

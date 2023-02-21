@@ -1,6 +1,6 @@
-declare interface SpotifyData {}
+export interface SpotifyData {}
 
-declare interface AlbumSimplified extends SpotifyData {	
+export interface AlbumSimplified extends SpotifyData {	
 	album_type: string;
 	available_markets?: string[];
 	external_urls: ExternalUrl;
@@ -12,7 +12,7 @@ declare interface AlbumSimplified extends SpotifyData {
 	uri: string;
 }
 
-declare interface Album extends AlbumSimplified {
+export interface Album extends AlbumSimplified {
 	tracks: Track[]
 	artists: ArtistSimplified[];
 	copyrights: Copyright[];
@@ -23,11 +23,11 @@ declare interface Album extends AlbumSimplified {
 	release_date_precision: string;
 }
 
-declare interface SavedAlbum extends Album {
+export interface SavedAlbum extends Album {
 	added_at: string;
 }
 
-declare interface ArtistSimplified extends SpotifyData {
+export interface ArtistSimplified extends SpotifyData {
 	external_urls: ExternalUrl;
 	href: string;
 	id: string;
@@ -36,40 +36,40 @@ declare interface ArtistSimplified extends SpotifyData {
 	uri: string;
 }
 
-declare interface Artist extends ArtistSimplified {
+export interface Artist extends ArtistSimplified {
 	followers: Followers;
 	genres: string[];
 	images: SpotifyImage[];
 	popularity: number;
 }
 
-declare interface Copyright extends SpotifyData {
+export interface Copyright extends SpotifyData {
 	text: string;
 	type: 'C' | 'P';
 }
 
-declare interface ExternalId extends SpotifyData {
+export interface ExternalId extends SpotifyData {
 	isrc?: string;
 	ean?: string;
 	upc?: string;
 }
 
-declare interface ExternalUrl extends SpotifyData {
+export interface ExternalUrl extends SpotifyData {
 	spotify: string;
 }
 
-declare interface Followers extends SpotifyData {
+export interface Followers extends SpotifyData {
 	href: string;
 	total: number;
 }
 
-declare interface SpotifyImage extends SpotifyData {
+export interface SpotifyImage extends SpotifyData {
 	height?: number;
 	url: string;
 	width?: number;
 }
 
-declare interface PlaylistSimplified extends SpotifyData {
+export interface PlaylistSimplified extends SpotifyData {
 	total_tracks: number;
 	collaborative: boolean;
 	description: string | null;
@@ -85,12 +85,12 @@ declare interface PlaylistSimplified extends SpotifyData {
 	uri: string;
 }
 
-declare interface Playlist extends PlaylistSimplified {
+export interface Playlist extends PlaylistSimplified {
 	followers: Followers;
 	tracks: PlaylistTrack[]
 }
 
-declare interface TrackSimplified extends SpotifyData {
+export interface TrackSimplified extends SpotifyData {
 	artists: ArtistSimplified[];
 	available_markets?: string[];
 	disc_number: number;
@@ -108,24 +108,24 @@ declare interface TrackSimplified extends SpotifyData {
 	uri: string;
 }
 
-declare interface Track extends TrackSimplified {
+export interface Track extends TrackSimplified {
 	album: AlbumSimplified;
 	external_ids: ExternalId;
 	popularity: number;	
 }
 
-declare interface SavedTrack extends Track {
+export interface SavedTrack extends Track {
 	added_at: string;
 }
 
 
-declare interface PlaylistTrack extends SavedTrack {
+export interface PlaylistTrack extends SavedTrack {
 	is_local: boolean;
 	added_by: UserPublic;
 }
 
 
-declare interface TrackLink {
+export interface TrackLink {
 	external_urls: ExternalUrl;
 	href: string;
 	id: string;
@@ -133,7 +133,7 @@ declare interface TrackLink {
 	uri: string;
 }
 
-declare interface UserPublic extends SpotifyData {
+export interface UserPublic extends SpotifyData {
 	display_name?: string;
 	external_urls: ExternalUrl;
 	followers?: Followers;
@@ -144,14 +144,14 @@ declare interface UserPublic extends SpotifyData {
 	uri: string;
 }
 
-declare interface UserPrivate extends UserPublic {
+export interface UserPrivate extends UserPublic {
 	birthdate: string;
 	country: string;
 	email: string;
 	product: string;	
 }
 
-declare interface Paging<T> {
+export interface Paging<T> {
 	href: string;
 	items: T[];
 	limit: number;
@@ -161,7 +161,7 @@ declare interface Paging<T> {
 	total: number;
 }
 
-declare interface Cursor<T> {
+export interface Cursor<T> {
 	href: string;
 	items: T[];
 	limit: number;

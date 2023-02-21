@@ -1,3 +1,84 @@
 @import "normalize.css/normalize.css";
-@import "$lib/scss/colors.scss";
-@import "$lib/scss/defaults.scss";
+
+:root {  
+  --background-base: #121212;
+  --background-highlight: #1a1a1a;
+  --background-press: #000000;
+
+  --background-elevated-base: #181818; // Alternative: #242424;
+  --background-elevated-highlight: #282828; // Alternative: #2a2a2a;
+
+  --text-base: #fff;
+  --text-subdued: #a7a7a7;
+  --text-bright-accent: #1ed760;
+  --text-negative: #f15e6c;
+  --text-warning: #ffa42b;
+  --text-positive: #1ed760;
+  --text-announcement: #3d91f4;
+  --essential-bright-accent: #1ed760;
+  --essential-negative: #e91429;
+  --essential-warning: #ffa42b;
+  --essential-positive: #1ed760;
+  --essential-announcement: #0d72ea;
+
+  --spotify-green: #1cb954;
+  --spotify-green-hover: #16c453;
+
+  // Typography
+  --font-family: system-ui, -apple-system, sans-serif;
+  --line-height: 1.5;
+  --font-weight: 400;
+
+  --font-size-text: 1rem;
+  --font-size-h1: 2rem;
+  --font-size-h2: 1.5rem;
+  --font-size-h3: 1.17rem;
+  --font-size-h4: 1rem;
+  --font-size-h5: 0.83rem;
+  --font-size-h6: 0.67rem;
+
+  color: var(--text-base);  
+  line-height: var(--line-height);
+  font-size: var(--font-size-text);
+  font-weight: var(--font-weight);
+  font-family: var(--font-family);
+}
+
+html {
+  background: var(--background-base);
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+}
+
+h4 {
+  font-size: var(--font-size-h4);
+}
+
+h5 {
+  font-size: var(--font-size-h5);
+}
+
+h6 {
+  font-size: var(--font-size-h6);
+}
+
+a {
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text-subdued);
+}
+
+a:hover {
+  color: var(--text-base);
+  cursor: pointer;
+}

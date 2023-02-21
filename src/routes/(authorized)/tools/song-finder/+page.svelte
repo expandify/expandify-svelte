@@ -1,36 +1,37 @@
 <script lang="ts">
-	import { track } from "$lib/spotify/converter";
-	import { albumStore } from "$lib/stores/library/albums";
-	import { artistStore } from "$lib/stores/library/artists";
-	import { playlistStore } from "$lib/stores/library/playlists";
-	import { trackStore } from "$lib/stores/library/tracks";
+	import { albums } from "$lib/stores/library/albums";
+	import { artists } from "$lib/stores/library/artists";
+	import { playlists } from "$lib/stores/library/playlists";
+	import { tracks } from "$lib/stores/library/tracks";
+	import type { Album, Artist, Playlist, Track } from "$lib/types/spotify";
+	import { dependencies } from "$lib/stores/dependencies";
 
-
+	dependencies.setDependencies(true, true, true, true, true);
 	
 	let search: string = '';
 	let delayedSearch = search;
 	$: setTimeout(() => (delayedSearch = search), 500);
 	
-	let playlists: Playlist[];
+	let filteredPlaylists: Playlist[];
 	let playlistsTracks: { [id: string]: Track[] } = {};
-	$: $playlistStore, playlists = searchPlaylists(delayedSearch);
+	$: $playlists, filteredPlaylists = searchPlaylists(delayedSearch);
 
-	let tracks: Track[];
-	$: $trackStore, tracks = searchTracks(delayedSearch, $trackStore.tracks);
+	let filteredTracks: Track[];
+	$: $tracks, filteredTracks = searchTracks(delayedSearch, $tracks.tracks);
 
-	let albums: Album[];
+	let filteredAlbums: Album[];
 	let albumTracks: { [id: string]: Track[] } = {};
-	$: $albumStore, albums = searchAlbums(delayedSearch);
+	$: $albums, filteredAlbums = searchAlbums(delayedSearch);
 
 	
-	let artists: Artist[];
-	$: $artistStore, artists = searchArtists(delayedSearch);
+	let filteredArtists: Artist[];
+	$: $artists, filteredArtists = searchArtists(delayedSearch);
 
 	function searchArtists(filter: string) {
 		filter = filter.toLowerCase();
 		const filteredArtists = [];
 
-		for (const artist of $artistStore.artists) {
+		for (const artist of $artists.artists) {
 			const name = artist.name.toLowerCase();
 
 			if (name.indexOf(filter) !== -1) {
@@ -69,7 +70,7 @@
 		filter = filter.toLowerCase();
 		const filteredPlaylists = [];
 
-		for (const playlist of $playlistStore.playlists) {
+		for (const playlist of $playlists.playlists) {
 			const name = playlist.name.toLowerCase();
 
 			const tracks = searchTracks(filter, playlist.tracks);
@@ -86,7 +87,7 @@
 		filter = filter.toLowerCase();
 		const filterdAlbums = [];
 
-		for (const album of $albumStore.albums) {
+		for (const album of $albums.albums) {
 			const name = album.name.toLowerCase();
 			
 			const tracks = searchTracks(filter, album.tracks as Track[]);
@@ -105,37 +106,37 @@
 <input bind:value={search} placeholder="Find a song..." />
 
 <div class="playlists">
-	{#if playlists.length > 0}
+	{#if filteredPlaylists.length > 0}
 		<h1>Playlists</h1>
 	{/if}
-	{#each playlists as playlist}
+	{#each filteredPlaylists as playlist}
 		<h3>{playlist.name}</h3>
 		{#each playlistsTracks[playlist.id] as track}
 			<span>{track.name}</span>
 		{/each}
 	{/each}
 
-	{#if tracks.length > 0}
+	{#if filteredTracks.length > 0}
 		<h1>Saved Tracks</h1>
 	{/if}
-	{#each tracks as track}
+	{#each filteredTracks as track}
 		<span>{track.name}</span>
 	{/each}
 
-	{#if albums.length > 0}
+	{#if filteredAlbums.length > 0}
 		<h1>Saved Albums</h1>
 	{/if}
-	{#each albums as album}
+	{#each filteredAlbums as album}
 		<h3>{album.name}</h3>
 		{#each albumTracks[album.id] as track}
 			<span>{track.name}</span>
 		{/each}
 	{/each}
 
-	{#if artists.length > 0}
+	{#if filteredArtists.length > 0}
 		<h1>Saved Tracks</h1>
 	{/if}
-	{#each artists as artist}
+	{#each filteredArtists as artist}
 		<span>{artist.name}</span>
 	{/each}
 </div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Artist } from "$lib/types/spotify";
 	import ArtistImage from "../images/ArtistImage.svelte";
 	import Card from "./Card.svelte";
 

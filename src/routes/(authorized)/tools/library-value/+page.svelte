@@ -3,7 +3,7 @@
 	import ButtonSimpleElevated from "$lib/components/buttons/ButtonSimpleElevated.svelte";
 import ButtonSpotify from "$lib/components/buttons/ButtonSpotify.svelte";
 	import LoadingDots from "$lib/components/loading/LoadingDots.svelte";
-	import { savedTrack } from "$lib/spotify/converter";
+	import { toSavedTrack } from "$lib/utils/converter/spotify";
 	import { calculateLibraryValue } from "./value-calculator";
 	//import { calculateLibraryValue } from "./value-calculator";
 

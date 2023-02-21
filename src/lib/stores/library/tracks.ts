@@ -1,44 +1,23 @@
+import type { SavedTrack } from "$lib/types/spotify";
+import type { StoreError, TrackStore } from "$lib/types/library-stores";
 import { writable } from "svelte/store";
-import { StoreState } from "$lib/stores/types";
 
 
-type TrackStore = {  
 
-  tracks: SavedTrack[];
-  total_tracks: number;
-  lastUpdated: Date | null;
-  status: StoreState
+function createStore() {  
+  const data: TrackStore = {tracks: [], total: 0, loading: false, updated: null, error: null };
+  const { subscribe, set, update } = writable(data);
+	return {
+		subscribe,
+    addTracks: (tracks: SavedTrack[]) => update(s => ({...s, tracks: [...s.tracks, ...tracks]})),
+    addTrack: (track: SavedTrack) => update(s => ({...s, tracks: [...s.tracks, track]})),
+		setTotal: (total: number) => update(s => ({...s, total: total})),
+		startLoading: () => update(_ => ({...data, loading: true})),
+    stopLoading: () => update(s => ({...s, loading: false, updated: new Date(Date.now())})),
+    setError: (e: StoreError | null) => update(s => ({...s, error: e})),
+		reset: () => set(data)
+	};
 }
 
-export const trackStore = writable<TrackStore>({
-  tracks: [],
-  total_tracks: 0,
-  lastUpdated: null,
-  status: StoreState.Uninitialized
-})
-
-export function clearTracks() {
-  trackStore.set({
-    tracks: [],
-    total_tracks: 0,
-    lastUpdated: null,
-    status: StoreState.Uninitialized
-  });
-}
-
-export function updateStatus(status: StoreState) {
-  trackStore.update((s) => ({...s, status: status}))
-}
-
-export function addTracks(ts: SavedTrack[]) {
-  trackStore.update((s) => ({...s, tracks: [...s.tracks, ...ts]}));
-}
-
-export function setTotal(total: number) {
-  trackStore.update((p) => ({...p, total_tracks: total}));
-}
-
-export function setUpdatedNow() {
-  trackStore.update((s) => ({...s, lastUpdated: new Date(Date.now())}));
-}
+export const tracks = createStore();
 

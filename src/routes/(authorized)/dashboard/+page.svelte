@@ -1,5 +1,9 @@
 <script lang="ts">
+	import { dependencies } from "$lib/stores/dependencies";
 
+
+
+  dependencies.setDependencies(true, true, true, true, true);
 </script>
 
 

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { formateDate, msToTime } from "$lib/helpers/converters";  
-	import AlbumImage from "../images/AlbumImage.svelte";
-
+	import type { Album } from "$lib/types/spotify";
+	import { msToTime } from "$lib/utils/converter/date-time";  
+	
   export let album: Album;
   
   const tracks = album.tracks.sort((t1, t2) => {

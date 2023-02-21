@@ -3,12 +3,13 @@
 	import AlbumImage from "$lib/components/images/AlbumImage.svelte";
 	import AlbumTrackTable from "$lib/components/layout/AlbumTrackTable.svelte";
 	import LoadingDots from "$lib/components/loading/LoadingDots.svelte";
-	import { formateDate, msToTime } from "$lib/helpers/converters";
-	import { getAlbumWithTracks } from "$lib/spotify/api/albums";
+	import { formateDate, msToTime } from "$lib/utils/converter/date-time";
+	import { Spotify } from "$lib/data/spotify";
+
 
 </script>
 
-{#await getAlbumWithTracks($page.params.id)}
+{#await  Spotify.Album.loadAndGet($page.params.id)}
   <LoadingDots message={"Loading Album"} />
 {:then album} 
 
