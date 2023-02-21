@@ -22,14 +22,15 @@
 <style lang="scss">
 	.banner {
     font-size: var(--font-size-h3);
-    padding: 1rem;
-    width: 80%;
+    padding: 0.5rem 1rem ;
+    width: 60%;
     min-width: 10rem;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     border-radius: 10rem;
-    box-shadow: 0 0 0.2rem 0rem var(--background-elevated-highlight);    
+    box-shadow: 0 0 1rem 0rem var(--background-press);    
+    pointer-events: auto;
   }
 
   .announcement {

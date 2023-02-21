@@ -104,8 +104,6 @@ export function startAutoRefresh() {
     const msToExpire = new Date(s.expirationDate).getTime() - Date.now();
     const msOneMinBeforeExpire = msToExpire - fiveMinInMs;
     const msTimer = Math.max(0, msOneMinBeforeExpire);
-
-    console.log(msTimer);
     
     setTimeout(() => refreshUserSession(), msTimer);
   });
