@@ -151,24 +151,29 @@ export interface UserPrivate extends UserPublic {
 	product: string;	
 }
 
-export interface Paging<T> {
-	href: string;
-	items: T[];
-	limit: number;
-	next: string;
-	offset: number;
-	previous: string;
-	total: number;
+export interface PlaybackState extends SpotifyData {
+	timestamp: number;
+	device: UserDevice;
+	progress_ms: number | null;
+	is_playing: boolean;
+	item: Track | null;
+	context: Context | null;
+	shuffle_state: boolean;
+	repeat_state: 'off' | 'track' | 'context';
 }
 
-export interface Cursor<T> {
-	href: string;
-	items: T[];
-	limit: number;
-	next: string;
-	cursors: {
-    after: string;
-    before?: string;
-  };
-	total?: number;
+export interface UserDevice extends SpotifyData{
+	id: string | null;
+	is_active: boolean;
+	is_restricted: boolean;
+	name: string;
+	type: string;
+	volume_percent: number | null;
+}
+
+export interface Context extends SpotifyData{
+	type: 'artist' | 'playlist' | 'album';
+	href: string | null;
+	external_urls: ExternalUrl | null;
+	uri: string;
 }

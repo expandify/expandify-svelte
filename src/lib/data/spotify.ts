@@ -2,6 +2,7 @@ import { loadAlbumWithTracks, loadSavedAlbumsWithTracks } from "$lib/services/sp
 import { loadFollowedArtists } from "$lib/services/spotify/api/artists";
 import { loadUserPlaylistsWithTracks } from "$lib/services/spotify/api/playlsits";
 import { loadSavedTracks } from "$lib/services/spotify/api/tracks";
+import { getPlaybackState } from "$lib/services/spotify/api/player";
 import { laodUser } from "$lib/services/spotify/api/user";
 import { albums } from "$lib/stores/library/albums";
 import { artists } from "$lib/stores/library/artists";
@@ -110,6 +111,13 @@ export namespace Spotify {
       }
       user.stopLoading();
       if (!get(user).error) { notifications.addSuccess("Finished loading user")}
+    }
+  }
+
+
+  export namespace Player {
+    export async function getPlayback() {    
+      return await getPlaybackState();
     }
   }
 }

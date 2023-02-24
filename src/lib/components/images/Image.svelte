@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icon from "./FallbackSvg.svelte";
+	import Svg from "./Svg.svelte";
 
   export let image: string | undefined | null;
   export let imageAlt: string | undefined | null;
@@ -18,7 +18,7 @@
        style="border-radius: {borderRadius};"/>  
   {:else}
   <div class="fallback" style="border-radius: {borderRadius};">
-    <Icon name={fallbackSvg} width={"auto"} height={"auto"} class="svg" ></Icon>
+    <Svg name={fallbackSvg} width={"auto"} height={"auto"} class="svg" ></Svg>
   </div>  
   {/if}
 </div>

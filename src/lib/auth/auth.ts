@@ -4,7 +4,7 @@ import { PUBLIC_SPOTIFY_ID, PUBLIC_SPOTIFY_REDIRECT_URI } from '$env/static/publ
 import { spotifySession } from "$lib/stores/spotifySession";
 import { get } from "svelte/store";
 
-const SCOPES = 'playlist-read-private playlist-read-collaborative user-library-read user-follow-read user-read-private';
+const SCOPES = 'playlist-read-private playlist-read-collaborative user-library-read user-follow-read user-read-private app-remote-control streaming user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-email';
 const CODE_VERIFIER_LENGTH = 50;
 const STATE_LENGTH = 50;
 const TOKEN_API_URL = 'https://accounts.spotify.com/api/token';

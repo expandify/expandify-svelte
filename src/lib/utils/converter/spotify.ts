@@ -3,10 +3,12 @@ import type {
   AlbumSimplified, 
   Artist, 
   ArtistSimplified, 
+  Context, 
   Copyright, 
   ExternalId, 
   ExternalUrl, 
   Followers, 
+  PlaybackState, 
   Playlist, 
   PlaylistSimplified, 
   PlaylistTrack, 
@@ -16,6 +18,7 @@ import type {
   Track, 
   TrackLink, 
   TrackSimplified, 
+  UserDevice, 
   UserPrivate, 
   UserPublic 
 } from "$lib/types/spotify";
@@ -211,5 +214,38 @@ export function toUserPrivate(user: SpotifyApi.UserObjectPrivate): UserPrivate {
     country: user.country,
     email: user.email,
     product: user.product
+  }
+}
+
+export function toPlaybackState(state: SpotifyApi.CurrentPlaybackResponse): PlaybackState {
+  return {
+    timestamp: state.timestamp,
+    device: toUserDevice(state.device),
+    progress_ms: state.progress_ms,
+    is_playing: state.is_playing,
+    item: state.item ? toTrack(state.item) : null,
+    context: state.context ? toContext(state.context) : null,
+    shuffle_state: state.shuffle_state,
+    repeat_state: state.repeat_state
+  }
+}
+
+export function toUserDevice(device: SpotifyApi.UserDevice): UserDevice {
+  return {
+    id: device.id,
+    is_active: device.is_active,
+    is_restricted: device.is_restricted,
+    name: device.name,
+    type: device.type,
+    volume_percent: device.volume_percent
+  }
+}
+
+export function toContext(context: SpotifyApi.ContextObject): Context {
+  return {
+    type: context.type,
+    href: context.href,
+    external_urls: context.external_urls ? toExternalUrl(context.external_urls) : null,
+    uri: context.uri,
   }
 }

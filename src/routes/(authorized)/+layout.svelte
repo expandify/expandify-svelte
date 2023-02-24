@@ -13,7 +13,7 @@
 	
 	
 	$: if (!($spotifySession) && browser) goto("/");
-
+/*
 	
 	if (!$albums.updated && browser) {
 		Spotify.Album.loadSavedToStore();
@@ -35,7 +35,7 @@
 	if (!$user.updated && browser) {
 		Spotify.User.loadToStore();
 	}
-
+*/
 </script>
 
 

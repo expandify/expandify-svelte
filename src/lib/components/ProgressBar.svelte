@@ -19,7 +19,7 @@
     width: 100%;
   }
   progress::-webkit-progress-bar {
-    background-color: var(--background-highlight);
+    background-color: var(--background-elevated-highlight);
     border-radius: 0.5rem;
   }
   progress::-webkit-progress-value {

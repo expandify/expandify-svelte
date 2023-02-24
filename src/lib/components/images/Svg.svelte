@@ -18,8 +18,27 @@
         box: 24,
         name: "playlist",
         svg: `<path d="M6 3h15v15.167a3.5 3.5 0 11-3.5-3.5H19V5H8v13.167a3.5 3.5 0 11-3.5-3.5H6V3zm0 13.667H4.5a1.5 1.5 0 101.5 1.5v-1.5zm13 0h-1.5a1.5 1.5 0 101.5 1.5v-1.5z"></path>`
+      }, 
+      {
+        box: 24,
+        name: "play",
+        svg:`<path d="M3 22v-20l18 10-18 10z"/>`
+      }, 
+      {
+        box: 24,
+        name: "pause",
+        svg:`<path d="M11 22h-4v-20h4v20zm6-20h-4v20h4v-20z"/>` 
+      }, 
+      {
+        box: 24,
+        name: "next",
+        svg:`<path d="M19 12l-18 12v-24l18 12zm4-11h-4v22h4v-22z"/>`
+      }, 
+      {
+        box: 24,
+        name: "previous",
+        svg:`<path d="M4 2v20h-2v-20h2zm18 0l-16 10 16 10v-20z"/>`
       }
-      
   ];
   let displayIcon = icons.find((e) => e.name === name)!;
 </script>
