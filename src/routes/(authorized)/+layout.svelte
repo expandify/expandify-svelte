@@ -19,6 +19,7 @@
 		Spotify.Album.loadSavedToStore();
 	}
 
+
 	if (!$artists.updated && browser) {
 		Spotify.Artist.loadFollowedToStore();
 	}

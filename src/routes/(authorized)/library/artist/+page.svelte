@@ -3,7 +3,6 @@
 	import ArtistCard from '$lib/components/cards/ArtistCard.svelte';
 	import Grid from '$lib/components/layout/Grid.svelte';
 	import { Spotify } from '$lib/data/spotify';
-	import { loadFollowedArtists } from '$lib/services/spotify/api/artists';
 	import { dependencies } from '$lib/stores/dependencies';
 	import { artists } from '$lib/stores/library/artists';
 

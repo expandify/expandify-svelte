@@ -3,7 +3,6 @@
 	import InformationNavBarSection from './InformationNavBarSection.svelte';
 	import ToolsNavBarSection from './ToolsNavBarSection.svelte';
 	import ButtonNavBarSection from './ButtonNavBarSection.svelte';
-	import NavBarSection from './NavBarSection.svelte';
 
 </script>
 
@@ -70,7 +69,7 @@
 				gap: 0.5rem;
 				text-decoration: none;
       	color: var(--text-base);
-				margin-bottom: 0rem;
+				margin-bottom: 0;
 			}			
 		}
 		.buttons {

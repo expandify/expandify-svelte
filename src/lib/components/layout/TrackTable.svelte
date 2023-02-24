@@ -36,10 +36,8 @@
   }
 
   function indexInView(i: number): boolean {
-    if (i > firstVisibleTrack - 5 && i < lastVisibleTrack + 5) {
-      return true;
-    }
-    return false;
+    return i > firstVisibleTrack - 5 && i < lastVisibleTrack + 5;
+
   }
 </script>
 
@@ -110,12 +108,6 @@
     .content-row:hover {
       background-color: var(--background-elevated-highlight);
       cursor: pointer;
-    }
-
-    
-
-    :global(.time) {
-      width: 1.2rem;
     }
   }
 </style>

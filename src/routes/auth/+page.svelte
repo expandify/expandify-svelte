@@ -15,15 +15,15 @@
 
     if (!code || !state) {
       const authUrl = await authorizeUrl();    
-      goto(authUrl);
+      await goto(authUrl);
     }
 
     try {
       await createUserSession(code!, state!);    
-      goto("/dashboard");
+      await goto("/dashboard");
     } catch(_) {
-      goto("/");
+        await goto("/");
     }
-  };
+  }
 
 </script>

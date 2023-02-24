@@ -1,11 +1,7 @@
 <script lang="ts">
-	import ButtonSimple from "$lib/components/buttons/ButtonSimple.svelte";
 	import ButtonSimpleElevated from "$lib/components/buttons/ButtonSimpleElevated.svelte";
-import ButtonSpotify from "$lib/components/buttons/ButtonSpotify.svelte";
 	import LoadingDots from "$lib/components/loading/LoadingDots.svelte";
-	import { toSavedTrack } from "$lib/utils/converter/spotify";
 	import { calculateLibraryValue } from "./value-calculator";
-	//import { calculateLibraryValue } from "./value-calculator";
 
 	let savedAlbums = false;
 	let ownPlaylists = false;

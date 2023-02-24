@@ -7,7 +7,7 @@
 
 	if (browser && $spotifySession) { 
 		goto("/dashboard"); 
-	};
+	}
 </script>
 
 <main class="main">

@@ -4,9 +4,9 @@
 </script>
 
 {#if value && max}
-<progress {value} {max} />  
+<progress {value} {max}></progress>
 {:else}
-<progress/>  
+<progress></progress>
 {/if}
 
 

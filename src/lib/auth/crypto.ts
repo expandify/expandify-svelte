@@ -1,4 +1,4 @@
-import { Base64 } from 'js-base64';
+import {Base64} from 'js-base64';
 
 const CODE_CHARSET = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~';
 
@@ -11,12 +11,10 @@ const CODE_CHARSET = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
  */
 export function generateRandomString(length: number = 50): string {
 	const randomValues = window.crypto.getRandomValues(new Uint32Array(length));
-	const codeVerifier = Array.from(randomValues)
+	return Array.from(randomValues)
 		.map((value) => value / 0x100000000) // Scale all values to [0, 1)
 		.map((value) => CODE_CHARSET[Math.floor(value * CODE_CHARSET.length)])
 		.join('');
-
-	return codeVerifier;
 }
 
 /**
@@ -28,7 +26,5 @@ export function generateRandomString(length: number = 50): string {
 export async function createCodeChallenge(codeVerifier: string): Promise<string> {
 	const codeBuffer = new TextEncoder().encode(codeVerifier);
 	const hashBuffer = await window.crypto.subtle.digest('SHA-256', codeBuffer);
-	const codeChallenge = Base64.fromUint8Array(new Uint8Array(hashBuffer), true);
-
-	return codeChallenge;
+	return Base64.fromUint8Array(new Uint8Array(hashBuffer), true);
 }

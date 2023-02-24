@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { notifications } from '$lib/stores/notifications';
 	import Notification from './Notification.svelte';
-  
 
-  $: iterator = Array.from($notifications);
+    $: iterator = Array.from($notifications);
 </script>
 
 <div class="banners">
@@ -17,13 +16,15 @@
 
 <style lang="scss">
 	.banners {
-    position: absolute;
-    top: 5rem;
+    position: fixed;
+    top: 2rem;
     display: flex;
     flex-direction: column;    
     justify-content: center;
     align-items: center;
     min-width: 100%;
     gap: 1rem;
+    z-index: 5;
+    pointer-events: none;
   }
 </style>

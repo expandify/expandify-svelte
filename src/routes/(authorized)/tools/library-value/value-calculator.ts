@@ -98,7 +98,6 @@ async function calculatePrice(groups: GroupedTracks) {
       calculatedPrice += Math.min(tracksPrice, itunesAlbum.price);
     } catch (err) {
       albumError[albumId] = tracks;
-      continue;
     }            
   }
 

@@ -17,10 +17,10 @@ function createStore() {
 
 	return {
 		subscribe,    
-    addAnnouncement: (message: string) => { addNotification(message, NotificationType.ANNOUNCEMENT) },
-    addError: (message: string) => { addNotification(message, NotificationType.ERROR) },
-    addSuccess: (message: string) => { addNotification(message, NotificationType.SUCCESS) },
-    addWarning: (message: string) => { addNotification(message, NotificationType.WARNING) }  
+        addAnnouncement: (message: string) => { addNotification(message, NotificationType.ANNOUNCEMENT) },
+        addError: (message: string) => { addNotification(message, NotificationType.ERROR) },
+        addSuccess: (message: string) => { addNotification(message, NotificationType.SUCCESS) },
+        addWarning: (message: string) => { addNotification(message, NotificationType.WARNING) }
 	};
 }
 
