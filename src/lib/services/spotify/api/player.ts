@@ -2,8 +2,7 @@ import { toPlaybackState } from "$lib/utils/converter/spotify";
 import { makeRequest } from "../request";
 
 export async function getPlaybackState() {
-  const playbackState =  await makeRequest((api) => api.getMyCurrentPlaybackState());  
-  return toPlaybackState(playbackState);
+  return await makeRequest((api) => api.getMyCurrentPlaybackState());    
 }
 
 export async function startPlayback() {

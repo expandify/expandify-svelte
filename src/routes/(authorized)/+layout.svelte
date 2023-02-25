@@ -47,7 +47,7 @@
 	<div class="modal-wrapper">
 		<LoadingDependencyModal />		
 	</div>	
-	<main class="content">
+	<main class="content" >
 		
 		<slot />
 	</main>			

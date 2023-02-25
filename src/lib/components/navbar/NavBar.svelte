@@ -1,6 +1,5 @@
 <script lang="ts">
 	import LibraryNavBarSection from './LibraryNavBarSection.svelte';
-	import InformationNavBarSection from './InformationNavBarSection.svelte';
 	import ToolsNavBarSection from './ToolsNavBarSection.svelte';
 	import ButtonNavBarSection from './ButtonNavBarSection.svelte';
 
@@ -11,7 +10,6 @@
 		<nav>	
 			<h2><a class="title" href="/dashboard">Expandify</a></h2>
 			<LibraryNavBarSection/>
-			<InformationNavBarSection/>
 			<ToolsNavBarSection/>				
 		</nav>	
 	</div>	

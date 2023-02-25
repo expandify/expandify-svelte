@@ -10,7 +10,7 @@ import { playlists } from "$lib/stores/library/playlists";
 import { tracks } from "$lib/stores/library/tracks";
 import { user } from "$lib/stores/library/user";
 import { notifications } from "$lib/stores/notifications";
-import { toAlbum, toArtist, toPlaylist, toSavedAlbum, toSavedTrack, toUserPrivate } from "$lib/utils/converter/spotify";
+import { toAlbum, toArtist, toPlaybackState, toPlaylist, toSavedAlbum, toSavedTrack, toUserPrivate } from "$lib/utils/converter/spotify";
 import { get } from "svelte/store";
 
 export namespace Spotify {
@@ -117,7 +117,8 @@ export namespace Spotify {
 
   export namespace Player {
     export async function getPlayback() {    
-      return await getPlaybackState();
+      const playbackState = await getPlaybackState();
+      return toPlaybackState(playbackState);
     }
   }
 }

@@ -2,12 +2,20 @@
   import { Spotify } from "$lib/data/spotify";
   import { nextPlayback, pausePlayback, previousPlayback, startPlayback } from "$lib/services/spotify/api/player";
   import type { PlaybackState } from "$lib/types/spotify";
+    import { msToTime } from "$lib/utils/converter/date-time";
   import { onDestroy } from "svelte";
     import AlbumImage from "./images/AlbumImage.svelte";
     import Svg from "./images/Svg.svelte";
   import ProgressBar from "./ProgressBar.svelte";
   
+  const svgSize = "3.5rem";
+
   let playbackState: PlaybackState;
+
+  $: timeMs = playbackState?.progress_ms || 0;
+  $: lengthMs = playbackState?.item?.duration_ms || 1;
+  $: remainingMs = lengthMs - timeMs;
+  $: percent = ((timeMs / lengthMs) * 100).toFixed(1);
 
   (async () => {
     playbackState = await Spotify.Player.getPlayback();
@@ -16,11 +24,6 @@
   const playbackInterval = setInterval(async () => {
     playbackState = await Spotify.Player.getPlayback();    
   }, 1000);
-
-  function playbackPercent() {
-    if (!playbackState.item || !playbackState.progress_ms) { return 0; }
-    return (( playbackState.progress_ms / playbackState.item?.duration_ms) * 100).toFixed(2);
-  }
 
   onDestroy(() => {
     clearInterval(playbackInterval);
@@ -36,40 +39,37 @@
         <div class="infos">
           <h2 class="title">{playbackState.item?.name}</h2>
           <h5  class="artists">{playbackState.item?.artists.map((a) => a.name).join(', ')}</h5>
+          <small class="device">{playbackState.device.name}</small>          
         </div>      
       </div>
 
-      <ProgressBar max={playbackState.item?.duration_ms} value={playbackState.progress_ms}></ProgressBar>
+      <div class="progress">        
+        <small class="time">{msToTime(timeMs)}</small>
+        <small class="remaining-time">{msToTime(remainingMs)}</small>
+        <ProgressBar max={lengthMs} value={timeMs}></ProgressBar>
+        <small class="length">{msToTime(lengthMs)}</small>
+        <small class="percent">{percent}%</small>
+      </div>
 
       <div class="media-control">
         <button class="media-control-button" on:click={() => previousPlayback()}>
-          <Svg name=previous class="svg"></Svg>
+          <Svg name=previous class="svg" width={svgSize} height={svgSize}></Svg>
         </button>            
         {#if playbackState.is_playing}
           <button class="media-control-button" on:click={() => pausePlayback()}>
-            <Svg name=pause class="svg"></Svg>
+            <Svg name=pause class="svg" width={svgSize} height={svgSize}></Svg>
           </button>
         {:else}
           <button class="media-control-button" on:click={() => startPlayback()}>
-            <Svg name=play class="svg"></Svg>
+            <Svg name=play class="svg" width={svgSize} height={svgSize}></Svg>
           </button>          
         {/if} 
         <button class="media-control-button" on:click={() => nextPlayback()}>
-          <Svg name=next class="svg"></Svg>  
+          <Svg name=next class="svg" width={svgSize} height={svgSize}></Svg>  
         </button>
       </div>
       
-    </div>
-    
-    <div class="artists"><small>{playbackState.device.name}</small></div>
-    <div class="artists"><small>{playbackPercent()}%</small></div>
-    <div class="artists"><small>{playbackState.item?.artists.map((a) => a.name).join(', ')}</small></div>
-
-    <button class="play-pause" on:click={() => {playbackState.is_playing ? pausePlayback() : startPlayback()}}>Play/Pause </button>
-    <ProgressBar max={playbackState.item?.duration_ms} value={playbackState.progress_ms}></ProgressBar>
-
-    <button class="prev" on:click={() => previousPlayback()}>Previous</button>
-    <button class="next" on:click={() => nextPlayback()} >Next</button>
+    </div>      
   {/if}
 {/key}  
 
@@ -105,6 +105,35 @@
           margin-top: 0;
           color: var(--text-subdued);
         }
+
+        .device {
+          color: var(--text-subdued);
+        }
+      }
+    }
+
+    .progress {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+
+      .remaining-time, .percent, .time, .length {
+        width: 10%;
+      }
+      .remaining-time, .percent {
+        display: none;
+      }
+    }
+
+    .progress:hover {
+      .remaining-time, .percent {
+        display: block;
+      }
+
+      .time, .length {
+        display: none;
       }
     }
 
@@ -117,7 +146,6 @@
         background-color: inherit;
         border-radius: 5rem;
         border: none;
-        padding: 1rem;
         fill: var(--text-subdued);
       }
 
@@ -129,8 +157,6 @@
 
       :global(.svg) {
         fill: inherit;
-        width: 2.5rem;
-        height: 2.5rem;
       }
       
     }

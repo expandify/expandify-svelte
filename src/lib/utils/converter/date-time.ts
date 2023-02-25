@@ -1,4 +1,6 @@
-export function msToTime(s: number, milli = false) {
+export function msToTime(s: number | null | undefined, milli = false) {
+
+  if (!s) {s = 0}
 
   // Pad to 2 or 3 digits, default is 2
   function pad(n: number, z = 2) {
