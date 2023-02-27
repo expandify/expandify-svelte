@@ -3,10 +3,10 @@
 	import AlbumCard from '$lib/components/cards/AlbumCard.svelte';
 	import Grid from '$lib/components/layout/Grid.svelte';
 	import { Spotify } from '$lib/data/spotify';
-	import { dependencies } from '$lib/stores/dependencies';
 	import { albums } from '$lib/stores/library/albums';
+	import {dependencies} from "$lib/stores/dependencies";
 
-
+	
 	dependencies.onlyAlbumsNeeded();
 	
 

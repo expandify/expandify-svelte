@@ -5,7 +5,6 @@
 	import { browser } from '$app/environment';
 	import { spotifySession, type SpotifySession } from '$lib/stores/spotifySession';
 
-
 	if (browser) {
 		try {
 			const data: SpotifySession = JSON.parse(localStorage.spotify);
@@ -26,7 +25,7 @@
 
 
 <style lang="scss">	
-	.page {			
+	.page {
 		min-height: 100vh;
 	}
 </style>
