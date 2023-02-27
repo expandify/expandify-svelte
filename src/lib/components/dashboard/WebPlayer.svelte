@@ -2,11 +2,11 @@
   import { Spotify } from "$lib/data/spotify";
   import { nextPlayback, pausePlayback, previousPlayback, startPlayback } from "$lib/services/spotify/api/player";
   import type { PlaybackState } from "$lib/types/spotify";
-    import { msToTime } from "$lib/utils/converter/date-time";
+  import { msToTime } from "$lib/utils/converter/date-time";
   import { onDestroy } from "svelte";
-    import AlbumImage from "./images/AlbumImage.svelte";
-    import Svg from "./images/Svg.svelte";
-  import ProgressBar from "./ProgressBar.svelte";
+  import AlbumImage from "../images/AlbumImage.svelte";
+  import Svg from "../images/Svg.svelte";
+  import ProgressBar from "../ProgressBar.svelte";
   
   const svgSize = "3.5rem";
 
@@ -78,7 +78,7 @@
 <style lang="scss">
   .player {
     aspect-ratio: 4/2;
-    height: 100%;
+    width: 28rem;
     border-radius: 2rem;
     background-color: var(--background-elevated-base);
     padding: 2rem;
