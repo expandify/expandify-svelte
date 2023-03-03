@@ -64,7 +64,7 @@
 		
 		
 		.content {		
-			overflow-x: scroll;
+			overflow-x: auto;
 			box-sizing: content-box;
 			display: flex;
 			flex-direction: column;

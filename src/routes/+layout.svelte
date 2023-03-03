@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../app.scss';
 	import { startAutoRefresh } from '$lib/auth/auth';
-	import FloatingNotifications from '$lib/components/notifications/FloatingNotifications.svelte';
+	import Notifications from '$lib/components/layout/Notifications.svelte';
 	import { browser } from '$app/environment';
 	import { spotifySession, type SpotifySession } from '$lib/stores/spotifySession';
 
@@ -20,7 +20,7 @@
 
 <div class="page">
 	<slot />
-	<FloatingNotifications />
+	<Notifications />
 </div>
 
 

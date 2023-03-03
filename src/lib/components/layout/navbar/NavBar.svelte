@@ -35,7 +35,14 @@
 		</button> 
 		<button class="button" on:click={Spotify.loadLibraryToStores} title="Reload Library">
 			<Svg name={"reload"} />
-		</button> 				
+		</button>
+		<button class="button" on:click={Spotify.Track.loadSavedToStore} title="Reload Tracks">
+			<Svg name={"reload"} />
+		</button>
+		<button class="button" on:click={Spotify.Album.loadSavedToStore} title="Reload Albums">
+			<Svg name={"reload"} />
+		</button>
+
 	</div>		
 </aside>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from "$lib/components/common/Button.svelte";
-	import LoadingDots from "$lib/components/loading/LoadingDots.svelte";
+	import Loading from "$lib/components/common/Loading.svelte";
 	import { calculateLibraryValue } from "./value-calculator";
 
 	let savedAlbums = false;
@@ -45,7 +45,7 @@
 
 
 {#if calculating}
-	<LoadingDots message={"Calculating"} />
+	<Loading title={"Calculating"} />
 {:else if libraryValue}
 	<h2>Library value is {libraryValue}$</h2>
 {/if}

@@ -4,7 +4,7 @@
 	import { formateDate, msToTime } from "$lib/utils/converter/date-time";
 	import { Spotify } from "$lib/data/spotify";
   import ImageWithFallback from "$lib/components/common/ImageWithFallback.svelte";
-  import TrackRow from "$lib/components/layout/table/TrackRow.svelte";
+  import TrackTable from "$lib/components/layout/TrackTable.svelte";
 
 
 </script>
@@ -29,10 +29,8 @@
     </div>    
   </div>
 </div>  
-<TrackRow track={null} showImage={false}></TrackRow>  
-{#each album.tracks as track}
-  <TrackRow track={track} showImage={false}></TrackRow>  
-{/each} 
+
+<TrackTable tracks={album.tracks} showImage={false} showAddedAt={false} />
 
 {/await}
 

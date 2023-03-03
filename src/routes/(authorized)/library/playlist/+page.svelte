@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Card from '$lib/components/common/Card.svelte';
-	import Grid from '$lib/components/layout/Grid.svelte';
+	import CardGrid from '$lib/components/layout/CardGrid.svelte';
 	import { dependencies } from '$lib/stores/dependencies';
 	import { playlists } from '$lib/stores/library/playlists';
 
@@ -9,13 +8,7 @@
 
 
 <h2>Playlists - {$playlists.playlists.length}</h2>
-
-
-<Grid>
-	{#each $playlists.playlists as playlist}
-		<Card card={playlist}/>
-	{/each}
-</Grid>
+<CardGrid cards={$playlists.playlists}/>
 
 <style lang="scss">
 

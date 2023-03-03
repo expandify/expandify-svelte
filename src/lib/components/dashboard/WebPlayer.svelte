@@ -6,7 +6,7 @@
   import { onDestroy } from "svelte";
   import ImageWithFallback from "../common/ImageWithFallback.svelte";
   import Svg from "../common/Svg.svelte";
-  import ProgressBar from "../ProgressBar.svelte";
+  import ProgressBar from "../common/ProgressBar.svelte";
   
   const svgSize = "3.5rem";
 
