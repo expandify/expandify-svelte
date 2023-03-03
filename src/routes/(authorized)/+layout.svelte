@@ -41,9 +41,8 @@
 
 
 <div class="page">
-{#if $spotifySession}		
+{#if $spotifySession}	
 	<NavBar />
-	
 	<div class="modal-wrapper">
 		<DependencyModal />		
 	</div>	
@@ -62,11 +61,13 @@
 		display: flex;
 		flex-direction: row;		
 		min-height: 100vh;	
-		width: 100%;
 		
 		
-		.content {									
-			box-sizing: border-box;
+		.content {		
+			overflow-x: scroll;
+			box-sizing: content-box;
+			display: flex;
+			flex-direction: column;
 			padding: 2rem 2rem 2rem 2rem;
 			width: 100%;						
 		}

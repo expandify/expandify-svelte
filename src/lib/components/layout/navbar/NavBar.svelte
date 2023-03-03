@@ -1,10 +1,9 @@
 <script lang="ts">
 	import NavBarSection from './NavBarSection.svelte';
-	import Button from '$lib/components/common/Button.svelte';
 	import { Spotify } from '$lib/data/spotify';
 	import { logout } from '$lib/auth/auth';
 	import { goto } from '$app/navigation';
-    import Svg from '$lib/components/common/Svg.svelte';
+	import Svg from '$lib/components/common/Svg.svelte';
 
 	function logouts() {
 		logout();
@@ -69,7 +68,7 @@
 		top: 0;
 		left: 0;		
 		height: 100vh;
-		width: 18rem;
+		min-width: 18rem;
 
 		.nav {
 			padding: 2rem;
@@ -96,13 +95,15 @@
 			padding: 1rem;
 			display: flex;
 			flex-direction: row;			
-			gap: 6rem;
+			justify-content: space-between;
+			
 
 			.button {
 				background-color: inherit;        
         border: none;
         fill: var(--text-subdued);
 				cursor: pointer;
+				width: 2.5rem;
 			}
 			.button:hover {                
         fill: var(--text-base);      

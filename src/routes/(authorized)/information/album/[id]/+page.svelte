@@ -1,18 +1,17 @@
 <script lang="ts">
 	import { page } from "$app/stores";
-	import AlbumTrackTable from "$lib/components/layout/AlbumTrackTable.svelte";
-	import LoadingDots from "$lib/components/loading/LoadingDots.svelte";
+	import Loading from "$lib/components/common/Loading.svelte";
 	import { formateDate, msToTime } from "$lib/utils/converter/date-time";
 	import { Spotify } from "$lib/data/spotify";
   import ImageWithFallback from "$lib/components/common/ImageWithFallback.svelte";
+  import TrackRow from "$lib/components/layout/table/TrackRow.svelte";
 
 
 </script>
 
 {#await  Spotify.Album.loadAndGet($page.params.id)}
-  <LoadingDots message={"Loading Album"} />
+  <Loading title={"Album"} />
 {:then album} 
-
 <div class="header">
   <ImageWithFallback type={album} borderRadius="0"/>
   <div class="header-infos">
@@ -30,7 +29,11 @@
     </div>    
   </div>
 </div>  
-<AlbumTrackTable album={album}/>
+<TrackRow track={null} showImage={false}></TrackRow>  
+{#each album.tracks as track}
+  <TrackRow track={track} showImage={false}></TrackRow>  
+{/each} 
+
 {/await}
 
 

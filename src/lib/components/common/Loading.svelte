@@ -20,7 +20,8 @@
   }, 400);
   onDestroy(() => clearInterval(interval));
 
-  let stepSuffix = current && total ? `: ${current} of ${total}` : "";
+  $: stepSuffix = current && total ? `: ${current} of ${total}` : "";
+
 
 </script>
 
