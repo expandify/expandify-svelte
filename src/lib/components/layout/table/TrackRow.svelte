@@ -27,7 +27,7 @@
   <span class="time">TIME</span>
 </div>
 
-{:else}  
+{:else}
 
 <div class="row overflow">
   <span class="position">{index || track.track_number}</span>  
