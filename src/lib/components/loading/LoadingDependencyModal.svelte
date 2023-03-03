@@ -7,7 +7,7 @@
 	import { tracks } from "$lib/stores/library/tracks";
 	import { user } from "$lib/stores/library/user";
 	import { fade } from "svelte/transition";
-	import ButtonSimple from "../buttons/ButtonSimple.svelte";
+  import Button from "../common/Button.svelte";
 	import LoadingText from "./LoadingText.svelte";
 
   $: anyNeeded = 
@@ -30,7 +30,7 @@
     error={$albums.error !== null}>
 
     {#if $albums.error}
-      <ButtonSimple on:click={Spotify.Album.loadSavedToStore}><p>Retry</p></ButtonSimple>  
+      <Button on:click={Spotify.Album.loadSavedToStore} text="Retry"/>
     {/if}    
   </LoadingText>
 
@@ -45,7 +45,7 @@
     error={$artists.error !== null} >
 
     {#if $artists.error}
-      <ButtonSimple on:click={Spotify.Artist.loadFollowedToStore}><p>Retry</p></ButtonSimple>  
+      <Button on:click={Spotify.Artist.loadFollowedToStore} text="Retry"/>
     {/if}    
   </LoadingText>
   {/if}
@@ -59,7 +59,7 @@
     error={$playlists.error !== null} >
 
     {#if $playlists.error}
-      <ButtonSimple on:click={Spotify.Playlist.loadAllToStore}><p>Retry</p></ButtonSimple>  
+      <Button on:click={Spotify.Playlist.loadAllToStore} text="Retry"/>
     {/if}    
   </LoadingText>
   {/if}
@@ -73,7 +73,7 @@
     error={$tracks.error !== null} >
 
     {#if $tracks.error}
-      <ButtonSimple on:click={Spotify.Track.loadSavedToStore}><p>Retry</p></ButtonSimple>  
+      <Button on:click={Spotify.Track.loadSavedToStore} text="Retry"/>
     {/if}    
   </LoadingText>
   {/if}
@@ -85,7 +85,7 @@
     error={$user.error !== null} >
 
     {#if $user.error}
-      <ButtonSimple on:click={Spotify.User.loadToStore}><p>Retry</p></ButtonSimple>  
+      <Button on:click={Spotify.User.loadToStore} text="Retry"/>  
     {/if}    
   </LoadingText>
   {/if}

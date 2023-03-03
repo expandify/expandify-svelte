@@ -4,8 +4,8 @@
   import type { PlaybackState } from "$lib/types/spotify";
   import { msToTime } from "$lib/utils/converter/date-time";
   import { onDestroy } from "svelte";
-  import AlbumImage from "../images/AlbumImage.svelte";
-  import Svg from "../images/Svg.svelte";
+  import ImageWithFallback from "../common/ImageWithFallback.svelte";
+  import Svg from "../common/Svg.svelte";
   import ProgressBar from "../ProgressBar.svelte";
   
   const svgSize = "3.5rem";
@@ -35,7 +35,7 @@
     <div class="player">
 
       <div class="header">
-        <AlbumImage album={playbackState.item?.album}></AlbumImage>
+        <ImageWithFallback type={playbackState.item?.album} fallbackSvg="album"/>
         <div class="infos">
           <h2 class="title">{playbackState.item?.name}</h2>
           <h5  class="artists">{playbackState.item?.artists.map((a) => a.name).join(', ')}</h5>

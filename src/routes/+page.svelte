@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import ButtonSpotify from '$lib/components/buttons/ButtonSpotify.svelte';
+	import Button from '$lib/components/common/Button.svelte';
 	import { spotifySession } from '$lib/stores/spotifySession';
 
 
@@ -12,7 +12,7 @@
 
 <main class="main">
 	<h1>Welcome to Expandify</h1>
-	<ButtonSpotify on:click={() => goto("/auth")}><h3>Login with Spotify</h3></ButtonSpotify>
+	<Button on:click={() => goto("/auth")} text="Login With Spotify" style="spotify"></Button>
 </main>
 
 

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from "$app/stores";
-	import AlbumImage from "$lib/components/images/AlbumImage.svelte";
 	import AlbumTrackTable from "$lib/components/layout/AlbumTrackTable.svelte";
 	import LoadingDots from "$lib/components/loading/LoadingDots.svelte";
 	import { formateDate, msToTime } from "$lib/utils/converter/date-time";
 	import { Spotify } from "$lib/data/spotify";
+  import ImageWithFallback from "$lib/components/common/ImageWithFallback.svelte";
 
 
 </script>
@@ -14,7 +14,7 @@
 {:then album} 
 
 <div class="header">
-  <AlbumImage album={album} borderRadius="0"/>
+  <ImageWithFallback type={album} borderRadius="0"/>
   <div class="header-infos">
     <span>Album</span>
     <h1 class="title">{album.name}</h1>

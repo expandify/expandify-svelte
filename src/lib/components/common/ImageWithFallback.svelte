@@ -1,10 +1,14 @@
 <script lang="ts">
+  import type { AlbumSimplified, Artist, PlaylistSimplified } from "$lib/types/spotify";
 	import Svg from "./Svg.svelte";
 
-  export let image: string | undefined | null;
-  export let imageAlt: string | undefined | null;
-  export let fallbackSvg: string;
-  export let borderRadius = "0";
+  export let type: AlbumSimplified | Artist | PlaylistSimplified | null | undefined;
+  export let fallbackSvg: string = type?.type || "";
+  export let borderRadius = type?.type === "artist" ? "100%" : "1rem";  
+  
+  let image = type?.images?.at(0)?.url;
+  let imageAlt = type?.name;  
+  
 
 </script>
 

@@ -1,12 +1,13 @@
 <script lang="js">
-    import Metric from "$lib/components/dashboard/Metric.svelte";
+  import Button from "$lib/components/common/Button.svelte";
+  import Metric from "$lib/components/dashboard/Metric.svelte";
   import WebPlayer from "$lib/components/dashboard/WebPlayer.svelte";
-	import { dependencies } from "$lib/stores/dependencies";
-    import { albums } from "$lib/stores/library/albums";
-    import { artists } from "$lib/stores/library/artists";
-    import { playlists } from "$lib/stores/library/playlists";
-    import { tracks } from "$lib/stores/library/tracks";
-    import { user } from "$lib/stores/library/user";
+  import { dependencies } from "$lib/stores/dependencies";
+  import { albums } from "$lib/stores/library/albums";
+  import { artists } from "$lib/stores/library/artists";
+  import { playlists } from "$lib/stores/library/playlists";
+  import { tracks } from "$lib/stores/library/tracks";
+  import { user } from "$lib/stores/library/user";
 
 
   //dependencies.setDependencies(true, true, true, true, true);
@@ -16,6 +17,11 @@
 </script>
 
 <h1>Dashboard</h1>
+
+<div class="tester">
+  <Button text="Tester" style='elevated'></Button>
+</div>
+
 
 <div class="tiles">
   <Metric title={"Saved Albums"} metric={$albums.total} />
@@ -36,6 +42,13 @@
 
 
 <style lang="scss">
+
+  .tester {    
+    background-color: var(--background-elevated-highlight);
+    width: 40rem;
+    height: 30rem;
+  }
+
   .tiles {
     display: flex;
     flex-direction: row;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ButtonSimpleElevated from "$lib/components/buttons/ButtonSimpleElevated.svelte";
+	import Button from "$lib/components/common/Button.svelte";
 	import LoadingDots from "$lib/components/loading/LoadingDots.svelte";
 	import { calculateLibraryValue } from "./value-calculator";
 
@@ -40,7 +40,7 @@
 </div>
 
 {#if savedAlbums || ownPlaylists || followedPlaylists || savedTracks}
-	<ButtonSimpleElevated on:click={calcLibrary}><h2>Calculate Library Value</h2></ButtonSimpleElevated>	
+	<Button on:click={calcLibrary} text="Calculate Library Value" style="elevated" />
 {/if}
 
 

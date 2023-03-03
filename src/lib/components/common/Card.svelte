@@ -1,16 +1,35 @@
 <script lang="ts">
+  import type { Album, Artist, Playlist } from "$lib/types/spotify";
 	import { fade } from "svelte/transition";
+  import ImageWithFallback from "../common/ImageWithFallback.svelte";
 
+  export let card: Album | Artist | Playlist ;
   
-  export let title: string;
-  export let subtitle: string | null;
-  export let href: string | null = "";
+  let title = card.name;
+  let subtitle: string;
+  let href: string | null;
+
+  switch (card.type) {
+    case "album":
+      subtitle = card.artists.map(a => a.name).join(", ")
+      href = `/information/album/${card.id}`
+      break;
+    case "artist":  
+      subtitle = "Artist"
+      href = `/information/artist/${card.id}`      
+      break;
+    case "playlist":
+      subtitle = `By ${card.owner.display_name}`
+      href = `/information/playlist/${card.id}`
+      break;
+  
+  }
   
 </script>
 
 <a in:fade href={href}>
   <div class="card" >
-    <slot></slot>    
+    <ImageWithFallback type={card}/>    
     
     <div class="card-bottom">
       <div class="title">{title}</div>

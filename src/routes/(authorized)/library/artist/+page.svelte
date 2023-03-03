@@ -1,30 +1,22 @@
-<script lang="ts">
-	import ButtonSimpleElevated from '$lib/components/buttons/ButtonSimpleElevated.svelte';
-	import ArtistCard from '$lib/components/cards/ArtistCard.svelte';
+<script lang="ts">	
+	import Card from '$lib/components/common/Card.svelte';
 	import Grid from '$lib/components/layout/Grid.svelte';
-	import { Spotify } from '$lib/data/spotify';
 	import { dependencies } from '$lib/stores/dependencies';
 	import { artists } from '$lib/stores/library/artists';
 
 	dependencies.onlyArtistsNeeded();
 </script>
 
-<div class="header">
-	<h2>Artists - {$artists.artists.length}</h2>
-	<ButtonSimpleElevated on:click={Spotify.Artist.loadFollowedToStore}>Reload Artists</ButtonSimpleElevated>
-</div>
+
+<h2>Artists - {$artists.artists.length}</h2>
+
 
 <Grid>
 	{#each $artists.artists as artist}
-		<ArtistCard artist={artist}/>
+		<Card card={artist}/>
 	{/each}
 </Grid>
 
 <style lang="scss">
 
-	.header {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-	}
 </style>

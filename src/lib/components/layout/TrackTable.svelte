@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SavedTrack } from "$lib/types/spotify";
 	import { formateDate, msToTime } from "$lib/utils/converter/date-time";  
-	import AlbumImage from "../images/AlbumImage.svelte";
+  import ImageWithFallback from "../common/ImageWithFallback.svelte";
 
   export let tracks: SavedTrack[];
 
@@ -56,7 +56,7 @@
   {#if indexInView(i)}
   <div class="row content-row">
     <span class="col-position">{i + 1}</span>
-    <AlbumImage album={track.album} borderRadius="0"/>
+    <ImageWithFallback type={track.album} borderRadius="0"/>
     <div class="title-box overflow">      
       <span class="title overflow">{track.name}</span> 
       <span class="artists">{track.artists.map(a => a.name).join(", ")}</span> 

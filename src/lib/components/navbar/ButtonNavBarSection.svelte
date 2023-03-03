@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import { logout } from "$lib/auth/auth";
-	import ButtonSimple from "$lib/components/buttons/ButtonSimple.svelte";
-	import ButtonSpotify from "$lib/components/buttons/ButtonSpotify.svelte";
 	import { Spotify } from "$lib/data/spotify";
+	import Button from "../common/Button.svelte";
 
 
 	function logouts() {
@@ -11,17 +10,18 @@
     goto("/");
 	} 
 </script>
-  <section id=section>
-    <ButtonSpotify on:click={Spotify.loadLibraryToStores}><h5>Reload</h5></ButtonSpotify>
-    <ButtonSimple on:click={logouts}><h5>Logout</h5></ButtonSimple>
+  <section class="section">
+		<Button on:click={Spotify.loadLibraryToStores} text="Reload" style="spotify"></Button>
+		<Button on:click={logouts} text="Logout" style="base"></Button>
   </section>
 
 
 <style lang="scss">
 	
-	#section {
+	.section {
     display: flex;
     flex-direction: column;
+		gap: 0.5rem;
 
 		h5 {
 			margin: 1rem 0;
