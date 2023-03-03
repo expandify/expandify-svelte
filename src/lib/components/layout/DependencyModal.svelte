@@ -7,8 +7,7 @@
 	import { tracks } from "$lib/stores/library/tracks";
 	import { user } from "$lib/stores/library/user";
 	import { fade } from "svelte/transition";
-  import Button from "../common/Button.svelte";
-	import LoadingText from "./LoadingText.svelte";
+	import Loading from "../common/Loading.svelte";
 
   $: anyNeeded = 
         ($dependencies.albums && ($albums.loading || $albums.error)) || 
@@ -22,72 +21,52 @@
 {#if anyNeeded}
 <div class="overlay" transition:fade>
   {#if $dependencies.albums }
-  <LoadingText 
+  <Loading 
     title={"Albums"} 
     current={$albums.albums.length} 
     total={$albums.total} 
     loading={$albums.loading} 
-    error={$albums.error !== null}>
-
-    {#if $albums.error}
-      <Button on:click={Spotify.Album.loadSavedToStore} text="Retry"/>
-    {/if}    
-  </LoadingText>
-
+    error={$albums.error !== null}
+    on:retry={Spotify.Album.loadSavedToStore} />
   {/if}
 
   {#if $dependencies.artists}
-  <LoadingText 
+  <Loading 
     title={"Artists"} 
     current={$artists.artists.length} 
     total={$artists.total} 
     loading={$artists.loading} 
-    error={$artists.error !== null} >
-
-    {#if $artists.error}
-      <Button on:click={Spotify.Artist.loadFollowedToStore} text="Retry"/>
-    {/if}    
-  </LoadingText>
+    error={$artists.error !== null} 
+    on:retry={Spotify.Artist.loadFollowedToStore}
+    />
   {/if}
 
   {#if $dependencies.playlists}
-  <LoadingText 
+  <Loading 
     title={"Playlists"} 
     current={$playlists.playlists.length} 
     total={$playlists.total} 
     loading={$playlists.loading} 
-    error={$playlists.error !== null} >
-
-    {#if $playlists.error}
-      <Button on:click={Spotify.Playlist.loadAllToStore} text="Retry"/>
-    {/if}    
-  </LoadingText>
+    error={$playlists.error !== null} 
+    on:retry={Spotify.Playlist.loadAllToStore} />
   {/if}
 
   {#if $dependencies.tracks}
-  <LoadingText 
+  <Loading 
     title={"Tracks"} 
     current={$tracks.tracks.length} 
     total={$tracks.total} 
     loading={$tracks.loading} 
-    error={$tracks.error !== null} >
-
-    {#if $tracks.error}
-      <Button on:click={Spotify.Track.loadSavedToStore} text="Retry"/>
-    {/if}    
-  </LoadingText>
+    error={$tracks.error !== null} 
+    on:retry={Spotify.Track.loadSavedToStore} />    
   {/if}
 
   {#if $dependencies.user}
-  <LoadingText 
+  <Loading 
     title={"User"} 
     loading={$user.loading} 
-    error={$user.error !== null} >
-
-    {#if $user.error}
-      <Button on:click={Spotify.User.loadToStore} text="Retry"/>  
-    {/if}    
-  </LoadingText>
+    error={$user.error !== null} 
+    on:retry={Spotify.User.loadToStore} />
   {/if}
 </div>
 {/if}

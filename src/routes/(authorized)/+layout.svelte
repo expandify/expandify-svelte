@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import LoadingDependencyModal from '$lib/components/loading/LoadingDependencyModal.svelte';
-	import NavBar from '$lib/components/navbar/NavBar.svelte';
+	import DependencyModal from '$lib/components/layout/DependencyModal.svelte';
+	import NavBar from '$lib/components/layout/navbar/NavBar.svelte';
 	import { Spotify } from '$lib/data/spotify';
 	import { albums } from '$lib/stores/library/albums';
 	import { artists } from '$lib/stores/library/artists';
@@ -45,7 +45,7 @@
 	<NavBar />
 	
 	<div class="modal-wrapper">
-		<LoadingDependencyModal />		
+		<DependencyModal />		
 	</div>	
 	<main class="content" >
 		
