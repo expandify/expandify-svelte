@@ -10,7 +10,7 @@
   
   const svgSize = "3.5rem";
 
-  let playbackState: PlaybackState;
+  let playbackState: PlaybackState | null;
 
   $: timeMs = playbackState?.progress_ms || 0;
   $: lengthMs = playbackState?.item?.duration_ms || 1;

@@ -13,7 +13,6 @@
   //dependencies.setDependencies(true, true, true, true, true);
   dependencies.noNeeds();
 
-  
 </script>
 
 <h1>Dashboard</h1>
@@ -33,11 +32,6 @@
   {/if}  
   <WebPlayer></WebPlayer>
 </div>
-
-
-
-
-
 
 
 

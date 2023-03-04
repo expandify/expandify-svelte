@@ -1,16 +1,14 @@
 <script lang="ts">
 	import { notifications } from '$lib/stores/notifications';
-    import { NotificationType } from '$lib/types/notification';
-    import { fade } from 'svelte/transition';
-	import Notification from '../notifications/Notification.svelte';
+  import { NotificationType } from '$lib/types/notification';
+  import { fade } from 'svelte/transition';
 
-    $: iterator = Array.from($notifications);
+  $: iterator = Array.from($notifications);
 </script>
 
 <div class="banners">
 
   {#each iterator as notification (notification.time)}
-    <Notification notification={notification} />
     <div class="banner" 
      transition:fade
       class:announcement={notification.type === NotificationType.ANNOUNCEMENT}

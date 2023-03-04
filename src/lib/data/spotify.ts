@@ -118,6 +118,7 @@ export namespace Spotify {
   export namespace Player {
     export async function getPlayback() {    
       const playbackState = await getPlaybackState();
+      if (!playbackState) { return null; }
       return toPlaybackState(playbackState);
     }
   }
