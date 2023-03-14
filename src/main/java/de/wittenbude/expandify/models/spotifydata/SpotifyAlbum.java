@@ -34,4 +34,25 @@ public class SpotifyAlbum {
     private SpotifyTrack[] spotifyTracks;
     private ModelObjectType type;
     private String uri;
+
+    public SpotifyAlbum(SavedAlbum savedAlbum) {
+        this.albumType = savedAlbum.getAlbum().getAlbumType();
+        this.artists = savedAlbum.getAlbum().getArtists();
+        this.availableMarkets = savedAlbum.getAlbum().getAvailableMarkets();
+        this.copyrights = savedAlbum.getAlbum().getCopyrights();
+        this.externalIds = savedAlbum.getAlbum().getExternalIds();
+        this.externalUrls = savedAlbum.getAlbum().getExternalUrls();
+        this.genres = savedAlbum.getAlbum().getGenres();
+        this.href = savedAlbum.getAlbum().getHref();
+        this.id = savedAlbum.getAlbum().getId();
+        this.images = savedAlbum.getAlbum().getImages();
+        this.label = savedAlbum.getAlbum().getLabel();
+        this.name = savedAlbum.getAlbum().getName();
+        this.popularity = savedAlbum.getAlbum().getPopularity();
+        this.releaseDate = savedAlbum.getAlbum().getReleaseDate();
+        this.releaseDatePrecision = savedAlbum.getAlbum().getReleaseDatePrecision();
+        this.spotifyTracks = null; // TODO
+        this.type = savedAlbum.getAlbum().getType();
+        this.uri = savedAlbum.getAlbum().getUri();
+    }
 }

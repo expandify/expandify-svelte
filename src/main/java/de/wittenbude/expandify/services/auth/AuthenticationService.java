@@ -1,11 +1,8 @@
 package de.wittenbude.expandify.services.auth;
 
 import de.wittenbude.expandify.models.SpotifyApiCredential;
-import de.wittenbude.expandify.models.spotifydata.SpotifyUser;
 import de.wittenbude.expandify.repositories.SpotifyApiCredentialRepository;
-import de.wittenbude.expandify.services.spotifyapi.SpotifyApiRequest;
-import de.wittenbude.expandify.services.spotifyapi.UnauthorizedSpotifyApiRequestService;
-import de.wittenbude.expandify.services.spotifydata.SpotifyUserService;
+import de.wittenbude.expandify.services.spotifyapi.SpotifyApiRequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,11 +20,11 @@ public class AuthenticationService {
     private static final Logger LOG = LoggerFactory.getLogger(AuthenticationService.class);
 
     private final SpotifyApiCredentialRepository spotifyApiCredentialRepository;
-    private final SpotifyApiRequest spotifyApiRequest;
+    private final SpotifyApiRequestService spotifyApiRequest;
 
     public AuthenticationService(
             SpotifyApiCredentialRepository spotifyApiCredentialRepository,
-            UnauthorizedSpotifyApiRequestService spotifyApiRequest) {
+            SpotifyApiRequestService spotifyApiRequest) {
         this.spotifyApiCredentialRepository = spotifyApiCredentialRepository;
         this.spotifyApiRequest = spotifyApiRequest;
     }
@@ -75,11 +72,5 @@ public class AuthenticationService {
         return user;
     }
 
-    public void renewAuthentication(String userId, String refreshToken) throws SpotifyWebApiException {
-        AuthorizationCodeCredentials credentials = spotifyApiRequest.makeRequest(api -> {
-            api.setRefreshToken(refreshToken);
-            return api.authorizationCodeRefresh();
-        });
-        spotifyApiCredentialRepository.save(new SpotifyApiCredential(credentials, userId));
-    }
+
 }

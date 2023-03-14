@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
 @Document(collection = "spotify-api-credentials")
 public class SpotifyApiCredential {
 
