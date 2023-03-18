@@ -1,6 +1,8 @@
 package de.wittenbude.expandify.models.spotifydata;
 
 import com.neovisionaries.i18n.CountryCode;
+import de.wittenbude.expandify.models.spotifydata.helper.SpotifyCopyright;
+import de.wittenbude.expandify.models.spotifydata.helper.SpotifyImage;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,21 +12,24 @@ import se.michaelthelin.spotify.enums.ModelObjectType;
 import se.michaelthelin.spotify.enums.ReleaseDatePrecision;
 import se.michaelthelin.spotify.model_objects.specification.*;
 
+import java.util.Arrays;
+import java.util.Map;
+
 @Data
 @NoArgsConstructor
 @Document(collection = "albums")
-public class SpotifyAlbum {
+public class SpotifyAlbum extends SpotifyAlbumSimplified{
     private AlbumType albumType;
     private ArtistSimplified[] artists;
     private CountryCode[] availableMarkets;
-    private Copyright[] copyrights;
-    private ExternalId externalIds;
-    private ExternalUrl externalUrls;
+    private SpotifyCopyright[] copyrights;
+    private Map<String, String> externalIds;
+    private Map<String, String> externalUrls;
     private String[] genres;
     private String href;
     @Id
     private String id;
-    private Image[] images;
+    private SpotifyImage[] images;
     private String label;
     private String name;
     private Integer popularity;
@@ -39,13 +44,13 @@ public class SpotifyAlbum {
         this.albumType = savedAlbum.getAlbum().getAlbumType();
         this.artists = savedAlbum.getAlbum().getArtists();
         this.availableMarkets = savedAlbum.getAlbum().getAvailableMarkets();
-        this.copyrights = savedAlbum.getAlbum().getCopyrights();
-        this.externalIds = savedAlbum.getAlbum().getExternalIds();
-        this.externalUrls = savedAlbum.getAlbum().getExternalUrls();
+        this.copyrights = Arrays.stream(savedAlbum.getAlbum().getCopyrights()).map(SpotifyCopyright::new).toArray(SpotifyCopyright[]::new);
+        this.externalIds = savedAlbum.getAlbum().getExternalIds().getExternalIds();
+        this.externalUrls = savedAlbum.getAlbum().getExternalUrls().getExternalUrls();
         this.genres = savedAlbum.getAlbum().getGenres();
         this.href = savedAlbum.getAlbum().getHref();
         this.id = savedAlbum.getAlbum().getId();
-        this.images = savedAlbum.getAlbum().getImages();
+        this.images = Arrays.stream(savedAlbum.getAlbum().getImages()).map(SpotifyImage::new).toArray(SpotifyImage[]::new);
         this.label = savedAlbum.getAlbum().getLabel();
         this.name = savedAlbum.getAlbum().getName();
         this.popularity = savedAlbum.getAlbum().getPopularity();

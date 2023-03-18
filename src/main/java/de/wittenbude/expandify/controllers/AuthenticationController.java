@@ -43,8 +43,8 @@ public class AuthenticationController {
 
     @GetMapping("/callback")
     public String callback(@RequestParam String code) throws SpotifyWebApiException {
-        User user = authenticationService.authenticateUser(code);
-        return jwtService.generateToken(user);
+        String userId = authenticationService.authenticateUser(code);
+        return jwtService.generateToken(userId);
     }
 
 

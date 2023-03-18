@@ -60,7 +60,7 @@ public class AuthenticationService {
                 );
     }
 
-    public User authenticateUser(String code) throws  SpotifyWebApiException {
+    public String authenticateUser(String code) throws  SpotifyWebApiException {
         AuthorizationCodeCredentials credentials = spotifyApiRequest.makeRequest(api -> api.authorizationCode(code));
 
         User user = spotifyApiRequest.makeRequest(api -> {
@@ -69,7 +69,7 @@ public class AuthenticationService {
             return api.getCurrentUsersProfile();
         });
         spotifyApiCredentialRepository.save(new SpotifyApiCredential(credentials, user.getId()));
-        return user;
+        return user.getId();
     }
 
 

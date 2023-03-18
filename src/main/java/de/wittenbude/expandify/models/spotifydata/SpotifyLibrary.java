@@ -30,7 +30,7 @@ public class SpotifyLibrary {
     @ToString
     @NoArgsConstructor
     @EqualsAndHashCode
-    private class SavedAlbum {
+    private static class SavedAlbum {
         private Date addedAt;
         @DocumentReference(lazy = true)
         private SpotifyAlbum albums;
@@ -41,7 +41,7 @@ public class SpotifyLibrary {
     @ToString
     @NoArgsConstructor
     @EqualsAndHashCode
-    private class SavedTrack {
+    private static class SavedTrack {
         private Date addedAt;
         @DocumentReference(lazy = true)
         private SpotifyTrack spotifyTrack;

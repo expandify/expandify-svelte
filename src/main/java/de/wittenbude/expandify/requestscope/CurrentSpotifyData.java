@@ -1,6 +1,5 @@
 package de.wittenbude.expandify.requestscope;
 
-import de.wittenbude.expandify.controllers.AlbumController;
 import de.wittenbude.expandify.models.SpotifyApiCredential;
 import de.wittenbude.expandify.repositories.SpotifyApiCredentialRepository;
 import lombok.Getter;

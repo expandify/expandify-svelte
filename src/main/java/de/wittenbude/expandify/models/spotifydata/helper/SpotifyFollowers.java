@@ -1,4 +1,4 @@
-package de.wittenbude.expandify.models.spotifydata;
+package de.wittenbude.expandify.models.spotifydata.helper;
 
 import lombok.*;
 import se.michaelthelin.spotify.model_objects.specification.Followers;

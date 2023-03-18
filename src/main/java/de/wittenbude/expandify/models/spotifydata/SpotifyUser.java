@@ -1,6 +1,7 @@
 package de.wittenbude.expandify.models.spotifydata;
 
 import com.neovisionaries.i18n.CountryCode;
+import de.wittenbude.expandify.models.spotifydata.helper.SpotifyFollowers;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
