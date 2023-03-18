@@ -13,12 +13,13 @@ import se.michaelthelin.spotify.enums.ReleaseDatePrecision;
 import se.michaelthelin.spotify.model_objects.specification.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @Document(collection = "albums")
-public class SpotifyAlbum extends SpotifyAlbumSimplified{
+public class SpotifyAlbum {
     private AlbumType albumType;
     private ArtistSimplified[] artists;
     private CountryCode[] availableMarkets;
@@ -36,28 +37,30 @@ public class SpotifyAlbum extends SpotifyAlbumSimplified{
     private String releaseDate;
     private ReleaseDatePrecision releaseDatePrecision;
     @DocumentReference(lazy = true)
-    private SpotifyTrack[] spotifyTracks;
+    private List<SpotifyTrackSimplified> tracksSimplified;
     private ModelObjectType type;
     private String uri;
 
-    public SpotifyAlbum(SavedAlbum savedAlbum) {
-        this.albumType = savedAlbum.getAlbum().getAlbumType();
-        this.artists = savedAlbum.getAlbum().getArtists();
-        this.availableMarkets = savedAlbum.getAlbum().getAvailableMarkets();
-        this.copyrights = Arrays.stream(savedAlbum.getAlbum().getCopyrights()).map(SpotifyCopyright::new).toArray(SpotifyCopyright[]::new);
-        this.externalIds = savedAlbum.getAlbum().getExternalIds().getExternalIds();
-        this.externalUrls = savedAlbum.getAlbum().getExternalUrls().getExternalUrls();
-        this.genres = savedAlbum.getAlbum().getGenres();
-        this.href = savedAlbum.getAlbum().getHref();
-        this.id = savedAlbum.getAlbum().getId();
-        this.images = Arrays.stream(savedAlbum.getAlbum().getImages()).map(SpotifyImage::new).toArray(SpotifyImage[]::new);
-        this.label = savedAlbum.getAlbum().getLabel();
-        this.name = savedAlbum.getAlbum().getName();
-        this.popularity = savedAlbum.getAlbum().getPopularity();
-        this.releaseDate = savedAlbum.getAlbum().getReleaseDate();
-        this.releaseDatePrecision = savedAlbum.getAlbum().getReleaseDatePrecision();
-        this.spotifyTracks = null; // TODO
-        this.type = savedAlbum.getAlbum().getType();
-        this.uri = savedAlbum.getAlbum().getUri();
+    public SpotifyAlbum(Album album, List<SpotifyTrackSimplified> tracks) {
+        this.albumType = album.getAlbumType();
+        this.artists = album.getArtists();
+        this.availableMarkets = album.getAvailableMarkets();
+        this.copyrights = Arrays.stream(album.getCopyrights()).map(SpotifyCopyright::new).toArray(SpotifyCopyright[]::new);
+        this.externalIds = album.getExternalIds().getExternalIds();
+        this.externalUrls = album.getExternalUrls().getExternalUrls();
+        this.genres = album.getGenres();
+        this.href = album.getHref();
+        this.id = album.getId();
+        this.images = Arrays.stream(album.getImages()).map(SpotifyImage::new).toArray(SpotifyImage[]::new);
+        this.label = album.getLabel();
+        this.name = album.getName();
+        this.popularity = album.getPopularity();
+        this.releaseDate = album.getReleaseDate();
+        this.releaseDatePrecision = album.getReleaseDatePrecision();
+        this.tracksSimplified = tracks;
+        this.type = album.getType();
+        this.uri = album.getUri();
     }
+
+
 }
