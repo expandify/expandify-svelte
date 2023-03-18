@@ -1,12 +1,12 @@
 package de.wittenbude.expandify.services.spotifydata;
 
+import de.wittenbude.expandify.models.spotifydata.SpotifyArtist;
 import de.wittenbude.expandify.models.spotifydata.SpotifyLibrary;
+import de.wittenbude.expandify.models.spotifydata.SpotifyPlaylistSimplified;
 import de.wittenbude.expandify.models.spotifydata.helper.SpotifySavedAlbum;
+import de.wittenbude.expandify.models.spotifydata.helper.SpotifySavedTrack;
 import de.wittenbude.expandify.repositories.LibraryRepository;
 import de.wittenbude.expandify.requestscope.CurrentUser;
-import de.wittenbude.expandify.services.spotifyapi.SpotifyApiRequestService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
@@ -15,20 +15,17 @@ import java.util.List;
 @Service
 public class SpotifyLibraryService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SpotifyLibraryService.class);
+    // private static final Logger LOG = LoggerFactory.getLogger(SpotifyLibraryService.class);
     private final LibraryRepository libraryRepository;
-    private final SpotifyApiRequestService spotifyApiRequest;
     private final CurrentUser currentUser;
     private final SpotifyUserService userService;
 
     public SpotifyLibraryService(
             LibraryRepository libraryRepository,
-            SpotifyApiRequestService spotifyApiRequest,
             CurrentUser currentUser,
             SpotifyUserService userService
     ) {
         this.libraryRepository = libraryRepository;
-        this.spotifyApiRequest = spotifyApiRequest;
         this.currentUser = currentUser;
         this.userService = userService;
     }
@@ -40,10 +37,32 @@ public class SpotifyLibraryService {
         return libraryRepository.save(libraryLatest).getSavedAlbums();
     }
 
+    public List<SpotifyArtist> saveArtistsToLatest(List<SpotifyArtist> artists) throws SpotifyWebApiException {
+        SpotifyLibrary libraryLatest = getLatestOrCreate();
+
+        libraryLatest.setFollowedArtists(artists);
+        return libraryRepository.save(libraryLatest).getFollowedArtists();
+    }
+
+    public List<SpotifyPlaylistSimplified> savePlaylistToLatest(List<SpotifyPlaylistSimplified> playlists) throws SpotifyWebApiException {
+        SpotifyLibrary libraryLatest = getLatestOrCreate();
+
+        libraryLatest.setPlaylists(playlists);
+        return libraryRepository.save(libraryLatest).getPlaylists();
+    }
+
+    public List<SpotifySavedTrack> saveTracksToLatest(List<SpotifySavedTrack> tracks) throws SpotifyWebApiException {
+        SpotifyLibrary libraryLatest = getLatestOrCreate();
+
+        libraryLatest.setSavedTracks(tracks);
+        return libraryRepository.save(libraryLatest).getSavedTracks();
+    }
 
     private SpotifyLibrary getLatestOrCreate() throws SpotifyWebApiException {
         return libraryRepository
                 .findAllByOwner_IdAndLatestTrue(currentUser.getSpotifyUserId())
                 .orElse(new SpotifyLibrary(true, null, userService.getOrLoadCurrent()));
     }
+
+
 }

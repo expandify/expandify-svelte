@@ -14,5 +14,10 @@ import java.util.Date;
 public class SpotifySavedTrack {
     private Date addedAt;
     @DocumentReference(lazy = true)
-    private SpotifyTrack spotifyTrack;
+    private SpotifyTrack track;
+
+    public SpotifySavedTrack(SpotifyTrack track, Date addedAt) {
+        this.addedAt = addedAt;
+        this.track = track;
+    }
 }

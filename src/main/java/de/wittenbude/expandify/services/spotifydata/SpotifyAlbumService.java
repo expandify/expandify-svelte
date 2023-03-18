@@ -6,12 +6,9 @@ import de.wittenbude.expandify.models.spotifydata.helper.SpotifySavedAlbum;
 import de.wittenbude.expandify.repositories.AlbumRepository;
 import de.wittenbude.expandify.services.spotifyapi.SpotifyApiRequestService;
 import lombok.SneakyThrows;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.Album;
-import se.michaelthelin.spotify.model_objects.specification.SavedAlbum;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +16,7 @@ import java.util.List;
 @Service
 public class SpotifyAlbumService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SpotifyAlbumService.class);
+    // private static final Logger LOG = LoggerFactory.getLogger(SpotifyAlbumService.class);
     private final AlbumRepository albumRepository;
     private final SpotifyApiRequestService spotifyApiRequest;
     private final SpotifyLibraryService libraryService;
@@ -45,9 +42,16 @@ public class SpotifyAlbumService {
         return libraryService.saveAlbumsToLatest(albums);
     }
 
+    private SpotifyAlbum saveWithTracks(Album album) {
+        SpotifyAlbum spotifyAlbum = albumRepository
+                .findById(album.getId())
+                .orElseGet(() -> new SpotifyAlbum(album, loadAlbumTracks(album.getId())));
+
+        return albumRepository.save(spotifyAlbum);
+    }
 
     @SneakyThrows
-    public List<SpotifyTrackSimplified> loadAlbumTracks(String albumId) {
+    private List<SpotifyTrackSimplified> loadAlbumTracks(String albumId) {
         return spotifyApiRequest
                 .pagingRequest(api -> api.getAlbumsTracks(albumId))
                 .stream()
@@ -55,13 +59,6 @@ public class SpotifyAlbumService {
                 .toList();
     }
 
-    public SpotifyAlbum saveWithTracks(Album album) {
-        SpotifyAlbum spotifyAlbum = albumRepository
-                .findById(album.getId())
-                .orElseGet(() -> new SpotifyAlbum(album, loadAlbumTracks(album.getId())));
-
-        return albumRepository.save(spotifyAlbum);
-    }
 
 
 }

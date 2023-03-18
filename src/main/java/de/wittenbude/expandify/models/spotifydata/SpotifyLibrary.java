@@ -6,7 +6,6 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
-import se.michaelthelin.spotify.model_objects.specification.SavedAlbum;
 
 import java.util.Date;
 import java.util.List;
@@ -22,9 +21,9 @@ public class SpotifyLibrary {
     private List<SpotifySavedAlbum> savedAlbums;
     private List<SpotifySavedTrack> savedTracks;
     @DocumentReference(lazy = true)
-    private List<SpotifyArtist> spotifyArtists;
+    private List<SpotifyArtist> followedArtists;
     @DocumentReference(lazy = true)
-    private List<SpotifyPlaylist> spotifyPlaylists;
+    private List<SpotifyPlaylistSimplified> playlists;
     private Date date;
     @DocumentReference(lazy = true)
     private SpotifyUser owner;
