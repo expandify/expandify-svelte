@@ -1,8 +1,8 @@
 package de.wittenbude.expandify.controllers.spotifydata;
 
-import de.wittenbude.expandify.models.spotifydata.SpotifyAlbum;
-import de.wittenbude.expandify.models.spotifydata.helper.SpotifySavedAlbum;
-import de.wittenbude.expandify.services.spotifydata.SpotifyAlbumService;
+import de.wittenbude.expandify.models.spotifydata.Album;
+import de.wittenbude.expandify.models.spotifydata.helper.SavedAlbum;
+import de.wittenbude.expandify.services.spotifydata.AlbumService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +15,9 @@ import java.util.List;
 public class AlbumController {
 
     private static final Logger LOG = LoggerFactory.getLogger(AlbumController.class);
-    private final SpotifyAlbumService albumService;
+    private final AlbumService albumService;
 
-    public AlbumController(SpotifyAlbumService albumService) {
+    public AlbumController(AlbumService albumService) {
         this.albumService = albumService;
     }
 
@@ -28,7 +28,7 @@ public class AlbumController {
      * @return The albums from the page
      */
     @GetMapping("/saved")
-    public List<SpotifySavedAlbum> loadSavedAlbums(@RequestParam(required = false) Integer offset) throws SpotifyWebApiException {
+    public List<SavedAlbum> loadSavedAlbums(@RequestParam(required = false) Integer offset) throws SpotifyWebApiException {
         return albumService.loadSavedAlbums(offset == null ? 0 : offset);
     }
 
@@ -37,7 +37,7 @@ public class AlbumController {
      * @return The Album
      */
     @GetMapping("/{id}")
-    public SpotifyAlbum getAlbum(@PathVariable String id) {
+    public Album getAlbum(@PathVariable String id) {
         return null;
     }
 

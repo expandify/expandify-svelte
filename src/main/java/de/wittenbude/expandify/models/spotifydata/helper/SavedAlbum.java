@@ -1,6 +1,6 @@
 package de.wittenbude.expandify.models.spotifydata.helper;
 
-import de.wittenbude.expandify.models.spotifydata.SpotifyAlbum;
+import de.wittenbude.expandify.models.spotifydata.Album;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,13 +11,13 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SpotifySavedAlbum {
+public class SavedAlbum {
     private Date addedAt;
     @DocumentReference(lazy = true)
-    private SpotifyAlbum album;
+    private Album album;
 
-    public SpotifySavedAlbum(SpotifyAlbum spotifyAlbum, Date addedAt) {
+    public SavedAlbum(Album album, Date addedAt) {
         this.addedAt = addedAt;
-        this.album = spotifyAlbum;
+        this.album = album;
     }
 }

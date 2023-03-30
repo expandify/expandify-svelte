@@ -34,14 +34,15 @@ public class SpotifyUserService {
 
 
     public SpotifyUser loadCurrent() throws SpotifyWebApiException {
+        return spotifyUserRepository
+                .findById(currentUser.getSpotifyUserId())
+                .orElse(requestCurrent());
+    }
+
+    private SpotifyUser requestCurrent() throws SpotifyWebApiException {
         User user = spotifyApiRequest.makeRequest(SpotifyApi::getCurrentUsersProfile);
         SpotifyUser spotifyUser = new SpotifyUser(user);
         spotifyUserRepository.save(spotifyUser);
         return spotifyUser;
     }
-
-    public SpotifyUser getOrLoadCurrent() throws SpotifyWebApiException {
-        return spotifyUserRepository.findById(currentUser.getSpotifyUserId()).orElse(loadCurrent());
-    }
-
 }

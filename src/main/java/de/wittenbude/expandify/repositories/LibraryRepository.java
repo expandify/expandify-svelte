@@ -1,14 +1,14 @@
 package de.wittenbude.expandify.repositories;
 
-import de.wittenbude.expandify.models.spotifydata.SpotifyLibrary;
+import de.wittenbude.expandify.models.Library;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface LibraryRepository extends MongoRepository<SpotifyLibrary, String> {
+public interface LibraryRepository extends MongoRepository<Library, String> {
 
-    List<SpotifyLibrary> findAllByOwner_Id(String id);
+    List<Library> findAllByOwner_Id(String id);
 
-    Optional<SpotifyLibrary> findAllByOwner_IdAndLatestTrue(String id);
+    Optional<Library> findAllByOwner_IdAndLatestTrue(String id);
 }

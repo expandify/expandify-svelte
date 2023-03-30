@@ -4,18 +4,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import se.michaelthelin.spotify.enums.ModelObjectType;
 import se.michaelthelin.spotify.model_objects.specification.ExternalUrl;
-import se.michaelthelin.spotify.model_objects.specification.TrackLink;
 
 @Data
 @NoArgsConstructor
-public class SpotifyTrackLink {
+public class TrackLink {
     private ExternalUrl externalUrls;
     private String href;
     private String id;
     private ModelObjectType type;
     private String uri;
 
-    public SpotifyTrackLink(TrackLink trackLink) {
+    public TrackLink(se.michaelthelin.spotify.model_objects.specification.TrackLink trackLink) {
         this.externalUrls = trackLink.getExternalUrls();
         this.href = trackLink.getHref();
         this.id = trackLink.getId();

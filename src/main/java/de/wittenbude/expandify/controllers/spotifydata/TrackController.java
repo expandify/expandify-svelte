@@ -1,11 +1,9 @@
 package de.wittenbude.expandify.controllers.spotifydata;
 
-import de.wittenbude.expandify.models.spotifydata.helper.SpotifySavedTrack;
-import de.wittenbude.expandify.services.spotifydata.SpotifyTrackService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import de.wittenbude.expandify.models.spotifydata.Track;
+import de.wittenbude.expandify.models.spotifydata.helper.SavedTrack;
+import de.wittenbude.expandify.services.spotifydata.TrackService;
+import org.springframework.web.bind.annotation.*;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
 import java.util.List;
@@ -15,21 +13,21 @@ import java.util.List;
 public class TrackController {
 
     // private static final Logger LOG = LoggerFactory.getLogger(TrackController.class);
-    private final SpotifyTrackService trackService;
+    private final TrackService trackService;
 
-    public TrackController(SpotifyTrackService trackService) {
+    public TrackController(TrackService trackService) {
         this.trackService = trackService;
     }
 
     @GetMapping("/saved")
-    public List<SpotifySavedTrack> loadSavedTracks(@RequestParam(required = false) Integer offset) throws SpotifyWebApiException {
+    public List<SavedTrack> loadSavedTracks(@RequestParam(required = false) Integer offset) throws SpotifyWebApiException {
         return trackService.loadSavedTracks(offset == null ? 0 : offset);
     }
 
-    /*
+
     @GetMapping("/{id}")
-    public SpotifyTrack getTrack(@PathVariable String id) {
+    public Track getTrack(@PathVariable String id) {
         return null;
     }
-    */
+
 }

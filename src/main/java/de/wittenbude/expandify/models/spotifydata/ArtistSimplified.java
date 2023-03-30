@@ -5,14 +5,13 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import se.michaelthelin.spotify.enums.ModelObjectType;
-import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 
 import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @Document(collection = "artistsSimplified")
-public class SpotifyArtistSimplified {
+public class ArtistSimplified {
 
     private Map<String, String> externalUrls;
     private String href;
@@ -22,7 +21,7 @@ public class SpotifyArtistSimplified {
     private ModelObjectType type;
     private String uri;
 
-    public SpotifyArtistSimplified(ArtistSimplified artistSimplified) {
+    public ArtistSimplified(se.michaelthelin.spotify.model_objects.specification.ArtistSimplified artistSimplified) {
         this.externalUrls = artistSimplified.getExternalUrls().getExternalUrls();
         this.href = artistSimplified.getHref();
         this.id = artistSimplified.getId();

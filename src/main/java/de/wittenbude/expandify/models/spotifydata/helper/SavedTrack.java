@@ -1,6 +1,6 @@
 package de.wittenbude.expandify.models.spotifydata.helper;
 
-import de.wittenbude.expandify.models.spotifydata.SpotifyTrack;
+import de.wittenbude.expandify.models.spotifydata.Track;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,12 +11,12 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SpotifySavedTrack {
+public class SavedTrack {
     private Date addedAt;
     @DocumentReference(lazy = true)
-    private SpotifyTrack track;
+    private Track track;
 
-    public SpotifySavedTrack(SpotifyTrack track, Date addedAt) {
+    public SavedTrack(Track track, Date addedAt) {
         this.addedAt = addedAt;
         this.track = track;
     }

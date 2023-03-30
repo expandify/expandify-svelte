@@ -6,14 +6,13 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import se.michaelthelin.spotify.enums.ModelObjectType;
-import se.michaelthelin.spotify.model_objects.specification.PlaylistTrack;
 
 import java.util.Date;
 import java.util.Map;
 
 @Data
 @NoArgsConstructor
-public class SpotifyPlaylistTrack {
+public class PlaylistTrack {
     private Date addedAt;
     @DocumentReference(lazy = true)
     private SpotifyUser addedBy;
@@ -30,7 +29,7 @@ public class SpotifyPlaylistTrack {
 
 
 
-    public SpotifyPlaylistTrack(PlaylistTrack playlistTrack) {
+    public PlaylistTrack(se.michaelthelin.spotify.model_objects.specification.PlaylistTrack playlistTrack) {
         this.addedAt = playlistTrack.getAddedAt();
         this.addedBy = new SpotifyUser(playlistTrack.getAddedBy());
         this.isLocal = playlistTrack.getIsLocal();

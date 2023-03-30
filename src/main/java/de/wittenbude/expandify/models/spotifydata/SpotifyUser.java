@@ -1,7 +1,7 @@
 package de.wittenbude.expandify.models.spotifydata;
 
 import com.neovisionaries.i18n.CountryCode;
-import de.wittenbude.expandify.models.spotifydata.helper.SpotifyFollowers;
+import de.wittenbude.expandify.models.spotifydata.helper.Followers;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,7 +23,7 @@ public class SpotifyUser {
     private String email;
     @Field
     private Map<String, String> externalUrls;
-    private SpotifyFollowers followers;
+    private Followers followers;
     private String href;
     @Id
     private String id;
@@ -38,7 +38,7 @@ public class SpotifyUser {
         this.displayName = user.getDisplayName();
         this.email = user.getEmail();
         this.externalUrls = user.getExternalUrls().getExternalUrls();
-        this.followers = new SpotifyFollowers(user.getFollowers());
+        this.followers = new Followers(user.getFollowers());
         this.href = user.getHref();
         this.id = user.getId();
         this.images = user.getImages();

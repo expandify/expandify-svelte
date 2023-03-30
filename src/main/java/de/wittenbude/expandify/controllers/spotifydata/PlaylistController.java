@@ -1,11 +1,9 @@
 package de.wittenbude.expandify.controllers.spotifydata;
 
-import de.wittenbude.expandify.models.spotifydata.SpotifyPlaylistSimplified;
-import de.wittenbude.expandify.services.spotifydata.SpotifyPlaylistService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import de.wittenbude.expandify.models.spotifydata.SpotifyPlaylist;
+import de.wittenbude.expandify.models.spotifydata.PlaylistSimplified;
+import de.wittenbude.expandify.services.spotifydata.PlaylistService;
+import org.springframework.web.bind.annotation.*;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
 import java.util.List;
@@ -15,21 +13,21 @@ import java.util.List;
 public class PlaylistController {
 
     // private static final Logger LOG = LoggerFactory.getLogger(PlaylistController.class);
-    private final SpotifyPlaylistService playlistService;
+    private final PlaylistService playlistService;
 
-    public PlaylistController(SpotifyPlaylistService playlistService) {
+    public PlaylistController(PlaylistService playlistService) {
         this.playlistService = playlistService;
     }
 
     @GetMapping("/saved")
-    public List<SpotifyPlaylistSimplified> loadUserPlaylists(@RequestParam(required = false) Integer offset) throws SpotifyWebApiException {
+    public List<PlaylistSimplified> loadUserPlaylists(@RequestParam(required = false) Integer offset) throws SpotifyWebApiException {
         return playlistService.loadPlaylists(offset == null ? 0 : offset);
     }
 
-    /*
+
     @GetMapping("/{id}")
-    public SpotifyPlaylist getArtist(@PathVariable String id) {
+    public SpotifyPlaylist getPlaylist(@PathVariable String id) {
         return null;
     }
-    */
+
 }
