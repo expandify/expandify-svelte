@@ -17,23 +17,15 @@ import java.util.Map;
 @Document(collection = "playlistsSimplified")
 public class PlaylistSimplified {
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class CompositeId {
-        private String id;
-        private String snapshotId;
-    }
-
     @Id
-    private CompositeId compositeId;
+    private String id;
 
     private Boolean collaborative;
     //private String description;
     private Map<String, String> externalUrls;
     //private SpotifyFollowers followers;
     private String href;
-    private String id;
+    private String spotifyId;
     private Image[] images;
     private String name;
     @DocumentReference(lazy = true)
@@ -45,18 +37,23 @@ public class PlaylistSimplified {
     private String uri;
 
     public PlaylistSimplified(se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified playlist, List<PlaylistTrack> playlistTracks) {
+        this(playlist);
+        this.tracks = playlistTracks;
+    }
+
+    public PlaylistSimplified(se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified playlist) {
         this.collaborative = playlist.getIsCollaborative();
         this.externalUrls = playlist.getExternalUrls().getExternalUrls();
         this.href = playlist.getHref();
-        this.id = playlist.getId();
+        this.spotifyId = playlist.getId();
         this.images = Arrays.stream(playlist.getImages()).map(Image::new).toArray(Image[]::new);
         this.name = playlist.getName();
         this.owner = new SpotifyUser(playlist.getOwner());
         this.publicAccess = playlist.getIsPublicAccess();
         this.snapshotId = playlist.getSnapshotId();
-        this.tracks = playlistTracks;
         this.uri = playlist.getUri();
 
-        this.compositeId = new CompositeId(playlist.getId(), playlist.getSnapshotId());
+        this.tracks = null;
+        this.id = this.spotifyId + this.snapshotId;
     }
 }

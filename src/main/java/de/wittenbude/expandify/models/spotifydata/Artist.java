@@ -13,7 +13,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @Document(collection = "artists")
-public class Artist extends ArtistSimplified {
+public class Artist {
 
     private Map<String, String> externalUrls;
     private Followers followers;

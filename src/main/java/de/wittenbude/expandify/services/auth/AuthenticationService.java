@@ -30,7 +30,7 @@ public class AuthenticationService {
     }
 
 
-    public URI spotifyAuthenticationUri() throws SpotifyWebApiException {
+    public URI spotifyAuthenticationUri(String redirectUrl) throws SpotifyWebApiException {
         List<AuthorizationScope> scopes = List.of(
                 // Playlists
                 AuthorizationScope.PLAYLIST_READ_PRIVATE,
@@ -56,6 +56,7 @@ public class AuthenticationService {
                 .makeRequest(api -> api
                         .authorizationCodeUri()
                         .scope(scopes.toArray(AuthorizationScope[]::new))
+                        .state(redirectUrl)
                         .show_dialog(true)
                 );
     }

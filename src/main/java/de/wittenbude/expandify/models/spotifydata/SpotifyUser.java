@@ -38,7 +38,7 @@ public class SpotifyUser {
         this.displayName = user.getDisplayName();
         this.email = user.getEmail();
         this.externalUrls = user.getExternalUrls().getExternalUrls();
-        this.followers = new Followers(user.getFollowers());
+        this.followers = user.getFollowers() != null ? new Followers(user.getFollowers()) : null;
         this.href = user.getHref();
         this.id = user.getId();
         this.images = user.getImages();

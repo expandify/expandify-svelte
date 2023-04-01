@@ -20,4 +20,9 @@ public class SavedAlbum {
         this.addedAt = addedAt;
         this.album = album;
     }
+
+    public SavedAlbum(se.michaelthelin.spotify.model_objects.specification.SavedAlbum savedAlbum) {
+        this.addedAt = savedAlbum.getAddedAt();
+        this.album = new Album(savedAlbum.getAlbum());
+    }
 }

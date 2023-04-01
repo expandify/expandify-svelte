@@ -41,6 +41,11 @@ public class Album {
     private String uri;
 
     public Album(se.michaelthelin.spotify.model_objects.specification.Album album, List<TrackSimplified> tracks) {
+        this(album);
+        this.tracksSimplified = tracks;
+    }
+
+    public Album(se.michaelthelin.spotify.model_objects.specification.Album album) {
         this.albumType = album.getAlbumType();
         this.artists = Arrays.stream(album.getArtists()).map(ArtistSimplified::new).toList();
         this.availableMarkets = album.getAvailableMarkets();
@@ -56,9 +61,9 @@ public class Album {
         this.popularity = album.getPopularity();
         this.releaseDate = album.getReleaseDate();
         this.releaseDatePrecision = album.getReleaseDatePrecision();
-        this.tracksSimplified = tracks;
         this.type = album.getType();
         this.uri = album.getUri();
+        this.tracksSimplified = null;
     }
 
 

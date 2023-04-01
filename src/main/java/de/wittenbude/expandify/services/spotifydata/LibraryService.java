@@ -36,8 +36,7 @@ public class LibraryService {
             List<SavedAlbum> savedAlbums,
             List<SavedTrack> savedTracks,
             List<Artist> followedArtists,
-            List<PlaylistSimplified> playlists,
-            boolean latest
+            List<PlaylistSimplified> playlists
     ) throws SpotifyWebApiException {
         Library library = new Library(
                 savedAlbums,
@@ -45,23 +44,18 @@ public class LibraryService {
                 followedArtists,
                 playlists,
                 userService.loadCurrent(),
-                Date.from(Instant.now()),
-                latest
+                Date.from(Instant.now())
         );
-
-        if (latest) {
-            Library latestLib = getLatestOrCreate();
-            library.setId(latestLib.getId());
-        }
 
         return libraryRepository.save(library);
     }
 
-    private Library getLatestOrCreate() throws SpotifyWebApiException {
-        return libraryRepository
-                .findAllByOwner_IdAndLatestTrue(currentUser.getSpotifyUserId())
-                .orElse(new Library(true, null, userService.loadCurrent()));
+    public List<Library> getAll() {
+        return libraryRepository.findAllByOwner_Id(currentUser.getSpotifyUserId());
     }
 
 
+    public Library getById(String id) {
+        return libraryRepository.findById(id).orElse(null);
+    }
 }

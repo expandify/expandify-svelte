@@ -25,46 +25,30 @@ public class LibraryController {
     }
 
 
-    @GetMapping("/save")
-    public Library saveAsLibrary(
-            @RequestBody List<SavedAlbum> savedAlbums,
-            @RequestBody List<SavedTrack> savedTracks,
-            @RequestBody List<Artist> followedArtists,
-            @RequestBody List<PlaylistSimplified> playlists,
-            @RequestBody boolean latest
-    ) throws SpotifyWebApiException {
-        return libraryService.createLibrary(savedAlbums, savedTracks, followedArtists, playlists, latest);
-    }
-
-
-    @GetMapping("/latest/save")
-    public Library saveLatest(
-            @RequestBody List<SavedAlbum> savedAlbums,
-            @RequestBody List<SavedTrack> savedTracks,
-            @RequestBody List<Artist> followedArtists,
-            @RequestBody List<PlaylistSimplified> playlists
-    ) throws SpotifyWebApiException {
-        return libraryService.createLibrary(savedAlbums, savedTracks, followedArtists, playlists, true);
-    }
-
-    @GetMapping("/save")
+    @PostMapping()
     public Library save(
             @RequestBody List<SavedAlbum> savedAlbums,
             @RequestBody List<SavedTrack> savedTracks,
             @RequestBody List<Artist> followedArtists,
             @RequestBody List<PlaylistSimplified> playlists
     ) throws SpotifyWebApiException {
-        return libraryService.createLibrary(savedAlbums, savedTracks, followedArtists, playlists, false);
+        return libraryService.createLibrary(savedAlbums, savedTracks, followedArtists, playlists);
     }
 
     @GetMapping("/{id}")
     public Library getById(@PathVariable String id) {
-        return null;
+        return libraryService.getById(id);
     }
 
-    @GetMapping("/{id}")
-    public Library getLatest() {
-        return null;
+    @GetMapping("/ids")
+    public List<String> getAllIds() {
+        return libraryService
+                .getAll()
+                .stream()
+                .map(Library::getId)
+                .toList();
     }
+
+
 
 }

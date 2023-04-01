@@ -11,6 +11,7 @@ import se.michaelthelin.spotify.enums.ModelObjectType;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 
 @Data
 @NoArgsConstructor
@@ -43,7 +44,7 @@ public class TrackSimplified {
         this.href = track.getHref();
         this.id = track.getId();
         this.isPlayable = track.getIsPlayable();
-        this.linkedFrom = new TrackLink(track.getLinkedFrom());
+        this.linkedFrom = track.getLinkedFrom() == null ? null : new TrackLink(track.getLinkedFrom());
         this.name = track.getName();
         this.previewUrl = track.getPreviewUrl();
         this.trackNumber = track.getTrackNumber();

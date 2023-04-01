@@ -1,6 +1,7 @@
 package de.wittenbude.expandify.controllers.spotifydata;
 
 import de.wittenbude.expandify.models.spotifydata.Artist;
+import de.wittenbude.expandify.models.spotifydata.PlaylistSimplified;
 import de.wittenbude.expandify.services.spotifydata.ArtistService;
 import org.springframework.web.bind.annotation.*;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
@@ -8,7 +9,7 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/artist")
+@RequestMapping("/artists")
 public class ArtistController {
 
     // private static final Logger LOG = LoggerFactory.getLogger(ArtistController.class);
@@ -18,9 +19,9 @@ public class ArtistController {
         this.artistService = artistService;
     }
 
-    @GetMapping("/saved")
-    public List<Artist> loadFollowedArtist(@RequestParam(required = false) String after) throws SpotifyWebApiException {
-        return artistService.loadFollowedArtists(after);
+    @GetMapping("/latest")
+    public List<Artist> getOrLoadLatest() throws SpotifyWebApiException {
+        return artistService.getOrLoadLatest();
     }
 
 

@@ -1,21 +1,20 @@
 package de.wittenbude.expandify.controllers;
 
-import de.wittenbude.expandify.models.spotifydata.SpotifyUser;
 import de.wittenbude.expandify.services.auth.AuthenticationService;
 import de.wittenbude.expandify.services.auth.JwtService;
-import de.wittenbude.expandify.services.spotifydata.SpotifyUserService;
-import org.apache.hc.core5.http.ParseException;
+import org.apache.hc.core5.net.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
-import se.michaelthelin.spotify.model_objects.specification.User;
 
-import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 @RestController
 @RequestMapping("/auth")
@@ -32,9 +31,9 @@ public class AuthenticationController {
     }
 
     @GetMapping("/login")
-    public ResponseEntity<Void> login() throws SpotifyWebApiException {
+    public ResponseEntity<Void> login(@RequestParam String redirectUrl) throws SpotifyWebApiException {
 
-        URI redirect = authenticationService.spotifyAuthenticationUri();
+        URI redirect = authenticationService.spotifyAuthenticationUri(redirectUrl);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(redirect);
         return new ResponseEntity<>(headers, HttpStatus.valueOf(302));
@@ -42,9 +41,12 @@ public class AuthenticationController {
 
 
     @GetMapping("/callback")
-    public String callback(@RequestParam String code) throws SpotifyWebApiException {
+    public RedirectView callback(@RequestParam String code, @RequestParam String state) throws SpotifyWebApiException, MalformedURLException, URISyntaxException {
         String userId = authenticationService.authenticateUser(code);
-        return jwtService.generateToken(userId);
+        String jwt = jwtService.generateToken(userId);
+        URIBuilder uriBuilder = new URIBuilder(state);
+        uriBuilder.addParameter("token", jwt);
+        return new RedirectView(uriBuilder.build().toURL().toString());
     }
 
 

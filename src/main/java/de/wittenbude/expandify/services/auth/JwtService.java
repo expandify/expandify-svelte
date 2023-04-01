@@ -17,13 +17,13 @@ import java.time.Instant;
 public class JwtService {
 
     private static final String USER_ID_CLAIM = "userId";
-    @Value("${jwt.secret.key}")
-    private String secretKey;
     private final JwtEncoder encoder;
     @Getter
     private final JwtDecoder decoder;
 
-    public JwtService() {
+    public JwtService(
+            @Value("${jwt.secret.key}") String secretKey
+    ) {
         SecretKey key = new SecretKeySpec(secretKey.getBytes(), "HmacSHA256");
         JWKSource<SecurityContext> immutableSecret = new ImmutableSecret<>(key);
         this.encoder = new NimbusJwtEncoder(immutableSecret);

@@ -9,7 +9,7 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/track")
+@RequestMapping("/tracks")
 public class TrackController {
 
     // private static final Logger LOG = LoggerFactory.getLogger(TrackController.class);

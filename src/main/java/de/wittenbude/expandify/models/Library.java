@@ -21,8 +21,6 @@ public class Library {
     @Id
     private String id;
 
-    private boolean latest;
-
     private List<SavedAlbum> savedAlbums;
 
     private List<SavedTrack> savedTracks;
@@ -39,8 +37,7 @@ public class Library {
     private SpotifyUser owner;
 
 
-    public Library(boolean latest, Date date, SpotifyUser owner) {
-        this.latest = latest;
+    public Library(Date date, SpotifyUser owner) {
         this.date = date;
         this.owner = owner;
     }
@@ -50,8 +47,7 @@ public class Library {
                    List<Artist> followedArtists,
                    List<PlaylistSimplified> playlists,
                    SpotifyUser owner,
-                   Date date,
-                   boolean latest
+                   Date date
     ) {
         this.savedAlbums = savedAlbums;
         this.savedTracks = savedTracks;
@@ -59,7 +55,6 @@ public class Library {
         this.playlists = playlists;
         this.owner = owner;
         this.date = date;
-        this.latest = latest;
     }
 
 }
