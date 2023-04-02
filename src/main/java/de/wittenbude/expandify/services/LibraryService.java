@@ -1,4 +1,4 @@
-package de.wittenbude.expandify.services.spotifydata;
+package de.wittenbude.expandify.services;
 
 import de.wittenbude.expandify.models.Library;
 import de.wittenbude.expandify.models.spotifydata.Artist;
@@ -6,7 +6,8 @@ import de.wittenbude.expandify.models.spotifydata.PlaylistSimplified;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedAlbum;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedTrack;
 import de.wittenbude.expandify.repositories.LibraryRepository;
-import de.wittenbude.expandify.requestscope.CurrentUser;
+import de.wittenbude.expandify.requestscope.AuthenticatedUserData;
+import de.wittenbude.expandify.services.spotifydata.SpotifyUserService;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
@@ -19,16 +20,16 @@ public class LibraryService {
 
     // private static final Logger LOG = LoggerFactory.getLogger(SpotifyLibraryService.class);
     private final LibraryRepository libraryRepository;
-    private final CurrentUser currentUser;
+    private final AuthenticatedUserData authenticatedUserData;
     private final SpotifyUserService userService;
 
     public LibraryService(
             LibraryRepository libraryRepository,
-            CurrentUser currentUser,
+            AuthenticatedUserData authenticatedUserData,
             SpotifyUserService userService
     ) {
         this.libraryRepository = libraryRepository;
-        this.currentUser = currentUser;
+        this.authenticatedUserData = authenticatedUserData;
         this.userService = userService;
     }
 
@@ -43,7 +44,7 @@ public class LibraryService {
                 savedTracks,
                 followedArtists,
                 playlists,
-                userService.loadCurrent(),
+                userService.getCurrent(),
                 Date.from(Instant.now())
         );
 
@@ -51,7 +52,7 @@ public class LibraryService {
     }
 
     public List<Library> getAll() {
-        return libraryRepository.findAllByOwner_Id(currentUser.getSpotifyUserId());
+        return libraryRepository.findAllByOwner_Id(authenticatedUserData.getSpotifyUserId());
     }
 
 

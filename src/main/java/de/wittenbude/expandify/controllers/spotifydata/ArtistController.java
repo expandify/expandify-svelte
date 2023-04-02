@@ -1,8 +1,8 @@
 package de.wittenbude.expandify.controllers.spotifydata;
 
 import de.wittenbude.expandify.models.spotifydata.Artist;
-import de.wittenbude.expandify.models.spotifydata.PlaylistSimplified;
 import de.wittenbude.expandify.services.spotifydata.ArtistService;
+import de.wittenbude.expandify.services.CacheService;
 import org.springframework.web.bind.annotation.*;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
@@ -14,20 +14,26 @@ public class ArtistController {
 
     // private static final Logger LOG = LoggerFactory.getLogger(ArtistController.class);
     private final ArtistService artistService;
+    private final CacheService cacheService;
 
-    public ArtistController(ArtistService artistService) {
+    public ArtistController(
+            ArtistService artistService,
+            CacheService cacheService
+    ) {
         this.artistService = artistService;
+        this.cacheService = cacheService;
     }
 
     @GetMapping("/latest")
     public List<Artist> getOrLoadLatest() throws SpotifyWebApiException {
-        return artistService.getOrLoadLatest();
-    }
+        List<Artist> cached = cacheService.get().getFollowedArtists();
 
+        if (cached != null && !cached.isEmpty()) {
+            return cached;
+        }
 
-    @GetMapping("/{id}")
-    public Artist getArtist(@PathVariable String id) {
-        return null;
+        List<Artist> artists = artistService.getLatest();
+        return cacheService.setArtists(artists);
     }
 
 }

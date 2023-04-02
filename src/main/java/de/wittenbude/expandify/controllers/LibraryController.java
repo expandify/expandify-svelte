@@ -5,9 +5,7 @@ import de.wittenbude.expandify.models.spotifydata.Artist;
 import de.wittenbude.expandify.models.spotifydata.PlaylistSimplified;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedAlbum;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedTrack;
-import de.wittenbude.expandify.services.spotifydata.LibraryService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import de.wittenbude.expandify.services.LibraryService;
 import org.springframework.web.bind.annotation.*;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
@@ -17,7 +15,7 @@ import java.util.List;
 @RequestMapping("/library")
 public class LibraryController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LibraryController.class);
+    // private static final Logger LOG = LoggerFactory.getLogger(LibraryController.class);
     private final LibraryService libraryService;
 
     public LibraryController(LibraryService libraryService) {

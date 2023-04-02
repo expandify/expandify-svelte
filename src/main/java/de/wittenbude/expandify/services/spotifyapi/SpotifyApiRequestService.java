@@ -1,13 +1,10 @@
 package de.wittenbude.expandify.services.spotifyapi;
 
 import de.wittenbude.expandify.models.SpotifyApiCredential;
-import de.wittenbude.expandify.requestscope.CurrentSpotifyData;
+import de.wittenbude.expandify.requestscope.AuthenticatedUserData;
 import lombok.SneakyThrows;
 import org.apache.hc.core5.http.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.exceptions.detailed.TooManyRequestsException;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
@@ -30,20 +27,25 @@ import java.util.stream.Stream;
 @Service
 public class SpotifyApiRequestService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SpotifyApiRequestService.class);
-    private final CurrentSpotifyData spotifyData;
+    // private static final Logger LOG = LoggerFactory.getLogger(SpotifyApiRequestService.class);
+    private final AuthenticatedUserData authenticatedUserData;
 
-    public SpotifyApiRequestService(CurrentSpotifyData spotifyData) {
-        this.spotifyData = spotifyData;
+    public SpotifyApiRequestService(AuthenticatedUserData authenticatedUserData) {
+        this.authenticatedUserData = authenticatedUserData;
     }
 
     public <T, BT extends IRequest.Builder<T, ?>> T makeRequest(SpotifyApiRequestCaller<T, BT> apiBuilder) throws SpotifyWebApiException {
         try {
-            if (spotifyData.isExpired()) {
-                AuthorizationCodeCredentials credentials = spotifyData.getApi().authorizationCodeRefresh().build().execute();
-                spotifyData.refresh(new SpotifyApiCredential(credentials, spotifyData.getCredentials().getId()));
+            if (authenticatedUserData.isExpired()) {
+                AuthorizationCodeCredentials credentials = authenticatedUserData
+                        .getAuthenticatedSpotifyApi()
+                        .authorizationCodeRefresh()
+                        .build()
+                        .execute();
+
+                authenticatedUserData.refresh(new SpotifyApiCredential(credentials, authenticatedUserData.getCredentials().getId()));
             }
-            return apiBuilder.callApi(spotifyData.getApi()).build().execute();
+            return apiBuilder.callApi(authenticatedUserData.getAuthenticatedSpotifyApi()).build().execute();
         } catch (TooManyRequestsException e) {
             // Retry with recursion
             waitForRetry(e.getRetryAfter());

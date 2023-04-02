@@ -1,4 +1,4 @@
-package de.wittenbude.expandify.services.spotifydata;
+package de.wittenbude.expandify.services;
 
 import de.wittenbude.expandify.models.Cache;
 import de.wittenbude.expandify.models.spotifydata.Artist;
@@ -6,32 +6,30 @@ import de.wittenbude.expandify.models.spotifydata.PlaylistSimplified;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedAlbum;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedTrack;
 import de.wittenbude.expandify.repositories.CacheRepository;
-import de.wittenbude.expandify.requestscope.CurrentUser;
+import de.wittenbude.expandify.requestscope.AuthenticatedUserData;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 public class CacheService {
 
     // private static final Logger LOG = LoggerFactory.getLogger(SpotifyLibraryService.class);
     private final CacheRepository cacheRepository;
-    private final CurrentUser currentUser;
+    private final AuthenticatedUserData authenticatedUserData;
 
 
     public CacheService(
             CacheRepository cacheRepository,
-            CurrentUser currentUser
+            AuthenticatedUserData authenticatedUserData
     ) {
         this.cacheRepository = cacheRepository;
-        this.currentUser = currentUser;
+        this.authenticatedUserData = authenticatedUserData;
     }
 
     public Cache get() {
         return cacheRepository
-                .findById(currentUser.getSpotifyUserId())
+                .findById(authenticatedUserData.getSpotifyUserId())
                 .orElse(createNew());
     }
 
@@ -61,7 +59,7 @@ public class CacheService {
 
     private Cache createNew() {
         Cache cache = new Cache();
-        cache.setId(currentUser.getSpotifyUserId());
+        cache.setId(authenticatedUserData.getSpotifyUserId());
         return cache;
     }
 }

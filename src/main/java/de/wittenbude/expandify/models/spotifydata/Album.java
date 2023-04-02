@@ -20,6 +20,7 @@ import java.util.Map;
 @Document(collection = "albums")
 public class Album {
     private AlbumType albumType;
+    @DocumentReference(lazy = true)
     private List<ArtistSimplified> artists;
     private CountryCode[] availableMarkets;
     private Copyright[] copyrights;
@@ -36,16 +37,11 @@ public class Album {
     private String releaseDate;
     private ReleaseDatePrecision releaseDatePrecision;
     @DocumentReference(lazy = true)
-    private List<TrackSimplified> tracksSimplified;
+    private List<TrackSimplified> tracks;
     private ModelObjectType type;
     private String uri;
 
     public Album(se.michaelthelin.spotify.model_objects.specification.Album album, List<TrackSimplified> tracks) {
-        this(album);
-        this.tracksSimplified = tracks;
-    }
-
-    public Album(se.michaelthelin.spotify.model_objects.specification.Album album) {
         this.albumType = album.getAlbumType();
         this.artists = Arrays.stream(album.getArtists()).map(ArtistSimplified::new).toList();
         this.availableMarkets = album.getAvailableMarkets();
@@ -63,8 +59,7 @@ public class Album {
         this.releaseDatePrecision = album.getReleaseDatePrecision();
         this.type = album.getType();
         this.uri = album.getUri();
-        this.tracksSimplified = null;
+        this.tracks = tracks;
     }
-
 
 }

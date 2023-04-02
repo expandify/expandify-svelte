@@ -10,15 +10,15 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import se.michaelthelin.spotify.enums.ModelObjectType;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Data
 @NoArgsConstructor
 @Document(collection = "tracksSimplified")
 public class TrackSimplified {
     @DocumentReference(lazy = true)
-    private ArtistSimplified[] artistSimplified;
+    private List<ArtistSimplified> artists;
     private CountryCode[] availableMarkets;
     private Integer discNumber;
     private Integer durationMs;
@@ -37,7 +37,7 @@ public class TrackSimplified {
 
 
     public TrackSimplified(se.michaelthelin.spotify.model_objects.specification.TrackSimplified track) {
-        this.artistSimplified = Arrays.stream(track.getArtists()).map(ArtistSimplified::new).toArray(ArtistSimplified[]::new);
+        this.artists = Arrays.stream(track.getArtists()).map(ArtistSimplified::new).toList();
         this.discNumber = track.getDiscNumber();
         this.explicit = track.getIsExplicit();
         this.externalUrls = track.getExternalUrls().getExternalUrls();

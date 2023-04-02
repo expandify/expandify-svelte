@@ -20,4 +20,9 @@ public class SavedTrack {
         this.addedAt = addedAt;
         this.track = track;
     }
+
+    public SavedTrack(se.michaelthelin.spotify.model_objects.specification.SavedTrack savedTrack) {
+        this.addedAt = savedTrack.getAddedAt();
+        this.track = new Track(savedTrack.getTrack());
+    }
 }

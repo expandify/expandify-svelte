@@ -1,4 +1,4 @@
-package de.wittenbude.expandify.repositories;
+package de.wittenbude.expandify.repositories.spotifydata;
 
 import de.wittenbude.expandify.models.spotifydata.Track;
 import org.springframework.data.mongodb.repository.MongoRepository;

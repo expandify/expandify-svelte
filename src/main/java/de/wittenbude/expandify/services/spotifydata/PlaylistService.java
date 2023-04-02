@@ -1,76 +1,51 @@
 package de.wittenbude.expandify.services.spotifydata;
 
-import de.wittenbude.expandify.models.Cache;
 import de.wittenbude.expandify.models.spotifydata.PlaylistSimplified;
 import de.wittenbude.expandify.models.spotifydata.helper.PlaylistTrack;
-import de.wittenbude.expandify.repositories.PlaylistSimplifiedRepository;
 import de.wittenbude.expandify.services.spotifyapi.SpotifyApiRequestService;
 import lombok.SneakyThrows;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PlaylistService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PlaylistService.class);
-    private final PlaylistSimplifiedRepository playlistRepository;
+    // private static final Logger LOG = LoggerFactory.getLogger(PlaylistService.class);
     private final SpotifyApiRequestService spotifyApiRequest;
-    private final CacheService cacheService;
+    private final PersistenceService persistenceService;
 
     public PlaylistService(
-            PlaylistSimplifiedRepository playlistRepository,
             SpotifyApiRequestService spotifyApiRequest,
-            CacheService cacheService
+            PersistenceService persistenceService
     ) {
-        this.playlistRepository = playlistRepository;
+        this.persistenceService = persistenceService;
         this.spotifyApiRequest = spotifyApiRequest;
-        this.cacheService = cacheService;
     }
 
 
-    public List<PlaylistSimplified> getOrLoadLatest() throws SpotifyWebApiException {
-        List<PlaylistSimplified> playlists = cacheService.get().getPlaylists();
-
-        if (playlists != null && !playlists.isEmpty()) {
-            LOG.debug("Cache found. Returning cached albums.");
-            return playlists;
-        }
-
-        LOG.debug("No Cache found. Loading data from spotify.");
-        playlists = spotifyApiRequest
-                .pagingStreamRequest(SpotifyApi::getListOfCurrentUsersPlaylists)
-                .map(PlaylistSimplified::new)
-                .map(this::loadTracks)
-                .map(playlistRepository::save)
-                .peek(playlistSimplified -> LOG.debug("Playlist '{}' loaded with {} tracks.", playlistSimplified.getName(), playlistSimplified.getTracks().size()))
+    public List<PlaylistSimplified> getLatest() throws SpotifyWebApiException {
+        return spotifyApiRequest
+                .pagingStreamRequest(spotifyApi -> spotifyApi.getListOfCurrentUsersPlaylists().limit(50))
+                .map(p -> new PlaylistSimplified(p, null))
+                .map(p -> persistenceService.find(p)
+                        .orElse(saveNewPlaylist(p)))
                 .toList();
+    }
 
-        return cacheService.setPlaylists(playlists);
+    private PlaylistSimplified saveNewPlaylist(PlaylistSimplified playlist) {
+        List<PlaylistTrack> tracks = getPlaylistTracks(playlist.getId());
+        playlist.setTracks(tracks);
+        return persistenceService.save(playlist);
     }
 
     @SneakyThrows
-    private PlaylistSimplified loadTracks(PlaylistSimplified playlist) {
-        Optional<PlaylistSimplified> p = playlistRepository.findById(playlist.getId());
-
-        if (p.isPresent()) {
-            return p.get();
-        }
-
-        List<PlaylistTrack> tracks = spotifyApiRequest
-                .pagingRequest(api -> api.getPlaylistsItems(playlist.getSpotifyId()).limit(100))
-                .stream()
+    public List<PlaylistTrack> getPlaylistTracks(String playlistId) {
+        return spotifyApiRequest
+                .pagingStreamRequest(api -> api.getPlaylistsItems(playlistId).limit(100))
                 .map(PlaylistTrack::new)
                 .toList();
-
-        playlist.setTracks(tracks);
-        return playlist;
     }
 
 }

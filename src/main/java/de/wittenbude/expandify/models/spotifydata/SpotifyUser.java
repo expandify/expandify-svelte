@@ -2,10 +2,10 @@ package de.wittenbude.expandify.models.spotifydata;
 
 import com.neovisionaries.i18n.CountryCode;
 import de.wittenbude.expandify.models.spotifydata.helper.Followers;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 import se.michaelthelin.spotify.enums.ModelObjectType;
 import se.michaelthelin.spotify.enums.ProductType;
 import se.michaelthelin.spotify.model_objects.specification.Image;
@@ -21,7 +21,6 @@ public class SpotifyUser {
     private CountryCode country;
     private String displayName;
     private String email;
-    @Field
     private Map<String, String> externalUrls;
     private Followers followers;
     private String href;

@@ -37,11 +37,6 @@ public class PlaylistSimplified {
     private String uri;
 
     public PlaylistSimplified(se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified playlist, List<PlaylistTrack> playlistTracks) {
-        this(playlist);
-        this.tracks = playlistTracks;
-    }
-
-    public PlaylistSimplified(se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified playlist) {
         this.collaborative = playlist.getIsCollaborative();
         this.externalUrls = playlist.getExternalUrls().getExternalUrls();
         this.href = playlist.getHref();
@@ -53,7 +48,8 @@ public class PlaylistSimplified {
         this.snapshotId = playlist.getSnapshotId();
         this.uri = playlist.getUri();
 
-        this.tracks = null;
         this.id = this.spotifyId + this.snapshotId;
+        this.tracks = playlistTracks;
     }
+
 }

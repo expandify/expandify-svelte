@@ -1,6 +1,8 @@
 package de.wittenbude.expandify.models.spotifydata.helper;
 
+import de.wittenbude.expandify.models.spotifydata.Episode;
 import de.wittenbude.expandify.models.spotifydata.SpotifyUser;
+import de.wittenbude.expandify.models.spotifydata.Track;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -16,6 +18,7 @@ public class PlaylistTrack {
     private Date addedAt;
     @DocumentReference(lazy = true)
     private SpotifyUser addedBy;
+
     private Boolean isLocal;
     private Integer durationMs;
     private Map<String, String> externalUrls;
@@ -23,9 +26,13 @@ public class PlaylistTrack {
     @Id
     private String id;
     private String name;
-
     private ModelObjectType type;
     private String uri;
+
+    @DocumentReference(lazy = true)
+    private Track track;
+    @DocumentReference(lazy = true)
+    private Episode episode;
 
 
 
@@ -40,5 +47,13 @@ public class PlaylistTrack {
         this.name = playlistTrack.getTrack().getName();
         this.type = playlistTrack.getTrack().getType();
         this.uri = playlistTrack.getTrack().getUri();
+
+        if (playlistTrack.getTrack().getType() == ModelObjectType.TRACK) {
+            this.track = new Track((se.michaelthelin.spotify.model_objects.specification.Track) playlistTrack.getTrack());
+        }
+
+        if (playlistTrack.getTrack().getType() == ModelObjectType.EPISODE) {
+            this.episode = new Episode((se.michaelthelin.spotify.model_objects.specification.Episode) playlistTrack.getTrack());
+        }
     }
 }

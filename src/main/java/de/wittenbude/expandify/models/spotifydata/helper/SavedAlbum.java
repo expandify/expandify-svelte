@@ -1,12 +1,14 @@
 package de.wittenbude.expandify.models.spotifydata.helper;
 
 import de.wittenbude.expandify.models.spotifydata.Album;
+import de.wittenbude.expandify.models.spotifydata.TrackSimplified;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,8 +23,8 @@ public class SavedAlbum {
         this.album = album;
     }
 
-    public SavedAlbum(se.michaelthelin.spotify.model_objects.specification.SavedAlbum savedAlbum) {
+    public SavedAlbum(se.michaelthelin.spotify.model_objects.specification.SavedAlbum savedAlbum, List<TrackSimplified> tracks) {
         this.addedAt = savedAlbum.getAddedAt();
-        this.album = new Album(savedAlbum.getAlbum());
+        this.album = new Album(savedAlbum.getAlbum(), tracks);
     }
 }

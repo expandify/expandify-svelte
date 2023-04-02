@@ -3,13 +3,9 @@ package de.wittenbude.expandify.services.spotifydata;
 import de.wittenbude.expandify.models.spotifydata.Album;
 import de.wittenbude.expandify.models.spotifydata.TrackSimplified;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedAlbum;
-import de.wittenbude.expandify.repositories.AlbumRepository;
 import de.wittenbude.expandify.services.spotifyapi.SpotifyApiRequestService;
 import lombok.SneakyThrows;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
 import java.util.List;
@@ -17,58 +13,42 @@ import java.util.List;
 @Service
 public class AlbumService {
 
-     private static final Logger LOG = LoggerFactory.getLogger(AlbumService.class);
-    private final AlbumRepository albumRepository;
     private final SpotifyApiRequestService spotifyApiRequest;
-    private final CacheService cacheService;
+    private final PersistenceService persistenceService;
 
     public AlbumService(
-            AlbumRepository albumRepository,
             SpotifyApiRequestService spotifyApiRequest,
-            CacheService cacheService
+            PersistenceService persistenceService
     ) {
-        this.albumRepository = albumRepository;
         this.spotifyApiRequest = spotifyApiRequest;
-        this.cacheService = cacheService;
+        this.persistenceService = persistenceService;
+    }
+
+    public List<SavedAlbum> getLatest() throws SpotifyWebApiException {
+        return spotifyApiRequest
+                .pagingStreamRequest(spotifyApi -> spotifyApi.getCurrentUsersSavedAlbums().limit(50))
+                .map(a -> new SavedAlbum(a, null))
+                .map(savedAlbum -> persistenceService.find(savedAlbum)
+                        .orElse(saveNewAlbum(savedAlbum)))
+                .toList();
     }
 
 
-    public List<SavedAlbum> getOrLoadLatest() throws SpotifyWebApiException {
-        List<SavedAlbum> savedAlbums = cacheService.get().getSavedAlbums();
+    private SavedAlbum saveNewAlbum(SavedAlbum album) {
+        return new SavedAlbum(saveNewAlbum(album.getAlbum()), album.getAddedAt());
+    }
 
-        if (savedAlbums != null && !savedAlbums.isEmpty()) {
-            LOG.debug("Cache found. Returning cached albums.");
-            return savedAlbums;
-        }
-
-        LOG.debug("No Cache found. Loading data from spotify.");
-        savedAlbums = spotifyApiRequest
-                .pagingRequest(SpotifyApi::getCurrentUsersSavedAlbums)
-                .stream()
-                .map(SavedAlbum::new)
-                .map(this::loadTracks)
-                .map(this::saveAlbum)
-                .toList();
-
-        return cacheService.setAlbums(savedAlbums);
+    private Album saveNewAlbum(Album album) {
+        album.setTracks(getAlbumTracks(album));
+        return persistenceService.save(album);
     }
 
     @SneakyThrows
-    private SavedAlbum loadTracks(SavedAlbum savedAlbum) {
-        List<TrackSimplified> tracks = spotifyApiRequest
-                .pagingRequest(api -> api.getAlbumsTracks(savedAlbum.getAlbum().getId()).limit(50))
-                .stream()
+    private List<TrackSimplified> getAlbumTracks(Album album) {
+        return spotifyApiRequest
+                .pagingStreamRequest(api -> api.getAlbumsTracks(album.getId()).limit(50))
                 .map(TrackSimplified::new)
                 .toList();
-
-        Album album = savedAlbum.getAlbum();
-        album.setTracksSimplified(tracks);
-        return savedAlbum;
-    }
-
-    private SavedAlbum saveAlbum(SavedAlbum savedAlbum) {
-        Album album = albumRepository.save(savedAlbum.getAlbum());
-        return new SavedAlbum(album, savedAlbum.getAddedAt());
     }
 
 }

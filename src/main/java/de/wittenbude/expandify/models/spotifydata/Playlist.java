@@ -10,7 +10,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import se.michaelthelin.spotify.enums.ModelObjectType;
-import se.michaelthelin.spotify.model_objects.specification.Playlist;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @Document(collection = "playlistsSimplified")
-public class SpotifyPlaylist {
+public class Playlist {
 
     @Data
     @NoArgsConstructor
@@ -48,7 +47,7 @@ public class SpotifyPlaylist {
     private ModelObjectType type;
     private String uri;
 
-    public SpotifyPlaylist(Playlist playlist, List<PlaylistTrack> playlistTracks) {
+    public Playlist(se.michaelthelin.spotify.model_objects.specification.Playlist playlist, List<PlaylistTrack> playlistTracks) {
         this.collaborative = playlist.getIsCollaborative();
         this.externalUrls = playlist.getExternalUrls().getExternalUrls();
         this.href = playlist.getHref();

@@ -3,8 +3,6 @@ package de.wittenbude.expandify.services.auth;
 import de.wittenbude.expandify.models.SpotifyApiCredential;
 import de.wittenbude.expandify.repositories.SpotifyApiCredentialRepository;
 import de.wittenbude.expandify.services.spotifyapi.SpotifyApiRequestService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.enums.AuthorizationScope;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
@@ -17,14 +15,15 @@ import java.util.List;
 @Service
 public class AuthenticationService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AuthenticationService.class);
+    // private static final Logger LOG = LoggerFactory.getLogger(AuthenticationService.class);
 
     private final SpotifyApiCredentialRepository spotifyApiCredentialRepository;
     private final SpotifyApiRequestService spotifyApiRequest;
 
     public AuthenticationService(
             SpotifyApiCredentialRepository spotifyApiCredentialRepository,
-            SpotifyApiRequestService spotifyApiRequest) {
+            SpotifyApiRequestService spotifyApiRequest
+    ) {
         this.spotifyApiCredentialRepository = spotifyApiCredentialRepository;
         this.spotifyApiRequest = spotifyApiRequest;
     }
