@@ -15,8 +15,8 @@ import java.util.Map;
 
 @Data
 @NoArgsConstructor
-@Document(collection = "users")
-public class SpotifyUser {
+@Document(collection = "spotifyUserPrivate")
+public class SpotifyUserPrivate {
     private String birthdate;
     private CountryCode country;
     private String displayName;
@@ -31,7 +31,7 @@ public class SpotifyUser {
     private ModelObjectType type;
     private String uri;
 
-    public SpotifyUser(User user) {
+    public SpotifyUserPrivate(User user) {
         this.birthdate = user.getBirthdate();
         this.country = user.getCountry();
         this.displayName = user.getDisplayName();

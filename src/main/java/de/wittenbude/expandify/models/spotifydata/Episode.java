@@ -12,6 +12,7 @@ import se.michaelthelin.spotify.enums.ModelObjectType;
 import se.michaelthelin.spotify.enums.ReleaseDatePrecision;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -52,15 +53,15 @@ public class Episode {
         this.externalUrls = episode.getExternalUrls().getExternalUrls();
         this.href = episode.getHref();
         this.id = episode.getId();
-        this.images = Arrays.stream(episode.getImages()).map(Image::new).toArray(Image[]::new);
+        this.images = episode.getImages() == null ? null : Arrays.stream(episode.getImages()).map(Image::new).toArray(Image[]::new);
         this.isExternallyHosted = episode.getExternallyHosted();
         this.isPlayable = episode.getPlayable();
         this.languages = episode.getLanguages();
         this.name = episode.getName();
         this.releaseDate = episode.getReleaseDate();
         this.releaseDatePrecision = episode.getReleaseDatePrecision();
-        this.resumePoint = new ResumePoint(episode.getResumePoint());
-        this.show = new ShowSimplified(episode.getShow());
+        this.resumePoint = episode.getResumePoint() == null ? null : new ResumePoint(episode.getResumePoint());
+        this.show = episode.getShow() == null ? null : new ShowSimplified(episode.getShow());
         this.type = episode.getType();
         this.uri = episode.getUri();
     }

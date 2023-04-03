@@ -50,8 +50,8 @@ public class Track {
         this.href = track.getHref();
         this.id = track.getId();
         this.isPlayable = track.getIsPlayable();
-        this.linkedFrom = new TrackLink(track.getLinkedFrom());
-        this.restrictionReason = track.getRestrictions().getReason();
+        this.linkedFrom = track.getLinkedFrom() == null ? null : new TrackLink(track.getLinkedFrom());
+        this.restrictionReason = track.getRestrictions() == null ? null : track.getRestrictions().getReason();
         this.name = track.getName();
         this.popularity = track.getPopularity();
         this.previewUrl = track.getPreviewUrl();

@@ -50,7 +50,7 @@ public class AlbumSimplified {
         this.name = albumSimplified.getName();
         this.releaseDate = albumSimplified.getReleaseDate();
         this.releaseDatePrecision = albumSimplified.getReleaseDatePrecision();
-        this.restrictionReason = albumSimplified.getRestrictions().getReason();
+        this.restrictionReason = albumSimplified.getRestrictions() == null ? null : albumSimplified.getRestrictions().getReason();
         this.type = albumSimplified.getType();
         this.uri = albumSimplified.getUri();
     }

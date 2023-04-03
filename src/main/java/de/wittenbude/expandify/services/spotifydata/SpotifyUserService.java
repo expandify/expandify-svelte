@@ -1,6 +1,6 @@
 package de.wittenbude.expandify.services.spotifydata;
 
-import de.wittenbude.expandify.models.spotifydata.SpotifyUser;
+import de.wittenbude.expandify.models.spotifydata.SpotifyUserPrivate;
 import de.wittenbude.expandify.requestscope.AuthenticatedUserData;
 import de.wittenbude.expandify.services.spotifyapi.SpotifyApiRequestService;
 import org.springframework.stereotype.Service;
@@ -28,14 +28,14 @@ public class SpotifyUserService {
     }
 
 
-    public SpotifyUser getCurrent() throws SpotifyWebApiException {
+    public SpotifyUserPrivate getCurrent() throws SpotifyWebApiException {
         return persistenceService.find(authenticatedUserData)
                 .orElse(requestCurrent());
     }
 
-    private SpotifyUser requestCurrent() throws SpotifyWebApiException {
+    private SpotifyUserPrivate requestCurrent() throws SpotifyWebApiException {
         User user = spotifyApiRequest.makeRequest(SpotifyApi::getCurrentUsersProfile);
-        SpotifyUser spotifyUser = new SpotifyUser(user);
+        SpotifyUserPrivate spotifyUser = new SpotifyUserPrivate(user);
         return persistenceService.save(spotifyUser);
     }
 }

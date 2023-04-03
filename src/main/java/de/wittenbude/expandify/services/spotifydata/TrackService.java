@@ -26,7 +26,8 @@ public class TrackService {
 
     public List<SavedTrack> getLatest() throws SpotifyWebApiException {
         return spotifyApiRequest
-                .pagingStreamRequest(spotifyApi -> spotifyApi.getUsersSavedTracks().limit(50))
+                .pagingRequest(spotifyApi -> spotifyApi.getUsersSavedTracks().limit(50))
+                .stream()
                 .map(SavedTrack::new)
                 .map(savedTrack -> persistenceService.find(savedTrack)
                         .orElse(persistenceService.save(savedTrack)))

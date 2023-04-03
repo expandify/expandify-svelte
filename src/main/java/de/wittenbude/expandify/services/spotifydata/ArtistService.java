@@ -25,7 +25,8 @@ public class ArtistService {
 
     public List<Artist> getFollowed() throws SpotifyWebApiException {
         return spotifyApiRequest
-                .cursorStreamRequest(api -> api.getUsersFollowedArtists(ModelObjectType.ARTIST).limit(50))
+                .cursorRequest(api -> api.getUsersFollowedArtists(ModelObjectType.ARTIST).limit(50))
+                .stream()
                 .map(Artist::new)
                 .map(artist -> persistenceService.find(artist)
                         .orElse(persistenceService.save(artist)))

@@ -1,7 +1,7 @@
 package de.wittenbude.expandify.models.spotifydata.helper;
 
 import de.wittenbude.expandify.models.spotifydata.Episode;
-import de.wittenbude.expandify.models.spotifydata.SpotifyUser;
+import de.wittenbude.expandify.models.spotifydata.SpotifyUserPublic;
 import de.wittenbude.expandify.models.spotifydata.Track;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.Map;
 public class PlaylistTrack {
     private Date addedAt;
     @DocumentReference(lazy = true)
-    private SpotifyUser addedBy;
+    private SpotifyUserPublic addedBy;
 
     private Boolean isLocal;
     private Integer durationMs;
@@ -38,7 +38,7 @@ public class PlaylistTrack {
 
     public PlaylistTrack(se.michaelthelin.spotify.model_objects.specification.PlaylistTrack playlistTrack) {
         this.addedAt = playlistTrack.getAddedAt();
-        this.addedBy = new SpotifyUser(playlistTrack.getAddedBy());
+        this.addedBy = new SpotifyUserPublic(playlistTrack.getAddedBy());
         this.isLocal = playlistTrack.getIsLocal();
         this.durationMs = playlistTrack.getTrack().getDurationMs();
         this.externalUrls = playlistTrack.getTrack().getExternalUrls().getExternalUrls();

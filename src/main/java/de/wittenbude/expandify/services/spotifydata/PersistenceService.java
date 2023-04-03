@@ -1,11 +1,15 @@
 package de.wittenbude.expandify.services.spotifydata;
 
+import de.wittenbude.expandify.models.Library;
 import de.wittenbude.expandify.models.spotifydata.*;
 import de.wittenbude.expandify.models.spotifydata.helper.PlaylistTrack;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedAlbum;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedTrack;
+import de.wittenbude.expandify.repositories.LibraryRepository;
 import de.wittenbude.expandify.repositories.spotifydata.*;
 import de.wittenbude.expandify.requestscope.AuthenticatedUserData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.enums.ModelObjectType;
 
@@ -15,6 +19,7 @@ import java.util.Optional;
 @Service
 class PersistenceService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(PersistenceService.class);
     private final AlbumRepository albumRepository;
     private final AlbumSimplifiedRepository albumSimplifiedRepository;
     private final ArtistRepository artistRepository;
@@ -23,9 +28,11 @@ class PersistenceService {
     private final PlaylistRepository playlistRepository;
     private final PlaylistSimplifiedRepository playlistSimplifiedRepository;
     private final ShowSimplifiedRepository showSimplifiedRepository;
-    private final SpotifyUserRepository spotifyUserRepository;
+    private final SpotifyUserPrivateRepository spotifyUserPrivateRepository;
+    private final SpotifyUserPublicRepository spotifyUserPublicRepository;
     private final TrackRepository trackRepository;
     private final TrackSimplifiedRepository trackSimplifiedRepository;
+    private final LibraryRepository libraryRepository;
 
     public PersistenceService(
             AlbumRepository albumRepository,
@@ -36,9 +43,11 @@ class PersistenceService {
             PlaylistRepository playlistRepository,
             PlaylistSimplifiedRepository playlistSimplifiedRepository,
             ShowSimplifiedRepository showSimplifiedRepository,
-            SpotifyUserRepository spotifyUserRepository,
+            SpotifyUserPrivateRepository spotifyUserPrivateRepository,
+            SpotifyUserPublicRepository spotifyUserPublicRepository,
             TrackRepository trackRepository,
-            TrackSimplifiedRepository trackSimplifiedRepository
+            TrackSimplifiedRepository trackSimplifiedRepository,
+            LibraryRepository libraryRepository
     ) {
         this.albumRepository = albumRepository;
         this.albumSimplifiedRepository = albumSimplifiedRepository;
@@ -48,9 +57,11 @@ class PersistenceService {
         this.playlistRepository = playlistRepository;
         this.playlistSimplifiedRepository = playlistSimplifiedRepository;
         this.showSimplifiedRepository = showSimplifiedRepository;
-        this.spotifyUserRepository = spotifyUserRepository;
+        this.spotifyUserPrivateRepository = spotifyUserPrivateRepository;
+        this.spotifyUserPublicRepository = spotifyUserPublicRepository;
         this.trackRepository = trackRepository;
         this.trackSimplifiedRepository = trackSimplifiedRepository;
+        this.libraryRepository = libraryRepository;
     }
 
     public Album save(Album album) {
@@ -82,7 +93,12 @@ class PersistenceService {
             album.setArtists(artists);
         }
 
-        return albumSimplifiedRepository.save(album);
+        // TODO duplicate key exception if "this.find()" is not there
+        // MongoDB considers an Entity new, when a field is "null" or 0 if primitive.
+        // Make sure, the most information is saved, whenever a entity is saved
+        // orElseGet makes sure the saving is delayed until necessary.
+        // orElse does not work, size it is calculated before it is needed
+        return this.find(album).orElseGet(() -> albumSimplifiedRepository.save(album));
     }
 
     public Optional<AlbumSimplified> find(AlbumSimplified album) {
@@ -137,7 +153,7 @@ class PersistenceService {
 
     public PlaylistSimplified save(PlaylistSimplified playlistSimplified) {
         if (playlistSimplified.getOwner() != null) {
-            SpotifyUser owner = this.save(playlistSimplified.getOwner());
+            SpotifyUserPublic owner = this.save(playlistSimplified.getOwner());
             playlistSimplified.setOwner(owner);
         }
 
@@ -160,7 +176,7 @@ class PersistenceService {
         }
 
         if (playlist.getOwner() != null) {
-            SpotifyUser owner = this.save(playlist.getOwner());
+            SpotifyUserPublic owner = this.save(playlist.getOwner());
             playlist.setOwner(owner);
         }
 
@@ -183,20 +199,43 @@ class PersistenceService {
         return showSimplifiedRepository.findById(showSimplified.getId());
     }
 
-    public SpotifyUser save(SpotifyUser spotifyUser) {
-        return spotifyUserRepository.save(spotifyUser);
+    public Optional<SpotifyUserPrivate> find(AuthenticatedUserData authenticatedUserData) {
+        return spotifyUserPrivateRepository.findById(authenticatedUserData.getSpotifyUserId());
     }
 
-    public Optional<SpotifyUser> find(AuthenticatedUserData authenticatedUserData) {
-        return spotifyUserRepository.findById(authenticatedUserData.getSpotifyUserId());
+    public SpotifyUserPrivate save(SpotifyUserPrivate spotifyUser) {
+        // TODO duplicate key exception if "this.find()" is not there
+        // MongoDB considers an Entity new, when a field is "null" or 0 if primitive.
+        // Make sure, the most information is saved, whenever a entity is saved
+        // orElseGet makes sure the saving is delayed until necessary.
+        // orElse does not work, size it is calculated before it is needed
+        return this.find(spotifyUser)
+                .orElseGet(() -> spotifyUserPrivateRepository.save(spotifyUser));
     }
 
-    public Optional<SpotifyUser> findSpotifyUser(String id) {
-        return spotifyUserRepository.findById(id);
+    public Optional<SpotifyUserPrivate> findSpotifyUserPrivate(String id) {
+        return spotifyUserPrivateRepository.findById(id);
     }
 
-    public Optional<SpotifyUser> find(SpotifyUser spotifyUser) {
-        return spotifyUserRepository.findById(spotifyUser.getId());
+    public Optional<SpotifyUserPrivate> find(SpotifyUserPrivate spotifyUser) {
+        return spotifyUserPrivateRepository.findById(spotifyUser.getId());
+    }
+
+    public SpotifyUserPublic save(SpotifyUserPublic spotifyUser) {
+        // TODO duplicate key exception if "this.find()" is not there
+        // MongoDB considers an Entity new, when a field is "null" or 0 if primitive.
+        // Make sure, the most information is saved, whenever a entity is saved
+        // orElseGet makes sure the saving is delayed until necessary.
+        // orElse does not work, size it is calculated before it is needed
+        return this.find(spotifyUser).orElseGet(() -> spotifyUserPublicRepository.save(spotifyUser));
+    }
+
+    public Optional<SpotifyUserPublic> findSpotifyUserPublic(String id) {
+        return spotifyUserPublicRepository.findById(id);
+    }
+
+    public Optional<SpotifyUserPublic> find(SpotifyUserPublic spotifyUser) {
+        return spotifyUserPublicRepository.findById(spotifyUser.getId());
     }
 
     public Track save(Track track) {
@@ -235,7 +274,7 @@ class PersistenceService {
     }
 
     public PlaylistTrack save(PlaylistTrack playlistTrack) {
-        SpotifyUser owner = this.save(playlistTrack.getAddedBy());
+        SpotifyUserPublic owner = this.save(playlistTrack.getAddedBy());
         playlistTrack.setAddedBy(owner);
 
         if (playlistTrack.getType() == ModelObjectType.TRACK) {
@@ -284,4 +323,22 @@ class PersistenceService {
                 .map(track -> new SavedTrack(track, savedTrack.getAddedAt()));
     }
 
+    public Library save(Library library) {
+
+        library.setSavedAlbums(library.getSavedAlbums().stream().map(this::save).toList());
+        library.setFollowedArtists(library.getFollowedArtists().stream().map(this::save).toList());
+        library.setPlaylists(library.getPlaylists().stream().map(this::save).toList());
+        library.setSavedTracks(library.getSavedTracks().stream().map(this::save).toList());
+        library.setOwner(this.save(library.getOwner()));
+
+        return libraryRepository.save(library);
+    }
+
+    public List<Library> findLibraries(String spotifyUserId) {
+        return libraryRepository.findAllByOwner_Id(spotifyUserId);
+    }
+
+    public Optional<Library> findLibrary(String id) {
+        return libraryRepository.findById(id);
+    }
 }

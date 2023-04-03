@@ -73,6 +73,27 @@ public class SpotifyApiRequestService {
         return items;
     }
 
+    public <T, BT extends IPagingCursorbasedRequestBuilder<T, String, BT>> List<T> cursorRequest(
+            SpotifyApiCursorRequestCaller<T, String, BT> apiBuilder
+    ) throws SpotifyWebApiException {
+
+        PagingCursorbased<T> firstPage = makeRequest(apiBuilder::callApi);
+
+        List<T> items = new ArrayList<>(List.of(firstPage.getItems()));
+        String next = firstPage.getNext();
+        String after = firstPage.getCursors()[0].getAfter();
+
+        while (next != null) {
+            String finalAfter = after;
+            PagingCursorbased<T> page = makeRequest(api -> apiBuilder.callApi(api).after(finalAfter));
+            next = page.getNext();
+            after = firstPage.getCursors()[0].getAfter();
+            items.addAll(List.of(page.getItems()));
+        }
+
+        return items;
+    }
+
     public <T, BT extends IPagingRequestBuilder<T, BT>> Stream<T> pagingStreamRequest(
             SpotifyApiPagingRequestCaller<T, BT> apiBuilder
     ) throws SpotifyWebApiException {
@@ -82,6 +103,7 @@ public class SpotifyApiRequestService {
         AtomicInteger offset = new AtomicInteger(firstPage.getOffset());
         AtomicReference<String> next = new AtomicReference<>(firstPage.getNext());
 
+        // TODO hasNext has to hold for the initial Page
         Predicate<T[]> hasNext = _ts -> next.get() != null;
         UnaryOperator<T[]> getNext = _ts -> pageRequest(apiBuilder, offset, next);
         return Stream
@@ -98,6 +120,7 @@ public class SpotifyApiRequestService {
         AtomicReference<String> next = new AtomicReference<>(firstPage.getNext());
         AtomicReference<String> after = new AtomicReference<>(firstPage.getCursors()[0].getAfter());
 
+        // TODO hasNext has to hold for the initial Page
         Predicate<T[]> hasNext = _ts -> next.get() != null;
         UnaryOperator<T[]> getNext = _ts -> cursorRequest(apiBuilder, after, next);
         return Stream

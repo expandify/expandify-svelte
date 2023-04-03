@@ -4,6 +4,7 @@ import de.wittenbude.expandify.models.spotifydata.Playlist;
 import de.wittenbude.expandify.models.spotifydata.PlaylistSimplified;
 import de.wittenbude.expandify.models.spotifydata.helper.PlaylistTrack;
 import de.wittenbude.expandify.services.spotifyapi.SpotifyApiRequestService;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
@@ -27,7 +28,8 @@ public class PlaylistService {
 
     public List<PlaylistSimplified> getSaved() throws SpotifyWebApiException {
         return spotifyApiRequest
-                .pagingStreamRequest(spotifyApi -> spotifyApi.getListOfCurrentUsersPlaylists().limit(50))
+                .pagingRequest(spotifyApi -> spotifyApi.getListOfCurrentUsersPlaylists().limit(50))
+                .stream()
                 .map(p -> new PlaylistSimplified(p, null))
                 .map(p -> persistenceService.find(p)
                         .orElse(persistenceService.save(p)))
@@ -40,15 +42,17 @@ public class PlaylistService {
                 .orElse(new Playlist(spotifyApiRequest.makeRequest(api -> api.getPlaylist(id)), null));
 
         if (playlist.getTracks() == null || playlist.getTracks().isEmpty()) {
-            playlist.setTracks(getPlaylistTracks(playlist));
+            playlist.setTracks(getTracks(playlist.getId()));
             return persistenceService.save(playlist);
         }
         return playlist;
     }
 
-    private List<PlaylistTrack> getPlaylistTracks(Playlist playlist) throws SpotifyWebApiException {
+    @SneakyThrows
+    public List<PlaylistTrack> getTracks(String id) {
         return spotifyApiRequest
-                .pagingStreamRequest(api -> api.getPlaylistsItems(playlist.getId()).limit(100))
+                .pagingRequest(api -> api.getPlaylistsItems(id).limit(100))
+                .stream()
                 .map(PlaylistTrack::new)
                 .toList();
     }

@@ -2,10 +2,11 @@ package de.wittenbude.expandify.models;
 
 import de.wittenbude.expandify.models.spotifydata.Artist;
 import de.wittenbude.expandify.models.spotifydata.PlaylistSimplified;
-import de.wittenbude.expandify.models.spotifydata.SpotifyUser;
+import de.wittenbude.expandify.models.spotifydata.SpotifyUserPrivate;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedAlbum;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedTrack;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -34,10 +35,10 @@ public class Library {
     private Date date;
 
     @DocumentReference(lazy = true)
-    private SpotifyUser owner;
+    private SpotifyUserPrivate owner;
 
 
-    public Library(Date date, SpotifyUser owner) {
+    public Library(Date date, SpotifyUserPrivate owner) {
         this.date = date;
         this.owner = owner;
     }
@@ -46,7 +47,7 @@ public class Library {
                    List<SavedTrack> savedTracks,
                    List<Artist> followedArtists,
                    List<PlaylistSimplified> playlists,
-                   SpotifyUser owner,
+                   SpotifyUserPrivate owner,
                    Date date
     ) {
         this.savedAlbums = savedAlbums;

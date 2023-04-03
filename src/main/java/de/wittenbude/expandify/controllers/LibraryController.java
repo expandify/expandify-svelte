@@ -1,11 +1,7 @@
 package de.wittenbude.expandify.controllers;
 
 import de.wittenbude.expandify.models.Library;
-import de.wittenbude.expandify.models.spotifydata.Artist;
-import de.wittenbude.expandify.models.spotifydata.PlaylistSimplified;
-import de.wittenbude.expandify.models.spotifydata.helper.SavedAlbum;
-import de.wittenbude.expandify.models.spotifydata.helper.SavedTrack;
-import de.wittenbude.expandify.services.LibraryService;
+import de.wittenbude.expandify.services.spotifydata.LibraryService;
 import org.springframework.web.bind.annotation.*;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
@@ -24,13 +20,8 @@ public class LibraryController {
 
 
     @PostMapping()
-    public Library save(
-            @RequestBody List<SavedAlbum> savedAlbums,
-            @RequestBody List<SavedTrack> savedTracks,
-            @RequestBody List<Artist> followedArtists,
-            @RequestBody List<PlaylistSimplified> playlists
-    ) throws SpotifyWebApiException {
-        return libraryService.createLibrary(savedAlbums, savedTracks, followedArtists, playlists);
+    public Library save() throws SpotifyWebApiException {
+        return libraryService.createLibrary();
     }
 
     @GetMapping("/{id}")

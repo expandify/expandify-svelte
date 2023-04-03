@@ -1,6 +1,6 @@
 package de.wittenbude.expandify.controllers.spotifydata;
 
-import de.wittenbude.expandify.models.spotifydata.SpotifyUser;
+import de.wittenbude.expandify.models.spotifydata.SpotifyUserPrivate;
 import de.wittenbude.expandify.services.spotifydata.SpotifyUserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class SpotifyUserController {
     }
 
     @GetMapping()
-    public SpotifyUser get() throws SpotifyWebApiException {
+    public SpotifyUserPrivate getCurrent() throws SpotifyWebApiException {
         return spotifyUserService.getCurrent();
     }
 

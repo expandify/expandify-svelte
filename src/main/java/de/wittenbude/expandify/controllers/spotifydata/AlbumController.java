@@ -3,6 +3,8 @@ package de.wittenbude.expandify.controllers.spotifydata;
 import de.wittenbude.expandify.models.spotifydata.Album;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedAlbum;
 import de.wittenbude.expandify.services.spotifydata.AlbumService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +17,7 @@ import java.util.List;
 @RequestMapping("/albums")
 public class AlbumController {
 
-    // private static final Logger LOG = LoggerFactory.getLogger(AlbumController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AlbumController.class);
     private final AlbumService albumService;
 
     public AlbumController(
