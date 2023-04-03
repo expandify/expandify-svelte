@@ -1,9 +1,9 @@
 package de.wittenbude.expandify.services.spotifydata;
 
+import de.wittenbude.expandify.models.spotifydata.Playlist;
 import de.wittenbude.expandify.models.spotifydata.PlaylistSimplified;
 import de.wittenbude.expandify.models.spotifydata.helper.PlaylistTrack;
 import de.wittenbude.expandify.services.spotifyapi.SpotifyApiRequestService;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
@@ -25,27 +25,31 @@ public class PlaylistService {
     }
 
 
-    public List<PlaylistSimplified> getLatest() throws SpotifyWebApiException {
+    public List<PlaylistSimplified> getSaved() throws SpotifyWebApiException {
         return spotifyApiRequest
                 .pagingStreamRequest(spotifyApi -> spotifyApi.getListOfCurrentUsersPlaylists().limit(50))
                 .map(p -> new PlaylistSimplified(p, null))
                 .map(p -> persistenceService.find(p)
-                        .orElse(saveNewPlaylist(p)))
+                        .orElse(persistenceService.save(p)))
                 .toList();
     }
 
-    private PlaylistSimplified saveNewPlaylist(PlaylistSimplified playlist) {
-        List<PlaylistTrack> tracks = getPlaylistTracks(playlist.getId());
-        playlist.setTracks(tracks);
-        return persistenceService.save(playlist);
+    public Playlist get(String id) throws SpotifyWebApiException {
+        Playlist playlist = persistenceService
+                .findPlaylist(id)
+                .orElse(new Playlist(spotifyApiRequest.makeRequest(api -> api.getPlaylist(id)), null));
+
+        if (playlist.getTracks() == null || playlist.getTracks().isEmpty()) {
+            playlist.setTracks(getPlaylistTracks(playlist));
+            return persistenceService.save(playlist);
+        }
+        return playlist;
     }
 
-    @SneakyThrows
-    public List<PlaylistTrack> getPlaylistTracks(String playlistId) {
+    private List<PlaylistTrack> getPlaylistTracks(Playlist playlist) throws SpotifyWebApiException {
         return spotifyApiRequest
-                .pagingStreamRequest(api -> api.getPlaylistsItems(playlistId).limit(100))
+                .pagingStreamRequest(api -> api.getPlaylistsItems(playlist.getId()).limit(100))
                 .map(PlaylistTrack::new)
                 .toList();
     }
-
 }

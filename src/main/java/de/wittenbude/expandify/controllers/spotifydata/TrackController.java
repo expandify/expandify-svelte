@@ -1,9 +1,10 @@
 package de.wittenbude.expandify.controllers.spotifydata;
 
+import de.wittenbude.expandify.models.spotifydata.Track;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedTrack;
-import de.wittenbude.expandify.services.CacheService;
 import de.wittenbude.expandify.services.spotifydata.TrackService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
@@ -16,23 +17,19 @@ public class TrackController {
 
     // private static final Logger LOG = LoggerFactory.getLogger(TrackController.class);
     private final TrackService trackService;
-    private final CacheService cacheService;
 
-    public TrackController(TrackService trackService, CacheService cacheService) {
+    public TrackController(TrackService trackService) {
         this.trackService = trackService;
-        this.cacheService = cacheService;
     }
 
-    @GetMapping("/latest")
-    public List<SavedTrack> getOrLoadLatest() throws SpotifyWebApiException {
-        List<SavedTrack> cached = cacheService.get().getSavedTracks();
+    @GetMapping("/saved")
+    public List<SavedTrack> getSaved() throws SpotifyWebApiException {
+        return trackService.getLatest();
+    }
 
-        if (cached != null && !cached.isEmpty()) {
-            return cached;
-        }
-
-        List<SavedTrack> tracks = trackService.getLatest();
-        return cacheService.setTracks(tracks);
+    @GetMapping("/{id}")
+    public Track get(@PathVariable String id) throws SpotifyWebApiException {
+        return trackService.get(id);
     }
 
 }

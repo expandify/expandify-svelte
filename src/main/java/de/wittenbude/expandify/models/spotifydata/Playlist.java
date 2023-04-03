@@ -3,7 +3,6 @@ package de.wittenbude.expandify.models.spotifydata;
 import de.wittenbude.expandify.models.spotifydata.helper.Followers;
 import de.wittenbude.expandify.models.spotifydata.helper.Image;
 import de.wittenbude.expandify.models.spotifydata.helper.PlaylistTrack;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -20,23 +19,16 @@ import java.util.Map;
 @Document(collection = "playlistsSimplified")
 public class Playlist {
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class CompositeId {
-        private String id;
-        private String snapshotId;
-    }
 
     @Id
-    private CompositeId compositeId;
+    private String id;
 
     private Boolean collaborative;
     private String description;
     private Map<String, String> externalUrls;
     private Followers followers;
     private String href;
-    private String id;
+    private String spotifyId;
     private Image[] images;
     private String name;
     @DocumentReference(lazy = true)
@@ -44,6 +36,7 @@ public class Playlist {
     private Boolean publicAccess;
     private String snapshotId;
     private List<PlaylistTrack> tracks;
+    private Integer totalTracks;
     private ModelObjectType type;
     private String uri;
 
@@ -51,7 +44,7 @@ public class Playlist {
         this.collaborative = playlist.getIsCollaborative();
         this.externalUrls = playlist.getExternalUrls().getExternalUrls();
         this.href = playlist.getHref();
-        this.id = playlist.getId();
+        this.spotifyId = playlist.getId();
         this.images = Arrays.stream(playlist.getImages()).map(Image::new).toArray(Image[]::new);
         this.name = playlist.getName();
         this.owner = new SpotifyUser(playlist.getOwner());
@@ -61,7 +54,8 @@ public class Playlist {
         this.uri = playlist.getUri();
         this.description = playlist.getDescription();
         this.followers = new Followers(playlist.getFollowers());
+        this.totalTracks = playlist.getTracks().getTotal();
 
-        this.compositeId = new CompositeId(playlist.getId(), playlist.getSnapshotId());
+        this.id = this.spotifyId + this.snapshotId;
     }
 }

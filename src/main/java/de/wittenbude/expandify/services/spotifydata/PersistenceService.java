@@ -20,6 +20,7 @@ class PersistenceService {
     private final ArtistRepository artistRepository;
     private final ArtistSimplifiedRepository artistSimplifiedRepository;
     private final EpisodeRepository episodeRepository;
+    private final PlaylistRepository playlistRepository;
     private final PlaylistSimplifiedRepository playlistSimplifiedRepository;
     private final ShowSimplifiedRepository showSimplifiedRepository;
     private final SpotifyUserRepository spotifyUserRepository;
@@ -32,6 +33,7 @@ class PersistenceService {
             ArtistRepository artistRepository,
             ArtistSimplifiedRepository artistSimplifiedRepository,
             EpisodeRepository episodeRepository,
+            PlaylistRepository playlistRepository,
             PlaylistSimplifiedRepository playlistSimplifiedRepository,
             ShowSimplifiedRepository showSimplifiedRepository,
             SpotifyUserRepository spotifyUserRepository,
@@ -43,6 +45,7 @@ class PersistenceService {
         this.artistRepository = artistRepository;
         this.artistSimplifiedRepository = artistSimplifiedRepository;
         this.episodeRepository = episodeRepository;
+        this.playlistRepository = playlistRepository;
         this.playlistSimplifiedRepository = playlistSimplifiedRepository;
         this.showSimplifiedRepository = showSimplifiedRepository;
         this.spotifyUserRepository = spotifyUserRepository;
@@ -51,10 +54,16 @@ class PersistenceService {
     }
 
     public Album save(Album album) {
-        List<TrackSimplified> tracks = album.getTracks().stream().map(this::save).toList();
-        List<ArtistSimplified> artists = this.saveAll(album.getArtists());
-        album.setTracks(tracks);
-        album.setArtists(artists);
+        if (album.getTracks() != null) {
+            List<TrackSimplified> tracks = album.getTracks().stream().map(this::save).toList();
+            album.setTracks(tracks);
+        }
+
+        if (album.getArtists() != null) {
+            List<ArtistSimplified> artists = this.saveAll(album.getArtists());
+            album.setArtists(artists);
+        }
+
         return albumRepository.save(album);
     }
 
@@ -63,9 +72,16 @@ class PersistenceService {
         return albumRepository.findById(album.getId());
     }
 
+    public Optional<Album> findAlbum(String id) {
+        return albumRepository.findById(id);
+    }
+
     public AlbumSimplified save(AlbumSimplified album) {
-        List<ArtistSimplified> artists = this.saveAll(album.getArtists());
-        album.setArtists(artists);
+        if (album.getArtists() != null) {
+            List<ArtistSimplified> artists = this.saveAll(album.getArtists());
+            album.setArtists(artists);
+        }
+
         return albumSimplifiedRepository.save(album);
     }
 
@@ -91,6 +107,10 @@ class PersistenceService {
         return artistRepository.findById(artist.getId());
     }
 
+    public Optional<Artist> findArtist(String id) {
+        return artistRepository.findById(id);
+    }
+
     public ArtistSimplified save(ArtistSimplified artist) {
         return artistSimplifiedRepository.save(artist);
     }
@@ -104,8 +124,10 @@ class PersistenceService {
     }
 
     public Episode save(Episode episode) {
-        ShowSimplified show = this.save(episode.getShow());
-        episode.setShow(show);
+        if (episode.getShow() != null) {
+            ShowSimplified show = this.save(episode.getShow());
+            episode.setShow(show);
+        }
         return episodeRepository.save(episode);
     }
 
@@ -114,16 +136,43 @@ class PersistenceService {
     }
 
     public PlaylistSimplified save(PlaylistSimplified playlistSimplified) {
-        SpotifyUser owner = this.save(playlistSimplified.getOwner());
-        List<PlaylistTrack> tracks = playlistSimplified.getTracks().stream().map(this::save).toList();
-        playlistSimplified.setOwner(owner);
-        playlistSimplified.setTracks(tracks);
+        if (playlistSimplified.getOwner() != null) {
+            SpotifyUser owner = this.save(playlistSimplified.getOwner());
+            playlistSimplified.setOwner(owner);
+        }
+
+        if (playlistSimplified.getTracks() != null) {
+            List<PlaylistTrack> tracks = playlistSimplified.getTracks().stream().map(this::save).toList();
+            playlistSimplified.setTracks(tracks);
+        }
 
         return playlistSimplifiedRepository.save(playlistSimplified);
     }
 
     public Optional<PlaylistSimplified> find(PlaylistSimplified playlistSimplified) {
         return playlistSimplifiedRepository.findById(playlistSimplified.getId());
+    }
+
+    public Playlist save(Playlist playlist) {
+        if (playlist.getTracks() != null) {
+            List<PlaylistTrack> tracks = playlist.getTracks().stream().map(this::save).toList();
+            playlist.setTracks(tracks);
+        }
+
+        if (playlist.getOwner() != null) {
+            SpotifyUser owner = this.save(playlist.getOwner());
+            playlist.setOwner(owner);
+        }
+
+        return playlistRepository.save(playlist);
+    }
+
+    public Optional<Playlist> find(Playlist playlist) {
+        return playlistRepository.findById(playlist.getId());
+    }
+
+    public Optional<Playlist> findPlaylist(String id) {
+        return playlistRepository.findById(id);
     }
 
     public ShowSimplified save(ShowSimplified showSimplified) {
@@ -151,10 +200,15 @@ class PersistenceService {
     }
 
     public Track save(Track track) {
-        AlbumSimplified album = this.save(track.getAlbum());
-        List<ArtistSimplified> artists = this.saveAll(track.getArtists());
-        track.setAlbum(album);
-        track.setArtists(artists);
+        if (track.getAlbum() != null) {
+            AlbumSimplified album = this.save(track.getAlbum());
+            track.setAlbum(album);
+        }
+
+        if (track.getArtists() != null) {
+            List<ArtistSimplified> artists = this.saveAll(track.getArtists());
+            track.setArtists(artists);
+        }
 
         return trackRepository.save(track);
     }
@@ -163,9 +217,15 @@ class PersistenceService {
         return trackRepository.findById(track.getId());
     }
 
+    public Optional<Track> findTrack(String id) {
+        return trackRepository.findById(id);
+    }
+
     public TrackSimplified save(TrackSimplified trackSimplified) {
-        List<ArtistSimplified> artists = this.saveAll(trackSimplified.getArtists());
-        trackSimplified.setArtists(artists);
+        if (trackSimplified.getArtists() != null) {
+            List<ArtistSimplified> artists = this.saveAll(trackSimplified.getArtists());
+            trackSimplified.setArtists(artists);
+        }
 
         return trackSimplifiedRepository.save(trackSimplified);
     }
@@ -223,6 +283,5 @@ class PersistenceService {
         return this.find(savedTrack.getTrack())
                 .map(track -> new SavedTrack(track, savedTrack.getAddedAt()));
     }
-
 
 }

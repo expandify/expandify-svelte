@@ -21,9 +21,7 @@ public class PlaylistSimplified {
     private String id;
 
     private Boolean collaborative;
-    //private String description;
     private Map<String, String> externalUrls;
-    //private SpotifyFollowers followers;
     private String href;
     private String spotifyId;
     private Image[] images;
@@ -33,6 +31,7 @@ public class PlaylistSimplified {
     private Boolean publicAccess;
     private String snapshotId;
     private List<PlaylistTrack> tracks;
+    private Integer totalTracks;
     private ModelObjectType type;
     private String uri;
 
@@ -47,6 +46,7 @@ public class PlaylistSimplified {
         this.publicAccess = playlist.getIsPublicAccess();
         this.snapshotId = playlist.getSnapshotId();
         this.uri = playlist.getUri();
+        this.totalTracks = playlist.getTracks().getTotal();
 
         this.id = this.spotifyId + this.snapshotId;
         this.tracks = playlistTracks;

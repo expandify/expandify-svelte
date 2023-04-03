@@ -1,5 +1,6 @@
 package de.wittenbude.expandify.services.spotifydata;
 
+import de.wittenbude.expandify.models.spotifydata.Track;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedTrack;
 import de.wittenbude.expandify.services.spotifyapi.SpotifyApiRequestService;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,11 @@ public class TrackService {
                 .map(savedTrack -> persistenceService.find(savedTrack)
                         .orElse(persistenceService.save(savedTrack)))
                 .toList();
+    }
+
+    public Track get(String id) throws SpotifyWebApiException {
+        return persistenceService
+                .findTrack(id)
+                .orElse(new Track(spotifyApiRequest.makeRequest(api -> api.getTrack(id))));
     }
 }

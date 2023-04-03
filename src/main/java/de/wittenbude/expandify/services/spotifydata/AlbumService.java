@@ -4,7 +4,6 @@ import de.wittenbude.expandify.models.spotifydata.Album;
 import de.wittenbude.expandify.models.spotifydata.TrackSimplified;
 import de.wittenbude.expandify.models.spotifydata.helper.SavedAlbum;
 import de.wittenbude.expandify.services.spotifyapi.SpotifyApiRequestService;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
@@ -24,27 +23,29 @@ public class AlbumService {
         this.persistenceService = persistenceService;
     }
 
-    public List<SavedAlbum> getLatest() throws SpotifyWebApiException {
+    public List<SavedAlbum> getSaved() throws SpotifyWebApiException {
         return spotifyApiRequest
                 .pagingStreamRequest(spotifyApi -> spotifyApi.getCurrentUsersSavedAlbums().limit(50))
                 .map(a -> new SavedAlbum(a, null))
                 .map(savedAlbum -> persistenceService.find(savedAlbum)
-                        .orElse(saveNewAlbum(savedAlbum)))
+                        .orElse(persistenceService.save(savedAlbum)))
                 .toList();
     }
 
+    public Album get(String id) throws SpotifyWebApiException {
+        Album album = persistenceService
+                .findAlbum(id)
+                .orElse(new Album(spotifyApiRequest.makeRequest(api -> api.getAlbum(id)), null));
 
-    private SavedAlbum saveNewAlbum(SavedAlbum album) {
-        return new SavedAlbum(saveNewAlbum(album.getAlbum()), album.getAddedAt());
+        if (album.getTracks() == null || album.getTracks().isEmpty()) {
+            album.setTracks(getAlbumTracks(album));
+            return persistenceService.save(album);
+        }
+        return album;
     }
 
-    private Album saveNewAlbum(Album album) {
-        album.setTracks(getAlbumTracks(album));
-        return persistenceService.save(album);
-    }
 
-    @SneakyThrows
-    private List<TrackSimplified> getAlbumTracks(Album album) {
+    private List<TrackSimplified> getAlbumTracks(Album album) throws SpotifyWebApiException {
         return spotifyApiRequest
                 .pagingStreamRequest(api -> api.getAlbumsTracks(album.getId()).limit(50))
                 .map(TrackSimplified::new)

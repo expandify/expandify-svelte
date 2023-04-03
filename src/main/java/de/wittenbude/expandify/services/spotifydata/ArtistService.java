@@ -23,12 +23,18 @@ public class ArtistService {
         this.spotifyApiRequest = spotifyApiRequest;
     }
 
-    public List<Artist> getLatest() throws SpotifyWebApiException {
+    public List<Artist> getFollowed() throws SpotifyWebApiException {
         return spotifyApiRequest
                 .cursorStreamRequest(api -> api.getUsersFollowedArtists(ModelObjectType.ARTIST).limit(50))
                 .map(Artist::new)
                 .map(artist -> persistenceService.find(artist)
                         .orElse(persistenceService.save(artist)))
                 .toList();
+    }
+
+    public Artist get(String id) throws SpotifyWebApiException {
+        return persistenceService
+                .findArtist(id)
+                .orElse(new Artist(spotifyApiRequest.makeRequest(api -> api.getArtist(id))));
     }
 }

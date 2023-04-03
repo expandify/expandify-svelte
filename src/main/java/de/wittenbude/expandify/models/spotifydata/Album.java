@@ -38,6 +38,7 @@ public class Album {
     private ReleaseDatePrecision releaseDatePrecision;
     @DocumentReference(lazy = true)
     private List<TrackSimplified> tracks;
+    private Integer totalTracks;
     private ModelObjectType type;
     private String uri;
 
@@ -60,6 +61,7 @@ public class Album {
         this.type = album.getType();
         this.uri = album.getUri();
         this.tracks = tracks;
+        this.totalTracks = album.getTracks().getTotal();
     }
 
 }
