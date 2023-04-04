@@ -1,8 +1,8 @@
 package de.wittenbude.expandify.services.auth;
 
-import de.wittenbude.expandify.models.SpotifyApiCredential;
-import de.wittenbude.expandify.repositories.SpotifyApiCredentialRepository;
-import de.wittenbude.expandify.services.spotifyapi.SpotifyApiRequestService;
+import de.wittenbude.expandify.models.db.SpotifyApiCredentials;
+import de.wittenbude.expandify.repositories.users.SpotifyApiCredentialDao;
+import de.wittenbude.expandify.services.api.SpotifyApiRequestService;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.enums.AuthorizationScope;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
@@ -17,14 +17,14 @@ public class AuthenticationService {
 
     // private static final Logger LOG = LoggerFactory.getLogger(AuthenticationService.class);
 
-    private final SpotifyApiCredentialRepository spotifyApiCredentialRepository;
+    private final SpotifyApiCredentialDao spotifyApiCredentialDao;
     private final SpotifyApiRequestService spotifyApiRequest;
 
     public AuthenticationService(
-            SpotifyApiCredentialRepository spotifyApiCredentialRepository,
+            SpotifyApiCredentialDao spotifyApiCredentialDao,
             SpotifyApiRequestService spotifyApiRequest
     ) {
-        this.spotifyApiCredentialRepository = spotifyApiCredentialRepository;
+        this.spotifyApiCredentialDao = spotifyApiCredentialDao;
         this.spotifyApiRequest = spotifyApiRequest;
     }
 
@@ -68,7 +68,7 @@ public class AuthenticationService {
             api.setRefreshToken(credentials.getRefreshToken());
             return api.getCurrentUsersProfile();
         });
-        spotifyApiCredentialRepository.save(new SpotifyApiCredential(credentials, user.getId()));
+        spotifyApiCredentialDao.save(new SpotifyApiCredentials(credentials, user.getId()));
         return user.getId();
     }
 

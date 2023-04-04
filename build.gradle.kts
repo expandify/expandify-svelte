@@ -19,6 +19,8 @@ dependencies {
     implementation("se.michaelthelin.spotify:spotify-web-api-java:8.0.0")
     implementation("org.projectlombok:lombok:1.18.22")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server:2.4.1")
+    implementation("org.springframework.boot:spring-boot-starter-cache:3.0.5")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis:3.0.5")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

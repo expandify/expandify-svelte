@@ -1,7 +1,7 @@
 package de.wittenbude.expandify.controllers;
 
-import de.wittenbude.expandify.models.Library;
-import de.wittenbude.expandify.services.spotifydata.LibraryService;
+import de.wittenbude.expandify.models.db.Library;
+import de.wittenbude.expandify.services.spotify.LibraryService;
 import org.springframework.web.bind.annotation.*;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 
