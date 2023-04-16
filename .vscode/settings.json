@@ -1,0 +1,14 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "database": "expandify_backend",
+      "username": "expandify",
+      "password": "expandify",
+      "name": "expandify_dev"
+    }
+  ]
+}
