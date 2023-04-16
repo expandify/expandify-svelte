@@ -1,4 +1,4 @@
-import type { Album, Artist, Playlist, SavedTrack, UserPrivate } from "./spotify"
+import type { Album, Artist, Playlist, SavedAlbum, SavedTrack, UserPrivate } from "./spotify"
 
 export interface StoreError {
   message: string,
@@ -12,7 +12,7 @@ export interface LibraryStoreComponent {
 }
 
 export interface AlbumStore extends LibraryStoreComponent {
-  albums: Album[],
+  albums: SavedAlbum[],
   total: number,
 }
 

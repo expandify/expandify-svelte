@@ -20,6 +20,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"dexie": "^3.2.3",
 		"js-base64": "^3.7.4",
 		"normalize.css": "^8.0.1",
 		"spotify-web-api-js": "^1.5.2"

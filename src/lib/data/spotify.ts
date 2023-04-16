@@ -12,6 +12,7 @@ import { user } from "$lib/stores/library/user";
 import { notifications } from "$lib/stores/notifications";
 import { toAlbum, toArtist, toPlaybackState, toPlaylist, toSavedAlbum, toSavedTrack, toUserPrivate } from "$lib/utils/converter/spotify";
 import { get } from "svelte/store";
+import { db } from "./db";
 
 export namespace Spotify {
 
@@ -30,7 +31,9 @@ export namespace Spotify {
       albums.startLoading();
       await loadSavedAlbumsWithTracks(async (album, tracks, total) => {
         albums.setTotal(total);
-        albums.addAlbum(toSavedAlbum(album, tracks));
+        const a = toSavedAlbum(album, tracks);
+        albums.addAlbum(a);
+        db.albums.add(a);
       }).catch((reason) => { 
         const msg = "Error loading albums";
         albums.setError({cause: reason, message: msg});
@@ -51,7 +54,9 @@ export namespace Spotify {
       artists.startLoading();
       await loadFollowedArtists(async (artist, total) => {
         artists.setTotal(total);
-        artists.addArtist(toArtist(artist));
+        const a = toArtist(artist);
+        artists.addArtist(a);
+        db.artists.add(a);
       }).catch((reason) => { 
         const msg = "Error loading artists";
         artists.setError({cause: reason, message: msg});
@@ -71,7 +76,9 @@ export namespace Spotify {
       playlists.startLoading();
       await loadUserPlaylistsWithTracks(async (playlist, tracks, total) => {
         playlists.setTotal(total);
-        playlists.addPlaylist(toPlaylist(playlist, tracks));
+        const p = toPlaylist(playlist, tracks);
+        playlists.addPlaylist(p);
+        db.playlists.add(p);
       }).catch((reason) => { 
         const msg = "Error loading playlists";
         playlists.setError({cause: reason, message: msg});
@@ -87,7 +94,9 @@ export namespace Spotify {
       tracks.startLoading();
       await loadSavedTracks(async (track, total) => {
         tracks.setTotal(total);
-        tracks.addTrack(toSavedTrack(track));
+        const t = toSavedTrack(track);
+        tracks.addTrack(t);
+        db.tracks.add(t);
       }).catch((reason) => { 
         const msg = "Error loading tracks";
         tracks.setError({cause: reason, message: msg});
@@ -102,8 +111,9 @@ export namespace Spotify {
     export async function loadToStore() {
       user.startLoading();
       try {
-        const u = await laodUser();  
-        user.setUser(toUserPrivate(u));
+        const u = toUserPrivate(await laodUser());        
+        user.setUser(u);
+        db.user.add(u);
       } catch (error) {
         const msg = "Error loading user";
         user.setError({cause: error, message: msg});

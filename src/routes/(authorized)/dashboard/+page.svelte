@@ -11,8 +11,10 @@
 
 
   //dependencies.setDependencies(true, true, true, true, true);
-  dependencies.noNeeds();
+  //dependencies.noNeeds();
+  dependencies.userNeeded();
 
+  console.log($user.user);
 </script>
 
 <h1>Dashboard</h1>
