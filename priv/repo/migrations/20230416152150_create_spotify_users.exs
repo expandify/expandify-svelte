@@ -1,8 +1,8 @@
-defmodule Api.Repo.Migrations.CreateUsers do
+defmodule Api.Repo.Migrations.CreateSpotifyUsers do
   use Ecto.Migration
 
   def change do
-    create table(:users, primary_key: false) do
+    create table(:spotify_users, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false
 
       add :country, :string
@@ -19,6 +19,6 @@ defmodule Api.Repo.Migrations.CreateUsers do
       add :uri, :string
     end
 
-    create unique_index(:users, [:spotify_id])
+    create unique_index(:spotify_users, [:spotify_id])
   end
 end

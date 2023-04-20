@@ -3,7 +3,8 @@ defmodule ApiWeb.AlbumController do
   use ApiWeb.CurrentUser
 
   def index(conn, _, current_user) do
-    json(conn, "ID: #{current_user}")
+    {:ok, json} = Jason.encode(current_user)
+    json(conn, "ID: #{json}")
   end
 
   def show(conn, %{"id" => id}, current_user) do

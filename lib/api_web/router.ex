@@ -6,13 +6,13 @@ defmodule ApiWeb.Router do
   end
 
   pipeline :auth do
-    plug ApiWeb.AuthenticationService
+    plug ApiWeb.Authentication
   end
 
   scope "/api", ApiWeb do
     pipe_through :api
 
-    get("/login", LoginController, :login)
+    post("/login", LoginController, :login)
 
     pipe_through :auth
 
