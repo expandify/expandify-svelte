@@ -2,12 +2,10 @@ package models
 
 import (
 	"golang.org/x/oauth2"
-	"gorm.io/gorm"
 	"time"
 )
 
 type User struct {
-	gorm.Model
 	AccessToken   string    `json:"access_token"`
 	TokenType     string    `json:"token_type"`
 	RefreshToken  string    `json:"refresh_token"`
@@ -19,11 +17,11 @@ type User struct {
 
 func NewUser(spotifyUser *SpotifyUser, token *oauth2.Token) User {
 	return User{
-		Model:         gorm.Model{},
 		AccessToken:   token.AccessToken,
 		TokenType:     token.TokenType,
 		RefreshToken:  token.RefreshToken,
 		Expiry:        token.Expiry,
+		ID:            spotifyUser.ID,
 		SpotifyUserID: spotifyUser.ID,
 		SpotifyUser:   spotifyUser,
 	}

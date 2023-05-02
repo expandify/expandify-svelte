@@ -4,11 +4,9 @@ import (
 	"expandify-api/pkg/expandify/models/embeds"
 	"github.com/zmb3/spotify/v2"
 	"gorm.io/datatypes"
-	"gorm.io/gorm"
 )
 
 type SpotifyUser struct {
-	gorm.Model
 	DisplayName  string                                `json:"display_name"`
 	ExternalURLs datatypes.JSONType[map[string]string] `json:"external_urls"`
 	Followers    embeds.Followers                      `json:"followers" gorm:"embedded;embeddedPrefix:followers_"`
@@ -29,7 +27,6 @@ func NewSpotifyUser(user *spotify.PrivateUser) SpotifyUser {
 	}
 
 	return SpotifyUser{
-		Model:        gorm.Model{},
 		DisplayName:  user.DisplayName,
 		ExternalURLs: datatypes.NewJSONType(user.ExternalURLs),
 		Followers:    embeds.NewFollowers(&user.Followers),

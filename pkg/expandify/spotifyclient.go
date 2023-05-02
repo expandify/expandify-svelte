@@ -13,16 +13,28 @@ type SpotifyClient interface {
 }
 
 type spotifyClient struct {
-	clientId     string
-	clientSecret string
-	redirectUri  string
+	authenticator *spotifyauth.Authenticator
 }
 
 func NewSpotifyClient(clientId string, clientSecret string, redirectUri string) SpotifyClient {
 	return &spotifyClient{
-		clientId:     clientId,
-		clientSecret: clientSecret,
-		redirectUri:  redirectUri,
+		authenticator: spotifyauth.New(
+			spotifyauth.WithScopes(
+				spotifyauth.ScopePlaylistReadPrivate,
+				spotifyauth.ScopeUserReadPrivate,
+				spotifyauth.ScopePlaylistReadCollaborative,
+				spotifyauth.ScopeUserFollowRead,
+				spotifyauth.ScopeUserLibraryRead,
+				spotifyauth.ScopeUserReadEmail,
+				spotifyauth.ScopeUserReadCurrentlyPlaying,
+				spotifyauth.ScopeUserReadPlaybackState,
+				spotifyauth.ScopeUserReadRecentlyPlayed,
+				spotifyauth.ScopeUserTopRead,
+			),
+			spotifyauth.WithClientID(clientId),
+			spotifyauth.WithClientSecret(clientSecret),
+			spotifyauth.WithRedirectURL(redirectUri),
+		),
 	}
 }
 
@@ -33,22 +45,5 @@ func (sc *spotifyClient) GetClient(token *oauth2.Token) *spotify.Client {
 }
 
 func (sc *spotifyClient) GetAuthenticator() *spotifyauth.Authenticator {
-	return spotifyauth.New(
-		spotifyauth.WithScopes(
-			spotifyauth.ScopeUserReadPrivate,
-			spotifyauth.ScopePlaylistReadPrivate,
-			spotifyauth.ScopePlaylistReadCollaborative,
-			spotifyauth.ScopeUserFollowRead,
-			spotifyauth.ScopeUserLibraryRead,
-			spotifyauth.ScopeUserReadPrivate,
-			spotifyauth.ScopeUserReadEmail,
-			spotifyauth.ScopeUserReadCurrentlyPlaying,
-			spotifyauth.ScopeUserReadPlaybackState,
-			spotifyauth.ScopeUserReadRecentlyPlayed,
-			spotifyauth.ScopeUserTopRead,
-		),
-		spotifyauth.WithClientID(sc.clientId),
-		spotifyauth.WithClientSecret(sc.clientSecret),
-		spotifyauth.WithRedirectURL(sc.redirectUri),
-	)
+	return sc.authenticator
 }

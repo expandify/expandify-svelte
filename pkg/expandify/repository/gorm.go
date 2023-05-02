@@ -30,7 +30,7 @@ func NewGormRepository(dialector gorm.Dialector) Repository {
 
 func (p *gormRepository) GetUser(id string) (*models.User, bool) {
 	var user = models.User{ID: id}
-	result := p.database.First(user)
+	result := p.database.First(&user)
 	if result.Error != nil {
 		return nil, false
 	}
@@ -45,7 +45,7 @@ func (p *gormRepository) SaveUser(user *models.User) {
 
 func (p *gormRepository) GetSpotifyUser(id string) (*models.SpotifyUser, bool) {
 	var spotifyUser = models.SpotifyUser{ID: id}
-	result := p.database.First(spotifyUser)
+	result := p.database.First(&spotifyUser)
 	if result.Error != nil {
 		return nil, false
 	}

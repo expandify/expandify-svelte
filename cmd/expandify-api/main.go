@@ -4,9 +4,7 @@ import (
 	"expandify-api/cmd/internal"
 	"expandify-api/pkg/api"
 	"expandify-api/pkg/expandify"
-	"expandify-api/pkg/expandify/authentication"
 	"expandify-api/pkg/expandify/repository"
-	"github.com/go-chi/jwtauth"
 	"log"
 	"net/http"
 )
@@ -22,11 +20,8 @@ func main() {
 		PostgresPort:     config.PostgresPort,
 		SQLiteFile:       config.SQLiteFile,
 	})
-
 	spotifyClient := expandify.NewSpotifyClient(config.ClientId, config.ClientSecret, config.RedirectUri)
-	auth := authentication.New(spotifyClient, repo, &config.EncryptionKey)
-	jwtAuth := jwtauth.New("HS256", config.JwtSecretAuth, nil)
-	router := api.NewApi(auth, jwtAuth).Router()
+	router := api.NewApi(spotifyClient, repo, &config.EncryptionKey, &config.JwtSecretAuth).Router()
 
 	log.Println("Server is running on: " + config.Addr)
 	err := http.ListenAndServe(config.Addr, router)

@@ -3,21 +3,20 @@ package api
 import (
 	"expandify-api/pkg/expandify/authentication"
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/jwtauth"
 	"github.com/go-chi/render"
 	"net/http"
 	"net/url"
 )
 
 type login struct {
-	auth    authentication.Auth
-	jwtAuth *jwtauth.JWTAuth
+	auth authentication.Auth
+	jwt  Jwt
 }
 
-func NewLogin(auth authentication.Auth, jwtAuth *jwtauth.JWTAuth) Router {
+func NewLogin(auth authentication.Auth, jwt Jwt) Router {
 	return &login{
-		auth:    auth,
-		jwtAuth: jwtAuth,
+		auth: auth,
+		jwt:  jwt,
 	}
 }
 
@@ -49,7 +48,7 @@ func (a *login) callback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	jwt, err := a.createJwt(id)
+	jwt, err := a.jwt.Create(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
@@ -68,12 +67,4 @@ func (a *login) callback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, redirectUrl, http.StatusMovedPermanently)
-}
-
-func (a *login) createJwt(userId string) (string, error) {
-	_, jwt, err := a.jwtAuth.Encode(map[string]interface{}{"user_id": userId})
-	if err != nil {
-		return "", err
-	}
-	return jwt, nil
 }
