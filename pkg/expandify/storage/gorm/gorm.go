@@ -1,7 +1,8 @@
-package repository
+package gorm
 
 import (
-	"expandify-api/pkg/expandify/models"
+	"expandify-api/pkg/expandify"
+	"expandify-api/pkg/expandify/storage/models"
 	"gorm.io/gorm"
 	"log"
 )
@@ -10,7 +11,7 @@ type gormRepository struct {
 	database *gorm.DB
 }
 
-func NewGormRepository(dialector gorm.Dialector) Repository {
+func NewGormRepository(dialector gorm.Dialector) expandify.Repository {
 
 	db, err := gorm.Open(dialector, &gorm.Config{})
 	if err != nil {
@@ -28,31 +29,32 @@ func NewGormRepository(dialector gorm.Dialector) Repository {
 	return &gormRepository{database: db}
 }
 
-func (p *gormRepository) GetUser(id string) (*models.User, bool) {
+func (p *gormRepository) GetUser(id string) (*expandify.User, bool) {
 	var user = models.User{ID: id}
 	result := p.database.First(&user)
 	if result.Error != nil {
 		return nil, false
 	}
 
-	return &user, true
+	return user.Convert(), true
 }
 
-func (p *gormRepository) SaveUser(user *models.User) {
-
-	p.database.Save(user)
+func (p *gormRepository) SaveUser(user *expandify.User) {
+	model := models.NewUser(user)
+	p.database.Save(model)
 }
 
-func (p *gormRepository) GetSpotifyUser(id string) (*models.SpotifyUser, bool) {
+func (p *gormRepository) GetSpotifyUser(id string) (*expandify.SpotifyUser, bool) {
 	var spotifyUser = models.SpotifyUser{ID: id}
 	result := p.database.First(&spotifyUser)
 	if result.Error != nil {
 		return nil, false
 	}
 
-	return &spotifyUser, true
+	return spotifyUser.Convert(), true
 }
 
-func (p *gormRepository) SaveSpotifyUser(spotifyUser *models.SpotifyUser) {
-	p.database.Save(spotifyUser)
+func (p *gormRepository) SaveSpotifyUser(spotifyUser *expandify.SpotifyUser) {
+	model := models.NewSpotifyUser(spotifyUser)
+	p.database.Save(model)
 }

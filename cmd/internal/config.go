@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"expandify-api/pkg/expandify/repository"
 	"log"
 	"os"
 	"strings"
@@ -41,13 +40,13 @@ func LoadConfigs() *Config {
 	var sqliteFile string
 
 	switch strings.ToLower(storageType) {
-	case repository.TypePostgres:
+	case TypePostgres:
 		postgresHost = loadEnvWithFallback("EXPANDIFY_DB_HOST", "localhost")
 		postgresUser = loadEnvWithFallback("EXPANDIFY_DB_USER", "expandify")
 		postgresPassword = loadEnvWithFallback("EXPANDIFY_DB_PASSWORD", "expandify")
 		postgresDbName = loadEnvWithFallback("EXPANDIFY_DB_NAME", "expandify")
 		postgresPort = loadEnvWithFallback("EXPANDIFY_DB_PORT", "5432")
-	case repository.TypeSQLite:
+	case TypeSQLite:
 		sqliteFile = loadEnvWithFallback("EXPANDIFY_SQLITE_FILE", "sqlite.db")
 	}
 

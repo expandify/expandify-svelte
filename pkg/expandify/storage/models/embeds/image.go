@@ -1,6 +1,8 @@
 package embeds
 
-import "github.com/zmb3/spotify/v2"
+import (
+	"expandify-api/pkg/expandify"
+)
 
 type Image struct {
 	// gorm.Model
@@ -9,7 +11,7 @@ type Image struct {
 	URL    string `json:"url"`
 }
 
-func NewImage(image *spotify.Image) Image {
+func NewImage(image *expandify.Image) Image {
 	if image == nil {
 		return Image{}
 	}
@@ -18,5 +20,13 @@ func NewImage(image *spotify.Image) Image {
 		Height: image.Height,
 		Width:  image.Width,
 		URL:    image.URL,
+	}
+}
+
+func (i Image) Convert() expandify.Image {
+	return expandify.Image{
+		Height: i.Height,
+		Width:  i.Width,
+		URL:    i.URL,
 	}
 }

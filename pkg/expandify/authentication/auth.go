@@ -4,8 +4,6 @@ import (
 	"context"
 	"errors"
 	"expandify-api/pkg/expandify"
-	"expandify-api/pkg/expandify/models"
-	"expandify-api/pkg/expandify/repository"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
 )
 
@@ -16,11 +14,11 @@ type Auth interface {
 
 type auth struct {
 	spotifyClient expandify.SpotifyClient
-	repository    repository.Repository
+	repository    expandify.Repository
 	encryptionKey *[32]byte
 }
 
-func New(client expandify.SpotifyClient, repository repository.Repository, encryptionKey *[32]byte) Auth {
+func New(client expandify.SpotifyClient, repository expandify.Repository, encryptionKey *[32]byte) Auth {
 	return &auth{
 		spotifyClient: client,
 		repository:    repository,
@@ -46,16 +44,16 @@ func (a *auth) CompleteAuth(code string, state string) (stateData string, userId
 	}
 
 	// TODO
-	currentUser, err := a.spotifyClient.GetClient(tok).CurrentUser(context.Background())
+	currentUser, err := a.spotifyClient.FromToken(tok).CurrentUser(context.Background())
 	if err != nil {
 		return decrypted, "", err
 	}
 
-	spotifyUser := models.NewSpotifyUser(currentUser)
-	user := models.NewUser(&spotifyUser, tok)
+	spotifyUser := expandify.NewSpotifyUser(currentUser)
+	user := expandify.NewUser(spotifyUser, tok.TokenType, tok.AccessToken, tok.RefreshToken, tok.Expiry)
 
-	a.repository.SaveUser(&user)
-	a.repository.SaveSpotifyUser(&spotifyUser)
+	a.repository.SaveUser(user)
+	a.repository.SaveSpotifyUser(spotifyUser)
 
-	return decrypted, user.ID, nil
+	return decrypted, user.SpotifyUser.SpotifyID, nil
 }

@@ -1,18 +1,18 @@
 package api
 
 import (
-	"expandify-api/pkg/expandify/repository"
+	"expandify-api/pkg/expandify"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 	"net/http"
 )
 
 type user struct {
-	repository repository.Repository
+	repository expandify.Repository
 	session    SessionController
 }
 
-func NewUser(repository repository.Repository, session SessionController) Router {
+func NewUser(repository expandify.Repository, session SessionController) Router {
 	return &user{
 		repository: repository,
 		session:    session,

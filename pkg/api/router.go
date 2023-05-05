@@ -3,7 +3,6 @@ package api
 import (
 	"expandify-api/pkg/expandify"
 	"expandify-api/pkg/expandify/authentication"
-	"expandify-api/pkg/expandify/repository"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -16,11 +15,11 @@ type router struct {
 	Login      Router
 	User       Router
 	jwt        Jwt
-	repository repository.Repository
+	repository expandify.Repository
 	session    SessionController
 }
 
-func NewApi(spotifyClient expandify.SpotifyClient, repository repository.Repository, encryptionSecret *[32]byte, jwtSecret *[]byte) Router {
+func NewApi(spotifyClient expandify.SpotifyClient, repository expandify.Repository, encryptionSecret *[32]byte, jwtSecret *[]byte) Router {
 	jwt := NewJwt(jwtSecret)
 	session := NewSessionController(jwt)
 

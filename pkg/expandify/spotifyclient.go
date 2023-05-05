@@ -9,14 +9,16 @@ import (
 
 type SpotifyClient interface {
 	GetAuthenticator() *spotifyauth.Authenticator
-	GetClient(token *oauth2.Token) *spotify.Client
+	FromToken(token *oauth2.Token) *spotify.Client
+	FromUserID(id string) *spotify.Client
 }
 
 type spotifyClient struct {
 	authenticator *spotifyauth.Authenticator
+	repository    Repository
 }
 
-func NewSpotifyClient(clientId string, clientSecret string, redirectUri string) SpotifyClient {
+func NewSpotifyClient(clientId string, clientSecret string, redirectUri string, repository Repository) SpotifyClient {
 	return &spotifyClient{
 		authenticator: spotifyauth.New(
 			spotifyauth.WithScopes(
@@ -35,13 +37,25 @@ func NewSpotifyClient(clientId string, clientSecret string, redirectUri string) 
 			spotifyauth.WithClientSecret(clientSecret),
 			spotifyauth.WithRedirectURL(redirectUri),
 		),
+		repository: repository,
 	}
 }
 
-// GetClient TODO maybe with userId?
-func (sc *spotifyClient) GetClient(token *oauth2.Token) *spotify.Client {
+func (sc *spotifyClient) FromUserID(id string) *spotify.Client {
+	user, ok := sc.repository.GetUser(id)
+	token := oauth2.Token{}
+	if ok {
+		token.AccessToken = user.AccessToken
+		token.RefreshToken = user.RefreshToken
+		token.TokenType = user.TokenType
+		token.Expiry = user.Expiry
+	}
+	return sc.FromToken(&token)
+}
+
+func (sc *spotifyClient) FromToken(token *oauth2.Token) *spotify.Client {
 	httpClient := sc.GetAuthenticator().Client(context.Background(), token)
-	return spotify.New(httpClient)
+	return spotify.New(httpClient, spotify.WithRetry(true))
 }
 
 func (sc *spotifyClient) GetAuthenticator() *spotifyauth.Authenticator {
