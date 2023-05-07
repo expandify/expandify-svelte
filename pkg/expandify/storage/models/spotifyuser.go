@@ -7,7 +7,7 @@ import (
 )
 
 type SpotifyUser struct {
-	DisplayName  string                                `json:"display_name"`
+	DisplayName  string
 	ExternalURLs datatypes.JSONType[map[string]string] `json:"external_urls"`
 	Followers    embeds.Followers                      `json:"followers" gorm:"embedded;embeddedPrefix:followers_"`
 	Href         string                                `json:"href"`
@@ -41,7 +41,7 @@ func NewSpotifyUser(spotifyUser *expandify.SpotifyUser) *SpotifyUser {
 	}
 }
 
-func (s SpotifyUser) Convert() *expandify.SpotifyUser {
+func (s *SpotifyUser) Convert() *expandify.SpotifyUser {
 	var images []expandify.Image
 	for _, image := range s.Images.Data() {
 		images = append(images, image.Convert())

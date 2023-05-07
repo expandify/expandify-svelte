@@ -5,18 +5,26 @@ import (
 )
 
 type User interface {
-	Sync(id string) (*expandify.Sync, error)
 	Get(id string) (*expandify.SpotifyUser, error)
+	Sync(id string) (*expandify.Sync, error)
+	GetSync(id string) (*expandify.Sync, error)
 }
 
 type user struct {
 	spotifyClient expandify.SpotifyClient
-	repository    expandify.Repository
+	repository    Repository
 }
 
-func New(client expandify.SpotifyClient, repository expandify.Repository) User {
+func New(client expandify.SpotifyClient, repository Repository) User {
 	return &user{
 		spotifyClient: client,
 		repository:    repository,
 	}
+}
+
+type Repository interface {
+	Get(id string) (*expandify.SpotifyUser, error)
+	Save(user *expandify.SpotifyUser)
+	GetSync(id string) (*expandify.Sync, error)
+	SaveSync(id string, sync *expandify.Sync)
 }

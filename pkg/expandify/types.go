@@ -76,21 +76,20 @@ type Library struct {
 type SyncStatus int64
 
 const (
-	Never SyncStatus = iota
-	Loading
-	Synced
-	Error
+	SyncStatusNever SyncStatus = iota
+	SyncStatusLoading
+	SyncStatusSynced
+	SyncStatusError
 )
 
 type Sync struct {
-	Type      string     `json:"type"`
-	Status    SyncStatus `json:"status"`
-	Error     error      `json:"error"`
-	Current   int        `json:"current"`
-	Max       int        `json:"max"`
-	Start     time.Time  `json:"start"`
-	End       time.Time  `json:"end"`
-	Estimated time.Time  `json:"estimated"`
+	Type    string     `json:"type"`
+	Status  SyncStatus `json:"status"`
+	Error   error      `json:"error"`
+	Current int        `json:"current"`
+	Max     int        `json:"max"`
+	Start   time.Time  `json:"start"`
+	End     time.Time  `json:"end"`
 }
 
 type Playlist struct {
@@ -194,5 +193,9 @@ type User struct {
 	RefreshToken string       `json:"refresh_token"`
 	Expiry       time.Time    `json:"expiry"`
 	SpotifyUser  *SpotifyUser `json:"spotify_user"`
-	Syncs        []Sync       `json:"syncs"`
+	UserSync     *Sync        `json:"user_sync"`
+	AlbumSync    *Sync        `json:"album_sync"`
+	ArtistSync   *Sync        `json:"artist_sync"`
+	PlaylistSync *Sync        `json:"playlist_sync"`
+	TrackSync    *Sync        `json:"track_sync"`
 }

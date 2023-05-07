@@ -43,7 +43,6 @@ func (a *auth) CompleteAuth(code string, state string) (stateData string, userId
 		return decrypted, "", err
 	}
 
-	// TODO
 	currentUser, err := a.spotifyClient.FromToken(tok).CurrentUser(context.Background())
 	if err != nil {
 		return decrypted, "", err
