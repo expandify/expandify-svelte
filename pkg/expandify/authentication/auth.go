@@ -43,12 +43,11 @@ func (a *auth) CompleteAuth(code string, state string) (stateData string, userId
 		return decrypted, "", err
 	}
 
-	currentUser, err := a.spotifyClient.FromToken(tok).CurrentUser(context.Background())
+	spotifyUser, err := a.spotifyClient.GetUserFromToken(tok)
 	if err != nil {
 		return decrypted, "", err
 	}
 
-	spotifyUser := expandify.NewSpotifyUser(currentUser)
 	user := expandify.NewUser(spotifyUser, tok.TokenType, tok.AccessToken, tok.RefreshToken, tok.Expiry)
 
 	a.repository.SaveUser(user)

@@ -95,16 +95,15 @@ func NewLibrary() *Library {
 	}
 }
 
-func NewSync() *Sync {
+func NewSync(t string, status SyncStatus, max int) *Sync {
 	return &Sync{
-		Type:      "",
-		Status:    0,
-		Error:     nil,
-		Current:   0,
-		Max:       0,
-		Start:     time.Time{},
-		End:       time.Time{},
-		Estimated: time.Time{},
+		Type:    t,
+		Status:  status,
+		Error:   nil,
+		Current: 0,
+		Max:     max,
+		Start:   time.Now(),
+		End:     time.Time{},
 	}
 }
 
@@ -242,6 +241,10 @@ func NewUser(
 		RefreshToken: RefreshToken,
 		Expiry:       Expiry,
 		SpotifyUser:  spotifyUser,
-		Syncs:        []Sync{},
+		UserSync:     NewSync("User", SyncStatusNever, 1),
+		AlbumSync:    NewSync("Albums", SyncStatusNever, 0),
+		ArtistSync:   NewSync("Artists", SyncStatusNever, 0),
+		PlaylistSync: NewSync("Playlists", SyncStatusNever, 0),
+		TrackSync:    NewSync("Tracks", SyncStatusNever, 0),
 	}
 }

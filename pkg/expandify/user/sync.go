@@ -1,7 +1,6 @@
 package user
 
 import (
-	"context"
 	"errors"
 	"expandify-api/pkg/expandify"
 	"time"
@@ -19,13 +18,12 @@ func (u *user) Sync(id string) (*expandify.Sync, error) {
 	}
 
 	u.startSync(id)
-	user, err := u.spotifyClient.FromUserID(id).CurrentUser(context.Background())
+	spotifyUser, err := u.spotifyClient.GetUser(id)
 	if err != nil {
 		u.errorSync(id, "unable to get user", sync)
 		return nil, err
 	}
 
-	spotifyUser := expandify.NewSpotifyUser(user)
 	u.repository.Save(spotifyUser)
 	u.stopSync(id, sync)
 	return sync, nil
