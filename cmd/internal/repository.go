@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"expandify-api/pkg/expandify"
+	"expandify-api/pkg/expandify/storage/gorm"
 	"expandify-api/pkg/expandify/storage/gorm/postgres"
 	"expandify-api/pkg/expandify/storage/gorm/sqlite"
 	"strings"
@@ -10,7 +10,7 @@ import (
 const TypePostgres = "postgres"
 const TypeSQLite = "sqlite"
 
-func NewRepository(repositoryConfig *Config) expandify.Repository {
+func NewRepositoryConnection(repositoryConfig *Config) gorm.Connection {
 	switch strings.ToLower(repositoryConfig.StorageType) {
 	case TypePostgres:
 		return postgres.NewPostgresRepository(

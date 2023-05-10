@@ -1,6 +1,7 @@
 package api
 
 import (
+	"expandify-api/pkg/api/request"
 	"expandify-api/pkg/expandify/authentication"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
@@ -10,10 +11,10 @@ import (
 
 type login struct {
 	auth authentication.Auth
-	jwt  Jwt
+	jwt  request.Jwt
 }
 
-func NewLogin(auth authentication.Auth, jwt Jwt) Router {
+func NewLogin(auth authentication.Auth, jwt request.Jwt) Router {
 	return &login{
 		auth: auth,
 		jwt:  jwt,

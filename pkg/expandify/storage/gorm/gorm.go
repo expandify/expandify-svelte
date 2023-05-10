@@ -1,17 +1,23 @@
 package gorm
 
 import (
-	"expandify-api/pkg/expandify"
+	"expandify-api/pkg/expandify/spotify_user"
 	"expandify-api/pkg/expandify/storage/models"
+	"expandify-api/pkg/expandify/user"
 	"gorm.io/gorm"
 	"log"
 )
 
-type gormRepository struct {
+type Connection interface {
+	NewUserRepository() user.Repository
+	NewSpotifyUserRepository() spotify_user.Repository
+}
+
+type connection struct {
 	database *gorm.DB
 }
 
-func NewGormRepository(dialector gorm.Dialector) expandify.Repository {
+func NewGormConnection(dialector gorm.Dialector) Connection {
 
 	db, err := gorm.Open(dialector, &gorm.Config{})
 	if err != nil {
@@ -26,35 +32,15 @@ func NewGormRepository(dialector gorm.Dialector) expandify.Repository {
 		log.Fatalln("Error migrating database")
 	}
 
-	return &gormRepository{database: db}
-}
-
-func (p *gormRepository) GetUser(id string) (*expandify.User, bool) {
-	var user = models.User{ID: id}
-	result := p.database.First(&user)
-	if result.Error != nil {
-		return nil, false
+	return &connection{
+		database: db,
 	}
-
-	return user.Convert(), true
 }
 
-func (p *gormRepository) SaveUser(user *expandify.User) {
-	model := models.NewUser(user)
-	p.database.Save(model)
+func (c *connection) NewUserRepository() user.Repository {
+	return &gormUserRepository{database: c.database}
 }
 
-func (p *gormRepository) GetSpotifyUser(id string) (*expandify.SpotifyUser, bool) {
-	var spotifyUser = models.SpotifyUser{ID: id}
-	result := p.database.First(&spotifyUser)
-	if result.Error != nil {
-		return nil, false
-	}
-
-	return spotifyUser.Convert(), true
-}
-
-func (p *gormRepository) SaveSpotifyUser(spotifyUser *expandify.SpotifyUser) {
-	model := models.NewSpotifyUser(spotifyUser)
-	p.database.Save(model)
+func (c *connection) NewSpotifyUserRepository() spotify_user.Repository {
+	return &gormSpotifyUserRepository{database: c.database}
 }

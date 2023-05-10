@@ -1,4 +1,4 @@
-package user
+package spotify_user
 
 import (
 	"errors"
@@ -6,21 +6,21 @@ import (
 	"time"
 )
 
-const syncType = "User"
+const syncType = "SpotifyUser"
 
-func (u *user) Sync(id string) (*expandify.Sync, error) {
+func (u *spotifyUser) Sync(id string) (*expandify.Sync, error) {
 	sync, err := u.repository.GetSync(id)
 	if err != nil {
 		return nil, err
 	}
 	if sync.Status == expandify.SyncStatusLoading {
-		return nil, errors.New("already in sync process")
+		return nil, errors.New("sync already in process")
 	}
 
 	u.startSync(id)
 	spotifyUser, err := u.spotifyClient.GetUser(id)
 	if err != nil {
-		u.errorSync(id, "unable to get user", sync)
+		u.errorSync(id, "unable to get spotify user", sync)
 		return nil, err
 	}
 
@@ -29,7 +29,7 @@ func (u *user) Sync(id string) (*expandify.Sync, error) {
 	return sync, nil
 }
 
-func (u *user) GetSync(id string) (*expandify.Sync, error) {
+func (u *spotifyUser) GetSync(id string) (*expandify.Sync, error) {
 	sync, err := u.repository.GetSync(id)
 	if err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func (u *user) GetSync(id string) (*expandify.Sync, error) {
 	return sync, nil
 }
 
-func (u *user) startSync(id string) {
+func (u *spotifyUser) startSync(id string) {
 	sync := &expandify.Sync{
 		Type:    syncType,
 		Status:  expandify.SyncStatusLoading,
@@ -50,7 +50,7 @@ func (u *user) startSync(id string) {
 	u.repository.SaveSync(id, sync)
 }
 
-func (u *user) errorSync(id string, error string, sync *expandify.Sync) {
+func (u *spotifyUser) errorSync(id string, error string, sync *expandify.Sync) {
 	s := &expandify.Sync{
 		Type:    syncType,
 		Status:  expandify.SyncStatusError,
@@ -63,7 +63,7 @@ func (u *user) errorSync(id string, error string, sync *expandify.Sync) {
 	u.repository.SaveSync(id, s)
 }
 
-func (u *user) stopSync(id string, sync *expandify.Sync) {
+func (u *spotifyUser) stopSync(id string, sync *expandify.Sync) {
 	s := &expandify.Sync{
 		Type:    syncType,
 		Status:  expandify.SyncStatusSynced,

@@ -1,4 +1,4 @@
-package user
+package spotify_user
 
 import (
 	"errors"
@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func (u *user) Get(id string) (*expandify.SpotifyUser, error) {
+func (u *spotifyUser) Get(id string) (*expandify.SpotifyUser, error) {
 	sync, err := u.GetSync(id)
 	if err != nil {
 		return nil, err

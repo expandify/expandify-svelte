@@ -2,6 +2,7 @@ package expandify
 
 import (
 	"context"
+	"expandify-api/pkg/expandify/user"
 	"github.com/zmb3/spotify/v2"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
 	"golang.org/x/oauth2"
@@ -14,11 +15,11 @@ type SpotifyClient interface {
 }
 
 type spotifyClient struct {
-	authenticator *spotifyauth.Authenticator
-	repository    Repository
+	authenticator  *spotifyauth.Authenticator
+	userRepository user.Repository
 }
 
-func NewSpotifyClient(clientId string, clientSecret string, redirectUri string, repository Repository) SpotifyClient {
+func NewSpotifyClient(clientId string, clientSecret string, redirectUri string, userRepository user.Repository) SpotifyClient {
 	return &spotifyClient{
 		authenticator: spotifyauth.New(
 			spotifyauth.WithScopes(
@@ -37,7 +38,7 @@ func NewSpotifyClient(clientId string, clientSecret string, redirectUri string, 
 			spotifyauth.WithClientSecret(clientSecret),
 			spotifyauth.WithRedirectURL(redirectUri),
 		),
-		repository: repository,
+		userRepository: userRepository,
 	}
 }
 
@@ -48,14 +49,15 @@ type refreshingClientWrapper[T any] struct {
 type refreshingClientFunc[T any] func(client *spotify.Client) (T, error)
 
 func (r *refreshingClientWrapper[T]) withUserID(id string, fun refreshingClientFunc[T]) (T, error) {
-	user, ok := r.spotifyClient.repository.GetUser(id)
+	u, err := r.spotifyClient.userRepository.Get(id)
 	token := oauth2.Token{}
-	if ok {
-		token.AccessToken = user.AccessToken
-		token.RefreshToken = user.RefreshToken
-		token.TokenType = user.TokenType
-		token.Expiry = user.Expiry
+	if err != nil {
+		return r.withUserToken(&token, fun)
 	}
+	token.AccessToken = u.AccessToken
+	token.RefreshToken = u.RefreshToken
+	token.TokenType = u.TokenType
+	token.Expiry = u.Expiry
 	return r.withUserToken(&token, fun)
 }
 
@@ -85,19 +87,19 @@ func (sc *spotifyClient) GetAuthenticator() *spotifyauth.Authenticator {
 func (sc *spotifyClient) GetUserFromToken(token *oauth2.Token) (*SpotifyUser, error) {
 	wrapper := refreshingClientWrapper[*spotify.PrivateUser]{spotifyClient: sc}
 
-	user, err := wrapper.withUserToken(token, sc.getUserFunc())
+	u, err := wrapper.withUserToken(token, sc.getUserFunc())
 	if err != nil {
 		return nil, err
 	}
-	return NewSpotifyUser(user), nil
+	return NewSpotifyUser(u), nil
 }
 
 func (sc *spotifyClient) GetUser(id string) (*SpotifyUser, error) {
 	wrapper := refreshingClientWrapper[*spotify.PrivateUser]{spotifyClient: sc}
 
-	user, err := wrapper.withUserID(id, sc.getUserFunc())
+	u, err := wrapper.withUserID(id, sc.getUserFunc())
 	if err != nil {
 		return nil, err
 	}
-	return NewSpotifyUser(user), nil
+	return NewSpotifyUser(u), nil
 }

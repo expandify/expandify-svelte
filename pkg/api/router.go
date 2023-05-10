@@ -1,8 +1,11 @@
 package api
 
 import (
+	"expandify-api/pkg/api/request"
 	"expandify-api/pkg/expandify"
 	"expandify-api/pkg/expandify/authentication"
+	"expandify-api/pkg/expandify/spotify_user"
+	expandify_user "expandify-api/pkg/expandify/user"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -12,25 +15,27 @@ type Router interface {
 }
 
 type router struct {
-	Login      Router
-	User       Router
-	jwt        Jwt
-	repository expandify.Repository
-	session    SessionController
+	Login                 Router
+	User                  Router
+	jwt                   request.Jwt
+	userRepository        expandify_user.Repository
+	spotifyUserRepository spotify_user.Repository
+	session               request.SessionController
 }
 
-func NewApi(spotifyClient expandify.SpotifyClient, repository expandify.Repository, encryptionSecret *[32]byte, jwtSecret *[]byte) Router {
-	jwt := NewJwt(jwtSecret)
-	session := NewSessionController(jwt)
+func NewApi(spotifyClient expandify.SpotifyClient, userRepository expandify_user.Repository, spotifyUserRepository spotify_user.Repository, encryptionSecret *[32]byte, jwtSecret *[]byte) Router {
+	jwt := request.NewJwt(jwtSecret)
+	session := request.NewSessionController(jwt)
 
-	auth := authentication.New(spotifyClient, repository, encryptionSecret)
+	auth := authentication.New(spotifyClient, userRepository, spotifyUserRepository, encryptionSecret)
 
 	return &router{
-		Login:      NewLogin(auth, jwt),
-		User:       NewUser(repository, session),
-		jwt:        jwt,
-		repository: repository,
-		session:    session,
+		Login:                 NewLogin(auth, jwt),
+		User:                  NewUser(spotifyUserRepository, session),
+		jwt:                   jwt,
+		userRepository:        userRepository,
+		spotifyUserRepository: spotifyUserRepository,
+		session:               session,
 	}
 }
 
