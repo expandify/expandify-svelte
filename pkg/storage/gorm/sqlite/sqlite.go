@@ -1,7 +1,7 @@
 package sqlite
 
 import (
-	"expandify-api/pkg/expandify/storage/gorm"
+	"expandify-api/pkg/storage/gorm"
 	"gorm.io/driver/sqlite"
 )
 

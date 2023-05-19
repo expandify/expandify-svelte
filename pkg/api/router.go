@@ -2,10 +2,10 @@ package api
 
 import (
 	"expandify-api/pkg/api/request"
-	"expandify-api/pkg/expandify"
-	"expandify-api/pkg/expandify/authentication"
+	"expandify-api/pkg/authentication"
 	"expandify-api/pkg/expandify/spotify_user"
 	expandify_user "expandify-api/pkg/expandify/user"
+	"expandify-api/pkg/spotify_client"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -23,7 +23,7 @@ type router struct {
 	session               request.SessionController
 }
 
-func NewApi(spotifyClient expandify.SpotifyClient, userRepository expandify_user.Repository, spotifyUserRepository spotify_user.Repository, encryptionSecret *[32]byte, jwtSecret *[]byte) Router {
+func NewApi(spotifyClient spotify_client.SpotifyClient, userRepository expandify_user.Repository, spotifyUserRepository spotify_user.Repository, encryptionSecret *[32]byte, jwtSecret *[]byte) Router {
 	jwt := request.NewJwt(jwtSecret)
 	session := request.NewSessionController(jwt)
 

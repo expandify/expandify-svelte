@@ -1,9 +1,9 @@
 package internal
 
 import (
-	"expandify-api/pkg/expandify/storage/gorm"
-	"expandify-api/pkg/expandify/storage/gorm/postgres"
-	"expandify-api/pkg/expandify/storage/gorm/sqlite"
+	"expandify-api/pkg/storage/gorm"
+	"expandify-api/pkg/storage/gorm/postgres"
+	"expandify-api/pkg/storage/gorm/sqlite"
 	"strings"
 )
 

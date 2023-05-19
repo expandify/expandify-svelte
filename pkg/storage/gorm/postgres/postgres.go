@@ -1,7 +1,7 @@
 package postgres
 
 import (
-	"expandify-api/pkg/expandify/storage/gorm"
+	"expandify-api/pkg/storage/gorm"
 	"fmt"
 	"gorm.io/driver/postgres"
 )

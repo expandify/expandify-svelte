@@ -6,6 +6,7 @@ import (
 	"expandify-api/pkg/expandify"
 	"expandify-api/pkg/expandify/spotify_user"
 	"expandify-api/pkg/expandify/user"
+	"expandify-api/pkg/spotify_client"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
 )
 
@@ -15,14 +16,14 @@ type Auth interface {
 }
 
 type auth struct {
-	spotifyClient         expandify.SpotifyClient
+	spotifyClient         spotify_client.SpotifyClient
 	spotifyUserRepository spotify_user.Repository
 	userRepository        user.Repository
 	encryptionKey         *[32]byte
 }
 
 func New(
-	client expandify.SpotifyClient,
+	client spotify_client.SpotifyClient,
 	userRepository user.Repository,
 	spotifyUserRepository spotify_user.Repository,
 	encryptionKey *[32]byte) Auth {

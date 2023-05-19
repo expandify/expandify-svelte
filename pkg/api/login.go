@@ -2,7 +2,7 @@ package api
 
 import (
 	"expandify-api/pkg/api/request"
-	"expandify-api/pkg/expandify/authentication"
+	"expandify-api/pkg/authentication"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 	"net/http"

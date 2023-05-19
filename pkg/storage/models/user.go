@@ -2,7 +2,7 @@ package models
 
 import (
 	"expandify-api/pkg/expandify"
-	"expandify-api/pkg/expandify/storage/models/embeds"
+	"expandify-api/pkg/storage/models/embeds"
 	"gorm.io/datatypes"
 	"time"
 )

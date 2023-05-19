@@ -2,8 +2,8 @@ package gorm
 
 import (
 	"expandify-api/pkg/expandify/spotify_user"
-	"expandify-api/pkg/expandify/storage/models"
 	"expandify-api/pkg/expandify/user"
+	models2 "expandify-api/pkg/storage/models"
 	"gorm.io/gorm"
 	"log"
 )
@@ -25,8 +25,8 @@ func NewGormConnection(dialector gorm.Dialector) Connection {
 	}
 
 	err = db.AutoMigrate(
-		&models.SpotifyUser{},
-		&models.User{},
+		&models2.SpotifyUser{},
+		&models2.User{},
 	)
 	if err != nil {
 		log.Fatalln("Error migrating database")
