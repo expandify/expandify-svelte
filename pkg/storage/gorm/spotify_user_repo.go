@@ -2,7 +2,7 @@ package gorm
 
 import (
 	"expandify-api/pkg/expandify"
-	"expandify-api/pkg/expandify/storage/models"
+	"expandify-api/pkg/storage/models"
 	"gorm.io/gorm"
 )
 
@@ -27,10 +27,13 @@ func (p *gormSpotifyUserRepository) Save(user *expandify.SpotifyUser) {
 
 func (p *gormSpotifyUserRepository) GetSync(id string) (*expandify.Sync, error) {
 	//TODO implement me
+	id = id
 	panic("implement me")
 }
 
 func (p *gormSpotifyUserRepository) SaveSync(id string, sync *expandify.Sync) {
+	id = id
+	sync = sync
 	//TODO implement me
 	panic("implement me")
 }

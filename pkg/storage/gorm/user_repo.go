@@ -2,7 +2,7 @@ package gorm
 
 import (
 	"expandify-api/pkg/expandify"
-	"expandify-api/pkg/expandify/storage/models"
+	"expandify-api/pkg/storage/models"
 	"gorm.io/gorm"
 )
 

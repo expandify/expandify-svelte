@@ -1,4 +1,4 @@
-package request
+package session_controller
 
 import (
 	"context"
@@ -11,39 +11,22 @@ import (
 const jwtAlgorithm = "HS256"
 const claimsKey = "user_id"
 
-type Jwt interface {
-	Create(userId string) (string, error)
-	Parse(ctx context.Context) (string, error)
-	Verifier() func(http.Handler) http.Handler
-	Authenticator(next http.Handler) http.Handler
-}
-
-type jwt struct {
-	jwtAuth *jwtauth.JWTAuth
-}
-
-func NewJwt(secret *[]byte) Jwt {
-	return &jwt{
-		jwtAuth: jwtauth.New(jwtAlgorithm, *secret, nil),
-	}
-}
-
-func (j *jwt) Create(userId string) (string, error) {
-	_, jwt, err := j.jwtAuth.Encode(map[string]interface{}{claimsKey: userId})
+func (s *sessionController) createJwt(userId string) (string, error) {
+	_, jwt, err := s.jwtAuth.Encode(map[string]interface{}{claimsKey: userId})
 	if err != nil {
 		return "", err
 	}
 	return jwt, nil
 }
 
-func (j *jwt) Verifier() func(http.Handler) http.Handler {
-	return jwtauth.Verifier(j.jwtAuth)
+func (s *sessionController) jwtVerifier() func(http.Handler) http.Handler {
+	return jwtauth.Verifier(s.jwtAuth)
 }
 
-func (j *jwt) Authenticator(next http.Handler) http.Handler {
+func (s *sessionController) jwtAuthenticator(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		_, err := j.Parse(r.Context())
+		_, err := s.parseJwt(r.Context())
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
@@ -54,7 +37,7 @@ func (j *jwt) Authenticator(next http.Handler) http.Handler {
 	})
 }
 
-func (j *jwt) Parse(ctx context.Context) (string, error) {
+func (s *sessionController) parseJwt(ctx context.Context) (string, error) {
 	token, claims, err := jwtauth.FromContext(ctx)
 	if err != nil {
 		return "", err

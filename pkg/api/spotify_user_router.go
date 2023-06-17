@@ -1,26 +1,26 @@
 package api
 
 import (
-	"expandify-api/pkg/api/request"
+	"expandify-api/pkg/api/session_controller"
 	"expandify-api/pkg/expandify/spotify_user"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 	"net/http"
 )
 
-type user struct {
+type spotifyUserRouter struct {
 	spotifyUserRepository spotify_user.Repository
-	session               request.SessionController
+	session               session_controller.SessionController
 }
 
-func NewUser(spotifyUserRepository spotify_user.Repository, session request.SessionController) Router {
-	return &user{
+func NewSpotifyUserRouter(spotifyUserRepository spotify_user.Repository, session session_controller.SessionController) Router {
+	return &spotifyUserRouter{
 		spotifyUserRepository: spotifyUserRepository,
 		session:               session,
 	}
 }
 
-func (a *user) Router() chi.Router {
+func (a *spotifyUserRouter) Router() chi.Router {
 	r := chi.NewRouter()
 
 	r.Get("/", a.get)
@@ -28,7 +28,7 @@ func (a *user) Router() chi.Router {
 	return r
 }
 
-func (a *user) get(w http.ResponseWriter, r *http.Request) {
+func (a *spotifyUserRouter) get(w http.ResponseWriter, r *http.Request) {
 	user, err := a.spotifyUserRepository.Get(a.session.CurrentUser(r))
 
 	if err != nil {
