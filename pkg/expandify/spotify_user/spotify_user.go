@@ -2,6 +2,7 @@ package spotify_user
 
 import (
 	"expandify-api/pkg/expandify"
+	"expandify-api/pkg/spotify_client"
 )
 
 type SpotifyUser interface {
@@ -11,11 +12,11 @@ type SpotifyUser interface {
 }
 
 type spotifyUser struct {
-	spotifyClient expandify.SpotifyClient
+	spotifyClient spotify_client.SpotifyClient
 	repository    Repository
 }
 
-func New(client expandify.SpotifyClient, repository Repository) SpotifyUser {
+func New(client spotify_client.SpotifyClient, repository Repository) SpotifyUser {
 	return &spotifyUser{
 		spotifyClient: client,
 		repository:    repository,

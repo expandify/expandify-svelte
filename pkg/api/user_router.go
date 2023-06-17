@@ -2,8 +2,8 @@ package api
 
 import (
 	"expandify-api/pkg/api/session_controller"
-	"expandify-api/pkg/expandify"
 	"expandify-api/pkg/expandify/user"
+	"expandify-api/pkg/spotify_client"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 	"net/http"
@@ -16,7 +16,7 @@ type userRouter struct {
 }
 
 func NewUserRouter(
-	spotifyClient expandify.SpotifyClient,
+	spotifyClient spotify_client.SpotifyClient,
 	repository user.Repository,
 	encryptionSecret *[32]byte,
 	session session_controller.SessionController) Router {

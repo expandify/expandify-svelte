@@ -2,9 +2,9 @@ package api
 
 import (
 	"expandify-api/pkg/api/session_controller"
-	"expandify-api/pkg/expandify"
 	"expandify-api/pkg/expandify/spotify_user"
 	"expandify-api/pkg/expandify/user"
+	"expandify-api/pkg/spotify_client"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -20,7 +20,7 @@ type router struct {
 }
 
 func NewApiRouter(
-	spotifyClient expandify.SpotifyClient,
+	spotifyClient spotify_client.SpotifyClient,
 	userRepository user.Repository,
 	spotifyUserRepository spotify_user.Repository,
 	encryptionSecret *[32]byte,
@@ -30,7 +30,7 @@ func NewApiRouter(
 
 	return &router{
 		UserRouter:        NewUserRouter(spotifyClient, userRepository, encryptionSecret, session),
-		SpotifyUserRouter: NewSpotifyUserRouter(spotifyUserRepository, session),
+		SpotifyUserRouter: NewSpotifyUserRouter(spotifyClient, spotifyUserRepository, session),
 		session:           session,
 	}
 }

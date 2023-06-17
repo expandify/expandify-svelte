@@ -2,6 +2,7 @@ package user
 
 import (
 	"expandify-api/pkg/expandify"
+	"expandify-api/pkg/spotify_client"
 )
 
 type User interface {
@@ -10,13 +11,13 @@ type User interface {
 }
 
 type user struct {
-	spotifyClient  expandify.SpotifyClient
+	spotifyClient  spotify_client.SpotifyClient
 	userRepository Repository
 	encryptionKey  *[32]byte
 }
 
 func New(
-	client expandify.SpotifyClient,
+	client spotify_client.SpotifyClient,
 	userRepository Repository,
 	encryptionKey *[32]byte) User {
 
