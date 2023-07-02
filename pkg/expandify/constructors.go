@@ -2,6 +2,7 @@ package expandify
 
 import (
 	"github.com/zmb3/spotify/v2"
+	"golang.org/x/oauth2"
 	"time"
 )
 
@@ -178,24 +179,52 @@ func NewSpotifyUserPublic(user *spotify.User) *SpotifyUserPublic {
 }
 
 func NewTrack(track *spotify.FullTrack) *Track {
+	var artists []struct {
+		Name         string
+		SpotifyID    string
+		URI          string
+		Href         string
+		ExternalURLs map[string]string
+	}
+	for _, artist := range track.Artists {
+		artists = append(artists, struct {
+			Name         string
+			SpotifyID    string
+			URI          string
+			Href         string
+			ExternalURLs map[string]string
+		}{
+			Name:         artist.Name,
+			SpotifyID:    string(artist.ID),
+			URI:          string(artist.URI),
+			Href:         artist.Endpoint,
+			ExternalURLs: artist.ExternalURLs,
+		})
+	}
 	return &Track{
-		Album:            TrackAlbum{},
-		Artists:          nil,
-		AvailableMarkets: nil,
-		DiscNumber:       0,
-		Duration:         0,
-		Explicit:         false,
-		ExternalURLs:     nil,
-		ExternalIDs:      ExternalIDs{},
-		Href:             "",
-		SpotifyID:        "",
-		IsPlayable:       nil,
-		Name:             "",
-		Popularity:       0,
-		PreviewURL:       "",
-		TrackNumber:      0,
-		URI:              "",
-		Type:             "",
+		Album: *NewTrackAlbum(&track.Album),
+		Artists: []struct {
+			Name         string            `json:"name"`
+			SpotifyID    string            `json:"spotify_id"`
+			URI          string            `json:"uri"`
+			Href         string            `json:"href"`
+			ExternalURLs map[string]string `json:"external_urls"`
+		}(artists),
+		AvailableMarkets: track.AvailableMarkets,
+		DiscNumber:       track.DiscNumber,
+		Duration:         track.Duration,
+		Explicit:         track.Explicit,
+		ExternalURLs:     track.ExternalURLs,
+		ExternalIDs:      *NewExternalIds(&track.ExternalIDs),
+		Href:             track.Endpoint,
+		SpotifyID:        string(track.ID),
+		IsPlayable:       track.IsPlayable,
+		Name:             track.Name,
+		Popularity:       track.Popularity,
+		PreviewURL:       track.PreviewURL,
+		TrackNumber:      track.TrackNumber,
+		URI:              string(track.URI),
+		Type:             track.Type,
 	}
 }
 
@@ -236,10 +265,13 @@ func NewUser(
 	Expiry time.Time) *User {
 
 	return &User{
-		AccessToken:  AccessToken,
-		TokenType:    TokenType,
-		RefreshToken: RefreshToken,
-		Expiry:       Expiry,
+		ID: spotifyUser.SpotifyID,
+		SpotifyToken: &oauth2.Token{
+			AccessToken:  AccessToken,
+			TokenType:    TokenType,
+			RefreshToken: RefreshToken,
+			Expiry:       Expiry,
+		},
 		SpotifyUser:  spotifyUser,
 		UserSync:     NewSync("User", SyncStatusNever, 1),
 		AlbumSync:    NewSync("Albums", SyncStatusNever, 0),

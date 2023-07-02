@@ -1,41 +1,42 @@
 package api
 
 import (
+	"expandify-api/pkg/api/router"
 	"expandify-api/pkg/api/session_controller"
+	"expandify-api/pkg/expandify"
 	"expandify-api/pkg/expandify/spotify_user"
 	"expandify-api/pkg/expandify/user"
-	"expandify-api/pkg/spotify_client"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-type Router interface {
+type Api interface {
 	Router() chi.Router
 }
 
-type router struct {
-	UserRouter        Router
-	SpotifyUserRouter Router
+type api struct {
+	UserRouter        Api
+	SpotifyUserRouter Api
 	session           session_controller.SessionController
 }
 
-func NewApiRouter(
-	spotifyClient spotify_client.SpotifyClient,
+func NewApi(
+	spotifyClient expandify.SpotifyClient,
 	userRepository user.Repository,
 	spotifyUserRepository spotify_user.Repository,
 	encryptionSecret *[32]byte,
-	jwtSecret *[]byte) Router {
+	jwtSecret *[]byte) Api {
 
-	session := session_controller.New(jwtSecret)
+	session := session_controller.New(jwtSecret, userRepository)
 
-	return &router{
-		UserRouter:        NewUserRouter(spotifyClient, userRepository, encryptionSecret, session),
-		SpotifyUserRouter: NewSpotifyUserRouter(spotifyClient, spotifyUserRepository, session),
+	return &api{
+		UserRouter:        router.NewUserRouter(spotifyClient, userRepository, encryptionSecret, session),
+		SpotifyUserRouter: router.NewSpotifyUserRouter(spotifyClient, spotifyUserRepository, session),
 		session:           session,
 	}
 }
 
-func (a *router) Router() chi.Router {
+func (a *api) Router() chi.Router {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 

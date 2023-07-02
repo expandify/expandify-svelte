@@ -3,7 +3,7 @@ package main
 import (
 	"expandify-api/cmd/internal"
 	"expandify-api/pkg/api"
-	"expandify-api/pkg/spotify_client"
+	"expandify-api/pkg/expandify"
 	"log"
 	"net/http"
 )
@@ -11,12 +11,11 @@ import (
 func main() {
 	config := internal.LoadConfigs()
 	repoConnection := internal.NewRepositoryConnection(config)
-	spotifyClient := spotify_client.NewSpotifyClient(
+	spotifyClient := expandify.NewSpotifyClient(
 		config.ClientId,
 		config.ClientSecret,
-		config.RedirectUri,
-		repoConnection.NewUserRepository())
-	router := api.NewApiRouter(
+		config.RedirectUri)
+	router := api.NewApi(
 		spotifyClient,
 		repoConnection.NewUserRepository(),
 		repoConnection.NewSpotifyUserRepository(),

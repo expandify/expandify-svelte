@@ -1,6 +1,7 @@
 package expandify
 
 import (
+	"golang.org/x/oauth2"
 	"time"
 )
 
@@ -188,14 +189,12 @@ type TrackAlbum struct {
 }
 
 type User struct {
-	AccessToken  string       `json:"access_token"`
-	TokenType    string       `json:"token_type"`
-	RefreshToken string       `json:"refresh_token"`
-	Expiry       time.Time    `json:"expiry"`
-	SpotifyUser  *SpotifyUser `json:"spotify_user"`
-	UserSync     *Sync        `json:"user_sync"`
-	AlbumSync    *Sync        `json:"album_sync"`
-	ArtistSync   *Sync        `json:"artist_sync"`
-	PlaylistSync *Sync        `json:"playlist_sync"`
-	TrackSync    *Sync        `json:"track_sync"`
+	ID           string        `json:"id"`
+	SpotifyToken *oauth2.Token `json:"spotify_token"`
+	SpotifyUser  *SpotifyUser  `json:"spotify_user"`
+	UserSync     *Sync         `json:"user_sync"`
+	AlbumSync    *Sync         `json:"album_sync"`
+	ArtistSync   *Sync         `json:"artist_sync"`
+	PlaylistSync *Sync         `json:"playlist_sync"`
+	TrackSync    *Sync         `json:"track_sync"`
 }

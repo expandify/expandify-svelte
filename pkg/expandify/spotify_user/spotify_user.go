@@ -2,21 +2,20 @@ package spotify_user
 
 import (
 	"expandify-api/pkg/expandify"
-	"expandify-api/pkg/spotify_client"
 )
 
 type SpotifyUser interface {
-	Get(id string) (*expandify.SpotifyUser, error)
-	Sync(id string) (*expandify.Sync, error)
-	GetSync(id string) (*expandify.Sync, error)
+	Get(user *expandify.User) (*expandify.SpotifyUser, error)
+	Sync(user *expandify.User) (*expandify.Sync, error)
+	GetSync(user *expandify.User) (*expandify.Sync, error)
 }
 
 type spotifyUser struct {
-	spotifyClient spotify_client.SpotifyClient
+	spotifyClient expandify.SpotifyClient
 	repository    Repository
 }
 
-func New(client spotify_client.SpotifyClient, repository Repository) SpotifyUser {
+func New(client expandify.SpotifyClient, repository Repository) SpotifyUser {
 	return &spotifyUser{
 		spotifyClient: client,
 		repository:    repository,

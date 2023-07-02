@@ -1,6 +1,7 @@
 package spotify_user
 
 import (
+	"context"
 	"errors"
 	"expandify-api/pkg/expandify"
 	"time"
@@ -8,8 +9,9 @@ import (
 
 const syncType = "SpotifyUser"
 
-func (u *spotifyUser) Sync(id string) (*expandify.Sync, error) {
-	sync, err := u.repository.GetSync(id)
+func (u *spotifyUser) Sync(user *expandify.User) (*expandify.Sync, error) {
+	userId := user.SpotifyUser.SpotifyID
+	sync, err := u.repository.GetSync(userId)
 	if err != nil {
 		return nil, err
 	}
@@ -17,23 +19,17 @@ func (u *spotifyUser) Sync(id string) (*expandify.Sync, error) {
 		return nil, errors.New("sync already in process")
 	}
 
-	u.startSync(id)
-	spotifyUser, err := u.spotifyClient.GetUser(id)
+	u.startSync(userId)
+
+	privateUser, err := u.spotifyClient.Get(user).CurrentUser(context.Background())
 	if err != nil {
-		u.errorSync(id, "unable to get spotify user", sync)
+		u.errorSync(userId, "unable to get spotify user", sync)
 		return nil, err
 	}
 
+	spotifyUser := expandify.NewSpotifyUser(privateUser)
 	u.repository.Save(spotifyUser)
-	u.stopSync(id, sync)
-	return sync, nil
-}
-
-func (u *spotifyUser) GetSync(id string) (*expandify.Sync, error) {
-	sync, err := u.repository.GetSync(id)
-	if err != nil {
-		return nil, err
-	}
+	u.stopSync(userId, sync)
 	return sync, nil
 }
 

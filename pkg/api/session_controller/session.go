@@ -1,32 +1,36 @@
 package session_controller
 
 import (
+	"expandify-api/pkg/expandify"
+	"expandify-api/pkg/expandify/user"
 	"github.com/go-chi/jwtauth"
 	"net/http"
 )
 
 type SessionController interface {
-	CurrentUser(r *http.Request) string
+	CurrentUser(r *http.Request) (*expandify.User, error)
 	NewSession(w http.ResponseWriter, id string)
 	VerifyAndAuthenticate(next http.Handler) http.Handler
 }
 
 type sessionController struct {
-	jwtAuth *jwtauth.JWTAuth
+	jwtAuth        *jwtauth.JWTAuth
+	userRepository user.Repository
 }
 
-func New(jwtSecret *[]byte) SessionController {
+func New(jwtSecret *[]byte, repository user.Repository) SessionController {
 	return &sessionController{
-		jwtAuth: jwtauth.New(jwtAlgorithm, *jwtSecret, nil),
+		jwtAuth:        jwtauth.New(jwtAlgorithm, *jwtSecret, nil),
+		userRepository: repository,
 	}
 }
 
-func (s *sessionController) CurrentUser(r *http.Request) string {
-	user, err := s.parseJwt(r.Context())
+func (s *sessionController) CurrentUser(r *http.Request) (*expandify.User, error) {
+	id, err := s.parseJwt(r.Context())
 	if err != nil {
-		return ""
+		return nil, err
 	}
-	return user
+	return s.userRepository.Get(id)
 }
 
 func (s *sessionController) NewSession(w http.ResponseWriter, id string) {

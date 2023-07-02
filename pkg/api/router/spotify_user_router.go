@@ -1,9 +1,10 @@
-package api
+package router
 
 import (
+	"expandify-api/pkg/api"
 	"expandify-api/pkg/api/session_controller"
+	"expandify-api/pkg/expandify"
 	"expandify-api/pkg/expandify/spotify_user"
-	"expandify-api/pkg/spotify_client"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 	"net/http"
@@ -15,9 +16,9 @@ type spotifyUserRouter struct {
 }
 
 func NewSpotifyUserRouter(
-	spotifyClient spotify_client.SpotifyClient,
+	spotifyClient expandify.SpotifyClient,
 	repository spotify_user.Repository,
-	session session_controller.SessionController) Router {
+	session session_controller.SessionController) api.Api {
 
 	return &spotifyUserRouter{
 		spotifyUser: spotify_user.New(spotifyClient, repository),
@@ -34,8 +35,13 @@ func (a *spotifyUserRouter) Router() chi.Router {
 }
 
 func (a *spotifyUserRouter) get(w http.ResponseWriter, r *http.Request) {
-	user, err := a.spotifyUser.Get(a.session.CurrentUser(r))
+	currentUser, err := a.session.CurrentUser(r)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusForbidden), http.StatusForbidden)
+		return
+	}
 
+	user, err := a.spotifyUser.Get(currentUser)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return

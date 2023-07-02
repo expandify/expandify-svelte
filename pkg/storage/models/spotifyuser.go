@@ -2,17 +2,17 @@ package models
 
 import (
 	"expandify-api/pkg/expandify"
-	embeds2 "expandify-api/pkg/storage/models/embeds"
+	"expandify-api/pkg/storage/models/embeds"
 	"gorm.io/datatypes"
 )
 
 type SpotifyUser struct {
 	DisplayName  string
 	ExternalURLs datatypes.JSONType[map[string]string] `json:"external_urls"`
-	Followers    embeds2.Followers                     `json:"followers" gorm:"embedded;embeddedPrefix:followers_"`
+	Followers    embeds.Followers                      `json:"followers" gorm:"embedded;embeddedPrefix:followers_"`
 	Href         string                                `json:"href"`
 	ID           string                                `json:"id" gorm:"primarykey"`
-	Images       datatypes.JSONType[[]embeds2.Image]   `json:"images"`
+	Images       datatypes.JSONType[[]embeds.Image]    `json:"images"`
 	URI          string                                `json:"uri"`
 	Country      string                                `json:"country"`
 	Email        string                                `json:"email"`
@@ -21,15 +21,15 @@ type SpotifyUser struct {
 }
 
 func NewSpotifyUser(spotifyUser *expandify.SpotifyUser) *SpotifyUser {
-	var images []embeds2.Image
+	var images []embeds.Image
 	for _, image := range spotifyUser.Images {
-		images = append(images, embeds2.NewImage(&image))
+		images = append(images, embeds.NewImage(&image))
 	}
 
 	return &SpotifyUser{
 		DisplayName:  spotifyUser.DisplayName,
 		ExternalURLs: datatypes.NewJSONType(spotifyUser.ExternalURLs),
-		Followers:    embeds2.NewFollowers(&spotifyUser.Followers),
+		Followers:    embeds.NewFollowers(&spotifyUser.Followers),
 		Href:         spotifyUser.Href,
 		ID:           spotifyUser.SpotifyID,
 		Images:       datatypes.NewJSONType(images),

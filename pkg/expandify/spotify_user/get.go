@@ -6,8 +6,8 @@ import (
 	"fmt"
 )
 
-func (u *spotifyUser) Get(id string) (*expandify.SpotifyUser, error) {
-	sync, err := u.GetSync(id)
+func (u *spotifyUser) Get(user *expandify.User) (*expandify.SpotifyUser, error) {
+	sync, err := u.GetSync(user)
 	if err != nil {
 		return nil, err
 	}
@@ -20,9 +20,9 @@ func (u *spotifyUser) Get(id string) (*expandify.SpotifyUser, error) {
 		return nil, errors.New("not finished syncing yet")
 	}
 
-	user, err := u.repository.Get(id)
+	spotifyUser, err := u.repository.Get(user.ID)
 	if err != nil {
 		return nil, err
 	}
-	return user, nil
+	return spotifyUser, nil
 }

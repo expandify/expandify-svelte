@@ -3,32 +3,36 @@ package models
 import (
 	"expandify-api/pkg/expandify"
 	"expandify-api/pkg/storage/models/embeds"
+	"golang.org/x/oauth2"
 	"gorm.io/datatypes"
 	"time"
 )
 
 type User struct {
-	AccessToken   string                          `json:"access_token"`
-	TokenType     string                          `json:"token_type"`
-	RefreshToken  string                          `json:"refresh_token"`
-	Expiry        time.Time                       `json:"expiry"`
-	ID            string                          `json:"id" gorm:"primarykey"`
-	SpotifyUser   *SpotifyUser                    `json:"spotify_user"`
-	UserSync      datatypes.JSONType[embeds.Sync] `json:"user_sync" gorm:"foreignKey:UserSyncID"`
-	AlbumSync     datatypes.JSONType[embeds.Sync] `json:"album_sync"  gorm:"foreignKey:AlbumSyncID"`
-	ArtistSync    datatypes.JSONType[embeds.Sync] `json:"artist_sync"  gorm:"foreignKey:ArtistSyncID"`
-	PlaylistSync  datatypes.JSONType[embeds.Sync] `json:"playlist_sync" gorm:"foreignKey:PlaylistSyncID"`
-	TrackSync     datatypes.JSONType[embeds.Sync] `json:"track_sync"  gorm:"foreignKey:TrackSyncID"`
+	SpotifyToken  datatypes.JSONType[*oauth2.Token] `json:"spotify_token"`
+	AccessToken   string                            `json:"access_token"`
+	TokenType     string                            `json:"token_type"`
+	RefreshToken  string                            `json:"refresh_token"`
+	Expiry        time.Time                         `json:"expiry"`
+	ID            string                            `json:"id" gorm:"primarykey"`
+	SpotifyUser   *SpotifyUser                      `json:"spotify_user"`
+	UserSync      datatypes.JSONType[embeds.Sync]   `json:"user_sync" gorm:"foreignKey:UserSyncID"`
+	AlbumSync     datatypes.JSONType[embeds.Sync]   `json:"album_sync"  gorm:"foreignKey:AlbumSyncID"`
+	ArtistSync    datatypes.JSONType[embeds.Sync]   `json:"artist_sync"  gorm:"foreignKey:ArtistSyncID"`
+	PlaylistSync  datatypes.JSONType[embeds.Sync]   `json:"playlist_sync" gorm:"foreignKey:PlaylistSyncID"`
+	TrackSync     datatypes.JSONType[embeds.Sync]   `json:"track_sync"  gorm:"foreignKey:TrackSyncID"`
 	SpotifyUserID string
 }
 
 func NewUser(user *expandify.User) *User {
 	return &User{
-		AccessToken:   user.AccessToken,
-		TokenType:     user.TokenType,
-		RefreshToken:  user.RefreshToken,
-		Expiry:        user.Expiry,
-		ID:            user.SpotifyUser.SpotifyID,
+		SpotifyToken: datatypes.NewJSONType(&oauth2.Token{
+			AccessToken:  user.SpotifyToken.AccessToken,
+			TokenType:    user.SpotifyToken.TokenType,
+			RefreshToken: user.SpotifyToken.RefreshToken,
+			Expiry:       user.SpotifyToken.Expiry,
+		}),
+		ID:            user.ID,
 		SpotifyUser:   NewSpotifyUser(user.SpotifyUser),
 		UserSync:      datatypes.NewJSONType(*embeds.NewSync(user.UserSync)),
 		AlbumSync:     datatypes.NewJSONType(*embeds.NewSync(user.AlbumSync)),
@@ -41,10 +45,8 @@ func NewUser(user *expandify.User) *User {
 
 func (u User) Convert() *expandify.User {
 	return &expandify.User{
-		AccessToken:  u.AccessToken,
-		TokenType:    u.TokenType,
-		RefreshToken: u.RefreshToken,
-		Expiry:       u.Expiry,
+		ID:           u.ID,
+		SpotifyToken: u.SpotifyToken.Data(),
 		SpotifyUser:  u.SpotifyUser.Convert(),
 		UserSync:     u.UserSync.Data().Convert(),
 		AlbumSync:    u.AlbumSync.Data().Convert(),
