@@ -9,12 +9,12 @@ function createStore() {
   const { subscribe, set, update } = writable(data);
 	return {
 		subscribe,
-    addAlbums: (albums: SavedAlbum[]) => update(s => ({...s, albums: [...s.albums, ...albums]})),
-    addAlbum: (album: SavedAlbum) => update(s => ({...s, albums: [...s.albums, album]})),
-		setTotal: (total: number) => update(s => ({...s, total: total})),
+        addAlbums: (albums: SavedAlbum[]) => update(s => ({...s, albums: [...s.albums, ...albums]})),
+        addAlbum: (album: SavedAlbum) => update(s => ({...s, albums: [...s.albums, album]})),
+        setTotal: (total: number) => update(s => ({...s, total: total})),
 		startLoading: () => update(_ => ({...data, loading: true})),
-    stopLoading: () => update(s => ({...s, loading: false, updated: new Date(Date.now())})),
-    setError: (e: StoreError | null) => update(s => ({...s, error: e})),
+        stopLoading: () => update(s => ({...s, loading: false, updated: new Date(Date.now())})),
+        setError: (e: StoreError | null) => update(s => ({...s, error: e})),
 	};
 }
 

@@ -3,15 +3,15 @@
 	import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();  
 
-  export let style: 'base' | 'elevated' | 'spotify' = "base";
+  export let type: 'base' | 'elevated' | 'spotify' = "base";
   export let text: string;
 </script>
 
 <button class="button"
         on:click={() => dispatch('click')}
-        class:base={style === 'base'}
-        class:elevated={style === 'elevated'}
-        class:spotify={style === 'spotify'}>
+        class:base={type === 'base'}
+        class:elevated={type === 'elevated'}
+        class:spotify={type === 'spotify'}>
   <div class="content">
     {text}
   </div>

@@ -20,7 +20,7 @@
 <h1>Dashboard</h1>
 
 <div class="tester">
-  <Button text="Tester" style='elevated'></Button>
+  <Button text="Tester" type='elevated'></Button>
 </div>
 
 

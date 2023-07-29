@@ -8,14 +8,14 @@ const SCOPES = 'playlist-read-private playlist-read-collaborative user-library-r
 const CODE_VERIFIER_LENGTH = 50;
 const STATE_LENGTH = 50;
 const TOKEN_API_URL = 'https://accounts.spotify.com/api/token';
-const AUTHORIZE_URL = 'https://accounts.spotify.com/authorize';	
+const AUTHORIZE_URL = 'https://accounts.spotify.com/authorize';
 const CODE_VERIFIER_LOCAL_STORAGE = "code-verifier";
 const STATE_LOCAL_STORAGE = "state"
 
 
 /**
- * 
- * @returns 
+ *
+ * @returns
  */
 export async function authorizeUrl() {
   const codeVerifier = generateRandomString(CODE_VERIFIER_LENGTH);
@@ -38,63 +38,63 @@ export async function authorizeUrl() {
 }
 
 /**
- * 
- * @param code 
- * @param state 
- * @returns 
+ *
+ * @param code
+ * @param state
+ * @returns
  */
 export async function createUserSession(code: string, state: string) {
   const codeVerifier = localStorage.getItem(CODE_VERIFIER_LOCAL_STORAGE);
   const lsState = localStorage.getItem(STATE_LOCAL_STORAGE);
-  
+
 
   if (!lsState || !codeVerifier || state !== lsState) {
-    
+
     spotifySession.set(null);
     return Promise.resolve();
   }
 
-	const response = await fetch(TOKEN_API_URL, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-		body: new URLSearchParams({
-			grant_type: 'authorization_code',
-			client_id: PUBLIC_SPOTIFY_ID,
-			redirect_uri: PUBLIC_SPOTIFY_REDIRECT_URI,
-			code_verifier: codeVerifier!,
-			code: code
-		})
-	});
+  const response = await fetch(TOKEN_API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'authorization_code',
+      client_id: PUBLIC_SPOTIFY_ID,
+      redirect_uri: PUBLIC_SPOTIFY_REDIRECT_URI,
+      code_verifier: codeVerifier!,
+      code: code
+    })
+  });
 
-	if (!response.ok) {
+  if (!response.ok) {
     spotifySession.set(null);
-		return Promise.reject();
-	}
+    return Promise.reject();
+  }
 
   type TokenApiResult = { access_token: string, scope: string, expires_in: number, refresh_token: string }
-	const json: TokenApiResult = await response.json();
+  const json: TokenApiResult = await response.json();
 
   spotifySession.set({
     token: json.access_token,
-		tokenScope: json.scope,
-		refreshToken: json.refresh_token,
-		expirationDate: expiresInToDate(Number(json.expires_in))
+    tokenScope: json.scope,
+    refreshToken: json.refresh_token,
+    expirationDate: expiresInToDate(Number(json.expires_in))
   });
-  
-  return Promise.resolve()  
+
+  return Promise.resolve()
 }
 
 /**
- * 
+ *
  */
 export function logout() {
   spotifySession.set(null);
 }
 
 /**
- * 
+ *
  */
-export function startAutoRefresh() {  
+export function startAutoRefresh() {
   spotifySession.subscribe(s => {
     if(!s) { return; }
 
@@ -104,7 +104,7 @@ export function startAutoRefresh() {
     const msToExpire = new Date(s.expirationDate).getTime() - Date.now();
     const msOneMinBeforeExpire = msToExpire - fiveMinInMs;
     const msTimer = Math.max(0, msOneMinBeforeExpire);
-    
+
     setTimeout(() => refreshUserSession(), msTimer);
   });
 }
@@ -119,37 +119,37 @@ async function refreshUserSession() {
     return;
   }
 
-	const response = await fetch(TOKEN_API_URL, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-		body: new URLSearchParams({
-			grant_type: 'refresh_token',
-			client_id: PUBLIC_SPOTIFY_ID,
-			refresh_token: refreshToken
-		}).toString()
-	});
-	
-	if (!response.ok) {
+  const response = await fetch(TOKEN_API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'refresh_token',
+      client_id: PUBLIC_SPOTIFY_ID,
+      refresh_token: refreshToken
+    }).toString()
+  });
+
+  if (!response.ok) {
     spotifySession.set(null);
-		return;
-	}
+    return;
+  }
 
   type TokenApiResult = { access_token: string, scope: string, expires_in: number, refresh_token: string }
-	const json: TokenApiResult = await response.json();
-	
-  
-	spotifySession.set({
+  const json: TokenApiResult = await response.json();
+
+
+  spotifySession.set({
     token: json.access_token,
-		tokenScope: json.scope,
-		refreshToken: json.refresh_token,
-		expirationDate: expiresInToDate(Number(json.expires_in))
-  });  
-	
-	return Promise.resolve();
+    tokenScope: json.scope,
+    refreshToken: json.refresh_token,
+    expirationDate: expiresInToDate(Number(json.expires_in))
+  });
+
+  return Promise.resolve();
 }
 
 
 function expiresInToDate(expiresInSec: number) {
-  
+
   return new Date(Date.now() + (expiresInSec * 1000));
 }

@@ -1,12 +1,12 @@
 @import "normalize.css/normalize.css";
 
-:root {  
+:root {
   --background-base: #121212;
   --background-highlight: #1a1a1a;
   --background-press: #000000;
 
-  --background-elevated-base: #181818; // Alternative: #242424;
-  --background-elevated-highlight: #282828; // Alternative: #2a2a2a;
+  --background-elevated-base: #181818; /* Alternative: #242424; */
+  --background-elevated-highlight: #282828; /* Alternative: #2a2a2a; */
 
   --text-base: #fff;
   --text-subdued: #a7a7a7;
@@ -24,7 +24,6 @@
   --spotify-green: #1cb954;
   --spotify-green-hover: #16c453;
 
-  // Typography
   --font-family: system-ui, -apple-system, sans-serif;
   --line-height: 1.5;
   --font-weight: 400;
@@ -37,7 +36,7 @@
   --font-size-h5: 0.83rem;
   --font-size-h6: 0.67rem;
 
-  color: var(--text-base);  
+  color: var(--text-base);
   line-height: var(--line-height);
   font-size: var(--font-size-text);
   font-weight: var(--font-weight);

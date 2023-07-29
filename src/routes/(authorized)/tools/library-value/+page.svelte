@@ -40,7 +40,7 @@
 </div>
 
 {#if savedAlbums || ownPlaylists || followedPlaylists || savedTracks}
-	<Button on:click={calcLibrary} text="Calculate Library Value" style="elevated" />
+	<Button on:click={calcLibrary} text="Calculate Library Value" type="elevated" />
 {/if}
 
 
