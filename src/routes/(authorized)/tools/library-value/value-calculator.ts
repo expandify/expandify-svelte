@@ -1,10 +1,10 @@
-import { makeRequest } from "$lib/services/spotify/request";
 import { albums } from "$lib/stores/library/albums"
 import { playlists } from "$lib/stores/library/playlists";
 import { tracks } from "$lib/stores/library/tracks";
 import { user } from "$lib/stores/library/user";
 import type { PlaylistTrack, SavedTrack, Track } from "$lib/types/spotify";
 import { get } from "svelte/store"
+import { spotifyApi } from "$lib/services/spotify/spotify-api";
 
 const ESTIMATED_ALBUM_COST = 12.99
 const ESTIMATED_SONG_COST = (0.99 + 1.29) / 2;
@@ -20,7 +20,7 @@ export async function calculateLibraryValue(
   
     
   
-  let userId = get(user).user?.id;
+  const userId = get(user).user?.id;
   
   
   
@@ -34,7 +34,7 @@ export async function calculateLibraryValue(
     ownPlaylistTracks = get(playlists).playlists.filter(p => p.owner.id === userId).flatMap(p => p.tracks);
   }
 
-  let followedPlaylistTracks: PlaylistTrack[] = [];
+  const followedPlaylistTracks: PlaylistTrack[] = [];
   if (followedPlaylists) {
     ownPlaylistTracks = get(playlists).playlists.filter(p => p.owner.id !== userId).flatMap(p => p.tracks);
   }
@@ -45,7 +45,7 @@ export async function calculateLibraryValue(
   }
 
 
-  let tracksToCalculate = [
+  const tracksToCalculate = [
     ...savedAlbumTracks,
     ...ownPlaylistTracks,
     ...followedPlaylistTracks,
@@ -92,8 +92,8 @@ async function calculatePrice(groups: GroupedTracks) {
     console.log("Calculating price for album: ", tracks.at(0)?.album.name);    
   
     try {
-      let albumUpc = await getAlbumUpc(albumId);
-      let itunesAlbum = await getItunesAlbum(albumUpc);
+      const albumUpc = await getAlbumUpc(albumId);
+      const itunesAlbum = await getItunesAlbum(albumUpc);
       const tracksPrice = await getItunesTrackPrices(itunesAlbum, tracks);
       calculatedPrice += Math.min(tracksPrice, itunesAlbum.price);
     } catch (err) {
@@ -108,7 +108,7 @@ async function calculatePrice(groups: GroupedTracks) {
 
 function estimatePrice(groups: GroupedTracks) {
   let estimatedPrice = 0;
-  for (const [_, tracks] of Object.entries(groups)) { 
+  for (const [, tracks] of Object.entries(groups)) { 
     const tracksCost = ESTIMATED_SONG_COST * tracks.length;
     estimatedPrice += Math.min(ESTIMATED_ALBUM_COST, tracksCost);
   }
@@ -145,7 +145,7 @@ async function getItunesTrackPrices(album: ITunesAlbum, tracks: Track[]) {
 async function getAlbumUpc(albumId: string) {
   let upc: string | null = null;
   try {
-    upc = (await makeRequest((api) => api.getAlbum(albumId))).external_ids.upc || null;     
+    upc = (await spotifyApi.makeRequest((api) => api.getAlbum(albumId))).external_ids.upc || null;
   } catch (err) {    
     console.error("Error getting album from Spotify");    
     return Promise.reject();

@@ -14,7 +14,6 @@
   //dependencies.noNeeds();
   dependencies.userNeeded();
 
-  console.log($user.user);
 </script>
 
 <h1>Dashboard</h1>

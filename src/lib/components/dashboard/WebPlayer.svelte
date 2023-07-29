@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Spotify } from "$lib/data/spotify";
-  import { nextPlayback, pausePlayback, previousPlayback, startPlayback } from "$lib/services/spotify/api/player";
   import type { PlaybackState } from "$lib/types/spotify";
   import { msToTime } from "$lib/utils/converter/date-time";
   import { onDestroy } from "svelte";
   import ImageWithFallback from "../common/ImageWithFallback.svelte";
   import Svg from "../common/Svg.svelte";
   import ProgressBar from "../common/ProgressBar.svelte";
+  import { toPlaybackState } from "$lib/utils/converter/spotify";
+  import { spotifyApi } from "$lib/services/spotify/spotify-api";
   
   const svgSize = "3.5rem";
 
@@ -17,12 +17,18 @@
   $: remainingMs = lengthMs - timeMs;
   $: percent = ((timeMs / lengthMs) * 100).toFixed(1);
 
+  async function getPlayback() {
+    const playbackState = await spotifyApi.getPlaybackState();
+    if (!playbackState) { return null; }
+    return toPlaybackState(playbackState);
+  }
+
   (async () => {
-    playbackState = await Spotify.Player.getPlayback();
+    playbackState = await getPlayback();
   })();
 
   const playbackInterval = setInterval(async () => {
-    playbackState = await Spotify.Player.getPlayback();    
+    playbackState = await getPlayback();
   }, 1000);
 
   onDestroy(() => {
@@ -52,19 +58,19 @@
       </div>
 
       <div class="media-control">
-        <button class="media-control-button" on:click={() => previousPlayback()}>
+        <button class="media-control-button" on:click={() => spotifyApi.previousPlayback()}>
           <Svg name=previous class="svg" width={svgSize} height={svgSize}></Svg>
         </button>            
         {#if playbackState.is_playing}
-          <button class="media-control-button" on:click={() => pausePlayback()}>
+          <button class="media-control-button" on:click={() => spotifyApi.pausePlayback()}>
             <Svg name=pause class="svg" width={svgSize} height={svgSize}></Svg>
           </button>
         {:else}
-          <button class="media-control-button" on:click={() => startPlayback()}>
+          <button class="media-control-button" on:click={() => spotifyApi.startPlayback()}>
             <Svg name=play class="svg" width={svgSize} height={svgSize}></Svg>
           </button>          
         {/if} 
-        <button class="media-control-button" on:click={() => nextPlayback()}>
+        <button class="media-control-button" on:click={() => spotifyApi.nextPlayback()}>
           <Svg name=next class="svg" width={svgSize} height={svgSize}></Svg>  
         </button>
       </div>
@@ -155,9 +161,11 @@
         fill: var(--text-base);      
       }
 
+      /*
       :global(.svg) {
         fill: inherit;
       }
+      */
       
     }
   }

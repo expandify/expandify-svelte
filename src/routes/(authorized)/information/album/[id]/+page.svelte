@@ -2,14 +2,20 @@
 	import { page } from "$app/stores";
 	import Loading from "$lib/components/common/Loading.svelte";
 	import { formateDate, msToTime } from "$lib/utils/converter/date-time";
-	import { Spotify } from "$lib/data/spotify";
   import ImageWithFallback from "$lib/components/common/ImageWithFallback.svelte";
   import TrackTable from "$lib/components/layout/TrackTable.svelte";
+  import { toAlbum } from "$lib/utils/converter/spotify";
+  import { spotifyApi } from "$lib/services/spotify/spotify-api";
+
+  async function loadAndGet(id: string) {
+    const { album, tracks } =  await spotifyApi.loadAlbumWithTracks(id);
+    return toAlbum(album, tracks)
+  }
 
 
 </script>
 
-{#await  Spotify.Album.loadAndGet($page.params.id)}
+{#await loadAndGet($page.params.id)}
   <Loading title={"Album"} />
 {:then album} 
 <div class="header">

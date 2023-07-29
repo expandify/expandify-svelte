@@ -3,39 +3,38 @@
 	import { goto } from '$app/navigation';
 	import DependencyModal from '$lib/components/layout/DependencyModal.svelte';
 	import NavBar from '$lib/components/layout/navbar/NavBar.svelte';
-	import { Spotify } from '$lib/data/spotify';
 	import { albums } from '$lib/stores/library/albums';
 	import { artists } from '$lib/stores/library/artists';
 	import { playlists } from '$lib/stores/library/playlists';
 	import { tracks } from '$lib/stores/library/tracks';
 	import { user } from '$lib/stores/library/user';
 	import { spotifySession } from '$lib/stores/spotifySession';
+	import { spotifyPersistence } from "$lib/services/spotify/spotify-persistance";
 	
 	
 	$: if (!($spotifySession) && browser) goto("/");
-/*
 	
 	if (!$albums.updated && browser) {
-		Spotify.Album.loadSavedToStore();
+		spotifyPersistence.loadSavedAlbums();
 	}
 
 
 	if (!$artists.updated && browser) {
-		Spotify.Artist.loadFollowedToStore();
+		spotifyPersistence.loadFollowedArtists();
 	}
 
 	if (!$playlists.updated && browser) {
-		Spotify.Playlist.loadAllToStore();
+		spotifyPersistence.loadPlaylists();
 	}
 
 	if (!$tracks.updated && browser) {
-		Spotify.Track.loadSavedToStore();
+		spotifyPersistence.loadSavedTracks();
 	}
 
 	if (!$user.updated && browser) {
-		Spotify.User.loadToStore();
+		spotifyPersistence.loadUser();
 	}
-*/
+
 </script>
 
 

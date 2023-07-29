@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Spotify } from "$lib/data/spotify";
   import { dependencies } from "$lib/stores/dependencies";
 	import { albums } from "$lib/stores/library/albums";
 	import { artists } from "$lib/stores/library/artists";
@@ -8,6 +7,7 @@
 	import { user } from "$lib/stores/library/user";
 	import { fade } from "svelte/transition";
 	import Loading from "../common/Loading.svelte";
+  import { spotifyPersistence } from "$lib/services/spotify/spotify-persistance";
 
   $: anyNeeded = 
         ($dependencies.albums && ($albums.loading || $albums.error)) || 
@@ -27,7 +27,7 @@
     total={$albums.total} 
     loading={$albums.loading} 
     error={$albums.error !== null}
-    on:retry={Spotify.Album.loadSavedToStore} />
+    on:retry={() => spotifyPersistence.reloadSavedAlbums()} />
   {/if}
 
   {#if $dependencies.artists}
@@ -37,7 +37,7 @@
     total={$artists.total} 
     loading={$artists.loading} 
     error={$artists.error !== null} 
-    on:retry={Spotify.Artist.loadFollowedToStore}
+    on:retry={() => spotifyPersistence.reloadFollowedArtists()}
     />
   {/if}
 
@@ -48,7 +48,7 @@
     total={$playlists.total} 
     loading={$playlists.loading} 
     error={$playlists.error !== null} 
-    on:retry={Spotify.Playlist.loadAllToStore} />
+    on:retry={() => spotifyPersistence.reloadPlaylists()} />
   {/if}
 
   {#if $dependencies.tracks}
@@ -58,7 +58,7 @@
     total={$tracks.total} 
     loading={$tracks.loading} 
     error={$tracks.error !== null} 
-    on:retry={Spotify.Track.loadSavedToStore} />    
+    on:retry={() => spotifyPersistence.reloadSavedTracks()} />
   {/if}
 
   {#if $dependencies.user}
@@ -66,7 +66,7 @@
     title={"User"} 
     loading={$user.loading} 
     error={$user.error !== null} 
-    on:retry={Spotify.User.loadToStore} />
+    on:retry={() => spotifyPersistence.reloadUser()} />
   {/if}
 </div>
 {/if}
