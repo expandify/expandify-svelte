@@ -2,11 +2,14 @@
     import ImageWithFallback from "$lib/components/common/ImageWithFallback.svelte";
     import type { Track } from "$lib/types/spotify";
     import { formateDate, msToTime } from "$lib/utils/converter/date-time";
+    import { viewport } from "$lib/actions/useViewportAction";
+    import SkeletonText from "$lib/components/common/SkeletonText.svelte";
 
     export let tracks: (Track & {added_at?: string})[];
-    export let showImage: boolean = true;
-    export let showAddedAt: boolean = false;
+    export let showImage = true;
+    export let showAddedAt = false;
 
+    let visible: Array<boolean> = Array(tracks.length).fill(true)
 
 </script>
 
@@ -27,23 +30,27 @@
   </div>
 
   {#each tracks as track, i}
-    <div class="row">
-      <span class="position">{i + 1}</span>  
+    <div class="row"
+         use:viewport
+         on:enterViewport={() => visible[i] = true}
+         on:exitViewport={() => visible[i] = false}>
+
+      <span class="position">{i + 1}</span>
       {#if showImage}
         <div class="image-box">
-          <ImageWithFallback type={track.album} borderRadius="0"/>  
+          <ImageWithFallback type={track.album} fallbackSvg="album" showFallback={!visible[i]} borderRadius="0" />
         </div>
-      {/if}    
-      <div class="title-box overflow">      
-        <span class="title overflow">{track.name}</span> 
-        <span class="artists overflow">{track.artists.map(a => a.name).join(", ")}</span> 
-      </div>        
-      <span class="album overflow">{track.album?.name}</span>
+      {/if}
+      <div class="title-box overflow">
+        <SkeletonText class="title overflow" length="5rem" skeleton={!visible[i]}>{track.name}</SkeletonText>
+        <SkeletonText class="artists overflow" length="20rem" skeleton={!visible[i]}>{track.artists.map(a => a.name).join(", ")}</SkeletonText>
+      </div>
+      <SkeletonText class="album overflow" skeleton={!visible[i]}>{track.album?.name}</SkeletonText>
       {#if showAddedAt}
-        <span class="date">{formateDate(track.added_at)}</span>
-      {/if}  
-      <span class="time overflow">{msToTime(track.duration_ms)}</span>
-    </div>  
+        <SkeletonText class="date overflow" skeleton={!visible[i]}>{formateDate(track.added_at)}</SkeletonText>
+      {/if}
+      <SkeletonText class="time overflow" skeleton={!visible[i]}>{msToTime(track.duration_ms)}</SkeletonText>
+    </div>
   {/each} 
 </div>
 
@@ -81,29 +88,35 @@
         flex-direction: column;
         margin-right: auto;
         min-width: 10rem;
-        .title {
+
+        // :global is needed since the class is passed to a component
+        :global(.title) {
           font-weight: 500;
           color: var(--text-base);
         }
       }
 
-      .album {      
+      // :global is needed since the class is passed to a component
+      :global(.album) {
         margin-right: 15%;      
         min-width: 15%;
         max-width: 15%;
       }
 
-      .date {
+      // :global is needed since the class is passed to a component
+      :global(.date) {
         min-width: 7rem;
         max-width: 7rem;
       }
 
-      .time {
+      // :global is needed since the class is passed to a component
+      :global(.time) {
         min-width: max(5rem, 4%);
         max-width: max(5rem, 4%); 
       }
-      
-      .overflow {
+
+      // :global is needed since the class is passed to a component
+      :global(.overflow) {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
