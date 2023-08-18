@@ -1,19 +1,19 @@
 <script lang="ts">
-	export let title: string;
+    export let title: string;
 </script>
 
-  <section id=section>
-      <h5 id=title>{title}</h5>
-      <hr id=divider />
-      <div id=slot>
+<section id=section>
+    <h5 id=title>{title}</h5>
+    <hr id=divider/>
+    <div id=slot>
         <slot></slot>
-      </div>      
-  </section>
+    </div>
+</section>
 
 
 <style lang="scss">
-	
-	#section {
+
+  #section {
     display: flex;
     flex-direction: column;
 
@@ -24,8 +24,8 @@
     }
 
     #divider {
-			border: none;
-			border-top: 0.2rem solid var(--background-highlight);
+      border: none;
+      border-top: 0.2rem solid var(--background-highlight);
       width: 100%;
     }
 

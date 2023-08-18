@@ -1,44 +1,44 @@
 <script lang="ts">
-  import NavBarSection from "./NavBarSection.svelte";
-  import { logout } from "$lib/auth/auth";
-  import { goto } from "$app/navigation";
-  import Svg from "$lib/components/common/Svg.svelte";
-  import { spotifyPersistence } from "$lib/services/spotify/spotify-persistance";
+    import NavBarSection from "./NavBarSection.svelte";
+    import {logout} from "$lib/auth/auth";
+    import {goto} from "$app/navigation";
+    import Svg from "$lib/components/common/Svg.svelte";
+    import {spotifyPersistence} from "$lib/services/spotify/spotify-persistance";
 
-  function logouts() {
-    logout();
-    goto("/");
-  }
+    function logouts() {
+        logout();
+        goto("/");
+    }
 
 </script>
 
 <aside class="sidebar">
-  <div class="nav">
-    <nav>
-      <h2><a class="title" href="/dashboard">Expandify</a></h2>
-      <NavBarSection title="Library">
-        <a href="/library/album">Albums</a>
-        <a href="/library/artist">Artists</a>
-        <a href="/library/playlist">Playlists</a>
-        <a href="/library/track">Tracks</a>
-      </NavBarSection>
-      <NavBarSection title="Tools">
-        <a href="/tools/release-tracker">Release Tracker</a>
-        <a href="/tools/song-finder">Song Finder</a>
-        <a href="/tools/library-value">Library Value</a>
-        <a href="/tools/backup">Backup</a>
-      </NavBarSection>
-    </nav>
-  </div>
-  <div class="buttons">
-    <button class="button" on:click={logouts} title="Logout">
-      <Svg name={"logout"} />
-    </button>
-    <button class="button" on:click={() => spotifyPersistence.reloadLibrary()} title="Reload Library">
-      <Svg name={"reload"} />
-    </button>
+    <div class="nav">
+        <nav>
+            <h2><a class="title" href="/dashboard">Expandify</a></h2>
+            <NavBarSection title="Library">
+                <a href="/library/album">Albums</a>
+                <a href="/library/artist">Artists</a>
+                <a href="/library/playlist">Playlists</a>
+                <a href="/library/track">Tracks</a>
+            </NavBarSection>
+            <NavBarSection title="Tools">
+                <a href="/tools/release-tracker">Release Tracker</a>
+                <a href="/tools/song-finder">Song Finder</a>
+                <a href="/tools/library-value">Library Value</a>
+                <a href="/tools/backup">Backup</a>
+            </NavBarSection>
+        </nav>
+    </div>
+    <div class="buttons">
+        <button class="button" on:click={logouts} title="Logout">
+            <Svg name={"logout"}/>
+        </button>
+        <button class="button" on:click={() => spotifyPersistence.reloadLibrary()} title="Reload Library">
+            <Svg name={"reload"}/>
+        </button>
 
-  </div>
+    </div>
 </aside>
 
 <style lang="scss">

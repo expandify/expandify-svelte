@@ -10,11 +10,11 @@ const CODE_CHARSET = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
  * @returns {string}
  */
 export function generateRandomString(length = 50): string {
-	const randomValues = window.crypto.getRandomValues(new Uint32Array(length));
-	return Array.from(randomValues)
-		.map((value) => value / 0x100000000) // Scale all values to [0, 1)
-		.map((value) => CODE_CHARSET[Math.floor(value * CODE_CHARSET.length)])
-		.join('');
+    const randomValues = window.crypto.getRandomValues(new Uint32Array(length));
+    return Array.from(randomValues)
+        .map((value) => value / 0x100000000) // Scale all values to [0, 1)
+        .map((value) => CODE_CHARSET[Math.floor(value * CODE_CHARSET.length)])
+        .join('');
 }
 
 /**
@@ -24,7 +24,7 @@ export function generateRandomString(length = 50): string {
  * @returns {Promise<string>}
  */
 export async function createCodeChallenge(codeVerifier: string): Promise<string> {
-  const codeBuffer = new TextEncoder().encode(codeVerifier);
-  const hashBuffer = await window.crypto.subtle.digest('SHA-256', codeBuffer);
-  return Base64.fromUint8Array(new Uint8Array(hashBuffer), true);
+    const codeBuffer = new TextEncoder().encode(codeVerifier);
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', codeBuffer);
+    return Base64.fromUint8Array(new Uint8Array(hashBuffer), true);
 }

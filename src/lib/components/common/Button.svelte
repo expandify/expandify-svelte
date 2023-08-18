@@ -1,10 +1,10 @@
-
 <script lang="ts">
-	import { createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();  
+    import {createEventDispatcher} from "svelte";
 
-  export let type: 'base' | 'elevated' | 'spotify' = "base";
-  export let text: string;
+    const dispatch = createEventDispatcher();
+
+    export let type: 'base' | 'elevated' | 'spotify' = "base";
+    export let text: string;
 </script>
 
 <button class="button"
@@ -12,22 +12,22 @@
         class:base={type === 'base'}
         class:elevated={type === 'elevated'}
         class:spotify={type === 'spotify'}>
-  <div class="content">
-    {text}
-  </div>
+    <div class="content">
+        {text}
+    </div>
 </button>
 
 <style lang="scss">
-  .button {    
-    cursor: pointer;    
+  .button {
+    cursor: pointer;
     border-radius: 100rem;
     outline: none;
     border: none;
-    padding: 1rem 2.5rem ;
-    width: 100%;    
+    padding: 1rem 2.5rem;
+    width: 100%;
 
     .content {
-      font-weight: 600;      
+      font-weight: 600;
     }
   }
 
@@ -57,6 +57,6 @@
 
   .spotify:hover {
     background-color: var(--spotify-green-hover);
-  } 
+  }
 
 </style>

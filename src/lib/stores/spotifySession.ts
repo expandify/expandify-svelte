@@ -1,11 +1,11 @@
-import { writable, type Writable } from 'svelte/store';
+import {writable, type Writable} from 'svelte/store';
 
 
 export type SpotifySession = {
-	token: string,
-	refreshToken: string,
-	expirationDate: Date,
-	tokenScope: string,
+    token: string,
+    refreshToken: string,
+    expirationDate: Date,
+    tokenScope: string,
 }
 
 /**

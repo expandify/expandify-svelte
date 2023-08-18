@@ -1,18 +1,18 @@
 <script lang="ts">
 
 
-  let className = "";
-  export { className as class };
-  export let skeleton = false;
+    let className = "";
+    export {className as class};
+    export let skeleton = false;
 
-  export let length = "5rem"
+    export let length = "5rem"
 
 </script>
 
 {#if !skeleton}
-  <span class={className}><slot /></span>
+    <span class={className}><slot/></span>
 {:else }
-  <div class="{className} skeleton" style="width: {length}"></div>
+    <div class="{className} skeleton" style="width: {length}"></div>
 {/if}
 
 

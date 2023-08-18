@@ -1,33 +1,33 @@
 <script lang="ts">
-	import { notifications } from '$lib/stores/notifications';
-  import { NotificationType } from '$lib/types/notification';
-  import { fade } from 'svelte/transition';
+    import {notifications} from '$lib/stores/notifications';
+    import {NotificationType} from '$lib/types/notification';
+    import {fade} from 'svelte/transition';
 
-  $: iterator = Array.from($notifications);
+    $: iterator = Array.from($notifications);
 </script>
 
 <div class="banners">
 
-  {#each iterator as notification (notification.time)}
-    <div class="banner" 
-     transition:fade
-      class:announcement={notification.type === NotificationType.ANNOUNCEMENT}
-      class:error={notification.type === NotificationType.ERROR}
-      class:success={notification.type === NotificationType.SUCCESS}
-      class:warning={notification.type === NotificationType.WARNING}>
-      { notification.message }
-    </div>
-  {/each}
+    {#each iterator as notification (notification.time)}
+        <div class="banner"
+             transition:fade
+             class:announcement={notification.type === NotificationType.ANNOUNCEMENT}
+             class:error={notification.type === NotificationType.ERROR}
+             class:success={notification.type === NotificationType.SUCCESS}
+             class:warning={notification.type === NotificationType.WARNING}>
+            { notification.message }
+        </div>
+    {/each}
 
 </div>
 
 
 <style lang="scss">
-	.banners {
+  .banners {
     position: fixed;
     top: 2rem;
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-width: 100%;
@@ -37,7 +37,7 @@
 
     .banner {
       font-size: var(--font-size-h3);
-      padding: 0.5rem 1rem ;
+      padding: 0.5rem 1rem;
       width: 60%;
       min-width: 10rem;
       overflow: hidden;

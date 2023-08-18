@@ -1,84 +1,85 @@
 <script lang="ts">
-  import type { PlaybackState } from "$lib/types/spotify";
-  import { msToTime } from "$lib/utils/converter/date-time";
-  import { onDestroy } from "svelte";
-  import ImageWithFallback from "../common/ImageWithFallback.svelte";
-  import Svg from "../common/Svg.svelte";
-  import ProgressBar from "../common/ProgressBar.svelte";
-  import { toPlaybackState } from "$lib/utils/converter/spotify";
-  import { spotifyApi } from "$lib/services/spotify/spotify-api";
-  
-  const svgSize = "3.5rem";
+    import type {PlaybackState} from "$lib/types/spotify";
+    import {msToTime} from "$lib/utils/converter/date-time";
+    import {onDestroy} from "svelte";
+    import ImageWithFallback from "../common/ImageWithFallback.svelte";
+    import Svg from "../common/Svg.svelte";
+    import ProgressBar from "../common/ProgressBar.svelte";
+    import {toPlaybackState} from "$lib/utils/converter/spotify";
+    import {spotifyApi} from "$lib/services/spotify/spotify-api";
 
-  let playbackState: PlaybackState | null;
+    const svgSize = "3.5rem";
 
-  $: timeMs = playbackState?.progress_ms || 0;
-  $: lengthMs = playbackState?.item?.duration_ms || 1;
-  $: remainingMs = lengthMs - timeMs;
-  $: percent = ((timeMs / lengthMs) * 100).toFixed(1);
+    let playbackState: PlaybackState | null;
 
-  async function getPlayback() {
-    const playbackState = await spotifyApi.getPlaybackState();
-    if (!playbackState) { return null; }
-    return toPlaybackState(playbackState);
-  }
+    $: timeMs = playbackState?.progress_ms || 0;
+    $: lengthMs = playbackState?.item?.duration_ms || 1;
+    $: remainingMs = lengthMs - timeMs;
+    $: percent = ((timeMs / lengthMs) * 100).toFixed(1);
 
-  (async () => {
-    playbackState = await getPlayback();
-  })();
+    async function getPlayback() {
+        const playbackState = await spotifyApi.getPlaybackState();
+        if (!playbackState) {
+            return null;
+        }
+        return toPlaybackState(playbackState);
+    }
 
-  const playbackInterval = setInterval(async () => {
-    playbackState = await getPlayback();
-  }, 1000);
+    (async () => {
+        playbackState = await getPlayback();
+    })();
 
-  onDestroy(() => {
-    clearInterval(playbackInterval);
-  })
+    const playbackInterval = setInterval(async () => {
+        playbackState = await getPlayback();
+    }, 1000);
+
+    onDestroy(() => {
+        clearInterval(playbackInterval);
+    })
 </script>
 
 {#key playbackState}
-  {#if playbackState}   
-    <div class="player">
+    {#if playbackState}
+        <div class="player">
 
-      <div class="header">
-        <ImageWithFallback type={playbackState.item?.album} fallbackSvg="album"/>
-        <div class="infos">
-          <h2 class="title">{playbackState.item?.name}</h2>
-          <h5  class="artists">{playbackState.item?.artists.map((a) => a.name).join(', ')}</h5>
-          <small class="device">{playbackState.device.name}</small>          
-        </div>      
-      </div>
+            <div class="header">
+                <ImageWithFallback type={playbackState.item?.album} fallbackSvg="album"/>
+                <div class="infos">
+                    <h2 class="title">{playbackState.item?.name}</h2>
+                    <h5 class="artists">{playbackState.item?.artists.map((a) => a.name).join(', ')}</h5>
+                    <small class="device">{playbackState.device.name}</small>
+                </div>
+            </div>
 
-      <div class="progress">        
-        <small class="time">{msToTime(timeMs)}</small>
-        <small class="remaining-time">{msToTime(remainingMs)}</small>
-        <ProgressBar max={lengthMs} value={timeMs}></ProgressBar>
-        <small class="length">{msToTime(lengthMs)}</small>
-        <small class="percent">{percent}%</small>
-      </div>
+            <div class="progress">
+                <small class="time">{msToTime(timeMs)}</small>
+                <small class="remaining-time">{msToTime(remainingMs)}</small>
+                <ProgressBar max={lengthMs} value={timeMs}></ProgressBar>
+                <small class="length">{msToTime(lengthMs)}</small>
+                <small class="percent">{percent}%</small>
+            </div>
 
-      <div class="media-control">
-        <button class="media-control-button" on:click={() => spotifyApi.previousPlayback()}>
-          <Svg name=previous class="svg" width={svgSize} height={svgSize}></Svg>
-        </button>            
-        {#if playbackState.is_playing}
-          <button class="media-control-button" on:click={() => spotifyApi.pausePlayback()}>
-            <Svg name=pause class="svg" width={svgSize} height={svgSize}></Svg>
-          </button>
-        {:else}
-          <button class="media-control-button" on:click={() => spotifyApi.startPlayback()}>
-            <Svg name=play class="svg" width={svgSize} height={svgSize}></Svg>
-          </button>          
-        {/if} 
-        <button class="media-control-button" on:click={() => spotifyApi.nextPlayback()}>
-          <Svg name=next class="svg" width={svgSize} height={svgSize}></Svg>  
-        </button>
-      </div>
-      
-    </div>      
-  {/if}
-{/key}  
+            <div class="media-control">
+                <button class="media-control-button" on:click={() => spotifyApi.previousPlayback()}>
+                    <Svg name=previous class="svg" width={svgSize} height={svgSize}></Svg>
+                </button>
+                {#if playbackState.is_playing}
+                    <button class="media-control-button" on:click={() => spotifyApi.pausePlayback()}>
+                        <Svg name=pause class="svg" width={svgSize} height={svgSize}></Svg>
+                    </button>
+                {:else}
+                    <button class="media-control-button" on:click={() => spotifyApi.startPlayback()}>
+                        <Svg name=play class="svg" width={svgSize} height={svgSize}></Svg>
+                    </button>
+                {/if}
+                <button class="media-control-button" on:click={() => spotifyApi.nextPlayback()}>
+                    <Svg name=next class="svg" width={svgSize} height={svgSize}></Svg>
+                </button>
+            </div>
 
+        </div>
+    {/if}
+{/key}
 
 
 <style lang="scss">
@@ -101,7 +102,7 @@
 
       .infos {
         display: flex;
-        flex-direction: column; 
+        flex-direction: column;
 
         .title {
           margin-top: 0;
@@ -128,6 +129,7 @@
       .remaining-time, .percent, .time, .length {
         width: 10%;
       }
+
       .remaining-time, .percent {
         display: none;
       }
@@ -145,8 +147,8 @@
 
     .media-control {
       display: flex;
-      flex-direction: row; 
-      justify-content: space-between;      
+      flex-direction: row;
+      justify-content: space-between;
 
       .media-control-button {
         background-color: inherit;
@@ -157,8 +159,8 @@
 
       .media-control-button:hover {
         background-color: var(--background-elevated-highlight);
-        cursor: pointer;        
-        fill: var(--text-base);      
+        cursor: pointer;
+        fill: var(--text-base);
       }
 
       /*
@@ -166,7 +168,7 @@
         fill: inherit;
       }
       */
-      
+
     }
   }
 </style>
