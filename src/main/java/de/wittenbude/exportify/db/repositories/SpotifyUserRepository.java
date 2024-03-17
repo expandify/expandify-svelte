@@ -1,27 +1,11 @@
 package de.wittenbude.exportify.db.repositories;
 
 import de.wittenbude.exportify.db.entity.SpotifyUser;
-import org.springframework.stereotype.Component;
+import org.springframework.data.repository.CrudRepository;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.UUID;
 
-@Component
-public class SpotifyUserRepository {
 
-    private final Map<String, SpotifyUser> repository;
-
-    public SpotifyUserRepository() {
-        this.repository = new ConcurrentHashMap<>();
-    }
-
-    public Optional<SpotifyUser> getByID(String id) {
-        return Optional.ofNullable(repository.get(id));
-    }
-
-    public void upsert(SpotifyUser spotifyUser) {
-        repository.put(spotifyUser.getId(), spotifyUser);
-    }
+public interface SpotifyUserRepository extends CrudRepository<SpotifyUser, UUID> {
 
 }

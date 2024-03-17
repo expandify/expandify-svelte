@@ -21,26 +21,31 @@ public class SpotifyUserService {
         this.spotifyUserRepository = spotifyUserRepository;
     }
 
-    public PrivateUser getCurrentUser(String accessToken) {
-        PrivateUser privateUser = spotifyUserClient.getCurrentUser("Bearer " + accessToken);
+    public SpotifyUser getCurrentUser() {
+        return save(spotifyUserClient.getCurrentUser());
+    }
 
-        spotifyUserRepository.upsert(
-                SpotifyUser
-                        .builder()
-                        .id(privateUser.getId())
-                        .country(privateUser.getCountry())
-                        .email(privateUser.getEmail())
-                        .displayName(privateUser.getDisplayName())
-                        .explicitContent(privateUser.getExplicitContent())
-                        .uri(privateUser.getUri())
-                        .type(privateUser.getType())
-                        .followers(privateUser.getFollowers())
-                        .href(privateUser.getHref())
-                        .product(privateUser.getProduct())
-                        .images(privateUser.getImages())
-                        .externalUrls(privateUser.getExternalUrls())
-                        .build());
-        return privateUser;
+    public SpotifyUser getCurrentUser(String accessToken) {
+        PrivateUser privateUser = spotifyUserClient.getCurrentUser("Bearer " + accessToken);
+        return save(privateUser);
+    }
+
+    private SpotifyUser save(PrivateUser privateUser) {
+        return spotifyUserRepository.save(SpotifyUser
+                .builder()
+                .spotifyID(privateUser.getId())
+                .country(privateUser.getCountry())
+                .email(privateUser.getEmail())
+                .displayName(privateUser.getDisplayName())
+                .explicitContent(privateUser.getExplicitContent())
+                .uri(privateUser.getUri())
+                .type(privateUser.getType())
+                .followers(privateUser.getFollowers())
+                .href(privateUser.getHref())
+                .product(privateUser.getProduct())
+                .images(privateUser.getImages())
+                .externalUrls(privateUser.getExternalUrls())
+                .build());
     }
 
     public CursorPage<Artist> getCurrentUserFollowedArtists() {

@@ -1,13 +1,16 @@
 package de.wittenbude.exportify.db.entity;
 
-import com.neovisionaries.i18n.CountryCode;
-import de.wittenbude.exportify.spotify.data.*;
-import jakarta.persistence.*;
+import de.wittenbude.exportify.spotify.data.Followers;
+import de.wittenbude.exportify.spotify.data.Image;
+import de.wittenbude.exportify.spotify.data.SpotifyObjectType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -16,13 +19,11 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @Entity
-public class SpotifyUser {
+public class Artist {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private UUID id;
-
-    private String displayName;
 
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, String> externalUrls;
@@ -30,24 +31,22 @@ public class SpotifyUser {
     @JdbcTypeCode(SqlTypes.JSON)
     private Followers followers;
 
+    @JdbcTypeCode(SqlTypes.JSON)
+    private String[] genres;
+
     private String href;
 
     private String spotifyID;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    private List<Image> images;
+    private Image[] images;
+
+    private String name;
+
+    private Integer popularity;
 
     private SpotifyObjectType type;
 
     private String uri;
 
-    private CountryCode country;
-
-    private String email;
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    private ExplicitContent explicitContent;
-
-    private ProductType product;
 }
-

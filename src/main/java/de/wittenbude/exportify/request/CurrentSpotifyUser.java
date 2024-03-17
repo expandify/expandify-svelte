@@ -15,6 +15,6 @@ public class CurrentSpotifyUser {
 
     public CurrentSpotifyUser(SpotifyUserRepository spotifyUserRepository,
                               CurrentAuthenticatedUser currentAuthenticatedUser) {
-        this.spotifyUser = spotifyUserRepository.getByID(currentAuthenticatedUser.getUserId()).orElse(null);
+        this.spotifyUser = spotifyUserRepository.findById(currentAuthenticatedUser.getUserID()).orElse(null);
     }
 }

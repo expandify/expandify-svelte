@@ -28,7 +28,7 @@ public class CurrentAccessCredentials {
         this.spotifyCredentialsRepository = spotifyCredentialsRepository;
 
         this.spotifyCredentials = spotifyCredentialsRepository
-                .getBySpotifyUserID(currentAuthenticatedUser.getUserId())
+                .findById(currentAuthenticatedUser.getCredentialsID())
                 .orElse(null);
     }
 
@@ -37,11 +37,9 @@ public class CurrentAccessCredentials {
     }
 
     public void refreshCredentials() {
-        TokenResponse tokenResponse = spotifyAuthenticationClient.refresh(SpotifyAuthenticationClient
-                .RefreshTokenForm
-                .builder()
-                .refreshToken((spotifyCredentials.getRefreshToken()))
-                .build());
+        TokenResponse tokenResponse = spotifyAuthenticationClient
+                .refresh(spotifyCredentials.getRefreshToken(),
+                        "refresh_token");
 
         this.spotifyCredentials = SpotifyCredentials
                 .builder()
