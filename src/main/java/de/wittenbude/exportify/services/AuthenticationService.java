@@ -1,15 +1,15 @@
 package de.wittenbude.exportify.services;
 
-import de.wittenbude.exportify.db.entity.SpotifyCredentials;
-import de.wittenbude.exportify.db.entity.SpotifyUser;
-import de.wittenbude.exportify.db.repositories.SpotifyCredentialsRepository;
 import de.wittenbude.exportify.exceptions.InvalidRedirectUriException;
 import de.wittenbude.exportify.jwt.JweDecoder;
 import de.wittenbude.exportify.jwt.JweEncoder;
+import de.wittenbude.exportify.models.Credentials;
+import de.wittenbude.exportify.models.PrivateUser;
 import de.wittenbude.exportify.properties.AuthenticationProperties;
-import de.wittenbude.exportify.spotify.clients.SpotifyAuthenticationClient;
-import de.wittenbude.exportify.spotify.data.TokenResponse;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.ProviderNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -18,37 +18,31 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class AuthenticationService {
     private static final String REDIRECT_URI_CLAIM_KEY = "redirect_uri";
     private static final String SPOTIFY_CODE_CLAIM_KEY = "code";
     public static final String USER_ID_CLAIM = OAuth2TokenIntrospectionClaimNames.SUB;
-    public static final String USER_CREDENTIALS_CLAIM = "user_credentials";
     private final AuthenticationProperties authenticationProperties;
-    private final SpotifyAuthenticationClient spotifyAuthenticationClient;
     private final JweEncoder jweEncoder;
     private final JweDecoder jweDecoder;
-    private final SpotifyCredentialsRepository spotifyCredentialsRepository;
-    private final SpotifyUserService spotifyUserService;
+    private final UserService userService;
+    private final CredentialsService credentialsService;
 
     AuthenticationService(
             AuthenticationProperties authenticationProperties,
-            SpotifyAuthenticationClient spotifyAuthenticationClient,
             JweEncoder jweEncoder,
             JweDecoder jweDecoder,
-            SpotifyCredentialsRepository spotifyCredentialsRepository,
-            SpotifyUserService spotifyUserService
+            UserService userService,
+            CredentialsService credentialsService
     ) {
         this.authenticationProperties = authenticationProperties;
-        this.spotifyAuthenticationClient = spotifyAuthenticationClient;
         this.jweEncoder = jweEncoder;
         this.jweDecoder = jweDecoder;
-        this.spotifyCredentialsRepository = spotifyCredentialsRepository;
-        this.spotifyUserService = spotifyUserService;
+        this.userService = userService;
+        this.credentialsService = credentialsService;
     }
 
     public URI buildAuthorizeURL(String redirectUri) {
@@ -87,40 +81,28 @@ public class AuthenticationService {
 
         String spotifyCode = jweDecoder.decode(internalCode, SPOTIFY_CODE_CLAIM_KEY);
 
-        TokenResponse spotifyToken = spotifyAuthenticationClient
-                .token(spotifyCode,
-                        authenticationProperties.getRedirectUri(),
-                        "authorization_code");
+        Credentials credentials = credentialsService.exchange(spotifyCode);
+        PrivateUser privateUser = userService.getOrLoad(credentials.getAccessToken());
 
+        credentials.setSpotifyPrivateUser(privateUser);
+        credentialsService.upsert(credentials);
 
-
-        SpotifyUser spotifyUser = spotifyUserService.getCurrentUser(spotifyToken.getAccessToken());
-
-        SpotifyCredentials credentials = spotifyCredentialsRepository.save(
-                SpotifyCredentials
-                        .builder()
-                        .accessToken(spotifyToken.getAccessToken())
-                        .refreshToken(spotifyToken.getRefreshToken())
-                        .scope(spotifyToken.getScope())
-                        .expiresAt(Instant.now().plus(spotifyToken.getExpiresIn(), ChronoUnit.SECONDS))
-                        .tokenType(spotifyToken.getTokenType())
-                        .spotifyUser(spotifyUser)
-                        .build());
-
-        return jweEncoder.encode(Map.of(
-                        USER_ID_CLAIM, spotifyUser.getId(),
-                        USER_CREDENTIALS_CLAIM, credentials.getId())
-        );
+        return jweEncoder.encode(USER_ID_CLAIM, privateUser.getId());
     }
 
 
     public AbstractAuthenticationToken convert(Jwt jwt) {
-
         String userID = jwt.getClaimAsString(USER_ID_CLAIM);
-        String credentialsID = jwt.getClaimAsString(USER_CREDENTIALS_CLAIM);
-        AbstractAuthenticationToken auth = new JwtAuthenticationToken(jwt, null, userID);
-        auth.setDetails(Map.of(USER_ID_CLAIM, userID, USER_CREDENTIALS_CLAIM, credentialsID));
-        return auth;
+        return new JwtAuthenticationToken(jwt, null, userID);
+    }
+
+    public UUID getCurrentAuthenticatedUserID() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof JwtAuthenticationToken jwtAuthenticationToken)) {
+            throw new ProviderNotFoundException("Current Authenticated User is not of type JwtAuthenticationToken");
+        }
+
+        return UUID.fromString(jwtAuthenticationToken.getName());
     }
 
 }

@@ -1,7 +1,7 @@
 package de.wittenbude.exportify.http.controller;
 
-import de.wittenbude.exportify.db.entity.SpotifyUser;
-import de.wittenbude.exportify.services.SpotifyUserService;
+import de.wittenbude.exportify.models.PrivateUser;
+import de.wittenbude.exportify.services.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,15 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
-    private final SpotifyUserService spotifyUserService;
+    private final UserService userService;
 
-    public UserController(SpotifyUserService spotifyUserService) {
-        this.spotifyUserService = spotifyUserService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
-    public SpotifyUser me() {
-
-        return spotifyUserService.getCurrentUser();
+    public PrivateUser me() {
+        return userService.getMe();
     }
 }

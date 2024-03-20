@@ -1,10 +1,10 @@
 package de.wittenbude.exportify.spotify.clients;
 
+import de.wittenbude.exportify.models.SpotifyObjectType;
 import de.wittenbude.exportify.spotify.clients.configuration.AccessTokenInterceptor;
-import de.wittenbude.exportify.spotify.data.Artist;
 import de.wittenbude.exportify.spotify.data.CursorPage;
-import de.wittenbude.exportify.spotify.data.PrivateUser;
-import de.wittenbude.exportify.spotify.data.SpotifyObjectType;
+import de.wittenbude.exportify.spotify.data.SpotifyArtist;
+import de.wittenbude.exportify.spotify.data.SpotifyPrivateUser;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,15 +20,15 @@ import java.util.Map;
 public interface SpotifyUserClient {
 
     @GetMapping
-    PrivateUser getCurrentUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String authorizationHeader);
+    SpotifyPrivateUser getCurrentUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String authorizationHeader);
 
     @GetMapping
-    PrivateUser getCurrentUser();
+    SpotifyPrivateUser getCurrentUser();
 
     @GetMapping("/following")
-    Map<String, CursorPage<Artist>> getFollowing(@RequestParam SpotifyObjectType type,
-                                                            @RequestParam(required = false) String after,
-                                                            @RequestParam(required = false) Integer limit);
+    Map<String, CursorPage<SpotifyArtist>> getFollowing(@RequestParam SpotifyObjectType type,
+                                                        @RequestParam(required = false) String after,
+                                                        @RequestParam(required = false) Integer limit);
 
 
 

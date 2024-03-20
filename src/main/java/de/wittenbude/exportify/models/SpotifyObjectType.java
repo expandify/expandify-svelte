@@ -1,10 +1,9 @@
-package de.wittenbude.exportify.spotify.data;
+package de.wittenbude.exportify.models;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter(onMethod_={@JsonValue})
+@Getter
 @AllArgsConstructor
 public enum SpotifyObjectType {
 

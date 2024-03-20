@@ -1,15 +1,15 @@
 package de.wittenbude.exportify.spotify.clients.configuration;
 
-import de.wittenbude.exportify.request.CurrentAccessCredentials;
+import de.wittenbude.exportify.request.CurrentValidCredentials;
 import feign.RequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 
 public class AccessTokenInterceptor {
-    private final CurrentAccessCredentials currentAccessCredentials;
+    private final CurrentValidCredentials currentValidCredentials;
 
-    public AccessTokenInterceptor(CurrentAccessCredentials currentAccessCredentials) {
-        this.currentAccessCredentials = currentAccessCredentials;
+    public AccessTokenInterceptor(CurrentValidCredentials currentValidCredentials) {
+        this.currentValidCredentials = currentValidCredentials;
     }
 
     @Bean
@@ -18,15 +18,8 @@ public class AccessTokenInterceptor {
             if (requestTemplate.headers().containsKey(HttpHeaders.AUTHORIZATION)) {
                 return;
             }
-            requestTemplate.header(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken());
+            requestTemplate.header(HttpHeaders.AUTHORIZATION, "Bearer " + currentValidCredentials.get().getAccessToken());
         };
-    }
-
-    private String getAccessToken() {
-        if (currentAccessCredentials.isExpired()) {
-            currentAccessCredentials.refreshCredentials();
-        }
-        return currentAccessCredentials.getSpotifyCredentials().getAccessToken();
     }
 
 }

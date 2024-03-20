@@ -6,6 +6,12 @@ spring:
     virtual:
       enabled: true
 
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+
 spotify-auth:
   redirect-uri: http://localhost:8080/authorize/callback
   client-id: ${CLIENT_ID}

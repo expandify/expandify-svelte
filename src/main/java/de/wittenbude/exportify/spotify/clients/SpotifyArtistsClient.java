@@ -1,7 +1,7 @@
 package de.wittenbude.exportify.spotify.clients;
 
 import de.wittenbude.exportify.spotify.clients.configuration.AccessTokenInterceptor;
-import de.wittenbude.exportify.spotify.data.PrivateUser;
+import de.wittenbude.exportify.spotify.data.SpotifyPrivateUser;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +15,8 @@ public interface SpotifyArtistsClient {
 
 
     @GetMapping("/me")
-    PrivateUser getCurrentUser();
+    SpotifyPrivateUser getCurrentUser();
 
     @GetMapping("/me")
-    PrivateUser getCurrentUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String authorizationHeader);
+    SpotifyPrivateUser getCurrentUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String authorizationHeader);
 }
