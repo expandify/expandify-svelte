@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum SpotifyObjectType {
+public enum ObjectType {
 
         ALBUM("album"),
         ARTIST("artist"),

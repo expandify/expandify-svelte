@@ -21,7 +21,7 @@ public class Artist {
     private List<Image> images;
     private String name;
     private Integer popularity;
-    private SpotifyObjectType type;
+    private ObjectType type;
     private String uri;
 
 }

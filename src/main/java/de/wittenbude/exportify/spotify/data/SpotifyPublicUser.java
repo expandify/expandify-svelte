@@ -2,7 +2,7 @@ package de.wittenbude.exportify.spotify.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wittenbude.exportify.models.PublicUser;
-import de.wittenbude.exportify.models.SpotifyObjectType;
+import de.wittenbude.exportify.models.ObjectType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,7 +30,7 @@ public class SpotifyPublicUser {
     protected SpotifyImage[] spotifyImages;
 
     @JsonProperty("type")
-    protected String type;
+    protected SpotifyObjectType type;
 
     @JsonProperty("uri")
     protected String uri;
@@ -45,7 +45,7 @@ public class SpotifyPublicUser {
                 .href(href)
                 .spotifyID(id)
                 .images(SpotifyImage.convertAll(spotifyImages))
-                .type(SpotifyObjectType.valueOf(type.toUpperCase()))
+                .type(ObjectType.valueOf(type.getType()))
                 .uri(uri)
                 .build();
     }

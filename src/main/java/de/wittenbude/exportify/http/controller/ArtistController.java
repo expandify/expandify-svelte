@@ -1,6 +1,6 @@
 package de.wittenbude.exportify.http.controller;
 
-import de.wittenbude.exportify.models.Artist;
+import de.wittenbude.exportify.http.schema.ArtistSchema;
 import de.wittenbude.exportify.services.ArtistService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,10 @@ public class ArtistController {
     }
 
     @GetMapping("/followed")
-    public List<Artist> followed() {
-        return artistService.loadCurrentUserFollowedArtists();
+    public List<ArtistSchema> followed() {
+        return artistService
+                .loadCurrentUserFollowedArtists()
+                .map(ArtistSchema::from)
+                .toList();
     }
 }

@@ -3,7 +3,7 @@ package de.wittenbude.exportify.db.entity;
 import de.wittenbude.exportify.models.Artist;
 import de.wittenbude.exportify.models.Followers;
 import de.wittenbude.exportify.models.Image;
-import de.wittenbude.exportify.models.SpotifyObjectType;
+import de.wittenbude.exportify.models.ObjectType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -45,7 +45,7 @@ public class ArtistEntity {
 
     private Integer popularity;
 
-    private SpotifyObjectType type;
+    private ObjectType type;
 
     private String uri;
 

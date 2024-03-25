@@ -19,6 +19,6 @@ public class PublicUser {
     private String href;
     private String spotifyID;
     private List<Image> images;
-    private SpotifyObjectType type;
+    private ObjectType type;
     private String uri;
 }

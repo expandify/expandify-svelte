@@ -9,7 +9,6 @@ import java.util.UUID;
 
 public interface ArtistRepository extends CrudRepository<ArtistEntity, UUID> {
 
-
     Optional<ArtistEntity> findBySpotifyID(String id);
 
 }

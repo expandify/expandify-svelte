@@ -38,7 +38,7 @@ public class UserEntity {
     @JdbcTypeCode(SqlTypes.JSON)
     private List<Image> images;
 
-    private SpotifyObjectType type;
+    private ObjectType type;
 
     private String uri;
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.neovisionaries.i18n.CountryCode;
 import de.wittenbude.exportify.models.PrivateUser;
 import de.wittenbude.exportify.models.ProductType;
-import de.wittenbude.exportify.models.SpotifyObjectType;
+import de.wittenbude.exportify.models.ObjectType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +21,7 @@ public class SpotifyPrivateUser extends SpotifyPublicUser {
     private SpotifyExplicitContent spotifyExplicitContent;
 
     @JsonProperty("product")
-    private String product;
+    private SpotifyProductType product;
 
     public PrivateUser convert() {
         return PrivateUser
@@ -32,11 +32,11 @@ public class SpotifyPrivateUser extends SpotifyPublicUser {
                 .href(href)
                 .spotifyID(id)
                 .images(SpotifyImage.convertAll(spotifyImages))
-                .type(SpotifyObjectType.valueOf(type.toUpperCase()))
+                .type(ObjectType.valueOf(type.getType()))
                 .uri(uri)
                 .country(country)
                 .email(email)
-                .product(ProductType.valueOf(product.toUpperCase()))
+                .product(ProductType.valueOf(product.getType()))
                 .explicitContent(spotifyExplicitContent.convert())
                 .build();
     }

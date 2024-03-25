@@ -1,6 +1,6 @@
 package de.wittenbude.exportify.http.controller;
 
-import de.wittenbude.exportify.models.PrivateUser;
+import de.wittenbude.exportify.http.schema.PrivateUserSchema;
 import de.wittenbude.exportify.services.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,7 @@ public class UserController {
     }
 
     @GetMapping
-    public PrivateUser me() {
-        return userService.getMe();
+    public PrivateUserSchema me() {
+        return PrivateUserSchema.from(userService.getMe());
     }
 }
