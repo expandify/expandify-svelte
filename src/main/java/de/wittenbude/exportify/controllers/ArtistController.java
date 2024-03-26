@@ -1,6 +1,6 @@
-package de.wittenbude.exportify.http.controller;
+package de.wittenbude.exportify.controllers;
 
-import de.wittenbude.exportify.http.schema.ArtistSchema;
+import de.wittenbude.exportify.dto.ArtistSchema;
 import de.wittenbude.exportify.services.ArtistService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

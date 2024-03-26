@@ -36,8 +36,7 @@ public class AuthenticationService {
             JweEncoder jweEncoder,
             JweDecoder jweDecoder,
             UserService userService,
-            CredentialsService credentialsService
-    ) {
+            CredentialsService credentialsService) {
         this.authenticationProperties = authenticationProperties;
         this.jweEncoder = jweEncoder;
         this.jweDecoder = jweDecoder;
@@ -84,7 +83,7 @@ public class AuthenticationService {
         Credentials credentials = credentialsService.exchange(spotifyCode);
         PrivateUser privateUser = userService.getOrLoad(credentials.getAccessToken());
 
-        credentials.setSpotifyPrivateUser(privateUser);
+        credentials.setUser(privateUser);
         credentialsService.upsert(credentials);
 
         return jweEncoder.encode(USER_ID_CLAIM, privateUser.getId());

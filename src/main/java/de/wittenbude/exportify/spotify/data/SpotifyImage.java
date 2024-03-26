@@ -1,7 +1,7 @@
 package de.wittenbude.exportify.spotify.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wittenbude.exportify.models.Image;
+import de.wittenbude.exportify.models.embeds.Image;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,11 +29,9 @@ public class SpotifyImage {
     }
 
     public Image convert() {
-        return Image
-                .builder()
-                .url(url)
-                .width(width)
-                .height(height)
-                .build();
+        return new Image()
+                .setUrl(url)
+                .setWidth(width)
+                .setHeight(height);
     }
 }

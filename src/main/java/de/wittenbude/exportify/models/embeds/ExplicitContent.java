@@ -1,12 +1,12 @@
-package de.wittenbude.exportify.models;
+package de.wittenbude.exportify.models.embeds;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
-@Builder
+@Accessors(chain = true)
 public class ExplicitContent {
     private Boolean filterEnabled;
     private Boolean filterLocked;

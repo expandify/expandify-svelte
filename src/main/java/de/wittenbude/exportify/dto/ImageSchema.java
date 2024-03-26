@@ -1,7 +1,7 @@
-package de.wittenbude.exportify.http.schema;
+package de.wittenbude.exportify.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wittenbude.exportify.models.Image;
+import de.wittenbude.exportify.models.embeds.Image;
 import lombok.Builder;
 import lombok.Getter;
 

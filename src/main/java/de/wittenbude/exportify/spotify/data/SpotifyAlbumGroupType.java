@@ -21,7 +21,5 @@ public enum SpotifyAlbumGroupType {
     APPEARS_ON("appears_on");
 
 
-
-
     public final String type;
 }

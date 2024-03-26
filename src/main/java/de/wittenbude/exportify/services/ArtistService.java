@@ -1,12 +1,10 @@
 package de.wittenbude.exportify.services;
 
-import de.wittenbude.exportify.db.entity.ArtistEntity;
-import de.wittenbude.exportify.db.repositories.ArtistRepository;
 import de.wittenbude.exportify.models.Artist;
-import de.wittenbude.exportify.models.ObjectType;
+import de.wittenbude.exportify.repositories.ArtistRepository;
 import de.wittenbude.exportify.spotify.clients.SpotifyArtistsClient;
-import de.wittenbude.exportify.spotify.data.SpotifyCursorPage;
 import de.wittenbude.exportify.spotify.data.SpotifyArtist;
+import de.wittenbude.exportify.spotify.data.SpotifyCursorPage;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Stream;
@@ -26,14 +24,13 @@ public class ArtistService {
 
     public Stream<Artist> loadCurrentUserFollowedArtists() {
         // TODO connect artists with current user
-        return SpotifyCursorPage.streamPagination(after -> spotifyArtistsClient
-                .getFollowing(ObjectType.ARTIST, after, 50)
-                .get((ObjectType.ARTIST.getType() + "s")))
+        return SpotifyCursorPage
+                .streamPagination(after -> spotifyArtistsClient
+                        .getFollowing(after, 50)
+                        .get("artists"))
                 .map(SpotifyArtist::convert)
-                .map(ArtistEntity::from)
                 .map(artist -> artistRepository
                         .findBySpotifyID(artist.getSpotifyID())
-                        .orElseGet(() -> artistRepository.save(artist)))
-                .map(ArtistEntity::convert);
+                        .orElseGet(() -> artistRepository.save(artist)));
     }
 }

@@ -1,4 +1,4 @@
-package de.wittenbude.exportify.http.controller;
+package de.wittenbude.exportify.controllers;
 
 import de.wittenbude.exportify.services.AuthenticationService;
 import lombok.extern.slf4j.Slf4j;

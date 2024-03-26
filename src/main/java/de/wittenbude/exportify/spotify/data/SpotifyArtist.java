@@ -2,7 +2,6 @@ package de.wittenbude.exportify.spotify.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wittenbude.exportify.models.Artist;
-import de.wittenbude.exportify.models.ObjectType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,20 +24,18 @@ public class SpotifyArtist extends SpotifyArtistSimplified {
     private Integer popularity;
 
     public Artist convert() {
-        return Artist
-                .builder()
-                .id(null)
-                .externalUrls(externalUrls)
-                .followers(spotifyFollowers.convert())
-                .genres(Arrays.asList(genres))
-                .href(href)
-                .spotifyID(id)
-                .images(SpotifyImage.convertAll(spotifyImages))
-                .name(name)
-                .popularity(popularity)
-                .type(ObjectType.valueOf(type.getType()))
-                .uri(uri)
-                .build();
+        return new Artist()
+                .setId(null)
+                .setExternalUrls(externalUrls)
+                .setFollowers(spotifyFollowers.convert())
+                .setGenres(Arrays.asList(genres))
+                .setHref(href)
+                .setSpotifyID(id)
+                .setImages(SpotifyImage.convertAll(spotifyImages))
+                .setName(name)
+                .setPopularity(popularity)
+                .setObjectType(type.convert())
+                .setUri(uri);
     }
 
 }

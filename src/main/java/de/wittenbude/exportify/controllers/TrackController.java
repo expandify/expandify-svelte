@@ -1,4 +1,4 @@
-package de.wittenbude.exportify.http.controller;
+package de.wittenbude.exportify.controllers;
 
 import de.wittenbude.exportify.models.Artist;
 import de.wittenbude.exportify.services.TrackService;

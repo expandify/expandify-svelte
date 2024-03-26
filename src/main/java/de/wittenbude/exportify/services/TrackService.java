@@ -1,6 +1,6 @@
 package de.wittenbude.exportify.services;
 
-import de.wittenbude.exportify.db.repositories.TrackRepository;
+import de.wittenbude.exportify.repositories.TrackRepository;
 import de.wittenbude.exportify.models.Artist;
 import de.wittenbude.exportify.spotify.clients.SpotifyTracksClient;
 import org.springframework.stereotype.Service;

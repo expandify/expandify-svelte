@@ -1,19 +1,19 @@
-package de.wittenbude.exportify.db.entity;
+package de.wittenbude.exportify.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.UUID;
 
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor
+@Setter
+@Accessors(chain = true)
 @Entity
-public class TrackEntity {
+public class Track {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static de.wittenbude.exportify.http.controller.AuthenticationController.*;
+import static de.wittenbude.exportify.controllers.AuthenticationController.*;
 
 @Configuration
 @EnableWebSecurity

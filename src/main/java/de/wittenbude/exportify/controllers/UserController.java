@@ -1,6 +1,6 @@
-package de.wittenbude.exportify.http.controller;
+package de.wittenbude.exportify.controllers;
 
-import de.wittenbude.exportify.http.schema.PrivateUserSchema;
+import de.wittenbude.exportify.dto.PrivateUserSchema;
 import de.wittenbude.exportify.services.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

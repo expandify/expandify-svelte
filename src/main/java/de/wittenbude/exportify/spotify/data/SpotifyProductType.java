@@ -1,6 +1,8 @@
 package de.wittenbude.exportify.spotify.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.wittenbude.exportify.models.embeds.ObjectType;
+import de.wittenbude.exportify.models.embeds.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -25,4 +27,14 @@ public enum SpotifyProductType {
 
 
     private final String type;
+
+    public ProductType convert() {
+        for (ProductType b : ProductType.values()) {
+            if (b.getType().equalsIgnoreCase(type)) {
+                return b;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant in %s for value %s"
+                .formatted(ObjectType.class.getTypeName(), type));
+    }
 }

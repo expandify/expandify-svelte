@@ -1,4 +1,4 @@
-package de.wittenbude.exportify.http.schema;
+package de.wittenbude.exportify.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wittenbude.exportify.models.Artist;
@@ -20,7 +20,7 @@ public class ArtistSchema {
     private final Map<String, String> externalUrls;
 
     @JsonProperty("followers")
-    private final FollowersSchema followers;
+    private final Integer followers;
 
     @JsonProperty("genres")
     private final List<String> genres;
@@ -51,14 +51,14 @@ public class ArtistSchema {
                 .builder()
                 .id(artist.getId())
                 .externalUrls(artist.getExternalUrls())
-                .followers(FollowersSchema.from(artist.getFollowers()))
+                .followers(artist.getFollowers().getTotal())
                 .genres(artist.getGenres())
                 .href(artist.getHref())
                 .spotifyID(artist.getSpotifyID())
                 .spotifyImages(ImageSchema.fromAll(artist.getImages()))
                 .name(artist.getName())
                 .popularity(artist.getPopularity())
-                .type(artist.getType().getType())
+                .type(artist.getObjectType().getType())
                 .uri(artist.getUri())
                 .build();
     }

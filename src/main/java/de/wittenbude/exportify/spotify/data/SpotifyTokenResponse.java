@@ -28,13 +28,11 @@ public class SpotifyTokenResponse {
 
 
     public Credentials convert() {
-        return Credentials
-                .builder()
-                .accessToken(accessToken)
-                .tokenType(tokenType)
-                .scope(scope)
-                .expiresAt(Instant.now().plus(expiresIn, ChronoUnit.SECONDS))
-                .refreshToken(refreshToken)
-                .build();
+        return new Credentials()
+                .setAccessToken(accessToken)
+                .setTokenType(tokenType)
+                .setScope(scope)
+                .setExpiresAt(Instant.now().plus(expiresIn, ChronoUnit.SECONDS))
+                .setRefreshToken(refreshToken);
     }
 }

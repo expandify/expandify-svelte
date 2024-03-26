@@ -1,7 +1,7 @@
 package de.wittenbude.exportify.spotify.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wittenbude.exportify.models.ExplicitContent;
+import de.wittenbude.exportify.models.embeds.ExplicitContent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,10 +15,8 @@ public class SpotifyExplicitContent {
     private Boolean filterLocked;
 
     public ExplicitContent convert() {
-        return ExplicitContent
-                .builder()
-                .filterEnabled(filterEnabled)
-                .filterLocked(filterLocked)
-                .build();
+        return new ExplicitContent()
+                .setFilterEnabled(filterEnabled)
+                .setFilterLocked(filterLocked);
     }
 }

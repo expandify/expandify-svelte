@@ -1,4 +1,4 @@
-package de.wittenbude.exportify.http.schema;
+package de.wittenbude.exportify.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wittenbude.exportify.models.PublicUser;
@@ -22,7 +22,7 @@ public class PublicUserSchema {
     protected final Map<String, String> externalUrls;
 
     @JsonProperty("followers")
-    protected final FollowersSchema followers;
+    protected final Integer followers;
 
     @JsonProperty("href")
     protected final String href;
@@ -39,17 +39,17 @@ public class PublicUserSchema {
     @JsonProperty("uri")
     protected final String uri;
 
-    public PublicUserSchema from(PublicUser publicUser) {
+    public static PublicUserSchema from(PublicUser publicUser) {
         return PublicUserSchema
                 .builder()
                 .id(publicUser.getId())
                 .displayName(publicUser.getDisplayName())
                 .externalUrls(publicUser.getExternalUrls())
-                .followers(FollowersSchema.from(publicUser.getFollowers()))
+                .followers(publicUser.getFollowers().getTotal())
                 .href(publicUser.getHref())
                 .spotifyID(publicUser.getSpotifyID())
                 .images(ImageSchema.fromAll(publicUser.getImages()))
-                .type(publicUser.getType().getType())
+                .type(publicUser.getObjectType().getType())
                 .uri(publicUser.getUri())
                 .build();
     }

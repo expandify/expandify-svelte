@@ -1,4 +1,4 @@
-package de.wittenbude.exportify.models;
+package de.wittenbude.exportify.models.embeds;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
