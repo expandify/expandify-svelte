@@ -1,6 +1,6 @@
 package de.wittenbude.exportify.request;
 
-import de.wittenbude.exportify.services.AuthenticationService;
+import de.wittenbude.exportify.services.ApiTokenService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -11,8 +11,8 @@ import java.util.UUID;
 public class CurrentUserID {
     private final UUID id;
 
-    public CurrentUserID(AuthenticationService authenticationService) {
-        this.id = authenticationService.getCurrentAuthenticatedUserID();
+    public CurrentUserID(ApiTokenService apiTokenService) {
+        this.id = apiTokenService.getAuthenticatedUserId();
     }
 
     public UUID get() {

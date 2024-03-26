@@ -1,7 +1,7 @@
 package de.wittenbude.exportify.configuration;
 
 import de.wittenbude.exportify.jwt.JweDecoder;
-import de.wittenbude.exportify.services.AuthenticationService;
+import de.wittenbude.exportify.services.ApiTokenService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,12 +15,12 @@ import static de.wittenbude.exportify.controllers.AuthenticationController.*;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final AuthenticationService authenticationService;
+    private final ApiTokenService apiTokenService;
     private final JweDecoder jweDecoder;
 
-    public SecurityConfig(AuthenticationService authenticationService,
+    public SecurityConfig(ApiTokenService apiTokenService,
                           JweDecoder jweDecoder) {
-        this.authenticationService = authenticationService;
+        this.apiTokenService = apiTokenService;
         this.jweDecoder = jweDecoder;
     }
 
@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
                                 .decoder(jweDecoder::decode)
-                                .jwtAuthenticationConverter(authenticationService::convert)
+                                .jwtAuthenticationConverter(apiTokenService::parseApiToken)
                         )
                 )
                 .build();

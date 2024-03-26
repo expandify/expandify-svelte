@@ -2,7 +2,7 @@ package de.wittenbude.exportify.services;
 
 import de.wittenbude.exportify.exceptions.NoCredentialsException;
 import de.wittenbude.exportify.models.Credentials;
-import de.wittenbude.exportify.properties.AuthenticationProperties;
+import de.wittenbude.exportify.models.PrivateUser;
 import de.wittenbude.exportify.repositories.CredentialsRepository;
 import de.wittenbude.exportify.request.CurrentUserID;
 import de.wittenbude.exportify.spotify.clients.SpotifyAuthenticationClient;
@@ -12,33 +12,35 @@ import org.springframework.stereotype.Service;
 public class CredentialsService {
 
     private final SpotifyAuthenticationClient spotifyAuthenticationClient;
-    private final AuthenticationProperties authenticationProperties;
     private final CredentialsRepository credentialsRepository;
     private final CurrentUserID currentUserID;
     private final UserService userService;
 
     public CredentialsService(SpotifyAuthenticationClient spotifyAuthenticationClient,
-                              AuthenticationProperties authenticationProperties,
                               CredentialsRepository credentialsRepository,
                               CurrentUserID currentUserID,
                               UserService userService) {
         this.spotifyAuthenticationClient = spotifyAuthenticationClient;
-        this.authenticationProperties = authenticationProperties;
         this.credentialsRepository = credentialsRepository;
         this.currentUserID = currentUserID;
         this.userService = userService;
-    }
-
-    public Credentials exchange(String spotifyCode) {
-        return spotifyAuthenticationClient
-                .token(spotifyCode, authenticationProperties.getRedirectUri(), "authorization_code")
-                .convert();
     }
 
     public Credentials getCurrentUserCredentials() {
         return credentialsRepository
                 .findByUser_Id(currentUserID.get())
                 .orElseThrow(() -> new NoCredentialsException("Current User does not have any Credentials"));
+    }
+
+    public Credentials load(String spotifyCode, String redirectUri) {
+
+        Credentials credentials = spotifyAuthenticationClient
+                .token(spotifyCode, redirectUri, "authorization_code")
+                .convert();
+        PrivateUser privateUser = userService.getOrLoad(credentials.getAccessToken());
+
+        credentials.setUser(privateUser);
+        return this.upsert(credentials);
     }
 
     public Credentials refresh(Credentials currentCredentials) {

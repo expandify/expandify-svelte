@@ -4,44 +4,34 @@ import de.wittenbude.exportify.exceptions.InvalidRedirectUriException;
 import de.wittenbude.exportify.jwt.JweDecoder;
 import de.wittenbude.exportify.jwt.JweEncoder;
 import de.wittenbude.exportify.models.Credentials;
-import de.wittenbude.exportify.models.PrivateUser;
 import de.wittenbude.exportify.properties.AuthenticationProperties;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.authentication.ProviderNotFoundException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.UUID;
 
 @Service
 public class AuthenticationService {
     private static final String REDIRECT_URI_CLAIM_KEY = "redirect_uri";
     private static final String SPOTIFY_CODE_CLAIM_KEY = "code";
-    public static final String USER_ID_CLAIM = OAuth2TokenIntrospectionClaimNames.SUB;
     private final AuthenticationProperties authenticationProperties;
     private final JweEncoder jweEncoder;
     private final JweDecoder jweDecoder;
-    private final UserService userService;
     private final CredentialsService credentialsService;
+    private final ApiTokenService apiTokenService;
 
     AuthenticationService(
             AuthenticationProperties authenticationProperties,
             JweEncoder jweEncoder,
             JweDecoder jweDecoder,
-            UserService userService,
-            CredentialsService credentialsService) {
+            CredentialsService credentialsService,
+            ApiTokenService apiTokenService) {
         this.authenticationProperties = authenticationProperties;
         this.jweEncoder = jweEncoder;
         this.jweDecoder = jweDecoder;
-        this.userService = userService;
         this.credentialsService = credentialsService;
+        this.apiTokenService = apiTokenService;
     }
 
     public URI buildAuthorizeURL(String redirectUri) {
@@ -61,7 +51,7 @@ public class AuthenticationService {
                 .toUri();
     }
 
-    public URI buildCodeURI(String spotifyCode, String encryptedRedirectUri, String codeParam) {
+    public URI buildCallbackURI(String spotifyCode, String encryptedRedirectUri, String codeParam) {
         String encryptedCode = jweEncoder.encode(SPOTIFY_CODE_CLAIM_KEY, spotifyCode);
         String redirectUri = jweDecoder.decode(encryptedRedirectUri, REDIRECT_URI_CLAIM_KEY);
 
@@ -80,28 +70,8 @@ public class AuthenticationService {
 
         String spotifyCode = jweDecoder.decode(internalCode, SPOTIFY_CODE_CLAIM_KEY);
 
-        Credentials credentials = credentialsService.exchange(spotifyCode);
-        PrivateUser privateUser = userService.getOrLoad(credentials.getAccessToken());
-
-        credentials.setUser(privateUser);
-        credentialsService.upsert(credentials);
-
-        return jweEncoder.encode(USER_ID_CLAIM, privateUser.getId());
-    }
-
-
-    public AbstractAuthenticationToken convert(Jwt jwt) {
-        String userID = jwt.getClaimAsString(USER_ID_CLAIM);
-        return new JwtAuthenticationToken(jwt, null, userID);
-    }
-
-    public UUID getCurrentAuthenticatedUserID() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof JwtAuthenticationToken jwtAuthenticationToken)) {
-            throw new ProviderNotFoundException("Current Authenticated User is not of type JwtAuthenticationToken");
-        }
-
-        return UUID.fromString(jwtAuthenticationToken.getName());
+        Credentials credentials = credentialsService.load(spotifyCode, authenticationProperties.getRedirectUri());
+        return apiTokenService.createApiToken(credentials.getUser().getId());
     }
 
 }

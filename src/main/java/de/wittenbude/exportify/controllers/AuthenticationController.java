@@ -34,12 +34,12 @@ public class AuthenticationController {
     @GetMapping(AUTHORIZATION_CALLBACK_PATH)
     public RedirectView callback(@RequestParam(name = "code") String spotifyCode,
                                  @RequestParam(name = "state") String encryptedRedirectUri) {
-        URI redirectUri = authenticationService.buildCodeURI(spotifyCode, encryptedRedirectUri, CODE_REQUEST_PARAM);
+        URI redirectUri = authenticationService.buildCallbackURI(spotifyCode, encryptedRedirectUri, CODE_REQUEST_PARAM);
         return new RedirectView(redirectUri.toString());
     }
 
     @GetMapping(AUTHENTICATION_TOKEN_PATH)
-    public String token(@RequestParam(CODE_REQUEST_PARAM) String internalCode) {
+    public String authenticateUser(@RequestParam(CODE_REQUEST_PARAM) String internalCode) {
         return authenticationService.authenticateUser(internalCode);
     }
 }
