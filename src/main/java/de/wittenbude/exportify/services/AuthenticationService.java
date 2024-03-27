@@ -1,10 +1,8 @@
 package de.wittenbude.exportify.services;
 
+import de.wittenbude.exportify.configuration.AuthenticationProperties;
 import de.wittenbude.exportify.exceptions.InvalidRedirectUriException;
-import de.wittenbude.exportify.jwt.JweDecoder;
-import de.wittenbude.exportify.jwt.JweEncoder;
 import de.wittenbude.exportify.models.Credentials;
-import de.wittenbude.exportify.properties.AuthenticationProperties;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -16,20 +14,20 @@ public class AuthenticationService {
     private static final String REDIRECT_URI_CLAIM_KEY = "redirect_uri";
     private static final String SPOTIFY_CODE_CLAIM_KEY = "code";
     private final AuthenticationProperties authenticationProperties;
-    private final JweEncoder jweEncoder;
-    private final JweDecoder jweDecoder;
+    private final JweEncoderService jweEncoderService;
+    private final JweDecoderService jweDecoderService;
     private final CredentialsService credentialsService;
     private final ApiTokenService apiTokenService;
 
     AuthenticationService(
             AuthenticationProperties authenticationProperties,
-            JweEncoder jweEncoder,
-            JweDecoder jweDecoder,
+            JweEncoderService jweEncoderService,
+            JweDecoderService jweDecoderService,
             CredentialsService credentialsService,
             ApiTokenService apiTokenService) {
         this.authenticationProperties = authenticationProperties;
-        this.jweEncoder = jweEncoder;
-        this.jweDecoder = jweDecoder;
+        this.jweEncoderService = jweEncoderService;
+        this.jweDecoderService = jweDecoderService;
         this.credentialsService = credentialsService;
         this.apiTokenService = apiTokenService;
     }
@@ -38,7 +36,7 @@ public class AuthenticationService {
         if (!UrlUtils.isValidRedirectUrl(redirectUri)) {
             throw new InvalidRedirectUriException("Provided redirect uri is invalid: %s".formatted(redirectUri));
         }
-        String encryptedState = jweEncoder.encode(REDIRECT_URI_CLAIM_KEY, redirectUri);
+        String encryptedState = jweEncoderService.encode(REDIRECT_URI_CLAIM_KEY, redirectUri);
         return UriComponentsBuilder
                 .fromUriString("https://accounts.spotify.com/authorize")
                 .queryParam("response_type", "code")
@@ -52,8 +50,8 @@ public class AuthenticationService {
     }
 
     public URI buildCallbackURI(String spotifyCode, String encryptedRedirectUri, String codeParam) {
-        String encryptedCode = jweEncoder.encode(SPOTIFY_CODE_CLAIM_KEY, spotifyCode);
-        String redirectUri = jweDecoder.decode(encryptedRedirectUri, REDIRECT_URI_CLAIM_KEY);
+        String encryptedCode = jweEncoderService.encode(SPOTIFY_CODE_CLAIM_KEY, spotifyCode);
+        String redirectUri = jweDecoderService.decode(encryptedRedirectUri, REDIRECT_URI_CLAIM_KEY);
 
         if (!UrlUtils.isValidRedirectUrl(redirectUri)) {
             throw new InvalidRedirectUriException("Provided redirect uri is invalid: %s".formatted(redirectUri));
@@ -68,7 +66,7 @@ public class AuthenticationService {
 
     public String authenticateUser(String internalCode) {
 
-        String spotifyCode = jweDecoder.decode(internalCode, SPOTIFY_CODE_CLAIM_KEY);
+        String spotifyCode = jweDecoderService.decode(internalCode, SPOTIFY_CODE_CLAIM_KEY);
 
         Credentials credentials = credentialsService.load(spotifyCode, authenticationProperties.getRedirectUri());
         return apiTokenService.createApiToken(credentials.getUser().getId());

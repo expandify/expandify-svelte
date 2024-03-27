@@ -14,7 +14,7 @@ import java.util.UUID;
 @Entity
 public class Credentials {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(length = 1024)

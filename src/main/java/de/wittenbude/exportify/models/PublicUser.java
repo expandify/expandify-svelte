@@ -20,7 +20,7 @@ import java.util.UUID;
 @Entity
 public class PublicUser {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     private String displayName;

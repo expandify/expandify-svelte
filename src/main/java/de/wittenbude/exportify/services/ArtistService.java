@@ -1,9 +1,9 @@
 package de.wittenbude.exportify.services;
 
 import de.wittenbude.exportify.models.Artist;
+import de.wittenbude.exportify.models.converter.ArtistConverter;
 import de.wittenbude.exportify.repositories.ArtistRepository;
 import de.wittenbude.exportify.spotify.clients.SpotifyArtistsClient;
-import de.wittenbude.exportify.spotify.data.SpotifyArtist;
 import de.wittenbude.exportify.spotify.data.SpotifyCursorPage;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class ArtistService {
                 .streamPagination(after -> spotifyArtistsClient
                         .getFollowing(after, 50)
                         .get("artists"))
-                .map(SpotifyArtist::convert)
+                .map(ArtistConverter::from)
                 .map(artist -> artistRepository
                         .findBySpotifyID(artist.getSpotifyID())
                         .orElseGet(() -> artistRepository.save(artist)));

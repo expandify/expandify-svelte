@@ -2,9 +2,11 @@ package de.wittenbude.exportify.services;
 
 import de.wittenbude.exportify.models.PrivateUser;
 import de.wittenbude.exportify.models.PublicUser;
+import de.wittenbude.exportify.models.converter.UserConverter;
 import de.wittenbude.exportify.repositories.PrivateUserRepository;
 import de.wittenbude.exportify.repositories.PublicUserRepository;
 import de.wittenbude.exportify.spotify.clients.SpotifyUserClient;
+import de.wittenbude.exportify.spotify.data.SpotifyPrivateUser;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,13 +26,13 @@ public class UserService {
     }
 
     public PrivateUser getMe() {
-        PrivateUser privateUser = spotifyUserClient.getCurrentUser().convertPrivate();
+        PrivateUser privateUser = UserConverter.from(spotifyUserClient.getCurrentUser());
         return this.upsertPrivate(privateUser);
     }
 
     public PrivateUser getOrLoad(String accessToken) {
-        PrivateUser privateUser = spotifyUserClient.getCurrentUser("Bearer " + accessToken).convertPrivate();
-        return this.upsertPrivate(privateUser);
+        SpotifyPrivateUser user = spotifyUserClient.getCurrentUser("Bearer " + accessToken);
+        return this.upsertPrivate(UserConverter.from(user));
     }
 
     public PrivateUser upsertPrivate(PrivateUser privateUser) {

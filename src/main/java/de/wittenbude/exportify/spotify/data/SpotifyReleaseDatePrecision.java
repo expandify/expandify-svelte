@@ -17,6 +17,5 @@ public enum SpotifyReleaseDatePrecision {
     @JsonProperty("year")
     YEAR("year");
 
-
     private final String precision;
 }

@@ -19,10 +19,10 @@ import java.util.UUID;
 public class PrivateUser {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(nullable = false, unique = true)
     private PublicUser publicUser;
 

@@ -1,10 +1,11 @@
-package de.wittenbude.exportify.jwt;
+package de.wittenbude.exportify.services;
 
 import com.nimbusds.jose.JWEHeader;
 import com.nimbusds.jose.crypto.RSAEncrypter;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jwt.EncryptedJWT;
 import com.nimbusds.jwt.JWTClaimsSet;
+import de.wittenbude.exportify.configuration.JwtConfiguration;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +14,10 @@ import java.util.Date;
 import static org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames.TOKEN_TYPE;
 
 @Component
-public class JweEncoder {
+public class JweEncoderService {
     private final RSAKey rsaKey;
 
-    public JweEncoder(RSAKey rsaKey) {
+    public JweEncoderService(RSAKey rsaKey) {
         this.rsaKey = rsaKey;
     }
 

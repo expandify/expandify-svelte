@@ -1,6 +1,7 @@
 package de.wittenbude.exportify.controllers;
 
 import de.wittenbude.exportify.dto.PrivateUserSchema;
+import de.wittenbude.exportify.models.converter.UserConverter;
 import de.wittenbude.exportify.services.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,6 @@ public class UserController {
 
     @GetMapping
     public PrivateUserSchema me() {
-        return PrivateUserSchema.from(userService.getMe());
+        return UserConverter.toDTO(userService.getMe());
     }
 }

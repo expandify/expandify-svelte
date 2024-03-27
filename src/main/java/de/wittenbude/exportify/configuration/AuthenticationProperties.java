@@ -1,4 +1,4 @@
-package de.wittenbude.exportify.properties;
+package de.wittenbude.exportify.configuration;
 
 import lombok.Getter;
 import lombok.Setter;

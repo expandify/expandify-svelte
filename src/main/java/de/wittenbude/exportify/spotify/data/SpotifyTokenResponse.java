@@ -1,12 +1,8 @@
 package de.wittenbude.exportify.spotify.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wittenbude.exportify.models.Credentials;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 
 @Getter
 @Setter
@@ -26,13 +22,4 @@ public class SpotifyTokenResponse {
     @JsonProperty("refresh_token")
     private String refreshToken;
 
-
-    public Credentials convert() {
-        return new Credentials()
-                .setAccessToken(accessToken)
-                .setTokenType(tokenType)
-                .setScope(scope)
-                .setExpiresAt(Instant.now().plus(expiresIn, ChronoUnit.SECONDS))
-                .setRefreshToken(refreshToken);
-    }
 }

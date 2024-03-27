@@ -1,6 +1,6 @@
 package de.wittenbude.exportify.spotify.clients.configuration;
 
-import de.wittenbude.exportify.properties.AuthenticationProperties;
+import de.wittenbude.exportify.configuration.AuthenticationProperties;
 import feign.Logger;
 import feign.RequestInterceptor;
 import feign.codec.Encoder;

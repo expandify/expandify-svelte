@@ -1,4 +1,4 @@
-package de.wittenbude.exportify.jwt;
+package de.wittenbude.exportify.configuration;
 
 import com.nimbusds.jose.EncryptionMethod;
 import com.nimbusds.jose.JOSEException;
@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 @Configuration
-class JwtConfiguration {
+public class JwtConfiguration {
     public static final JWEAlgorithm JWE_ALGORITHM = JWEAlgorithm.RSA_OAEP_256;
     public static final EncryptionMethod ENCRYPTION_METHOD = EncryptionMethod.A256GCM;
     public static final String ISSUER = "http://localhost:8080/token";
@@ -21,7 +21,6 @@ class JwtConfiguration {
     public static final String AUDIENCE = "http://localhost:8080/api";
     public static final Duration MAX_CLOCK_SKEW = Duration.of(60, ChronoUnit.SECONDS);
     public static final Duration EXPIRATION = Duration.of(60, ChronoUnit.MINUTES);
-
 
 
     @Bean

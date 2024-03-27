@@ -73,7 +73,6 @@ public class SpotifyCursorPage<T> implements Streamable<T> {
     }
 
 
-
     @Getter
     @Setter
     public static class Cursors {

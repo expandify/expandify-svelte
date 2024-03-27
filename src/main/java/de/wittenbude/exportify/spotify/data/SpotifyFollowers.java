@@ -1,7 +1,6 @@
 package de.wittenbude.exportify.spotify.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wittenbude.exportify.models.embeds.Followers;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,9 +13,4 @@ public class SpotifyFollowers {
     @JsonProperty("total")
     private Integer total;
 
-    public Followers convert() {
-        return new Followers()
-                .setTotal(total)
-                .setHref(href);
-    }
 }

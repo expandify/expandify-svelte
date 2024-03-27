@@ -3,9 +3,11 @@ package de.wittenbude.exportify.services;
 import de.wittenbude.exportify.exceptions.NoCredentialsException;
 import de.wittenbude.exportify.models.Credentials;
 import de.wittenbude.exportify.models.PrivateUser;
+import de.wittenbude.exportify.models.converter.CredentialsConverter;
 import de.wittenbude.exportify.repositories.CredentialsRepository;
 import de.wittenbude.exportify.request.CurrentUserID;
 import de.wittenbude.exportify.spotify.clients.SpotifyAuthenticationClient;
+import de.wittenbude.exportify.spotify.data.SpotifyTokenResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,19 +36,19 @@ public class CredentialsService {
 
     public Credentials load(String spotifyCode, String redirectUri) {
 
-        Credentials credentials = spotifyAuthenticationClient
-                .token(spotifyCode, redirectUri, "authorization_code")
-                .convert();
-        PrivateUser privateUser = userService.getOrLoad(credentials.getAccessToken());
+        SpotifyTokenResponse tokenResponse = spotifyAuthenticationClient
+                .token(spotifyCode, redirectUri, "authorization_code");
+        Credentials credentials = CredentialsConverter.from(tokenResponse);
 
+        PrivateUser privateUser = userService.getOrLoad(credentials.getAccessToken());
         credentials.setUser(privateUser);
         return this.upsert(credentials);
     }
 
     public Credentials refresh(Credentials currentCredentials) {
-        Credentials newCredentials = spotifyAuthenticationClient
-                .refresh(currentCredentials.getRefreshToken(), "refresh_token")
-                .convert();
+        SpotifyTokenResponse tokenResponse = spotifyAuthenticationClient
+                .refresh(currentCredentials.getRefreshToken(), "refresh_token");
+        Credentials newCredentials = CredentialsConverter.from(tokenResponse);
 
         newCredentials.setId(currentCredentials.getId());
         newCredentials.setUser(currentCredentials.getUser());

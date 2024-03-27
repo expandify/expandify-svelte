@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class  SpotifyPage<T> {
+public class SpotifyPage<T> {
 
 
     @JsonProperty("href")

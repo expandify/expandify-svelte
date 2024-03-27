@@ -1,6 +1,5 @@
 package de.wittenbude.exportify.services;
 
-import de.wittenbude.exportify.jwt.JweEncoder;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.ProviderNotFoundException;
 import org.springframework.security.core.Authentication;
@@ -16,14 +15,14 @@ import java.util.UUID;
 public class ApiTokenService {
 
     public static final String USER_ID_CLAIM = OAuth2TokenIntrospectionClaimNames.SUB;
-    private final JweEncoder jweEncoder;
+    private final JweEncoderService jweEncoderService;
 
-    public ApiTokenService(JweEncoder jweEncoder) {
-        this.jweEncoder = jweEncoder;
+    public ApiTokenService(JweEncoderService jweEncoderService) {
+        this.jweEncoderService = jweEncoderService;
     }
 
     public String createApiToken(UUID userID) {
-        return jweEncoder.encode(USER_ID_CLAIM, userID);
+        return jweEncoderService.encode(USER_ID_CLAIM, userID);
     }
 
     public AbstractAuthenticationToken parseApiToken(Jwt jwt) {

@@ -18,7 +18,6 @@ public interface SpotifyAuthenticationClient {
                                @RequestParam(name = "grant_type", defaultValue = "authorization_code") String grantType);
 
 
-
     @PostMapping("/token")
     SpotifyTokenResponse refresh(@RequestParam(name = "refresh_token") String refreshToken,
                                  @RequestParam(name = "grant_type", defaultValue = "refresh_token") String grantType);

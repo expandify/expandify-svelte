@@ -1,7 +1,6 @@
 package de.wittenbude.exportify.spotify.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wittenbude.exportify.models.PublicUser;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,17 +33,5 @@ public class SpotifyPublicUser {
     @JsonProperty("uri")
     protected String uri;
 
-
-    public PublicUser convert() {
-        return new PublicUser()
-                .setDisplayName(displayName)
-                .setExternalUrls(externalUrls)
-                .setFollowers(spotifyFollowers.convert())
-                .setHref(href)
-                .setSpotifyID(id)
-                .setImages(SpotifyImage.convertAll(spotifyImages))
-                .setObjectType(type.convert())
-                .setUri(uri);
-    }
 
 }

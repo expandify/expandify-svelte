@@ -11,13 +11,13 @@ public class DataSourceConfig {
 
     @Bean
     public DataSource dataSource() {
-       return DataSourceBuilder
-               .create()
-               .driverClassName("org.h2.Driver")
-               .url("jdbc:h2:file:./.dev/db")
-               .password("")
-               .username("exportify")
-               .build();
+        return DataSourceBuilder
+                .create()
+                .driverClassName("org.h2.Driver")
+                .url("jdbc:h2:file:./.dev/db")
+                .password("")
+                .username("exportify")
+                .build();
     }
 
 }

@@ -1,7 +1,6 @@
 package de.wittenbude.exportify.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wittenbude.exportify.models.Artist;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -46,21 +45,5 @@ public class ArtistSchema {
     @JsonProperty("uri")
     private final String uri;
 
-    public static ArtistSchema from(Artist artist) {
-        return ArtistSchema
-                .builder()
-                .id(artist.getId())
-                .externalUrls(artist.getExternalUrls())
-                .followers(artist.getFollowers().getTotal())
-                .genres(artist.getGenres())
-                .href(artist.getHref())
-                .spotifyID(artist.getSpotifyID())
-                .spotifyImages(ImageSchema.fromAll(artist.getImages()))
-                .name(artist.getName())
-                .popularity(artist.getPopularity())
-                .type(artist.getObjectType().getType())
-                .uri(artist.getUri())
-                .build();
-    }
 
 }

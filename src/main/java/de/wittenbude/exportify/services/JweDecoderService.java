@@ -1,14 +1,15 @@
-package de.wittenbude.exportify.jwt;
+package de.wittenbude.exportify.services;
 
 import com.nimbusds.jose.crypto.RSADecrypter;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jwt.EncryptedJWT;
+import de.wittenbude.exportify.configuration.JwtConfiguration;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.*;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.Instant;
@@ -19,13 +20,13 @@ import java.util.Map;
 
 import static org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames.*;
 
-@Component
-public class JweDecoder {
+@Service
+public class JweDecoderService {
 
     private final RSAKey rsaKey;
     private final OAuth2TokenValidator<Jwt> validator;
 
-    public JweDecoder(RSAKey rsaKey) {
+    public JweDecoderService(RSAKey rsaKey) {
         this.rsaKey = rsaKey;
 
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
