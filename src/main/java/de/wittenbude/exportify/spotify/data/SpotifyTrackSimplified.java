@@ -12,7 +12,7 @@ import java.util.Map;
 public class SpotifyTrackSimplified {
 
     @JsonProperty("artists")
-    private SpotifyArtistSimplified[] artists;
+    private SpotifyArtistSimplified[] artistsSimplified;
 
     @JsonProperty("available_markets")
     private CountryCode[] availableMarkets;

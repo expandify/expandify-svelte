@@ -5,6 +5,8 @@ import de.wittenbude.exportify.models.Artist;
 import de.wittenbude.exportify.spotify.data.SpotifyArtist;
 
 import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ArtistConverter {
 
@@ -13,14 +15,14 @@ public class ArtistConverter {
                 .builder()
                 .id(artist.getId())
                 .externalUrls(artist.getExternalUrls())
-                .followers(artist.getFollowers().getTotal())
+                .followers(artist.getFollowers())
                 .genres(artist.getGenres())
                 .href(artist.getHref())
                 .spotifyID(artist.getSpotifyID())
                 .spotifyImages(ImageConverter.toDTOs(artist.getImages()))
                 .name(artist.getName())
                 .popularity(artist.getPopularity())
-                .type(artist.getObjectType().getType())
+                .type(artist.getSpotifyObjectType())
                 .uri(artist.getUri())
                 .build();
     }
@@ -29,15 +31,22 @@ public class ArtistConverter {
         return new Artist()
                 .setId(null)
                 .setExternalUrls(spotifyArtist.getExternalUrls())
-                .setFollowers(FollowersConverter.from(spotifyArtist.getSpotifyFollowers()))
+                .setFollowers(spotifyArtist.getSpotifyFollowers().getTotal())
                 .setGenres(Arrays.asList(spotifyArtist.getGenres()))
                 .setHref(spotifyArtist.getHref())
                 .setSpotifyID(spotifyArtist.getId())
                 .setImages(ImageConverter.from(spotifyArtist.getSpotifyImages()))
                 .setName(spotifyArtist.getName())
                 .setPopularity(spotifyArtist.getPopularity())
-                .setObjectType(TypeConverter.from(spotifyArtist.getType()))
+                .setSpotifyObjectType(spotifyArtist.getType().getType())
                 .setUri(spotifyArtist.getUri());
+    }
+
+    public static Set<Artist> from(SpotifyArtist[] spotifyArtists) {
+        return Arrays
+                .stream(spotifyArtists)
+                .map(ArtistConverter::from)
+                .collect(Collectors.toSet());
     }
 
 }

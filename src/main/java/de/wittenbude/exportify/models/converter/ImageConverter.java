@@ -5,12 +5,13 @@ import de.wittenbude.exportify.models.embeds.Image;
 import de.wittenbude.exportify.spotify.data.SpotifyImage;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ImageConverter {
 
 
-    public static List<ImageSchema> toDTOs(List<Image> images) {
+    public static List<ImageSchema> toDTOs(Collection<Image> images) {
         List<ImageSchema> imageSchemas = new ArrayList<>();
         for (Image image : images) {
             imageSchemas.add(ImageConverter.toDTO(image));

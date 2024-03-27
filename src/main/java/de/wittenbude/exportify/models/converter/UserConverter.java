@@ -4,6 +4,7 @@ import de.wittenbude.exportify.dto.PrivateUserSchema;
 import de.wittenbude.exportify.dto.PublicUserSchema;
 import de.wittenbude.exportify.models.PrivateUser;
 import de.wittenbude.exportify.models.PublicUser;
+import de.wittenbude.exportify.spotify.data.SpotifyExplicitContent;
 import de.wittenbude.exportify.spotify.data.SpotifyPrivateUser;
 import de.wittenbude.exportify.spotify.data.SpotifyPublicUser;
 
@@ -16,17 +17,17 @@ public class UserConverter {
                 .id(privateUser.getId())
                 .displayName(privateUser.getPublicUser().getDisplayName())
                 .externalUrls(privateUser.getPublicUser().getExternalUrls())
-                .followers(privateUser.getPublicUser().getFollowers().getTotal())
+                .followers(privateUser.getPublicUser().getFollowers())
                 .href(privateUser.getPublicUser().getHref())
                 .spotifyID(privateUser.getPublicUser().getSpotifyID())
                 .images(ImageConverter.toDTOs(privateUser.getPublicUser().getImages()))
-                .type(privateUser.getPublicUser().getObjectType().getType())
+                .type(privateUser.getPublicUser().getSpotifyObjectType())
                 .uri(privateUser.getPublicUser().getUri())
                 .country(privateUser.getCountry())
                 .email(privateUser.getEmail())
                 .explicitContentFilterEnabled(privateUser.getExplicitContent().getFilterEnabled())
                 .explicitContentFilterLocked(privateUser.getExplicitContent().getFilterLocked())
-                .product(privateUser.getProduct().getType())
+                .product(privateUser.getSpotifyProductType())
                 .build();
     }
 
@@ -37,11 +38,11 @@ public class UserConverter {
                 .id(publicUser.getId())
                 .displayName(publicUser.getDisplayName())
                 .externalUrls(publicUser.getExternalUrls())
-                .followers(publicUser.getFollowers().getTotal())
+                .followers(publicUser.getFollowers())
                 .href(publicUser.getHref())
                 .spotifyID(publicUser.getSpotifyID())
                 .images(ImageConverter.toDTOs(publicUser.getImages()))
-                .type(publicUser.getObjectType().getType())
+                .type(publicUser.getSpotifyObjectType())
                 .uri(publicUser.getUri())
                 .build();
     }
@@ -52,8 +53,8 @@ public class UserConverter {
                 .setPublicUser(UserConverter.from((SpotifyPublicUser) spotifyPrivateUser))
                 .setCountry(spotifyPrivateUser.getCountry())
                 .setEmail(spotifyPrivateUser.getEmail())
-                .setProduct(TypeConverter.from(spotifyPrivateUser.getProduct()))
-                .setExplicitContent(ExplicitContentConverter.from(spotifyPrivateUser.getSpotifyExplicitContent()));
+                .setSpotifyProductType(spotifyPrivateUser.getProduct().getType())
+                .setExplicitContent(UserConverter.from(spotifyPrivateUser.getSpotifyExplicitContent()));
     }
 
 
@@ -61,11 +62,17 @@ public class UserConverter {
         return new PublicUser()
                 .setDisplayName(spotifyPublicUser.getDisplayName())
                 .setExternalUrls(spotifyPublicUser.getExternalUrls())
-                .setFollowers(FollowersConverter.from(spotifyPublicUser.getSpotifyFollowers()))
+                .setFollowers(spotifyPublicUser.getSpotifyFollowers().getTotal())
                 .setHref(spotifyPublicUser.getHref())
                 .setSpotifyID(spotifyPublicUser.getId())
                 .setImages(ImageConverter.from(spotifyPublicUser.getSpotifyImages()))
-                .setObjectType(TypeConverter.from(spotifyPublicUser.getType()))
+                .setSpotifyObjectType(spotifyPublicUser.getType().getType())
                 .setUri(spotifyPublicUser.getUri());
+    }
+
+    public static PrivateUser.ExplicitContent from(SpotifyExplicitContent spotifyExplicitContent) {
+        return new PrivateUser.ExplicitContent()
+                .setFilterEnabled(spotifyExplicitContent.getFilterEnabled())
+                .setFilterLocked(spotifyExplicitContent.getFilterLocked());
     }
 }

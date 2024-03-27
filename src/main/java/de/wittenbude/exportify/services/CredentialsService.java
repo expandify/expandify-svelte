@@ -42,7 +42,7 @@ public class CredentialsService {
 
         PrivateUser privateUser = userService.getOrLoad(credentials.getAccessToken());
         credentials.setUser(privateUser);
-        return this.upsert(credentials);
+        return this.persist(credentials);
     }
 
     public Credentials refresh(Credentials currentCredentials) {
@@ -52,18 +52,12 @@ public class CredentialsService {
 
         newCredentials.setId(currentCredentials.getId());
         newCredentials.setUser(currentCredentials.getUser());
-        return this.upsert(currentCredentials);
+        return this.persist(currentCredentials);
     }
 
-    public Credentials upsert(Credentials currentCredentials) {
-        currentCredentials.setUser(userService.upsertPrivate(currentCredentials.getUser()));
-        credentialsRepository
-                .findByUser_Id(currentCredentials.getUser().getId())
-                .map(Credentials::getId)
-                .ifPresent(currentCredentials::setId);
-
-        return credentialsRepository.save(currentCredentials);
-
+    public Credentials persist(Credentials currentCredentials) {
+        currentCredentials.setUser(userService.persistPrivateUser(currentCredentials.getUser()));
+        return credentialsRepository.upsert(currentCredentials);
     }
 
 

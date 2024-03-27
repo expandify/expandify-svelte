@@ -1,7 +1,6 @@
 package de.wittenbude.exportify.services;
 
 import de.wittenbude.exportify.models.PrivateUser;
-import de.wittenbude.exportify.models.PublicUser;
 import de.wittenbude.exportify.models.converter.UserConverter;
 import de.wittenbude.exportify.repositories.PrivateUserRepository;
 import de.wittenbude.exportify.repositories.PublicUserRepository;
@@ -27,32 +26,18 @@ public class UserService {
 
     public PrivateUser getMe() {
         PrivateUser privateUser = UserConverter.from(spotifyUserClient.getCurrentUser());
-        return this.upsertPrivate(privateUser);
+        return this.persistPrivateUser(privateUser);
     }
 
     public PrivateUser getOrLoad(String accessToken) {
         SpotifyPrivateUser user = spotifyUserClient.getCurrentUser("Bearer " + accessToken);
-        return this.upsertPrivate(UserConverter.from(user));
+        return this.persistPrivateUser(UserConverter.from(user));
     }
 
-    public PrivateUser upsertPrivate(PrivateUser privateUser) {
-        String spotifyID = privateUser.getPublicUser().getSpotifyID();
-
-        privateUser.setPublicUser(this.upsertPublic(privateUser.getPublicUser()));
-        privateUserRepository
-                .findByPublicUser_SpotifyID(spotifyID)
-                .map(PrivateUser::getId)
-                .ifPresent(privateUser::setId);
-
-        return privateUserRepository.save(privateUser);
+    public PrivateUser persistPrivateUser(PrivateUser privateUser) {
+        privateUser.setPublicUser(publicUserRepository.upsert(privateUser.getPublicUser()));
+        //privateUser.setCountry(countryRepository.upsert(privateUser.getCountry()));
+        return privateUserRepository.upsert(privateUser);
     }
 
-    public PublicUser upsertPublic(PublicUser publicUser) {
-        publicUserRepository
-                .findBySpotifyID(publicUser.getSpotifyID())
-                .map(PublicUser::getId)
-                .ifPresent(publicUser::setId);
-
-        return publicUserRepository.save(publicUser);
-    }
 }

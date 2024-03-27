@@ -1,7 +1,10 @@
 package de.wittenbude.exportify.models;
 
 import com.neovisionaries.i18n.CountryCode;
+import de.wittenbude.exportify.models.embeds.Copyright;
 import de.wittenbude.exportify.models.embeds.ExternalIDs;
+import de.wittenbude.exportify.models.embeds.Image;
+import de.wittenbude.exportify.models.embeds.ReleaseDatePrecision;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,21 +19,16 @@ import java.util.*;
 @Setter
 @Accessors(chain = true)
 @Entity
-public class Track {
+public class Album {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private UUID id;
-
-    @ManyToMany
-    @JoinTable
-    private Set<Artist> artists = new LinkedHashSet<>();
+    private String albumType;
+    private Integer totalTracks;
 
     @ElementCollection
-    private Set<CountryCode> availableMarkets;
-    private Integer discNumber;
-    private Integer durationMs;
-    private Boolean explicit;
+    private List<CountryCode> availableMarkets;
 
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, String> externalUrls;
@@ -38,30 +36,51 @@ public class Track {
 
     @Column(unique = true)
     private String spotifyID;
-    private Boolean isPlayable;
-    private String restrictions;
+
+    @ElementCollection
+    private List<Image> images;
+
     private String name;
-    private String previewUrl;
-    private Integer trackNumber;
+    private String releaseDate;
+    private ReleaseDatePrecision releaseDatePrecision;
+    private String restrictions;
     private String spotifyObjectType;
     private String uri;
-    private Boolean isLocal;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(nullable = false)
-    private Album album;
+    @ManyToMany
+    @JoinTable
+    private Set<Artist> artists;
+
+    @OneToMany(mappedBy = "album", orphanRemoval = true)
+    private List<Track> tracks;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    private List<Copyright> copyrights;
 
     private ExternalIDs externalIDs;
+
+    @ElementCollection
+    private List<String> genres;
+    private String label;
     private Integer popularity;
 
-
-    public Track setArtists(Set<Artist> artists) {
+    public Album setArtists(Set<Artist> artists) {
         if (this.artists == null) {
             this.artists = artists;
             return this;
         }
         this.artists.clear();
         this.artists.addAll(artists);
+        return this;
+    }
+
+    public Album setTracks(List<Track> tracks) {
+        if (this.tracks == null) {
+            this.tracks = tracks;
+            return this;
+        }
+        this.tracks.clear();
+        this.tracks.addAll(tracks);
         return this;
     }
 
@@ -72,12 +91,14 @@ public class Track {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Track track = (Track) o;
-        return getId() != null && Objects.equals(getId(), track.getId());
+        Album album = (Album) o;
+        return getId() != null && Objects.equals(getId(), album.getId());
     }
 
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
 }
+

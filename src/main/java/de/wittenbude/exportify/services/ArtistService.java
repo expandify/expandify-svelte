@@ -29,8 +29,8 @@ public class ArtistService {
                         .getFollowing(after, 50)
                         .get("artists"))
                 .map(ArtistConverter::from)
-                .map(artist -> artistRepository
-                        .findBySpotifyID(artist.getSpotifyID())
-                        .orElseGet(() -> artistRepository.save(artist)));
+                //.peek(artist -> artist.setGenres(genreRepository.upsert(artist.getGenres())))
+                //.peek(artist -> artist.setImages(imageRepository.upsert(artist.getImages())))
+                .map(artistRepository::upsert);
     }
 }

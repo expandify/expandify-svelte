@@ -7,7 +7,9 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class Followers {
-    private String href;
-    private Integer total;
+public class Copyright {
+
+    private String text;
+
+    private String type;
 }

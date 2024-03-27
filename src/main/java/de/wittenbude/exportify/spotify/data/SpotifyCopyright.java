@@ -23,6 +23,6 @@ public class SpotifyCopyright {
         @JsonProperty("p")
         P("p");
 
-        public final String type;
+        private final String type;
     }
 }
