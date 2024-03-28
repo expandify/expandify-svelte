@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface SpotifyUserClient {
 
     @GetMapping
-    SpotifyPrivateUser getCurrentUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String authorizationHeader);
+    SpotifyPrivateUser getCurrentUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authorizationHeader);
 
     @GetMapping
     SpotifyPrivateUser getCurrentUser();

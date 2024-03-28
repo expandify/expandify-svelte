@@ -1,24 +1,21 @@
 package de.wittenbude.exportify.repositories;
 
-import de.wittenbude.exportify.models.PrivateUser;
+import de.wittenbude.exportify.models.PrivateSpotifyUser;
+import de.wittenbude.exportify.models.comparators.UserEquality;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 import java.util.UUID;
 
 
-public interface PrivateUserRepository extends CrudRepository<PrivateUser, UUID> {
+public interface PrivateUserRepository extends CrudRepository<PrivateSpotifyUser, UUID> {
 
-    Optional<PrivateUser> findByPublicUser_SpotifyID(String spotifyID);
+    Optional<PrivateSpotifyUser> findFirstBySpotifyIDOrderByVersionTimestampDesc(String spotifyID);
 
 
-    default PrivateUser upsert(PrivateUser privateUser) {
-        String spotifyID = privateUser.getPublicUser().getSpotifyID();
-
-        this.findByPublicUser_SpotifyID(spotifyID)
-                .map(PrivateUser::getId)
-                .ifPresent(privateUser::setId);
-
-        return this.save(privateUser);
+    default PrivateSpotifyUser upsert(PrivateSpotifyUser privateSpotifyUser) {
+        return this.findFirstBySpotifyIDOrderByVersionTimestampDesc(privateSpotifyUser.getSpotifyID())
+                .filter(u -> UserEquality.equals(u, privateSpotifyUser))
+                .orElseGet(() -> this.save(privateSpotifyUser));
     }
 }

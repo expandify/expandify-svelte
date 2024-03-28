@@ -5,14 +5,18 @@ import de.wittenbude.exportify.models.embeds.Copyright;
 import de.wittenbude.exportify.models.embeds.ExternalIDs;
 import de.wittenbude.exportify.models.embeds.Image;
 import de.wittenbude.exportify.models.embeds.ReleaseDatePrecision;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.type.SqlTypes;
 
+import java.time.Instant;
 import java.util.*;
 
 @Getter
@@ -24,65 +28,49 @@ public class Album {
     @Id
     @GeneratedValue
     private UUID id;
+
+    @CreationTimestamp
+    private Instant versionTimestamp;
+
     private String albumType;
     private Integer totalTracks;
-
-    @ElementCollection
-    private List<CountryCode> availableMarkets;
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, String> externalUrls;
     private String href;
-
-    @Column(unique = true)
     private String spotifyID;
-
-    @ElementCollection
-    private List<Image> images;
-
     private String name;
     private String releaseDate;
     private ReleaseDatePrecision releaseDatePrecision;
     private String restrictions;
     private String spotifyObjectType;
     private String uri;
-
-    @ManyToMany
-    @JoinTable
-    private Set<Artist> artists;
-
-    @OneToMany(mappedBy = "album", orphanRemoval = true)
-    private List<Track> tracks;
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    private List<Copyright> copyrights;
-
     private ExternalIDs externalIDs;
-
-    @ElementCollection
-    private List<String> genres;
     private String label;
     private Integer popularity;
 
-    public Album setArtists(Set<Artist> artists) {
-        if (this.artists == null) {
-            this.artists = artists;
-            return this;
-        }
-        this.artists.clear();
-        this.artists.addAll(artists);
-        return this;
-    }
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Collection<Copyright> copyrights;
 
-    public Album setTracks(List<Track> tracks) {
-        if (this.tracks == null) {
-            this.tracks = tracks;
-            return this;
-        }
-        this.tracks.clear();
-        this.tracks.addAll(tracks);
-        return this;
-    }
+    //@ElementCollection
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Collection<Image> images;
+
+    //@ElementCollection
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private Collection<CountryCode> availableMarkets;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Map<String, String> externalUrls;
+
+    //@ElementCollection
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private Collection<String> genres;
+
+    //@ElementCollection
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private List<String> spotifyArtistIDs;
+
+    //@ElementCollection
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private List<String> spotifyTrackIDs;
 
     @Override
     public final boolean equals(Object o) {
@@ -99,6 +87,5 @@ public class Album {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
-
 }
 

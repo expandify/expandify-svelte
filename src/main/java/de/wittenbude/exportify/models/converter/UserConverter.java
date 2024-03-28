@@ -2,64 +2,65 @@ package de.wittenbude.exportify.models.converter;
 
 import de.wittenbude.exportify.dto.PrivateUserSchema;
 import de.wittenbude.exportify.dto.PublicUserSchema;
-import de.wittenbude.exportify.models.PrivateUser;
-import de.wittenbude.exportify.models.PublicUser;
-import de.wittenbude.exportify.spotify.data.SpotifyExplicitContent;
+import de.wittenbude.exportify.models.PrivateSpotifyUser;
+import de.wittenbude.exportify.models.PublicSpotifyUser;
 import de.wittenbude.exportify.spotify.data.SpotifyPrivateUser;
 import de.wittenbude.exportify.spotify.data.SpotifyPublicUser;
 
 public class UserConverter {
 
 
-    public static PrivateUserSchema toDTO(PrivateUser privateUser) {
+    public static PrivateUserSchema toDTO(PrivateSpotifyUser privateSpotifyUser, PublicSpotifyUser publicSpotifyUser) {
         return PrivateUserSchema
                 .builder()
-                .id(privateUser.getId())
-                .displayName(privateUser.getPublicUser().getDisplayName())
-                .externalUrls(privateUser.getPublicUser().getExternalUrls())
-                .followers(privateUser.getPublicUser().getFollowers())
-                .href(privateUser.getPublicUser().getHref())
-                .spotifyID(privateUser.getPublicUser().getSpotifyID())
-                .images(ImageConverter.toDTOs(privateUser.getPublicUser().getImages()))
-                .type(privateUser.getPublicUser().getSpotifyObjectType())
-                .uri(privateUser.getPublicUser().getUri())
-                .country(privateUser.getCountry())
-                .email(privateUser.getEmail())
-                .explicitContentFilterEnabled(privateUser.getExplicitContent().getFilterEnabled())
-                .explicitContentFilterLocked(privateUser.getExplicitContent().getFilterLocked())
-                .product(privateUser.getSpotifyProductType())
+                .id(privateSpotifyUser.getId())
+                .displayName(publicSpotifyUser.getDisplayName())
+                .externalUrls(publicSpotifyUser.getExternalUrls())
+                .followers(publicSpotifyUser.getFollowers())
+                .href(publicSpotifyUser.getHref())
+                .spotifyID(publicSpotifyUser.getSpotifyID())
+                .images(ImageConverter.toDTOs(publicSpotifyUser.getImages()))
+                .type(publicSpotifyUser.getSpotifyObjectType())
+                .uri(publicSpotifyUser.getUri())
+                .country(privateSpotifyUser.getCountry())
+                .email(privateSpotifyUser.getEmail())
+                .explicitContentFilterEnabled(privateSpotifyUser.getExplicitContentFilterEnabled())
+                .explicitContentFilterLocked(privateSpotifyUser.getExplicitContentFilterLocked())
+                .product(privateSpotifyUser.getSpotifyProductType())
                 .build();
     }
 
 
-    public static PublicUserSchema toDTO(PublicUser publicUser) {
+    public static PublicUserSchema toDTO(PublicSpotifyUser publicSpotifyUser) {
         return PublicUserSchema
                 .builder()
-                .id(publicUser.getId())
-                .displayName(publicUser.getDisplayName())
-                .externalUrls(publicUser.getExternalUrls())
-                .followers(publicUser.getFollowers())
-                .href(publicUser.getHref())
-                .spotifyID(publicUser.getSpotifyID())
-                .images(ImageConverter.toDTOs(publicUser.getImages()))
-                .type(publicUser.getSpotifyObjectType())
-                .uri(publicUser.getUri())
+                .id(publicSpotifyUser.getId())
+                .displayName(publicSpotifyUser.getDisplayName())
+                .externalUrls(publicSpotifyUser.getExternalUrls())
+                .followers(publicSpotifyUser.getFollowers())
+                .href(publicSpotifyUser.getHref())
+                .spotifyID(publicSpotifyUser.getSpotifyID())
+                .images(ImageConverter.toDTOs(publicSpotifyUser.getImages()))
+                .type(publicSpotifyUser.getSpotifyObjectType())
+                .uri(publicSpotifyUser.getUri())
                 .build();
     }
 
 
-    public static PrivateUser from(SpotifyPrivateUser spotifyPrivateUser) {
-        return new PrivateUser()
-                .setPublicUser(UserConverter.from((SpotifyPublicUser) spotifyPrivateUser))
+    public static PrivateSpotifyUser from(SpotifyPrivateUser spotifyPrivateUser) {
+        return new PrivateSpotifyUser()
+                .setSpotifyID(spotifyPrivateUser.getId())
+                .setPublicSpotifyUserID(spotifyPrivateUser.getId())
                 .setCountry(spotifyPrivateUser.getCountry())
                 .setEmail(spotifyPrivateUser.getEmail())
                 .setSpotifyProductType(spotifyPrivateUser.getProduct().getType())
-                .setExplicitContent(UserConverter.from(spotifyPrivateUser.getSpotifyExplicitContent()));
+                .setExplicitContentFilterLocked(spotifyPrivateUser.getSpotifyExplicitContent().getFilterLocked())
+                .setExplicitContentFilterEnabled(spotifyPrivateUser.getSpotifyExplicitContent().getFilterEnabled());
     }
 
 
-    public static PublicUser from(SpotifyPublicUser spotifyPublicUser) {
-        return new PublicUser()
+    public static PublicSpotifyUser from(SpotifyPublicUser spotifyPublicUser) {
+        return new PublicSpotifyUser()
                 .setDisplayName(spotifyPublicUser.getDisplayName())
                 .setExternalUrls(spotifyPublicUser.getExternalUrls())
                 .setFollowers(spotifyPublicUser.getSpotifyFollowers().getTotal())
@@ -68,11 +69,5 @@ public class UserConverter {
                 .setImages(ImageConverter.from(spotifyPublicUser.getSpotifyImages()))
                 .setSpotifyObjectType(spotifyPublicUser.getType().getType())
                 .setUri(spotifyPublicUser.getUri());
-    }
-
-    public static PrivateUser.ExplicitContent from(SpotifyExplicitContent spotifyExplicitContent) {
-        return new PrivateUser.ExplicitContent()
-                .setFilterEnabled(spotifyExplicitContent.getFilterEnabled())
-                .setFilterLocked(spotifyExplicitContent.getFilterLocked());
     }
 }

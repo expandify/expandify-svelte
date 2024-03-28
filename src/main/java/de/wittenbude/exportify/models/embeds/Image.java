@@ -1,6 +1,6 @@
 package de.wittenbude.exportify.models.embeds;
 
-import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-@Embeddable
+@EqualsAndHashCode
 public class Image {
 
     private String url;

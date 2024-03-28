@@ -34,6 +34,9 @@ public class SecurityConfig {
                         .requestMatchers(AUTHORIZATION_PATH).permitAll()
                         .requestMatchers(AUTHORIZATION_CALLBACK_PATH).permitAll()
                         .requestMatchers(AUTHENTICATION_TOKEN_PATH).permitAll()
+
+                        //TODO Actuator Security
+                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

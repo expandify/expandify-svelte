@@ -1,14 +1,18 @@
 package de.wittenbude.exportify.models;
 
 import de.wittenbude.exportify.models.embeds.Image;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.type.SqlTypes;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -23,24 +27,28 @@ public class Artist {
     @GeneratedValue
     private UUID id;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, String> externalUrls;
+    @CreationTimestamp
+    private Instant versionTimestamp;
+
     private Integer followers;
-
-    @ElementCollection
-    private List<String> genres;
     private String href;
-
-    @Column(unique = true)
     private String spotifyID;
-
-    @ElementCollection
-    private List<Image> images;
-
     private String name;
     private Integer popularity;
     private String spotifyObjectType;
     private String uri;
+
+    //@ElementCollection
+    @JdbcTypeCode(SqlTypes.JSON)
+    private List<Image> images;
+
+    //@ElementCollection
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private List<String> genres;
+
+    //@JdbcTypeCode(SqlTypes.JSON)
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private Map<String, String> externalUrls;
 
     @Override
     public final boolean equals(Object o) {

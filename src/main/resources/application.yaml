@@ -11,6 +11,11 @@ spring:
     hibernate:
       ddl-auto: update
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,mappings,startup,prometheus
 
 spotify-auth:
   redirect-uri: http://localhost:8080/authorize/callback
@@ -36,3 +41,4 @@ spotify-auth:
     - user-read-private
     - user-read-recently-played
     - user-top-read
+

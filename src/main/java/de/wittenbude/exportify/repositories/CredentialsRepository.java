@@ -1,20 +1,23 @@
 package de.wittenbude.exportify.repositories;
 
-import de.wittenbude.exportify.models.Credentials;
+import de.wittenbude.exportify.models.SpotifyCredentials;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface CredentialsRepository extends CrudRepository<Credentials, UUID> {
-    Optional<Credentials> findByUser_Id(UUID id);
+public interface CredentialsRepository extends CrudRepository<SpotifyCredentials, UUID> {
 
-    default Credentials upsert(Credentials credentials) {
-        this.findByUser_Id(credentials.getUser().getId())
-                .map(Credentials::getId)
-                .ifPresent(credentials::setId);
+    @Query("select s from SpotifyCredentials s where s.exportifyUser.id = :userID")
+    Optional<SpotifyCredentials> findByUserID(UUID userID);
 
-        return this.save(credentials);
 
+    default SpotifyCredentials upsert(SpotifyCredentials spotifyCredentials) {
+        this.findByUserID(spotifyCredentials.getExportifyUser().getId())
+                .map(SpotifyCredentials::getId)
+                .ifPresent(spotifyCredentials::setId);
+
+        return this.save(spotifyCredentials);
     }
 }

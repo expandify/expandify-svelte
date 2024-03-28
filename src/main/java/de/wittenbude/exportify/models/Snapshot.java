@@ -1,37 +1,49 @@
 package de.wittenbude.exportify.models;
 
-import com.neovisionaries.i18n.CountryCode;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.proxy.HibernateProxy;
-import org.hibernate.type.SqlTypes;
 
+import java.time.Instant;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Accessors(chain = true)
 @Entity
-public class PrivateUser {
+public class Snapshot {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private UUID id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(nullable = false, unique = true)
-    private PublicUser publicUser;
+    @CreationTimestamp
+    private Instant snapshotDate;
 
-    private CountryCode country;
-    private String email;
+    @ManyToOne
+    @JoinColumn
+    private ExportifyUser exportifyUser;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    private ExplicitContent explicitContent;
-    private String spotifyProductType;
+    @ManyToMany
+    @JoinTable
+    private Set<Artist> artists;
+
+    @ManyToMany
+    @JoinTable
+    private Set<Track> tracks;
+
+    @ManyToMany
+    @JoinTable
+    private Set<Album> albums;
+
+    //@ManyToMany
+    //@JoinTable
+    //private Set<Playlist> playlists;
 
     @Override
     public final boolean equals(Object o) {
@@ -40,21 +52,12 @@ public class PrivateUser {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        PrivateUser that = (PrivateUser) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        Snapshot snapshot = (Snapshot) o;
+        return getId() != null && Objects.equals(getId(), snapshot.getId());
     }
 
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
-
-    @Getter
-    @Setter
-    @Accessors(chain = true)
-    public static class ExplicitContent {
-        private Boolean filterEnabled;
-        private Boolean filterLocked;
-    }
 }
-

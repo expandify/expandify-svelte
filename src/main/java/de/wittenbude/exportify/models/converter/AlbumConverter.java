@@ -1,17 +1,14 @@
 package de.wittenbude.exportify.models.converter;
 
 import de.wittenbude.exportify.models.Album;
-import de.wittenbude.exportify.models.Artist;
-import de.wittenbude.exportify.models.Track;
 import de.wittenbude.exportify.spotify.data.SpotifyAlbum;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 public class AlbumConverter {
 
-    public static Album from(SpotifyAlbum spotifyAlbum, Set<Artist> artists, List<Track> tracks) {
+    public static Album from(SpotifyAlbum spotifyAlbum, List<String> spotifyArtistIDs, List<String> spotifyTrackIDs) {
         return new Album()
                 .setId(null)
                 .setAlbumType(spotifyAlbum.getAlbumType().getType())
@@ -27,8 +24,8 @@ public class AlbumConverter {
                 .setRestrictions(spotifyAlbum.getRestrictions().getReason())
                 .setSpotifyObjectType(spotifyAlbum.getType().getType())
                 .setUri(spotifyAlbum.getUri())
-                .setArtists(artists)
-                .setTracks(tracks)
+                .setSpotifyArtistIDs(spotifyArtistIDs)
+                .setSpotifyTrackIDs(spotifyTrackIDs)
                 .setCopyrights(CopyrightConverter.from(spotifyAlbum.getCopyrights()))
                 .setExternalIDs(ExternalIDsConverter.from(spotifyAlbum.getExternalIDs()))
                 .setGenres(Arrays.asList(spotifyAlbum.getGenres()))

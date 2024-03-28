@@ -2,15 +2,23 @@ package de.wittenbude.exportify.models;
 
 import com.neovisionaries.i18n.CountryCode;
 import de.wittenbude.exportify.models.embeds.ExternalIDs;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.type.SqlTypes;
 
-import java.util.*;
+import java.time.Instant;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -22,21 +30,13 @@ public class Track {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToMany
-    @JoinTable
-    private Set<Artist> artists = new LinkedHashSet<>();
+    @CreationTimestamp
+    private Instant versionTimestamp;
 
-    @ElementCollection
-    private Set<CountryCode> availableMarkets;
     private Integer discNumber;
     private Integer durationMs;
     private Boolean explicit;
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, String> externalUrls;
     private String href;
-
-    @Column(unique = true)
     private String spotifyID;
     private Boolean isPlayable;
     private String restrictions;
@@ -46,24 +46,21 @@ public class Track {
     private String spotifyObjectType;
     private String uri;
     private Boolean isLocal;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(nullable = false)
-    private Album album;
-
     private ExternalIDs externalIDs;
     private Integer popularity;
 
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Map<String, String> externalUrls;
 
-    public Track setArtists(Set<Artist> artists) {
-        if (this.artists == null) {
-            this.artists = artists;
-            return this;
-        }
-        this.artists.clear();
-        this.artists.addAll(artists);
-        return this;
-    }
+    //@ElementCollection
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private Set<CountryCode> availableMarkets;
+
+    private String spotifyAlbumID;
+
+    //@ElementCollection
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private Set<String> spotifyArtistIDs;
 
     @Override
     public final boolean equals(Object o) {

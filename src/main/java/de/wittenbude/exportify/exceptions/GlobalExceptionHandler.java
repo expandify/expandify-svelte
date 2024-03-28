@@ -10,7 +10,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidRedirectUriException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleProductNotFoundException(InvalidRedirectUriException ex) {
+    public ErrorResponse handleInvalidRedirectUriException(InvalidRedirectUriException ex) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleEntityNotFoundException(EntityNotFoundException ex) {
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
+
+
 }

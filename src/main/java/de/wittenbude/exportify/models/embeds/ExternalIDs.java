@@ -1,6 +1,7 @@
 package de.wittenbude.exportify.models.embeds;
 
 import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -9,9 +10,12 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @Embeddable
+@EqualsAndHashCode
 public class ExternalIDs {
 
     private String isrc;
     private String ean;
     private String upc;
+
+
 }

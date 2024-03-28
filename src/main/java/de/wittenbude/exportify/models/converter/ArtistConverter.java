@@ -5,6 +5,7 @@ import de.wittenbude.exportify.models.Artist;
 import de.wittenbude.exportify.spotify.data.SpotifyArtist;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,4 +50,10 @@ public class ArtistConverter {
                 .collect(Collectors.toSet());
     }
 
+    public static Collection<ArtistSchema> toDTOs(Set<Artist> artists) {
+        return artists
+                .stream()
+                .map(ArtistConverter::toDTO)
+                .toList();
+    }
 }
