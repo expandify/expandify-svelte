@@ -11,7 +11,7 @@ public class SpotifyTrack extends SpotifyTrackSimplified {
     @JsonProperty("album")
     private SpotifyAlbumSimplified album;
 
-    @JsonProperty("album")
+    @JsonProperty("artists")
     private SpotifyArtist[] artists;
 
     @JsonProperty("external_ids")

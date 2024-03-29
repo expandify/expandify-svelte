@@ -5,7 +5,7 @@ import de.wittenbude.exportify.models.Album;
 import java.util.Objects;
 
 public class AlbumEquality {
-    public static boolean isSameVersion(Album a, Album b) {
+    public static boolean equals(Album a, Album b) {
 
         if (a.getId() != null ? a.getId().equals(b.getId()) : b.getId() != null) {
             return true;

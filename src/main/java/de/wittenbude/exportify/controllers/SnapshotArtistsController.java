@@ -13,10 +13,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/snapshot/{snapshot}/artists")
-public class SnapshotArtistController {
+public class SnapshotArtistsController {
     private final ArtistService artistService;
 
-    public SnapshotArtistController(ArtistService artistService) {
+    public SnapshotArtistsController(ArtistService artistService) {
         this.artistService = artistService;
     }
 

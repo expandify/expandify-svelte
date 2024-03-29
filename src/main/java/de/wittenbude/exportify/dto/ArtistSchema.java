@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -14,6 +15,9 @@ public class ArtistSchema {
 
     @JsonProperty("id")
     private final UUID id;
+
+    @JsonProperty("version_timestamp")
+    private final Instant versionTimestamp;
 
     @JsonProperty("external_urls")
     private final Map<String, String> externalUrls;
@@ -40,7 +44,7 @@ public class ArtistSchema {
     private final Integer popularity;
 
     @JsonProperty("type")
-    private final String type;
+    private final String spotifyObjectType;
 
     @JsonProperty("uri")
     private final String uri;

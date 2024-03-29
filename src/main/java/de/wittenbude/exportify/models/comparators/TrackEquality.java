@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class TrackEquality {
 
-    public static boolean isSameVersion(Track a, Track b) {
+    public static boolean equals(Track a, Track b) {
 
         if (a.getId() != null ? a.getId().equals(b.getId()) : b.getId() != null) {
             return true;

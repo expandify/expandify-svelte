@@ -7,6 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
 
 @FeignClient(
@@ -17,4 +18,8 @@ public interface SpotifyArtistsClient {
     @GetMapping("/me/following?type=artist")
     Map<String, SpotifyCursorPage<SpotifyArtist>> getFollowing(@RequestParam(required = false) String after,
                                                                @RequestParam(required = false) Integer limit);
+
+
+    @GetMapping("/artists")
+    Map<String, List<SpotifyArtist>> getArtists(@RequestParam String ids);
 }

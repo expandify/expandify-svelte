@@ -22,4 +22,8 @@ public class AccessTokenInterceptor {
         };
     }
 
+    // TODO intercept responses for 429 Rate Limiting
+    // https://www.baeldung.com/spring-retry
+    // https://stackoverflow.com/questions/37614202/feign-retry-depending-on-response-status
+
 }

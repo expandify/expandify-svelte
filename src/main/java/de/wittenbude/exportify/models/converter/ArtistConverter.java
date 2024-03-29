@@ -15,6 +15,7 @@ public class ArtistConverter {
         return ArtistSchema
                 .builder()
                 .id(artist.getId())
+                .versionTimestamp(artist.getVersionTimestamp())
                 .externalUrls(artist.getExternalUrls())
                 .followers(artist.getFollowers())
                 .genres(artist.getGenres())
@@ -23,7 +24,7 @@ public class ArtistConverter {
                 .spotifyImages(ImageConverter.toDTOs(artist.getImages()))
                 .name(artist.getName())
                 .popularity(artist.getPopularity())
-                .type(artist.getSpotifyObjectType())
+                .spotifyObjectType(artist.getSpotifyObjectType())
                 .uri(artist.getUri())
                 .build();
     }

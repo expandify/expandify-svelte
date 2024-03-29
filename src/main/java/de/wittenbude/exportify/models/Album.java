@@ -49,26 +49,21 @@ public class Album {
     @JdbcTypeCode(SqlTypes.JSON)
     private Collection<Copyright> copyrights;
 
-    //@ElementCollection
     @JdbcTypeCode(SqlTypes.JSON)
     private Collection<Image> images;
 
-    //@ElementCollection
     @JdbcTypeCode(SqlTypes.ARRAY)
     private Collection<CountryCode> availableMarkets;
 
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, String> externalUrls;
 
-    //@ElementCollection
     @JdbcTypeCode(SqlTypes.ARRAY)
     private Collection<String> genres;
 
-    //@ElementCollection
     @JdbcTypeCode(SqlTypes.ARRAY)
     private List<String> spotifyArtistIDs;
 
-    //@ElementCollection
     @JdbcTypeCode(SqlTypes.ARRAY)
     private List<String> spotifyTrackIDs;
 

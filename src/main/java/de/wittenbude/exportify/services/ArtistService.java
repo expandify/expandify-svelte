@@ -7,12 +7,13 @@ import de.wittenbude.exportify.repositories.ArtistRepository;
 import de.wittenbude.exportify.repositories.SnapshotRepository;
 import de.wittenbude.exportify.request.CurrentUser;
 import de.wittenbude.exportify.spotify.clients.SpotifyArtistsClient;
+import de.wittenbude.exportify.spotify.data.SpotifyArtistSimplified;
 import de.wittenbude.exportify.spotify.data.SpotifyCursorPage;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -34,14 +35,26 @@ public class ArtistService {
     }
 
 
-    public Set<Artist> loadFollowedArtists() {
+    public Stream<Artist> loadFollowedArtists() {
         return SpotifyCursorPage
                 .streamPagination(after -> spotifyArtistsClient
                         .getFollowing(after, 50)
                         .get("artists"))
                 .map(ArtistConverter::from)
-                .map(artistRepository::upsert)
-                .collect(Collectors.toSet());
+                .map(artistRepository::upsert);
+    }
+
+    public Stream<Artist> loadArtists(SpotifyArtistSimplified[] artists) {
+        return loadArtists(Arrays.stream(artists).map(SpotifyArtistSimplified::getId).toList());
+    }
+
+    public Stream<Artist> loadArtists(List<String> spotifyIDs) {
+        return spotifyArtistsClient
+                .getArtists(String.join(",", spotifyIDs))
+                .get("artists")
+                .stream()
+                .map(ArtistConverter::from)
+                .map(artistRepository::upsert);
     }
 
 
@@ -51,7 +64,7 @@ public class ArtistService {
                 .orElseThrow(() -> new EntityNotFoundException("snapshot %s does not exist".formatted(snapshot)));
 
         return artistRepository
-                .getArtistFromSnapshot(snapshot, spotifyArtistID)
+                .getFromSnapshot(snapshot, spotifyArtistID)
                 .orElseThrow(() -> new EntityNotFoundException("artist %s does not exist in snapshot %s"
                         .formatted(snapshot, spotifyArtistID)));
     }
@@ -62,7 +75,7 @@ public class ArtistService {
                 .orElseThrow(() -> new EntityNotFoundException("snapshot %s does not exist".formatted(snapshot)));
 
         return artistRepository
-                .getArtistsFromSnapshot(snapshot)
+                .getFromSnapshot(snapshot)
                 .stream();
     }
 }

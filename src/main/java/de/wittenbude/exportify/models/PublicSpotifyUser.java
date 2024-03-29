@@ -36,8 +36,6 @@ public class PublicSpotifyUser {
     private String spotifyObjectType;
     private String uri;
 
-
-    //@ElementCollection
     @JdbcTypeCode(SqlTypes.JSON)
     private List<Image> images;
 

@@ -33,13 +33,19 @@ public class Snapshot {
     @JoinTable
     private Set<Artist> artists;
 
-    @ManyToMany
-    @JoinTable
-    private Set<Track> tracks;
+    //@ManyToMany
+    //@JoinTable
+    //private Set<Track> tracks;
 
-    @ManyToMany
-    @JoinTable
-    private Set<Album> albums;
+    @ElementCollection
+    private Set<SavedTrack> savedTracks;
+
+    //@ManyToMany
+    //@JoinTable
+    //private Set<Album> albums;
+
+    @ElementCollection
+    private Set<SavedAlbum> savedAlbums;
 
     //@ManyToMany
     //@JoinTable
@@ -59,5 +65,31 @@ public class Snapshot {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    @Getter
+    @Setter
+    @Accessors(chain = true)
+    @Embeddable
+    public static class SavedAlbum {
+
+        private Instant savedAt;
+
+        @OneToOne
+        @JoinColumn
+        private Album album;
+    }
+
+    @Getter
+    @Setter
+    @Accessors(chain = true)
+    @Embeddable
+    public static class SavedTrack {
+
+        private Instant savedAt;
+
+        @OneToOne
+        @JoinColumn
+        private Track track;
     }
 }

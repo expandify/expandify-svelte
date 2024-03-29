@@ -38,15 +38,12 @@ public class Artist {
     private String spotifyObjectType;
     private String uri;
 
-    //@ElementCollection
     @JdbcTypeCode(SqlTypes.JSON)
     private List<Image> images;
 
-    //@ElementCollection
     @JdbcTypeCode(SqlTypes.ARRAY)
     private List<String> genres;
 
-    //@JdbcTypeCode(SqlTypes.JSON)
     @JdbcTypeCode(SqlTypes.ARRAY)
     private Map<String, String> externalUrls;
 

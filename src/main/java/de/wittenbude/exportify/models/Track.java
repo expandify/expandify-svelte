@@ -15,9 +15,9 @@ import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -52,15 +52,13 @@ public class Track {
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, String> externalUrls;
 
-    //@ElementCollection
     @JdbcTypeCode(SqlTypes.ARRAY)
-    private Set<CountryCode> availableMarkets;
+    private List<CountryCode> availableMarkets;
 
     private String spotifyAlbumID;
 
-    //@ElementCollection
     @JdbcTypeCode(SqlTypes.ARRAY)
-    private Set<String> spotifyArtistIDs;
+    private List<String> spotifyArtistIDs;
 
     @Override
     public final boolean equals(Object o) {
