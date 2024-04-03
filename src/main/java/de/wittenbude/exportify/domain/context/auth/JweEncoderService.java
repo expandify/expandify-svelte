@@ -14,7 +14,7 @@ import java.util.Date;
 import static org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames.TOKEN_TYPE;
 
 @Component
-class JweEncoderService {
+public class JweEncoderService {
     private final RSAKey rsaKey;
 
     public JweEncoderService(RSAKey rsaKey) {

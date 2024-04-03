@@ -1,6 +1,6 @@
 package de.wittenbude.exportify.infrastructure.spotify;
 
-import de.wittenbude.exportify.domain.context.credentials.CurrentValidCredentials;
+import de.wittenbude.exportify.domain.context.auth.AuthenticatedUser;
 import feign.RequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
@@ -8,12 +8,13 @@ import org.springframework.http.HttpHeaders;
 public class CredentialsInterceptor {
 
     @Bean
-    public RequestInterceptor requestInterceptor(CurrentValidCredentials currentValidCredentials) {
+    public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
             if (requestTemplate.headers().containsKey(HttpHeaders.AUTHORIZATION)) {
                 return;
             }
-            requestTemplate.header(HttpHeaders.AUTHORIZATION, "Bearer " + currentValidCredentials.get().getAccessToken());
+            String accessToken = AuthenticatedUser.getSecurityContext().getCredentials().getAccessToken();
+            requestTemplate.header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         };
     }
 }

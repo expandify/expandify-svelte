@@ -12,9 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Service
-class CredentialsService {
+public class CredentialsService {
 
     private final CredentialsRepository credentialsRepository;
     private final SpotifyCredentialsMapper spotifyCredentialsMapper;
@@ -29,23 +30,27 @@ class CredentialsService {
     }
 
     @EventListener
-    public SpotifyCredentials link(UserAuthenticatedEvent event) {
+    private CompletableFuture<SpotifyCredentials> link(UserAuthenticatedEvent event) {
 
         SpotifyCredentials newCredentials = spotifyCredentialsMapper.toEntity(event.getTokenResponse());
         ExportifyUser user = event.getExportifyUser();
         UUID id = Optional.ofNullable(event.getOldCredentials())
                 .map(SpotifyCredentials::getId)
                 .orElse(null);
-        return credentialsRepository
+        return CompletableFuture.completedFuture(credentialsRepository
                 .upsert(newCredentials
                         .setExportifyUser(user)
-                        .setId(id));
+                        .setId(id)));
     }
 
 
-    SpotifyCredentials refreshCredentials(SpotifyCredentials credentials) {
+    public SpotifyCredentials refreshCredentials(SpotifyCredentials credentials) {
         SpotifyTokenResponse tokenResponse = spotifyAuthenticationClient.refresh(credentials.getRefreshToken());
 
-        return this.link(new UserAuthenticatedEvent(tokenResponse, credentials.getExportifyUser(), credentials));
+        try {
+            return this.link(new UserAuthenticatedEvent(tokenResponse, credentials.getExportifyUser(), credentials)).get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

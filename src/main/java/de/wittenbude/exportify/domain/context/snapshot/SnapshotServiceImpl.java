@@ -2,7 +2,7 @@ package de.wittenbude.exportify.domain.context.snapshot;
 
 import de.wittenbude.exportify.domain.context.album.AlbumService;
 import de.wittenbude.exportify.domain.context.artist.ArtistService;
-import de.wittenbude.exportify.domain.context.exportifyuser.CurrentUser;
+import de.wittenbude.exportify.domain.context.auth.AuthenticatedUser;
 import de.wittenbude.exportify.domain.context.track.TrackService;
 import de.wittenbude.exportify.domain.entities.Artist;
 import de.wittenbude.exportify.domain.entities.SavedAlbum;
@@ -18,18 +18,15 @@ import java.util.UUID;
 class SnapshotServiceImpl implements SnapshotService {
 
     private final SnapshotRepository snapshotRepository;
-    private final CurrentUser currentUser;
     private final ArtistService artistService;
     private final AlbumService albumService;
     private final TrackService trackService;
 
     public SnapshotServiceImpl(SnapshotRepository snapshotRepository,
-                               CurrentUser currentUser,
                                ArtistService artistService,
                                AlbumService albumService,
                                TrackService trackService) {
         this.snapshotRepository = snapshotRepository;
-        this.currentUser = currentUser;
         this.artistService = artistService;
         this.albumService = albumService;
         this.trackService = trackService;
@@ -44,17 +41,17 @@ class SnapshotServiceImpl implements SnapshotService {
         Set<SavedTrack> tracks = trackService.loadSavedTracks();
 
         return snapshotRepository.save(new Snapshot()
-                .setExportifyUser(currentUser.getUser())
+                .setExportifyUser(AuthenticatedUser.getSecurityContext().getUser()))
                 .setArtists(artists)
                 .setSavedTracks(tracks)
-                .setSavedAlbums(albums));
+                .setSavedAlbums(albums);
     }
 
     @Override
     public Snapshot get(UUID id) {
         return snapshotRepository
                 .findById(id)
-                .filter(snapshot -> snapshot.getExportifyUser().getId() == currentUser.getID())
+                .filter(snapshot -> snapshot.getExportifyUser().getId() == AuthenticatedUser.getSecurityContext().getID())
                 .orElseThrow(() -> new EntityNotFoundException("snapshot %s does not exist".formatted(id)));
     }
 }
