@@ -1,10 +1,9 @@
-name: GraalVM Native Image builds
 on:
   push:
     tags: ['**']
 jobs:
   build:
-    name: Exportify on ${{ matrix.os }}
+    name: Build Native Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,4 +27,4 @@ jobs:
       #  uses: docker/setup-buildx-action@v2
 
       - name: Spring Boot Build Image
-        run: ./gradlew -Pversion==${GITHUB_REF##*/} bootBuildImage # --tags # --imageName==docker.io/library/${project.name}:${project.version}
+        run: ./gradlew -Pversion=${GITHUB_REF##*/} bootBuildImage # --tags # --imageName==docker.io/library/${project.name}:${project.version}
