@@ -3,16 +3,15 @@ package de.wittenbude.exportify.domain.context.artist;
 import de.wittenbude.exportify.domain.entities.Artist;
 import de.wittenbude.exportify.domain.events.AlbumLoadedEvent;
 import de.wittenbude.exportify.domain.events.ArtistsLoadedEvent;
+import de.wittenbude.exportify.domain.exception.EntityNotFoundException;
 import de.wittenbude.exportify.infrastructure.spotify.clients.SpotifyArtistClient;
 import de.wittenbude.exportify.infrastructure.spotify.data.SpotifyCursorPage;
 import de.wittenbude.exportify.infrastructure.spotify.mappers.SpotifyArtistMapper;
-import de.wittenbude.exportify.domain.exception.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -81,14 +80,6 @@ class ArtistServiceImpl implements ArtistService {
         event.getArtists()
                 .stream()
                 .map(spotifyArtistMapper::toEntity)
-                .peek(artist -> {
-                    try {
-                        Thread.sleep(Duration.ofSeconds(2));
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .peek(artist ->  log.info("Artist loaded {}", artist.getName()))
                 .forEach(artistRepository::upsert);
     }
 }
