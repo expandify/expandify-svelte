@@ -17,11 +17,15 @@ jobs:
           java-version: '21'
           cache: 'gradle'
 
-      - name: Build image
+
+      - name: Make Gradle Wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Clean
         run: ./gradlew clean
 
       #- name: Set up Docker Buildx
       #  uses: docker/setup-buildx-action@v2
 
-      - name: Docker Build
+      - name: Spring Boot Build Image
         run: ./gradlew -Pversion==${GITHUB_REF##*/} bootBuildImage # --tags # --imageName==docker.io/library/${project.name}:${project.version}
