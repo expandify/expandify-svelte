@@ -13,7 +13,7 @@ import org.mapstruct.ReportingPolicy;
 public interface SpotifyArtistMapper {
 
     @Mapping(target = "spotifyID", source = "id")
-    @Mapping(target = "spotifyObjectType", source = "type.type")
+    @Mapping(target = "spotifyObjectType", source = "type")
     @Mapping(target = "followers", source = "spotifyFollowers.total")
     @Mapping(target = "images", source = "spotifyImages")
     @Mapping(target = "id", ignore = true)

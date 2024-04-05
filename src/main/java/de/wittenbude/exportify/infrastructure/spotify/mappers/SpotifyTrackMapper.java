@@ -11,7 +11,7 @@ import org.mapstruct.ReportingPolicy;
 public interface SpotifyTrackMapper {
 
     @Mapping(target = "spotifyArtistIDs", expression = "java(spotifyTrack.getArtists().stream().map(a -> a.getId()).toList())")
-    @Mapping(target = "spotifyObjectType", source = "type.type")
+    @Mapping(target = "spotifyObjectType", source = "type")
     @Mapping(target = "restrictions", source = "restrictions.reason")
     @Mapping(target = "spotifyAlbumID", source = "album.id")
     @Mapping(target = "spotifyID", source = "id")

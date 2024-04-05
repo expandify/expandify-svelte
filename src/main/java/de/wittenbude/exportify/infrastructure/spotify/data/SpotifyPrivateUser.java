@@ -2,7 +2,6 @@ package de.wittenbude.exportify.infrastructure.spotify.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.neovisionaries.i18n.CountryCode;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,27 +22,22 @@ public class SpotifyPrivateUser extends SpotifyPublicUser {
 
 
     @Getter
-    @AllArgsConstructor
     public enum SpotifyProductType {
 
         @JsonProperty("basic-desktop")
-        BASIC_DESKTOP("basic-desktop"),
+        BASIC_DESKTOP,
 
         @JsonProperty("daypass")
-        DAYPASS("daypass"),
+        DAYPASS,
 
         @JsonProperty("free")
-        FREE("free"),
+        FREE,
 
         @JsonProperty("open")
-        OPEN("open"),
+        OPEN,
 
         @JsonProperty("premium")
-        PREMIUM("premium");
-
-
-        private final String type;
-
+        PREMIUM
     }
 
     @Getter

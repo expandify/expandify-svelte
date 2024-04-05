@@ -10,8 +10,6 @@ import java.util.Map;
 @Getter
 @Setter
 public class SpotifyPublicUser {
-    @JsonProperty("display_name")
-    protected String displayName;
 
     @JsonProperty("external_urls")
     protected Map<String, String> externalUrls;
@@ -25,13 +23,16 @@ public class SpotifyPublicUser {
     @JsonProperty("id")
     protected String id;
 
-    @JsonProperty("images")
-    protected List<SpotifyImage> spotifyImages;
-
     @JsonProperty("type")
     protected SpotifyObjectType type;
 
+    @JsonProperty("images")
+    protected List<SpotifyImage> spotifyImages;
+
     @JsonProperty("uri")
     protected String uri;
+
+    @JsonProperty("display_name")
+    protected String displayName;
 
 }

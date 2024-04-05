@@ -4,7 +4,7 @@ package de.wittenbude.exportify.application.mapper;
 import de.wittenbude.exportify.application.dto.AlbumSchema;
 import de.wittenbude.exportify.application.dto.SavedAlbumSchema;
 import de.wittenbude.exportify.domain.entities.Album;
-import de.wittenbude.exportify.domain.entities.SavedAlbum;
+import de.wittenbude.exportify.domain.valueobjects.SavedAlbum;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

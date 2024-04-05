@@ -1,12 +1,12 @@
 package de.wittenbude.exportify.domain.entities;
 
 import com.neovisionaries.i18n.CountryCode;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import de.wittenbude.exportify.domain.valueobjects.Copyright;
+import de.wittenbude.exportify.domain.valueobjects.ExternalIDs;
+import de.wittenbude.exportify.domain.valueobjects.Image;
+import de.wittenbude.exportify.domain.valueobjects.SpotifyObjectType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -42,11 +42,13 @@ public class Album {
     private String releaseDate;
     private ReleaseDatePrecision releaseDatePrecision;
     private String restrictions;
-    private String spotifyObjectType;
     private String uri;
     private ExternalIDs externalIDs;
     private String label;
     private Integer popularity;
+
+    @Enumerated(EnumType.STRING)
+    private SpotifyObjectType spotifyObjectType;
 
     @JdbcTypeCode(SqlTypes.JSON)
     private List<Copyright> copyrights;
@@ -93,36 +95,6 @@ public class Album {
         YEAR
     }
 
-    @Getter
-    @Setter
-    @Accessors(chain = true)
-    @Embeddable
-    @EqualsAndHashCode
-    public static class ExternalIDs {
-        private String isrc;
-        private String ean;
-        private String upc;
-    }
 
-    @Getter
-    @Setter
-    @Accessors(chain = true)
-    @EqualsAndHashCode
-    public static class Copyright {
-        private String text;
-        private String type;
-    }
-
-    @Getter
-    @Setter
-    @Accessors(chain = true)
-    @EqualsAndHashCode
-    public static class Image {
-
-        private String url;
-        private Integer height;
-        private Integer width;
-
-    }
 }
 

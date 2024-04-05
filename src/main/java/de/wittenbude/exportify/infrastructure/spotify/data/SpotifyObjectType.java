@@ -1,41 +1,36 @@
 package de.wittenbude.exportify.infrastructure.spotify.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public enum SpotifyObjectType {
 
     @JsonProperty("album")
-    ALBUM("album"),
+    ALBUM,
 
     @JsonProperty("artist")
-    ARTIST("artist"),
+    ARTIST,
 
     @JsonProperty("audio_features")
-    AUDIO_FEATURES("audio_features"),
+    AUDIO_FEATURES,
 
     @JsonProperty("episode")
-    EPISODE("episode"),
+    EPISODE,
 
     @JsonProperty("genre")
-    GENRE("genre"),
+    GENRE,
 
     @JsonProperty("playlist")
-    PLAYLIST("playlist"),
+    PLAYLIST,
 
     @JsonProperty("show")
-    SHOW("show"),
+    SHOW,
 
     @JsonProperty("track")
-    TRACK("track"),
+    TRACK,
 
     @JsonProperty("user")
-    USER("user");
-
-    private final String type;
-
+    USER
 
 }

@@ -2,7 +2,6 @@ package de.wittenbude.exportify.infrastructure.spotify.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.neovisionaries.i18n.CountryCode;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -60,58 +59,31 @@ public class SpotifyAlbumSimplified {
 
 
     @Getter
-    @AllArgsConstructor
     public enum SpotifyAlbumType {
 
         @JsonProperty("album")
-        ALBUM("album"),
+        ALBUM,
 
         @JsonProperty("compilation")
-        COMPILATION("compilation"),
+        COMPILATION,
 
         @JsonProperty("single")
-        SINGLE("single");
-
-
-        private final String type;
+        SINGLE
     }
 
     @Getter
-    @AllArgsConstructor
-    public enum SpotifyReleaseDatePrecision {
-
-        @JsonProperty("day")
-        DAY("day"),
-
-        @JsonProperty("month")
-        MONTH("month"),
-
-        @JsonProperty("year")
-        YEAR("year");
-
-        private final String precision;
-
-    }
-
-    @Getter
-    @AllArgsConstructor
     public enum SpotifyAlbumGroupType {
 
         @JsonProperty("album")
-        ALBUM("album"),
+        ALBUM,
 
         @JsonProperty("single")
-        SINGLE("single"),
+        SINGLE,
 
         @JsonProperty("compilation")
-        COMPILATION("compilation"),
+        COMPILATION,
 
         @JsonProperty("appears_on")
-        APPEARS_ON("appears_on");
-
-
-        public final String type;
+        APPEARS_ON
     }
-
-
 }

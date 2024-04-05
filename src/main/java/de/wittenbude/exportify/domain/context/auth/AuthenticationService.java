@@ -23,16 +23,6 @@ import java.util.Set;
 public class AuthenticationService {
     private static final String REDIRECT_URI_CLAIM_KEY = "redirect_uri";
     private static final String SPOTIFY_CODE_CLAIM_KEY = "code";
-
-
-
-    @Value("${spotify.client-id}")
-    private String clientID;
-    @Value("${spotify.scopes}")
-    private Set<String> scopes;
-    @Value("${spotify.redirect-uri}")
-    private String redirectURI;
-
     private final JweEncoderService jweEncoderService;
     private final JweDecoderService jweDecoderService;
     private final SpotifyAuthenticationClient spotifyAuthenticationClient;
@@ -42,6 +32,12 @@ public class AuthenticationService {
     private final CredentialsRepository credentialsRepository;
     private final CredentialsService credentialsService;
     private final ExportifyUserRepository exportifyUserRepository;
+    @Value("${spotify.client-id}")
+    private String clientID;
+    @Value("${spotify.scopes}")
+    private Set<String> scopes;
+    @Value("${spotify.redirect-uri}")
+    private String redirectURI;
 
 
     public AuthenticationService(SpotifyAuthenticationClient spotifyAuthenticationClient,
@@ -100,7 +96,7 @@ public class AuthenticationService {
                 .queryParam("client_id", clientID)
                 .queryParam("scope", String.join(" ", scopes))
                 .queryParam("redirect_uri", redirectURI)
-                .queryParam("show_dialog", true)
+                //.queryParam("show_dialog", true)
                 .queryParam("state", state)
                 .build()
                 .toUri();

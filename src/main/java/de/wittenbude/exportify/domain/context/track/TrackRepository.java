@@ -1,7 +1,7 @@
 package de.wittenbude.exportify.domain.context.track;
 
-import de.wittenbude.exportify.domain.entities.SavedTrack;
 import de.wittenbude.exportify.domain.entities.Track;
+import de.wittenbude.exportify.domain.valueobjects.SavedTrack;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-interface TrackRepository extends CrudRepository<Track, UUID> {
+public interface TrackRepository extends CrudRepository<Track, UUID> {
 
     @Query("select a from Track a where a.spotifyID = :spotifyID order by a.versionTimestamp desc limit 1")
     Optional<Track> findLatest(String spotifyID);

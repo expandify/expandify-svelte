@@ -13,7 +13,7 @@ import org.mapstruct.ReportingPolicy;
 public interface SpotifyUserMapper {
 
     @Mapping(target = "spotifyID", source = "id")
-    @Mapping(target = "spotifyProductType", source = "product.type")
+    @Mapping(target = "spotifyProductType", source = "product")
     @Mapping(target = "explicitContentFilterEnabled", source = "spotifyExplicitContent.filterEnabled")
     @Mapping(target = "explicitContentFilterLocked", source = "spotifyExplicitContent.filterLocked")
     @Mapping(target = "publicSpotifyUserID", source = "id")
@@ -24,7 +24,7 @@ public interface SpotifyUserMapper {
     @Mapping(target = "spotifyID", source = "id")
     @Mapping(target = "followers", source = "spotifyFollowers.total")
     @Mapping(target = "images", source = "spotifyImages")
-    @Mapping(target = "spotifyObjectType", source = "type.type")
+    @Mapping(target = "spotifyObjectType", source = "type")
     @Mapping(target = "id", ignore = true)
     PublicSpotifyUser toEntity(SpotifyPublicUser spotifyPublicUser);
 }

@@ -1,5 +1,7 @@
 package de.wittenbude.exportify.domain.entities;
 
+import de.wittenbude.exportify.domain.valueobjects.SavedAlbum;
+import de.wittenbude.exportify.domain.valueobjects.SavedTrack;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,23 +35,15 @@ public class Snapshot {
     @JoinTable
     private Set<Artist> artists;
 
-    //@ManyToMany
-    //@JoinTable
-    //private Set<Track> tracks;
-
     @ElementCollection
     private Set<SavedTrack> savedTracks;
-
-    //@ManyToMany
-    //@JoinTable
-    //private Set<Album> albums;
 
     @ElementCollection
     private Set<SavedAlbum> savedAlbums;
 
-    //@ManyToMany
-    //@JoinTable
-    //private Set<Playlist> playlists;
+    @ManyToMany
+    @JoinTable
+    private Set<Playlist> playlists;
 
     @Override
     public final boolean equals(Object o) {

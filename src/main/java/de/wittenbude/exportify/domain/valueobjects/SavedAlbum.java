@@ -1,5 +1,7 @@
-package de.wittenbude.exportify.domain.entities;
+package de.wittenbude.exportify.domain.valueobjects;
 
+
+import de.wittenbude.exportify.domain.entities.Album;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -13,11 +15,11 @@ import java.time.Instant;
 @Setter
 @Accessors(chain = true)
 @Embeddable
-public class SavedTrack {
+public class SavedAlbum {
 
     private Instant savedAt;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
-    private Track track;
+    @JoinColumn
+    private Album album;
 }

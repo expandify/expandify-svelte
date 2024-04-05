@@ -32,7 +32,7 @@ class AuthenticationController {
 
     @GetMapping("/callback")
     public ResponseEntity<Void> callback(@RequestParam("code") String spotifyCode,
-                             @RequestParam("state") String encryptedRedirectUri) {
+                                         @RequestParam("state") String encryptedRedirectUri) {
         return ResponseEntity
                 .status(HttpStatus.FOUND)
                 .header(HttpHeaders.LOCATION, authenticationService

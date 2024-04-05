@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 
-interface PublicSpotifyUserRepository extends CrudRepository<PublicSpotifyUser, UUID> {
+public interface PublicSpotifyUserRepository extends CrudRepository<PublicSpotifyUser, UUID> {
 
     @Query("select a from PublicSpotifyUser a where a.spotifyID = ?1 order by a.versionTimestamp desc limit 1")
     Optional<PublicSpotifyUser> findLatest(String spotifyID);

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-interface ArtistRepository extends CrudRepository<Artist, UUID> {
+public interface ArtistRepository extends CrudRepository<Artist, UUID> {
 
     @Query("select a from Artist a where a.spotifyID = :spotifyID order by a.versionTimestamp desc limit 1")
     Optional<Artist> findLatest(String spotifyID);

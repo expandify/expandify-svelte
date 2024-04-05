@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;
 
-interface SnapshotRepository extends CrudRepository<Snapshot, UUID> {
+public interface SnapshotRepository extends CrudRepository<Snapshot, UUID> {
 
 }

@@ -1,6 +1,7 @@
 package de.wittenbude.exportify.domain.entities;
 
 import de.wittenbude.exportify.domain.valueobjects.Image;
+import de.wittenbude.exportify.domain.valueobjects.PlaylistTrack;
 import de.wittenbude.exportify.domain.valueobjects.SpotifyObjectType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,7 +22,8 @@ import java.util.UUID;
 @Setter
 @Accessors(chain = true)
 @Entity
-public class Artist {
+public class Playlist {
+
     @Id
     @GeneratedValue
     private UUID id;
@@ -29,24 +31,29 @@ public class Artist {
     @CreationTimestamp
     private Instant versionTimestamp;
 
+    private Boolean collaborative;
+    private String description;
     private Integer followers;
     private String href;
     private String spotifyID;
     private String name;
-    private Integer popularity;
+    private String ownerPublicUserSpotifyID;
+    private Boolean publicAccess;
+    private String spotifySnapshotId;
+    private Integer totalTracks;
     private String uri;
 
     @Enumerated(EnumType.STRING)
     private SpotifyObjectType spotifyObjectType;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    private List<Image> images;
-
-    @JdbcTypeCode(SqlTypes.ARRAY)
-    private List<String> genres;
+    private Map<String, String> externalUrls;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, String> externalUrls;
+    private List<Image> images;
+
+    @ElementCollection
+    private List<PlaylistTrack> tracks;
 
     @Override
     public final boolean equals(Object o) {
@@ -55,13 +62,13 @@ public class Artist {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Artist artist = (Artist) o;
-        return getId() != null && Objects.equals(getId(), artist.getId());
+        Playlist playlist = (Playlist) o;
+        return getId() != null && Objects.equals(getId(), playlist.getId());
     }
 
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
-
 }
+

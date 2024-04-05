@@ -2,7 +2,7 @@ package de.wittenbude.exportify.domain.context.album;
 
 
 import de.wittenbude.exportify.domain.entities.Album;
-import de.wittenbude.exportify.domain.entities.SavedAlbum;
+import de.wittenbude.exportify.domain.valueobjects.SavedAlbum;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 
-interface AlbumRepository extends CrudRepository<Album, UUID> {
+public interface AlbumRepository extends CrudRepository<Album, UUID> {
 
     @Query("select a from Album a where a.spotifyID = :spotifyID order by a.versionTimestamp desc limit 1")
     Optional<Album> findLatest(String spotifyID);

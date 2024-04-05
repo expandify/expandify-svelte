@@ -1,8 +1,9 @@
 package de.wittenbude.exportify.domain.entities;
 
 import com.neovisionaries.i18n.CountryCode;
+import de.wittenbude.exportify.domain.valueobjects.ExternalIDs;
+import de.wittenbude.exportify.domain.valueobjects.SpotifyObjectType;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -40,11 +41,13 @@ public class Track {
     private String name;
     private String previewUrl;
     private Integer trackNumber;
-    private String spotifyObjectType;
     private String uri;
     private Boolean isLocal;
     private ExternalIDs externalIDs;
     private Integer popularity;
+
+    @Enumerated(EnumType.STRING)
+    private SpotifyObjectType spotifyObjectType;
 
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, String> externalUrls;
@@ -71,18 +74,5 @@ public class Track {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-    }
-
-    @Getter
-    @Setter
-    @Accessors(chain = true)
-    @Embeddable
-    @EqualsAndHashCode
-    public static class ExternalIDs {
-
-        private String isrc;
-        private String ean;
-        private String upc;
-
     }
 }

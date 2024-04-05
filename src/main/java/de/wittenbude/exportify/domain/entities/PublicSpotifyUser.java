@@ -1,10 +1,8 @@
 package de.wittenbude.exportify.domain.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.EqualsAndHashCode;
+import de.wittenbude.exportify.domain.valueobjects.Image;
+import de.wittenbude.exportify.domain.valueobjects.SpotifyObjectType;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -33,8 +31,10 @@ public class PublicSpotifyUser {
     private Integer followers;
     private String href;
     private String spotifyID;
-    private String spotifyObjectType;
     private String uri;
+
+    @Enumerated(EnumType.STRING)
+    private SpotifyObjectType spotifyObjectType;
 
     @JdbcTypeCode(SqlTypes.JSON)
     private List<Image> images;
@@ -42,15 +42,4 @@ public class PublicSpotifyUser {
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, String> externalUrls;
 
-    @Getter
-    @Setter
-    @Accessors(chain = true)
-    @EqualsAndHashCode
-    public static class Image {
-
-        private String url;
-        private Integer height;
-        private Integer width;
-
-    }
 }

@@ -28,15 +28,4 @@ public class SpotifyAlbum extends SpotifyAlbumSimplified {
     @JsonProperty("popularity")
     private Integer popularity;
 
-
-    @Getter
-    @Setter
-    public static class SpotifyCopyright {
-        @JsonProperty("text")
-        private String text;
-
-        @JsonProperty("type")
-        private String type;
-
-    }
 }

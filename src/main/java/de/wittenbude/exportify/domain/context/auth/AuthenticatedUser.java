@@ -31,14 +31,6 @@ public class AuthenticatedUser extends JwtAuthenticationToken {
     private SpotifyCredentials spotifyCredentials;
 
 
-    public static AuthenticatedUser getSecurityContext() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof AuthenticatedUser authenticatedUser) {
-            return authenticatedUser;
-        }
-        throw new ProviderNotFoundException("Current Authenticated User is not of type JwtAuthenticationToken");
-    }
-
     public AuthenticatedUser(Jwt jwt,
                              CredentialsRepository credentialsRepository,
                              CredentialsService credentialsService,
@@ -51,6 +43,14 @@ public class AuthenticatedUser extends JwtAuthenticationToken {
         this.userID = UUID.fromString(jwt.getClaim(USER_ID_CLAIM));
         this.spotifyCredentials = null;
         this.user = null;
+    }
+
+    public static AuthenticatedUser getSecurityContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AuthenticatedUser authenticatedUser) {
+            return authenticatedUser;
+        }
+        throw new ProviderNotFoundException("Current Authenticated User is not of type JwtAuthenticationToken");
     }
 
     public UUID getID() {

@@ -1,7 +1,7 @@
 package de.wittenbude.exportify.infrastructure.spotify.mappers;
 
 import de.wittenbude.exportify.domain.entities.Album;
-import de.wittenbude.exportify.domain.entities.SavedAlbum;
+import de.wittenbude.exportify.domain.valueobjects.SavedAlbum;
 import de.wittenbude.exportify.infrastructure.spotify.data.SpotifyAlbum;
 import de.wittenbude.exportify.infrastructure.spotify.data.SpotifySavedAlbum;
 import org.mapstruct.Mapper;
@@ -15,11 +15,11 @@ import org.mapstruct.ReportingPolicy;
 public interface SpotifyAlbumMapper {
 
 
-    @Mapping(target = "albumType", source = "albumType.type")
+    @Mapping(target = "albumType", source = "albumType")
     @Mapping(target = "spotifyID", source = "id")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "restrictions", source = "restrictions.reason")
-    @Mapping(target = "spotifyObjectType", source = "type.type")
+    @Mapping(target = "spotifyObjectType", source = "type")
     @Mapping(target = "spotifyArtistIDs", expression = "java(spotifyAlbum.getArtists().stream().map(a -> a.getId()).toList())")
     Album toEntity(SpotifyAlbum spotifyAlbum);
 

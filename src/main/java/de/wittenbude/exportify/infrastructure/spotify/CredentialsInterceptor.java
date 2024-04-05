@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 
 public class CredentialsInterceptor {
 
+
     @Bean
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {

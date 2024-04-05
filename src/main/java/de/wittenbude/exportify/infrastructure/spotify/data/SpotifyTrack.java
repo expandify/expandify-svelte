@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class SpotifyTrack extends SpotifyTrackSimplified {
+public class SpotifyTrack extends SpotifyTrackSimplified implements SpotifyPlaylistTrackItem {
 
     @JsonProperty("album")
     private SpotifyAlbumSimplified album;
