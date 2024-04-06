@@ -1,10 +1,7 @@
 package dev.kenowi.exportify.domain.entities;
 
 import com.neovisionaries.i18n.CountryCode;
-import dev.kenowi.exportify.domain.entities.valueobjects.Copyright;
-import dev.kenowi.exportify.domain.entities.valueobjects.ExternalIDs;
-import dev.kenowi.exportify.domain.entities.valueobjects.Image;
-import dev.kenowi.exportify.domain.entities.valueobjects.SpotifyObjectType;
+import dev.kenowi.exportify.domain.entities.valueobjects.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,6 +30,9 @@ public class Album {
 
     @CreationTimestamp
     private Instant versionTimestamp;
+
+    private EventStatus artistsStatus = EventStatus.PENDING;
+    private EventStatus tracksStatus = EventStatus.PENDING;
 
     private String albumType;
     private Integer totalTracks;

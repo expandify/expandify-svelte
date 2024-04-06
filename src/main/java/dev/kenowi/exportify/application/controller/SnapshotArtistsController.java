@@ -2,7 +2,7 @@ package dev.kenowi.exportify.application.controller;
 
 import dev.kenowi.exportify.application.dto.ArtistSchema;
 import dev.kenowi.exportify.application.mapper.ArtistDtoMapper;
-import dev.kenowi.exportify.domain.service.artist.SnapshotArtistService;
+import dev.kenowi.exportify.domain.services.artist.SnapshotArtistService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

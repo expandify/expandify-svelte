@@ -1,6 +1,6 @@
 package dev.kenowi.exportify.infrastructure.spotify;
 
-import dev.kenowi.exportify.domain.service.exportifyuser.AuthenticatedUser;
+import dev.kenowi.exportify.domain.services.exportifyuser.AuthenticatedUser;
 import feign.RequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;

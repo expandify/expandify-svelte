@@ -1,10 +1,7 @@
 package dev.kenowi.exportify.application.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.kenowi.exportify.domain.exception.EntityNotFoundException;
-import dev.kenowi.exportify.domain.exception.InvalidRedirectUriException;
-import dev.kenowi.exportify.domain.exception.NoCredentialsException;
-import dev.kenowi.exportify.domain.exception.SnapshotNotReadyException;
+import dev.kenowi.exportify.domain.exceptions.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -37,6 +34,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SnapshotNotReadyException.class)
     public ResponseEntity<ErrorResponse> handleSnapshotNotReadyException(SnapshotNotReadyException ex) {
         return buildResponse(HttpStatus.ACCEPTED, ex.getMessage());
+    }
+
+    @ExceptionHandler(AlbumTracksMismatchExceptions.class)
+    public ResponseEntity<ErrorResponse> handleAlbumTracksMismatchExceptions(AlbumTracksMismatchExceptions ex) {
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
 

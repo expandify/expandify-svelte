@@ -2,7 +2,7 @@ package dev.kenowi.exportify.application.controller;
 
 import dev.kenowi.exportify.application.dto.SavedTrackSchema;
 import dev.kenowi.exportify.application.mapper.TrackDtoMapper;
-import dev.kenowi.exportify.domain.service.track.SnapshotTrackService;
+import dev.kenowi.exportify.domain.services.track.SnapshotTrackService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,7 +1,7 @@
 package dev.kenowi.exportify.application.configuration;
 
-import dev.kenowi.exportify.domain.service.exportifyuser.AuthenticationService;
-import dev.kenowi.exportify.domain.service.jwt.JweDecoderService;
+import dev.kenowi.exportify.domain.services.exportifyuser.AuthenticationService;
+import dev.kenowi.exportify.domain.services.jwt.JweDecoderService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

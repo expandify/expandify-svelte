@@ -1,6 +1,7 @@
 package dev.kenowi.exportify.domain.entities;
 
 import com.neovisionaries.i18n.CountryCode;
+import dev.kenowi.exportify.domain.entities.valueobjects.EventStatus;
 import dev.kenowi.exportify.domain.entities.valueobjects.ExternalIDs;
 import dev.kenowi.exportify.domain.entities.valueobjects.SpotifyObjectType;
 import jakarta.persistence.*;
@@ -30,6 +31,9 @@ public class Track {
 
     @CreationTimestamp
     private Instant versionTimestamp;
+
+    private EventStatus albumStatus = EventStatus.PENDING;
+    private EventStatus artistsStatus = EventStatus.PENDING;
 
     private Integer discNumber;
     private Integer durationMs;

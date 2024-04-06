@@ -2,7 +2,7 @@ package dev.kenowi.exportify.application.controller;
 
 import dev.kenowi.exportify.application.dto.SnapshotSchema;
 import dev.kenowi.exportify.application.mapper.SnapshotDtoMapper;
-import dev.kenowi.exportify.domain.service.snapshot.SnapshotService;
+import dev.kenowi.exportify.domain.services.snapshot.SnapshotService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

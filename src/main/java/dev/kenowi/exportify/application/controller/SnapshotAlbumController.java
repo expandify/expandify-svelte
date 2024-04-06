@@ -2,7 +2,7 @@ package dev.kenowi.exportify.application.controller;
 
 import dev.kenowi.exportify.application.dto.SavedAlbumSchema;
 import dev.kenowi.exportify.application.mapper.AlbumDtoMapper;
-import dev.kenowi.exportify.domain.service.album.SnapshotAlbumService;
+import dev.kenowi.exportify.domain.services.album.SnapshotAlbumService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
