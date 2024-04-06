@@ -1,6 +1,8 @@
 package dev.kenowi.exportify.infrastructure.spotify.mappers;
 
 import dev.kenowi.exportify.domain.entities.Track;
+import dev.kenowi.exportify.domain.entities.valueobjects.SavedTrack;
+import dev.kenowi.exportify.infrastructure.spotify.data.SpotifySavedTrack;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyTrack;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,4 +19,7 @@ public interface SpotifyTrackMapper {
     @Mapping(target = "spotifyID", source = "id")
     @Mapping(target = "id", ignore = true)
     Track toEntity(SpotifyTrack spotifyTrack);
+
+    @Mapping(target = "savedAt", expression = "java(spotifySavedTrack.getAddedAt().toInstant())")
+    SavedTrack toEntity(SpotifySavedTrack spotifySavedTrack);
 }

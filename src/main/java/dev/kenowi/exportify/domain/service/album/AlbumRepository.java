@@ -2,7 +2,7 @@ package dev.kenowi.exportify.domain.service.album;
 
 
 import dev.kenowi.exportify.domain.entities.Album;
-import dev.kenowi.exportify.domain.valueobjects.SavedAlbum;
+import dev.kenowi.exportify.domain.entities.valueobjects.SavedAlbum;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

@@ -1,7 +1,7 @@
 package dev.kenowi.exportify.infrastructure.spotify.mappers;
 
 import dev.kenowi.exportify.domain.entities.Album;
-import dev.kenowi.exportify.domain.valueobjects.SavedAlbum;
+import dev.kenowi.exportify.domain.entities.valueobjects.SavedAlbum;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyAlbum;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifySavedAlbum;
 import org.mapstruct.Mapper;

@@ -1,8 +1,8 @@
 package dev.kenowi.exportify.domain.entities;
 
-import dev.kenowi.exportify.domain.valueobjects.Image;
-import dev.kenowi.exportify.domain.valueobjects.PlaylistTrack;
-import dev.kenowi.exportify.domain.valueobjects.SpotifyObjectType;
+import dev.kenowi.exportify.domain.entities.valueobjects.Image;
+import dev.kenowi.exportify.domain.entities.valueobjects.PlaylistTrack;
+import dev.kenowi.exportify.domain.entities.valueobjects.SpotifyObjectType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

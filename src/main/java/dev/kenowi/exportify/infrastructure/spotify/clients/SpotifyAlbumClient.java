@@ -2,9 +2,7 @@ package dev.kenowi.exportify.infrastructure.spotify.clients;
 
 import dev.kenowi.exportify.infrastructure.spotify.CredentialsInterceptor;
 import dev.kenowi.exportify.infrastructure.spotify.RateLimitInterceptor;
-import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPage;
-import dev.kenowi.exportify.infrastructure.spotify.data.SpotifySavedAlbum;
-import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyTrackSimplified;
+import dev.kenowi.exportify.infrastructure.spotify.data.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +19,11 @@ public interface SpotifyAlbumClient {
 
 
     @GetMapping(value = "/albums/{id}/tracks")
-    SpotifyPage<SpotifyTrackSimplified> getAlbumTracks(@PathVariable("id") String id,
-                                                       @RequestParam("limit") Integer limit,
-                                                       @RequestParam("offset") Integer offset);
+    SpotifyPage<SpotifyIdProjection> getAlbumTrackIDs(@PathVariable("id") String id,
+                                                      @RequestParam("limit") Integer limit,
+                                                      @RequestParam("offset") Integer offset);
+
+
+    @GetMapping("/albums/{id}")
+    SpotifyAlbum get(@PathVariable("id") String id);
 }

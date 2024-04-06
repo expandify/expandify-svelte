@@ -2,9 +2,13 @@ package dev.kenowi.exportify.infrastructure.spotify.clients;
 
 import dev.kenowi.exportify.infrastructure.spotify.RateLimitInterceptor;
 import dev.kenowi.exportify.infrastructure.spotify.TokenFormRequestInterceptor;
+import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyIdProjection;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyTokenResponse;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
@@ -13,21 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
         configuration = {TokenFormRequestInterceptor.class, RateLimitInterceptor.class})
 public interface SpotifyAuthenticationClient {
 
-    @PostMapping
+    @PostMapping("?grant_type=authorization_code")
     SpotifyTokenResponse token(@RequestParam("code") String code,
-                               @RequestParam("redirect_uri") String redirectUri,
-                               @RequestParam(name = "grant_type") String grantType);
+                               @RequestParam("redirect_uri") String redirectUri);
 
 
-    @PostMapping
-    SpotifyTokenResponse refresh(@RequestParam("refresh_token") String refreshToken,
-                                 @RequestParam(name = "grant_type") String grantType);
+    @PostMapping("?grant_type=refresh_token")
+    SpotifyTokenResponse refresh(@RequestParam("refresh_token") String refreshToken);
 
-    default SpotifyTokenResponse token(String code, String redirectUri) {
-        return this.token(code, redirectUri, "authorization_code");
-    }
 
-    default SpotifyTokenResponse refresh(String refreshToken) {
-        return this.refresh(refreshToken, "refresh_token");
-    }
+    @GetMapping("https://api.spotify.com/v1/me")
+    SpotifyIdProjection getCurrentUserID(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String authHeader);
 }

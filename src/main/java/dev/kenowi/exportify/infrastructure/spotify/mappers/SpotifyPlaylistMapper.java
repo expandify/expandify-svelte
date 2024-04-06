@@ -1,7 +1,7 @@
 package dev.kenowi.exportify.infrastructure.spotify.mappers;
 
 import dev.kenowi.exportify.domain.entities.Playlist;
-import dev.kenowi.exportify.domain.valueobjects.PlaylistTrack;
+import dev.kenowi.exportify.domain.entities.valueobjects.PlaylistTrack;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPlaylist;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPlaylistTrack;
 import org.mapstruct.Mapper;

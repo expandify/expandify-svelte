@@ -1,8 +1,8 @@
 package dev.kenowi.exportify.application.controller;
 
 import dev.kenowi.exportify.application.dto.SavedTrackSchema;
-import dev.kenowi.exportify.application.mapper.TrackMapper;
-import dev.kenowi.exportify.domain.service.track.TrackService;
+import dev.kenowi.exportify.application.mapper.TrackDtoMapper;
+import dev.kenowi.exportify.domain.service.track.SnapshotTrackService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,25 +14,25 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/snapshot/{snapshot}/tracks")
 class SnapshotTrackController {
-    private final TrackService albumService;
-    private final TrackMapper trackMapper;
+    private final SnapshotTrackService snapshotTrackService;
+    private final TrackDtoMapper trackDtoMapper;
 
-    public SnapshotTrackController(TrackService albumService,
-                                   TrackMapper trackMapper) {
-        this.albumService = albumService;
-        this.trackMapper = trackMapper;
+    public SnapshotTrackController(SnapshotTrackService snapshotTrackService,
+                                   TrackDtoMapper trackDtoMapper) {
+        this.snapshotTrackService = snapshotTrackService;
+        this.trackDtoMapper = trackDtoMapper;
     }
 
     @GetMapping("/{spotifyTrackID}")
     public SavedTrackSchema get(@PathVariable("snapshot") UUID snapshot, @PathVariable("spotifyTrackID") String spotifyTrackID) {
-        return trackMapper.toDTO(albumService.get(snapshot, spotifyTrackID));
+        return trackDtoMapper.toDTO(snapshotTrackService.get(snapshot, spotifyTrackID));
     }
 
     @GetMapping
     public Collection<SavedTrackSchema> get(@PathVariable("snapshot") UUID snapshot) {
-        return albumService
+        return snapshotTrackService
                 .get(snapshot)
-                .map(trackMapper::toDTO)
+                .map(trackDtoMapper::toDTO)
                 .toList();
     }
 

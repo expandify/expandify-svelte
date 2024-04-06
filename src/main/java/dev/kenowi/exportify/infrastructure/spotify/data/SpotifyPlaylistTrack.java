@@ -20,7 +20,10 @@ public class SpotifyPlaylistTrack {
     private Boolean isLocal;
 
     @JsonProperty("track")
-    private SpotifyPlaylistTrackItem track;
-    //private JsonNode track;
+    private SpotifyIdProjection track;
+
+    // TODO: Is this better? Does a playlistTrack contain all information? How to handle Events?
+    //private SpotifyPlaylistTrackItem track;
+
 
 }

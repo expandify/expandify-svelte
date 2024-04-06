@@ -1,8 +1,8 @@
 package dev.kenowi.exportify.domain.entities;
 
 import com.neovisionaries.i18n.CountryCode;
-import dev.kenowi.exportify.domain.valueobjects.ExternalIDs;
-import dev.kenowi.exportify.domain.valueobjects.SpotifyObjectType;
+import dev.kenowi.exportify.domain.entities.valueobjects.ExternalIDs;
+import dev.kenowi.exportify.domain.entities.valueobjects.SpotifyObjectType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

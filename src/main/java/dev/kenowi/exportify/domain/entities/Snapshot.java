@@ -1,7 +1,7 @@
 package dev.kenowi.exportify.domain.entities;
 
-import dev.kenowi.exportify.domain.valueobjects.SavedAlbum;
-import dev.kenowi.exportify.domain.valueobjects.SavedTrack;
+import dev.kenowi.exportify.domain.entities.valueobjects.SavedAlbum;
+import dev.kenowi.exportify.domain.entities.valueobjects.SavedTrack;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +31,10 @@ public class Snapshot {
     @JoinColumn
     private ExportifyUser exportifyUser;
 
+    @ManyToOne
+    @JoinColumn
+    private PrivateSpotifyUser privateSpotifyUser;
+
     @ManyToMany
     @JoinTable
     private Set<Artist> artists;
@@ -44,6 +48,7 @@ public class Snapshot {
     @ManyToMany
     @JoinTable
     private Set<Playlist> playlists;
+
 
     @Override
     public final boolean equals(Object o) {

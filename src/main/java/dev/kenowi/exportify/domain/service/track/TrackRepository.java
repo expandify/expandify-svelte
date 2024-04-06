@@ -1,7 +1,7 @@
 package dev.kenowi.exportify.domain.service.track;
 
 import dev.kenowi.exportify.domain.entities.Track;
-import dev.kenowi.exportify.domain.valueobjects.SavedTrack;
+import dev.kenowi.exportify.domain.entities.valueobjects.SavedTrack;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

@@ -1,6 +1,6 @@
 package dev.kenowi.exportify.application.controller;
 
-import dev.kenowi.exportify.domain.service.auth.AuthenticationService;
+import dev.kenowi.exportify.domain.service.exportifyuser.AuthenticationService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
