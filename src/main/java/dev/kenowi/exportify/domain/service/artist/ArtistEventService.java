@@ -55,7 +55,7 @@ class ArtistEventService {
                 .map(ArtistCreatedEvent::new)
                 .forEach(eventPublisher::publishEvent);
 
-        eventPublisher.publishEvent(event.dataCreated(this, artists));
+        eventPublisher.publishEvent(event.artistsCreated(this, artists));
     }
 
     @Async

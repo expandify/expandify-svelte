@@ -23,10 +23,11 @@ class AuthenticationController {
     }
 
     @GetMapping
-    public ResponseEntity<Void> authorize(@RequestParam(name = "redirect_uri", defaultValue = "/authorize/token") String redirectURI) {
+    public ResponseEntity<Void> authorize(@RequestParam(name = "redirect_uri", defaultValue = "/authorize/token") String redirectURI,
+                                          @RequestParam(name = "show_dialog", defaultValue = "false") boolean showDialog) {
         return ResponseEntity
                 .status(HttpStatus.FOUND)
-                .header(HttpHeaders.LOCATION, authenticationService.buildAuthorizeURL(redirectURI).toString())
+                .header(HttpHeaders.LOCATION, authenticationService.buildAuthorizeURL(redirectURI, showDialog).toString())
                 .build();
     }
 

@@ -55,12 +55,12 @@ class AlbumEventService {
                 .map(AlbumCreatedEvent::new)
                 .forEach(eventPublisher::publishEvent);
 
-        eventPublisher.publishEvent(event.dataCreated(this, savedAlbums));
+        eventPublisher.publishEvent(event.albumsCreated(this, savedAlbums));
     }
 
     @Async
     @EventListener
-    public void loadAlbum(TracksCreatedEvent event) {
+    public void loadAlbumsOfTracks(TracksCreatedEvent event) {
         // TODO get multiple Albums at once
         event.getTracks()
                 .stream()

@@ -53,7 +53,7 @@ class TrackEventService {
 
         List<Track> tracks = savedTracks.stream().map(SavedTrack::getTrack).toList();
         eventPublisher.publishEvent(new TracksCreatedEvent(tracks));
-        eventPublisher.publishEvent(event.dataCreated(this, savedTracks));
+        eventPublisher.publishEvent(event.tracksCreated(this, savedTracks));
     }
 
     @Async
@@ -64,6 +64,7 @@ class TrackEventService {
                 .stream()
                 .map(spotifyTrackClient::get)
                 .map(spotifyTrackMapper::toEntity)
+                //.map(track -> track.setAlbumStatus(EventStatus.FINISHED))
                 .map(trackRepository::upsert)
                 .toList();
 

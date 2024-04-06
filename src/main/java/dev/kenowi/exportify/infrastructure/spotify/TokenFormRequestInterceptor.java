@@ -32,13 +32,9 @@ public class TokenFormRequestInterceptor {
 
     @Bean
     public RequestInterceptor requestInterceptor() {
-        return requestTemplate -> {
-            if (requestTemplate.headers().containsKey(HttpHeaders.AUTHORIZATION)) {
-                return;
-            }
-            requestTemplate
-                    .header(HttpHeaders.AUTHORIZATION, "Basic " + base64EncodedClientIdAndSecret)
-                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-        };
+        return requestTemplate ->
+                requestTemplate
+                        .header(HttpHeaders.AUTHORIZATION, "Basic " + base64EncodedClientIdAndSecret)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
     }
 }

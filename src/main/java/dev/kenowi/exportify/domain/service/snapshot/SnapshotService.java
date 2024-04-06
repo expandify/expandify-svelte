@@ -1,19 +1,15 @@
 package dev.kenowi.exportify.domain.service.snapshot;
 
-import dev.kenowi.exportify.domain.entities.Artist;
-import dev.kenowi.exportify.domain.entities.Playlist;
-import dev.kenowi.exportify.domain.entities.PrivateSpotifyUser;
 import dev.kenowi.exportify.domain.entities.Snapshot;
+import dev.kenowi.exportify.domain.entities.valueobjects.EventStatus;
 import dev.kenowi.exportify.domain.exception.EntityNotFoundException;
+import dev.kenowi.exportify.domain.exception.SnapshotNotReadyException;
 import dev.kenowi.exportify.domain.service.exportifyuser.AuthenticatedUser;
-import dev.kenowi.exportify.domain.entities.valueobjects.SavedAlbum;
-import dev.kenowi.exportify.domain.entities.valueobjects.SavedTrack;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -33,50 +29,74 @@ public class SnapshotService {
 
         Snapshot snapshot = new Snapshot()
                 .setExportifyUser(AuthenticatedUser.getSecurityContext().getUser());
-        eventPublisher.publishEvent(new SnapshotCreatedEvent(this, snapshot));
+        eventPublisher.publishEvent(new SnapshotCreatedEvent(snapshot));
 
         return snapshotRepository.save(snapshot);
     }
 
     @Async
     @EventListener
-    public void onSnapshotArtists(SnapshotDataCreatedEvent<Set<Artist>> event) {
-        Snapshot snapshot = event.getSnapshot().setArtists(event.getData());
+    public void onSnapshotArtists(SnapshotCreatedEvent.SnapshotArtistsCreated event) {
+        Snapshot snapshot = event
+                .getSnapshot()
+                .setArtists(event.getData())
+                .setArtistsStatus(EventStatus.FINISHED);
         snapshotRepository.save(snapshot);
     }
 
     @Async
     @EventListener
-    public void onSnapshotAlbums(SnapshotDataCreatedEvent<Set<SavedAlbum>> event) {
-        Snapshot snapshot = event.getSnapshot().setSavedAlbums(event.getData());
+    public void onSnapshotAlbums(SnapshotCreatedEvent.SnapshotAlbumsCreated event) {
+        Snapshot snapshot = event
+                .getSnapshot()
+                .setSavedAlbums(event.getData())
+                .setAlbumsStatus(EventStatus.FINISHED);
         snapshotRepository.save(snapshot);
     }
 
     @Async
     @EventListener
-    public void onSnapshotTracks(SnapshotDataCreatedEvent<Set<SavedTrack>> event) {
-        Snapshot snapshot = event.getSnapshot().setSavedTracks(event.getData());
+    public void onSnapshotTracks(SnapshotCreatedEvent.SnapshotTracksCreated event) {
+        Snapshot snapshot = event
+                .getSnapshot()
+                .setSavedTracks(event.getData())
+                .setTracksStatus(EventStatus.FINISHED);
         snapshotRepository.save(snapshot);
     }
 
     @Async
     @EventListener
-    public void onSnapshotPlaylists(SnapshotDataCreatedEvent<Set<Playlist>> event) {
-        Snapshot snapshot = event.getSnapshot().setPlaylists(event.getData());
+    public void onSnapshotPlaylists(SnapshotCreatedEvent.SnapshotPlaylistsCreated event) {
+        Snapshot snapshot = event
+                .getSnapshot()
+                .setPlaylists(event.getData())
+                .setPlaylistsStatus(EventStatus.FINISHED);
         snapshotRepository.save(snapshot);
     }
 
     @Async
     @EventListener
-    public void onSnapshotUser(SnapshotDataCreatedEvent<PrivateSpotifyUser> event) {
-        Snapshot snapshot = event.getSnapshot().setPrivateSpotifyUser(event.getData());
+    public void onSnapshotUser(SnapshotCreatedEvent.SnapshotUserCreated event) {
+        Snapshot snapshot = event
+                .getSnapshot()
+                .setPrivateSpotifyUser(event.getData())
+                .setUserStatus(EventStatus.FINISHED);
         snapshotRepository.save(snapshot);
     }
 
     public Snapshot get(UUID id) {
-        return snapshotRepository
+        Snapshot snapshot = snapshotRepository
                 .findById(id)
-                .filter(snapshot -> snapshot.getExportifyUser().getId() == AuthenticatedUser.getSecurityContext().getID())
+                .filter(s -> s.getExportifyUser().getId().equals(AuthenticatedUser.getSecurityContext().getID()))
                 .orElseThrow(() -> new EntityNotFoundException("snapshot %s does not exist".formatted(id)));
+
+        if (snapshot.getAlbumsStatus() != EventStatus.FINISHED
+                || snapshot.getTracksStatus() != EventStatus.FINISHED
+                || snapshot.getArtistsStatus() != EventStatus.FINISHED
+                || snapshot.getPlaylistsStatus() != EventStatus.FINISHED
+                || snapshot.getUserStatus() != EventStatus.FINISHED) {
+            throw new SnapshotNotReadyException("Snapshot not ready");
+        }
+        return snapshot;
     }
 }

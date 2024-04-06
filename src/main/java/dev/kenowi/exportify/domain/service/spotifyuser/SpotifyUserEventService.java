@@ -44,7 +44,7 @@ class SpotifyUserEventService {
         PrivateSpotifyUser privateSpotifyUser = privateSpotifyUserRepository
                 .upsert(spotifyUserMapper.toEntity(spotifyPrivateUser));
 
-        eventPublisher.publishEvent(event.dataCreated(this, privateSpotifyUser));
+        eventPublisher.publishEvent(event.userCreated(this, privateSpotifyUser));
     }
 
 }

@@ -3,6 +3,7 @@ package dev.kenowi.exportify.application.controller;
 import dev.kenowi.exportify.application.dto.SnapshotSchema;
 import dev.kenowi.exportify.application.mapper.SnapshotDtoMapper;
 import dev.kenowi.exportify.domain.service.snapshot.SnapshotService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -26,6 +27,7 @@ class SnapshotController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public SnapshotSchema create() {
         return snapshotDtoMapper.toDTO(snapshotService.create());
     }

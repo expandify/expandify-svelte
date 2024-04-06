@@ -2,9 +2,12 @@ package dev.kenowi.exportify.infrastructure.spotify.clients;
 
 import dev.kenowi.exportify.infrastructure.spotify.CredentialsInterceptor;
 import dev.kenowi.exportify.infrastructure.spotify.RateLimitInterceptor;
+import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyIdProjection;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPrivateUser;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(
         name = "SpotifyUserClient",
@@ -14,5 +17,9 @@ public interface SpotifyUserClient {
 
     @GetMapping
     SpotifyPrivateUser getCurrentUser();
+
+
+    @GetMapping
+    SpotifyIdProjection getCurrentUserID(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String authHeader);
 
 }

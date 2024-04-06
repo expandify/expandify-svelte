@@ -52,7 +52,7 @@ class PlaylistEventService {
                 .map(PlaylistCreatedEvent::new)
                 .forEach(eventPublisher::publishEvent);
 
-        eventPublisher.publishEvent(event.dataCreated(this, playlists));
+        eventPublisher.publishEvent(event.playlistsCreated(this, playlists));
     }
 
 

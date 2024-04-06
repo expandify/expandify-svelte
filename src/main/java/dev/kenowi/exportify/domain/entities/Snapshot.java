@@ -1,5 +1,6 @@
 package dev.kenowi.exportify.domain.entities;
 
+import dev.kenowi.exportify.domain.entities.valueobjects.EventStatus;
 import dev.kenowi.exportify.domain.entities.valueobjects.SavedAlbum;
 import dev.kenowi.exportify.domain.entities.valueobjects.SavedTrack;
 import jakarta.persistence.*;
@@ -49,6 +50,11 @@ public class Snapshot {
     @JoinTable
     private Set<Playlist> playlists;
 
+    private EventStatus userStatus = EventStatus.PENDING;
+    private EventStatus albumsStatus = EventStatus.PENDING;
+    private EventStatus artistsStatus = EventStatus.PENDING;
+    private EventStatus tracksStatus = EventStatus.PENDING;
+    private EventStatus playlistsStatus = EventStatus.PENDING;
 
     @Override
     public final boolean equals(Object o) {
