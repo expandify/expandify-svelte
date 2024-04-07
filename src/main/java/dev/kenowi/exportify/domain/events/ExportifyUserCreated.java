@@ -8,12 +8,12 @@ import org.springframework.context.ApplicationEvent;
 
 @Getter
 @Slf4j
-public class ExportifyUserCreatedEvent extends ApplicationEvent {
+public class ExportifyUserCreated extends ApplicationEvent {
 
     private final SpotifyTokenResponse tokenResponse;
     private final ExportifyUser exportifyUser;
 
-    public ExportifyUserCreatedEvent(Object source, ExportifyUser exportifyUser, SpotifyTokenResponse tokenResponse) {
+    public ExportifyUserCreated(Object source, ExportifyUser exportifyUser, SpotifyTokenResponse tokenResponse) {
         super(source);
         this.exportifyUser = exportifyUser;
         this.tokenResponse = tokenResponse;

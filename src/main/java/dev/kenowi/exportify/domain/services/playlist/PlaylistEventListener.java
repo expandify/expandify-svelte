@@ -2,9 +2,7 @@ package dev.kenowi.exportify.domain.services.playlist;
 
 import dev.kenowi.exportify.domain.entities.Playlist;
 import dev.kenowi.exportify.domain.entities.valueobjects.PlaylistTrack;
-import dev.kenowi.exportify.domain.entities.valueobjects.SpotifyObjectType;
 import dev.kenowi.exportify.domain.events.EpisodeIDsLoaded;
-import dev.kenowi.exportify.domain.events.SnapshotCreatedEvent;
 import dev.kenowi.exportify.domain.events.TrackIDsLoaded;
 import dev.kenowi.exportify.infrastructure.spotify.clients.SpotifyPlaylistClient;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyIdProjection;
@@ -12,17 +10,17 @@ import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPage;
 import dev.kenowi.exportify.infrastructure.spotify.mappers.SpotifyPlaylistMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-class PlaylistEventListener {
+public class PlaylistEventListener {
 
     private final SpotifyPlaylistClient spotifyPlaylistClient;
     private final PlaylistRepository playlistRepository;
@@ -40,8 +38,7 @@ class PlaylistEventListener {
     }
 
     @Async
-    @EventListener
-    public void loadUserPlaylists(SnapshotCreatedEvent event) {
+    public CompletableFuture<Set<Playlist>> loadUserPlaylists() {
         Set<Playlist> playlists = SpotifyPage
                 .streamPagination(offset -> spotifyPlaylistClient.getUserPlaylistIDs(50, offset))
                 .map(SpotifyIdProjection::getId)
@@ -51,27 +48,9 @@ class PlaylistEventListener {
                 .map(playlistRepository::upsert)
                 .collect(Collectors.toSet());
 
-        List<PlaylistTrack> playlistTracks = playlists
-                .stream()
-                .map(Playlist::getTracks)
-                .flatMap(List::stream)
-                .toList();
-
-        List<String> trackIDs = playlistTracks
-                .stream()
-                .filter(t -> SpotifyObjectType.TRACK.equals(t.getSpotifyObjectType()))
-                .map(PlaylistTrack::getTrackSpotifyID)
-                .toList();
-        List<String> episodeIDs = playlistTracks
-                .stream()
-                .filter(t -> SpotifyObjectType.EPISODE.equals(t.getSpotifyObjectType()))
-                .map(PlaylistTrack::getTrackSpotifyID)
-                .toList();
-
-        eventPublisher.publishEvent(new TrackIDsLoaded(this, trackIDs));
-        eventPublisher.publishEvent(new EpisodeIDsLoaded(this, episodeIDs));
-
-        eventPublisher.publishEvent(event.playlistsCreated(this, playlists));
+        eventPublisher.publishEvent(TrackIDsLoaded.fromPlaylists(this, playlists));
+        eventPublisher.publishEvent(EpisodeIDsLoaded.fromPlaylists(this, playlists));
+        return CompletableFuture.completedFuture(playlists);
     }
 
 

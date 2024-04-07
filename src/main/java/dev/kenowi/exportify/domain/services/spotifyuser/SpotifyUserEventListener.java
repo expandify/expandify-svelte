@@ -1,41 +1,37 @@
 package dev.kenowi.exportify.domain.services.spotifyuser;
 
 import dev.kenowi.exportify.domain.entities.PrivateSpotifyUser;
-import dev.kenowi.exportify.domain.events.SnapshotCreatedEvent;
 import dev.kenowi.exportify.infrastructure.spotify.clients.SpotifyUserClient;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPrivateUser;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPublicUser;
 import dev.kenowi.exportify.infrastructure.spotify.mappers.SpotifyUserMapper;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.CompletableFuture;
+
 
 @Service
-class SpotifyUserEventListener {
+public class SpotifyUserEventListener {
 
     private final SpotifyUserClient spotifyUserClient;
     private final SpotifyUserMapper spotifyUserMapper;
     private final PrivateSpotifyUserRepository privateSpotifyUserRepository;
     private final PublicSpotifyUserRepository publicSpotifyUserRepository;
-    private final ApplicationEventPublisher eventPublisher;
 
     SpotifyUserEventListener(SpotifyUserClient spotifyUserClient,
                              SpotifyUserMapper spotifyUserMapper,
                              PrivateSpotifyUserRepository privateSpotifyUserRepository,
-                             PublicSpotifyUserRepository publicSpotifyUserRepository, ApplicationEventPublisher eventPublisher) {
+                             PublicSpotifyUserRepository publicSpotifyUserRepository) {
         this.spotifyUserClient = spotifyUserClient;
         this.spotifyUserMapper = spotifyUserMapper;
         this.privateSpotifyUserRepository = privateSpotifyUserRepository;
         this.publicSpotifyUserRepository = publicSpotifyUserRepository;
-        this.eventPublisher = eventPublisher;
     }
 
 
     @Async
-    @EventListener
-    public void loadCurrentSpotifyUser(SnapshotCreatedEvent event) {
+    public CompletableFuture<PrivateSpotifyUser> loadCurrentSpotifyUser() {
 
         SpotifyPrivateUser spotifyPrivateUser = spotifyUserClient.getCurrentUser();
 
@@ -44,7 +40,7 @@ class SpotifyUserEventListener {
         PrivateSpotifyUser privateSpotifyUser = privateSpotifyUserRepository
                 .upsert(spotifyUserMapper.toEntity(spotifyPrivateUser));
 
-        eventPublisher.publishEvent(event.userCreated(this, privateSpotifyUser));
+        return CompletableFuture.completedFuture(privateSpotifyUser);
     }
 
 }

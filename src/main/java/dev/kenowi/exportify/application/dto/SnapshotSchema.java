@@ -23,4 +23,5 @@ public class SnapshotSchema {
     @JsonProperty("saved_tracks")
     private List<SavedTrackSchema> savedTracks;
 
+    //TODO Playlist Schema
 }

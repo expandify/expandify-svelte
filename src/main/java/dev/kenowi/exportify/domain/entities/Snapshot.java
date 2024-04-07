@@ -50,11 +50,8 @@ public class Snapshot {
     @JoinTable
     private Set<Playlist> playlists;
 
-    private EventStatus userStatus = EventStatus.PENDING;
-    private EventStatus albumsStatus = EventStatus.PENDING;
-    private EventStatus artistsStatus = EventStatus.PENDING;
-    private EventStatus tracksStatus = EventStatus.PENDING;
-    private EventStatus playlistsStatus = EventStatus.PENDING;
+    private EventStatus snapshotStatus = EventStatus.PENDING;
+    private String errorMessage;
 
     @Override
     public final boolean equals(Object o) {

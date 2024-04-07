@@ -3,7 +3,7 @@ package dev.kenowi.exportify.domain.services.exportifyuser;
 
 import dev.kenowi.exportify.domain.entities.ExportifyUser;
 import dev.kenowi.exportify.domain.entities.SpotifyCredentials;
-import dev.kenowi.exportify.domain.events.ExportifyUserCreatedEvent;
+import dev.kenowi.exportify.domain.events.ExportifyUserCreated;
 import dev.kenowi.exportify.domain.exceptions.NoCredentialsException;
 import dev.kenowi.exportify.infrastructure.spotify.clients.SpotifyAuthenticationClient;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyTokenResponse;
@@ -29,7 +29,7 @@ class CredentialsService {
     }
 
     @EventListener
-    private void linkCredentials(ExportifyUserCreatedEvent event) {
+    private void linkCredentials(ExportifyUserCreated event) {
 
         SpotifyCredentials credentials = spotifyCredentialsMapper.toEntity(event.getTokenResponse());
         ExportifyUser user = event.getExportifyUser();

@@ -20,7 +20,7 @@ public class PlaylistTrack {
     private Instant addedAt;
     private String addedByPublicUserSpotifyID;
     private Boolean isLocal;
-    private String trackSpotifyID;
+    private String spotifyTrackID;
 
     @Enumerated(EnumType.STRING)
     private SpotifyObjectType spotifyObjectType;

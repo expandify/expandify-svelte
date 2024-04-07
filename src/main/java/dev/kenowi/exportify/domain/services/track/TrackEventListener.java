@@ -4,7 +4,6 @@ import dev.kenowi.exportify.domain.entities.Track;
 import dev.kenowi.exportify.domain.entities.valueobjects.SavedTrack;
 import dev.kenowi.exportify.domain.events.AlbumIDsLoaded;
 import dev.kenowi.exportify.domain.events.ArtistIDsLoaded;
-import dev.kenowi.exportify.domain.events.SnapshotCreatedEvent;
 import dev.kenowi.exportify.domain.events.TrackIDsLoaded;
 import dev.kenowi.exportify.domain.utils.StreamHelper;
 import dev.kenowi.exportify.infrastructure.spotify.clients.SpotifyTrackClient;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,38 +40,21 @@ public class TrackEventListener {
     }
 
     @Async
-    @EventListener
-    public void loadSavedTracks(SnapshotCreatedEvent event) {
+    public CompletableFuture<Set<SavedTrack>> loadSavedTracks() {
         Set<SavedTrack> savedTracks = SpotifyPage
                 .streamPagination(offset -> spotifyTrackClient.getSaved(50, offset))
                 .map(spotifyTrackMapper::toEntity)
                 .map(savedTrack -> savedTrack.setTrack(trackRepository.upsert(savedTrack.getTrack())))
                 .collect(Collectors.toSet());
 
-
-        // TODO make nicer
-        List<String> artistIDs = savedTracks
-                .stream()
-                .map(SavedTrack::getTrack)
-                .map(Track::getSpotifyArtistIDs)
-                .flatMap(List::stream)
-                .toList();
-        eventPublisher.publishEvent(new ArtistIDsLoaded(this, artistIDs));
-
-        List<String> albumIDs = savedTracks
-                .stream()
-                .map(SavedTrack::getTrack)
-                .map(Track::getSpotifyAlbumID)
-                .toList();
-        eventPublisher.publishEvent(new AlbumIDsLoaded(this, albumIDs));
-
-        eventPublisher.publishEvent(event.tracksCreated(this, savedTracks));
+        eventPublisher.publishEvent(ArtistIDsLoaded.fromSavedTracks(this, savedTracks));
+        eventPublisher.publishEvent(AlbumIDsLoaded.fromSavedTracks(this, savedTracks));
+        return CompletableFuture.completedFuture(savedTracks);
     }
-
 
     @Async
     @EventListener
-    public void loadTrackIDs(TrackIDsLoaded event) {
+    protected void loadTrackIDs(TrackIDsLoaded event) {
         List<Track> tracks = event
                 .getTrackIDs()
                 .stream()
@@ -85,12 +68,10 @@ public class TrackEventListener {
                 .map(trackRepository::upsert)
                 .toList();
 
-        List<String> artistIDs = tracks.stream().map(Track::getSpotifyArtistIDs).flatMap(List::stream).toList();
-        eventPublisher.publishEvent(new ArtistIDsLoaded(this, artistIDs));
+        eventPublisher.publishEvent(ArtistIDsLoaded.fromTracks(this, tracks));
 
-        if (event.getAlbumID() == null) {
-            List<String> albumIDs = tracks.stream().map(Track::getSpotifyAlbumID).toList();
-            eventPublisher.publishEvent(new AlbumIDsLoaded(this, albumIDs));
+        if (!event.isAlbumLoaded()) {
+            eventPublisher.publishEvent(AlbumIDsLoaded.fromTracks(this, tracks));
         }
     }
 }

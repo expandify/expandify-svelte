@@ -28,7 +28,7 @@ public interface SpotifyPlaylistMapper {
 
     @Mapping(target = "addedAt", expression = "java(spotifyPlaylistTrack.getAddedAt() != null ? spotifyPlaylistTrack.getAddedAt().toInstant() : null)")
     @Mapping(target = "addedByPublicUserSpotifyID", source = "addedBy.id")
-    @Mapping(target = "trackSpotifyID", expression = "java(spotifyPlaylistTrack.getTrack().getId())")
+    @Mapping(target = "spotifyTrackID", expression = "java(spotifyPlaylistTrack.getTrack().getId())")
     @Mapping(target = "spotifyObjectType", expression = "java(dev.kenowi.exportify.domain.entities.valueobjects.SpotifyObjectType.valueOf(spotifyPlaylistTrack.getTrack().getType().name()))")
     PlaylistTrack map(SpotifyPlaylistTrack spotifyPlaylistTrack);
 

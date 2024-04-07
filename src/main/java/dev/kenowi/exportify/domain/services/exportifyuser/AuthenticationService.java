@@ -1,7 +1,7 @@
 package dev.kenowi.exportify.domain.services.exportifyuser;
 
 import dev.kenowi.exportify.domain.entities.ExportifyUser;
-import dev.kenowi.exportify.domain.events.ExportifyUserCreatedEvent;
+import dev.kenowi.exportify.domain.events.ExportifyUserCreated;
 import dev.kenowi.exportify.domain.exceptions.InvalidRedirectUriException;
 import dev.kenowi.exportify.domain.services.jwt.JweDecoderService;
 import dev.kenowi.exportify.domain.services.jwt.JweEncoderService;
@@ -85,7 +85,7 @@ public class AuthenticationService {
                 .findBySpotifyID(spotifyUserID)
                 .orElseGet(() -> exportifyUserRepository.save(new ExportifyUser().setSpotifyUserID(spotifyUserID)));
 
-        eventBus.publishEvent(new ExportifyUserCreatedEvent(this, user, tokenResponse));
+        eventBus.publishEvent(new ExportifyUserCreated(this, user, tokenResponse));
 
         return jweEncoderService.encode(AuthenticatedUser.USER_ID_CLAIM, user.getId());
     }
