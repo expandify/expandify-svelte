@@ -2,7 +2,10 @@ package dev.kenowi.exportify.infrastructure.spotify.clients;
 
 import dev.kenowi.exportify.infrastructure.spotify.CredentialsInterceptor;
 import dev.kenowi.exportify.infrastructure.spotify.RateLimitInterceptor;
-import dev.kenowi.exportify.infrastructure.spotify.data.*;
+import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyIdProjection;
+import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPage;
+import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPlaylist;
+import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPlaylistTrack;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

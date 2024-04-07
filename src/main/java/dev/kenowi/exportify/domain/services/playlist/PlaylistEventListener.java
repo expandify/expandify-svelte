@@ -2,8 +2,10 @@ package dev.kenowi.exportify.domain.services.playlist;
 
 import dev.kenowi.exportify.domain.entities.Playlist;
 import dev.kenowi.exportify.domain.entities.valueobjects.PlaylistTrack;
-import dev.kenowi.exportify.domain.events.PlaylistCreatedEvent;
+import dev.kenowi.exportify.domain.entities.valueobjects.SpotifyObjectType;
+import dev.kenowi.exportify.domain.events.EpisodeIDsLoaded;
 import dev.kenowi.exportify.domain.events.SnapshotCreatedEvent;
+import dev.kenowi.exportify.domain.events.TrackIDsLoaded;
 import dev.kenowi.exportify.infrastructure.spotify.clients.SpotifyPlaylistClient;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyIdProjection;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPage;
@@ -49,9 +51,25 @@ class PlaylistEventListener {
                 .map(playlistRepository::upsert)
                 .collect(Collectors.toSet());
 
-        playlists.stream()
-                .map(playlist -> new PlaylistCreatedEvent(this, playlist))
-                .forEach(eventPublisher::publishEvent);
+        List<PlaylistTrack> playlistTracks = playlists
+                .stream()
+                .map(Playlist::getTracks)
+                .flatMap(List::stream)
+                .toList();
+
+        List<String> trackIDs = playlistTracks
+                .stream()
+                .filter(t -> SpotifyObjectType.TRACK.equals(t.getSpotifyObjectType()))
+                .map(PlaylistTrack::getTrackSpotifyID)
+                .toList();
+        List<String> episodeIDs = playlistTracks
+                .stream()
+                .filter(t -> SpotifyObjectType.EPISODE.equals(t.getSpotifyObjectType()))
+                .map(PlaylistTrack::getTrackSpotifyID)
+                .toList();
+
+        eventPublisher.publishEvent(new TrackIDsLoaded(this, trackIDs));
+        eventPublisher.publishEvent(new EpisodeIDsLoaded(this, episodeIDs));
 
         eventPublisher.publishEvent(event.playlistsCreated(this, playlists));
     }

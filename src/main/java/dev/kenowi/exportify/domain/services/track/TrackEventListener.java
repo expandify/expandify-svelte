@@ -1,12 +1,11 @@
 package dev.kenowi.exportify.domain.services.track;
 
-import dev.kenowi.exportify.domain.entities.Album;
 import dev.kenowi.exportify.domain.entities.Track;
-import dev.kenowi.exportify.domain.entities.valueobjects.EventStatus;
-import dev.kenowi.exportify.domain.entities.valueobjects.PlaylistTrack;
-import dev.kenowi.exportify.domain.entities.valueobjects.SavedAlbum;
-import dev.kenowi.exportify.domain.entities.valueobjects.SpotifyObjectType;
-import dev.kenowi.exportify.domain.events.*;
+import dev.kenowi.exportify.domain.entities.valueobjects.SavedTrack;
+import dev.kenowi.exportify.domain.events.AlbumIDsLoaded;
+import dev.kenowi.exportify.domain.events.ArtistIDsLoaded;
+import dev.kenowi.exportify.domain.events.SnapshotCreatedEvent;
+import dev.kenowi.exportify.domain.events.TrackIDsLoaded;
 import dev.kenowi.exportify.domain.utils.StreamHelper;
 import dev.kenowi.exportify.infrastructure.spotify.clients.SpotifyTrackClient;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPage;
@@ -18,6 +17,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -25,45 +26,55 @@ public class TrackEventListener {
 
     private final TrackRepository trackRepository;
     private final SpotifyTrackClient spotifyTrackClient;
-    private final ApplicationEventPublisher eventBus;
     private final SpotifyTrackMapper spotifyTrackMapper;
     private final ApplicationEventPublisher eventPublisher;
 
     TrackEventListener(TrackRepository trackRepository,
                        SpotifyTrackClient spotifyTrackClient,
-                       ApplicationEventPublisher eventBus,
                        SpotifyTrackMapper spotifyTrackMapper,
                        ApplicationEventPublisher eventPublisher) {
         this.trackRepository = trackRepository;
         this.spotifyTrackClient = spotifyTrackClient;
-        this.eventBus = eventBus;
-        this.spotifyTrackMapper = spotifyTrackMapper;
         this.eventPublisher = eventPublisher;
+        this.spotifyTrackMapper = spotifyTrackMapper;
     }
 
     @Async
     @EventListener
     public void loadSavedTracks(SnapshotCreatedEvent event) {
-        SpotifyPage
+        Set<SavedTrack> savedTracks = SpotifyPage
                 .streamPagination(offset -> spotifyTrackClient.getSaved(50, offset))
                 .map(spotifyTrackMapper::toEntity)
                 .map(savedTrack -> savedTrack.setTrack(trackRepository.upsert(savedTrack.getTrack())))
-                .collect(StreamHelper.chunkedSet(100))
-                .map(savedTracksChunk -> new SnapshotTracksCreatedEvent(this, savedTracksChunk, event.getSnapshot()))
-                .forEach(eventPublisher::publishEvent);
+                .collect(Collectors.toSet());
 
-        // The saved Tracks are chunked, so that the tracks artists and albums can be processed asynchronously.
+
+        // TODO make nicer
+        List<String> artistIDs = savedTracks
+                .stream()
+                .map(SavedTrack::getTrack)
+                .map(Track::getSpotifyArtistIDs)
+                .flatMap(List::stream)
+                .toList();
+        eventPublisher.publishEvent(new ArtistIDsLoaded(this, artistIDs));
+
+        List<String> albumIDs = savedTracks
+                .stream()
+                .map(SavedTrack::getTrack)
+                .map(Track::getSpotifyAlbumID)
+                .toList();
+        eventPublisher.publishEvent(new AlbumIDsLoaded(this, albumIDs));
+
+        eventPublisher.publishEvent(event.tracksCreated(this, savedTracks));
     }
 
 
     @Async
-    @EventListener(condition = "!#event.tracksLoaded")
-    public void loadAlbumTracks(AlbumsCreatedEvent event) {
+    @EventListener
+    public void loadTrackIDs(TrackIDsLoaded event) {
         List<Track> tracks = event
-                .getAlbums()
+                .getTrackIDs()
                 .stream()
-                .map(Album::getSpotifyTrackIDs)
-                .flatMap(List::stream)
                 .distinct()
                 .collect(StreamHelper.chunked(50))
                 .map(ids -> String.join(",", ids))
@@ -71,37 +82,15 @@ public class TrackEventListener {
                 .map(response -> response.get("tracks"))
                 .flatMap(List::stream)
                 .map(spotifyTrackMapper::toEntity)
-                .map(track -> track.setAlbumStatus(EventStatus.FINISHED))
                 .map(trackRepository::upsert)
                 .toList();
 
+        List<String> artistIDs = tracks.stream().map(Track::getSpotifyArtistIDs).flatMap(List::stream).toList();
+        eventPublisher.publishEvent(new ArtistIDsLoaded(this, artistIDs));
 
-        eventPublisher.publishEvent(TracksCreatedEvent.withAlbums(this, tracks, event.getAlbums()));
-    }
-
-
-    @Async
-    @EventListener
-    public void loadPlaylistTracks(PlaylistCreatedEvent event) {
-        List<Track> tracks = event.getPlaylist()
-                .getTracks()
-                .stream()
-                .filter(p -> SpotifyObjectType.TRACK.equals(p.getSpotifyObjectType()))
-                .map(PlaylistTrack::getTrackSpotifyID)
-                .map(spotifyTrackClient::get)
-                .map(spotifyTrackMapper::toEntity)
-                .map(trackRepository::upsert)
-                .toList();
-
-        eventBus.publishEvent(TracksCreatedEvent.empty(this, tracks));
-    }
-
-    @Async
-    @EventListener
-    public void setTrackAlbum(TracksArtistsCreatedEvent event) {
-        event.getTracks()
-                .stream()
-                .map(track -> track.setArtistsStatus(EventStatus.FINISHED))
-                .forEach(trackRepository::save);
+        if (event.getAlbumID() == null) {
+            List<String> albumIDs = tracks.stream().map(Track::getSpotifyAlbumID).toList();
+            eventPublisher.publishEvent(new AlbumIDsLoaded(this, albumIDs));
+        }
     }
 }

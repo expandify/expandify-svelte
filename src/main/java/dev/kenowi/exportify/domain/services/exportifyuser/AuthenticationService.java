@@ -1,6 +1,7 @@
 package dev.kenowi.exportify.domain.services.exportifyuser;
 
 import dev.kenowi.exportify.domain.entities.ExportifyUser;
+import dev.kenowi.exportify.domain.events.ExportifyUserCreatedEvent;
 import dev.kenowi.exportify.domain.exceptions.InvalidRedirectUriException;
 import dev.kenowi.exportify.domain.services.jwt.JweDecoderService;
 import dev.kenowi.exportify.domain.services.jwt.JweEncoderService;
@@ -37,7 +38,6 @@ public class AuthenticationService {
     private Set<String> scopes;
     @Value("${spotify.redirect-uri}")
     private String redirectURI;
-
 
 
     AuthenticationService(SpotifyAuthenticationClient spotifyAuthenticationClient,

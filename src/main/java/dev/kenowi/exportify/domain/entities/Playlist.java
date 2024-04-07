@@ -1,6 +1,5 @@
 package dev.kenowi.exportify.domain.entities;
 
-import dev.kenowi.exportify.domain.entities.valueobjects.EventStatus;
 import dev.kenowi.exportify.domain.entities.valueobjects.Image;
 import dev.kenowi.exportify.domain.entities.valueobjects.PlaylistTrack;
 import dev.kenowi.exportify.domain.entities.valueobjects.SpotifyObjectType;
@@ -32,7 +31,7 @@ public class Playlist {
     @CreationTimestamp
     private Instant versionTimestamp;
 
-    private EventStatus tracksStatus = EventStatus.PENDING;
+    //private EventStatus tracksStatus = EventStatus.PENDING;
 
     private Boolean collaborative;
     private String description;

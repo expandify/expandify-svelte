@@ -3,6 +3,7 @@ package dev.kenowi.exportify.domain.services.exportifyuser;
 
 import dev.kenowi.exportify.domain.entities.ExportifyUser;
 import dev.kenowi.exportify.domain.entities.SpotifyCredentials;
+import dev.kenowi.exportify.domain.events.ExportifyUserCreatedEvent;
 import dev.kenowi.exportify.domain.exceptions.NoCredentialsException;
 import dev.kenowi.exportify.infrastructure.spotify.clients.SpotifyAuthenticationClient;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyTokenResponse;
@@ -20,8 +21,8 @@ class CredentialsService {
     private final SpotifyAuthenticationClient spotifyAuthenticationClient;
 
     CredentialsService(CredentialsRepository credentialsRepository,
-                              SpotifyCredentialsMapper spotifyCredentialsMapper,
-                              SpotifyAuthenticationClient spotifyAuthenticationClient) {
+                       SpotifyCredentialsMapper spotifyCredentialsMapper,
+                       SpotifyAuthenticationClient spotifyAuthenticationClient) {
         this.credentialsRepository = credentialsRepository;
         this.spotifyCredentialsMapper = spotifyCredentialsMapper;
         this.spotifyAuthenticationClient = spotifyAuthenticationClient;

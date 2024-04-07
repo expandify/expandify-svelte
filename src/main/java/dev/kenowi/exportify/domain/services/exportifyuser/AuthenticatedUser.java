@@ -22,9 +22,9 @@ public class AuthenticatedUser extends JwtAuthenticationToken {
     private final CredentialsService credentialsService;
 
     private final UUID userID;
+    private final ExportifyUserRepository exportifyUserRepository;
     private ExportifyUser user;
     private SpotifyCredentials spotifyCredentials;
-    private final ExportifyUserRepository exportifyUserRepository;
 
 
     AuthenticatedUser(Jwt jwt,

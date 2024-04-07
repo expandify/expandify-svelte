@@ -2,7 +2,6 @@ package dev.kenowi.exportify.infrastructure.spotify.clients;
 
 import dev.kenowi.exportify.infrastructure.spotify.CredentialsInterceptor;
 import dev.kenowi.exportify.infrastructure.spotify.RateLimitInterceptor;
-import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyArtist;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPage;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifySavedTrack;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyTrack;

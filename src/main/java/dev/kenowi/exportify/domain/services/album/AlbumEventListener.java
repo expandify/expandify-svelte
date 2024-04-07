@@ -1,11 +1,11 @@
 package dev.kenowi.exportify.domain.services.album;
 
 import dev.kenowi.exportify.domain.entities.Album;
-import dev.kenowi.exportify.domain.entities.Track;
-import dev.kenowi.exportify.domain.entities.valueobjects.EventStatus;
 import dev.kenowi.exportify.domain.entities.valueobjects.SavedAlbum;
-import dev.kenowi.exportify.domain.events.*;
-import dev.kenowi.exportify.domain.utils.StreamHelper;
+import dev.kenowi.exportify.domain.events.AlbumIDsLoaded;
+import dev.kenowi.exportify.domain.events.ArtistIDsLoaded;
+import dev.kenowi.exportify.domain.events.SnapshotCreatedEvent;
+import dev.kenowi.exportify.domain.events.TrackIDsLoaded;
 import dev.kenowi.exportify.infrastructure.spotify.clients.SpotifyAlbumClient;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyIdProjection;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyPage;
@@ -42,29 +42,38 @@ public class AlbumEventListener {
 
     @Async
     @EventListener
-    public void loadSavedAlbums(SnapshotEvent.Created event) {
-        SpotifyPage
+    public void loadSavedAlbums(SnapshotCreatedEvent event) {
+        Set<SavedAlbum> savedAlbums = SpotifyPage
                 .streamPagination(offset -> spotifyAlbumClient.getSaved(50, offset))
                 .map(spotifyAlbumMapper::toEntity)
                 .map(this::setAlbumTrackIDs)
                 .map(savedAlbum -> savedAlbum.setAlbum(albumRepository.upsert(savedAlbum.getAlbum())))
-                .map(SavedAlbum::getAlbum)
-                .collect(StreamHelper.chunkedSet(50))
-                .map(albumsChunk -> AlbumsCreatedEvent.empty(this, albumsChunk))
-                .forEach(eventPublisher::publishEvent);
+                .collect(Collectors.toSet());
 
-        // The saved Albums are chunked, so that the albums artists and tracks can be processed asynchronously.
+        // TODO make nicer
+        List<String> artistIDs = savedAlbums
+                .stream()
+                .map(SavedAlbum::getAlbum)
+                .map(Album::getSpotifyArtistIDs)
+                .flatMap(List::stream)
+                .toList();
+        eventPublisher.publishEvent(new ArtistIDsLoaded(this, artistIDs));
+
+        savedAlbums.stream()
+                .map(SavedAlbum::getAlbum)
+                .map(album -> new TrackIDsLoaded(this, album.getSpotifyTrackIDs(), album.getId()))
+                .forEach(eventPublisher::publishEvent);
+        eventPublisher.publishEvent(event.albumsCreated(this, savedAlbums));
     }
 
     @Async
-    @EventListener(condition = "!#event.albumsLoaded")
-    public void loadTrackAlbums(TracksCreatedEvent event) {
+    @EventListener
+    public void loadAlbumIDs(AlbumIDsLoaded event) {
         // TODO get multiple Albums at once
 
         List<Album> albums = event
-                .getTracks()
+                .getAlbumIDs()
                 .stream()
-                .map(Track::getSpotifyAlbumID)
                 .distinct()
                 .map(spotifyAlbumClient::get)
                 .map(spotifyAlbumMapper::toEntity)
@@ -72,29 +81,9 @@ public class AlbumEventListener {
                 .map(albumRepository::upsert)
                 .toList();
 
-        eventPublisher.publishEvent(AlbumsCreatedEvent.empty(this, albums));
+        List<String> artistIDs = albums.stream().map(Album::getSpotifyArtistIDs).flatMap(List::stream).toList();
+        eventPublisher.publishEvent(new ArtistIDsLoaded(this, artistIDs));
     }
-
-    @Async
-    @EventListener(condition = "#event.albumsLoaded")
-    public void setAlbumTracksStatus(TracksCreatedEvent event) {
-        // TODO check if loaded Tracks match the album tracks
-        event.getAlbums()
-                .stream()
-                .map(album -> album.setTracksStatus(EventStatus.FINISHED))
-                .forEach(albumRepository::save);
-    }
-
-    @Async
-    @EventListener
-    public void setAlbumArtistsStatus(AlbumsArtistsCreatedEvent event) {
-        // TODO check if loaded Artists match the album artists
-        event.getAlbums()
-                .stream()
-                .map(album -> album.setArtistsStatus(EventStatus.FINISHED))
-                .forEach(albumRepository::save);
-    }
-
 
 
     private Album setAlbumTrackIDs(Album album) {

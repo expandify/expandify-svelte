@@ -1,7 +1,6 @@
 package dev.kenowi.exportify.domain.entities;
 
 import com.neovisionaries.i18n.CountryCode;
-import dev.kenowi.exportify.domain.entities.valueobjects.EventStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +26,7 @@ public class PrivateSpotifyUser {
     @CreationTimestamp
     private Instant versionTimestamp;
 
-    private EventStatus publicUserStatus = EventStatus.PENDING;
+    //private EventStatus publicUserStatus = EventStatus.PENDING;
 
     private String spotifyID;
     private CountryCode country;

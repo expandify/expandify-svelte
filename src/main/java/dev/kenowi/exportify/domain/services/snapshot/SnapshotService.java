@@ -28,18 +28,19 @@ public class SnapshotService {
 
     public Snapshot create() {
 
-        Snapshot snapshot = new Snapshot()
-                .setExportifyUser(AuthenticatedUser.getSecurityContext().getUser());
-        eventPublisher.publishEvent(new SnapshotCreatedEvent(snapshot));
+        Snapshot snapshot = snapshotRepository
+                .save(new Snapshot().setExportifyUser(AuthenticatedUser.getSecurityContext().getUser()));
 
-        return snapshotRepository.save(snapshot);
+        eventPublisher.publishEvent(new SnapshotCreatedEvent(snapshot.getId()));
+        return snapshot;
     }
 
     @Async
     @EventListener
     public void onSnapshotArtists(SnapshotCreatedEvent.SnapshotArtistsCreated event) {
-        Snapshot snapshot = event
-                .getSnapshot()
+        Snapshot snapshot = snapshotRepository
+                .findById(event.getSnapshotID())
+                .orElseThrow(() -> new EntityNotFoundException("Snapshot not found"))
                 .setArtists(event.getData())
                 .setArtistsStatus(EventStatus.FINISHED);
         snapshotRepository.save(snapshot);
@@ -48,8 +49,9 @@ public class SnapshotService {
     @Async
     @EventListener
     public void onSnapshotAlbums(SnapshotCreatedEvent.SnapshotAlbumsCreated event) {
-        Snapshot snapshot = event
-                .getSnapshot()
+        Snapshot snapshot = snapshotRepository
+                .findById(event.getSnapshotID())
+                .orElseThrow(() -> new EntityNotFoundException("Snapshot not found"))
                 .setSavedAlbums(event.getData())
                 .setAlbumsStatus(EventStatus.FINISHED);
         snapshotRepository.save(snapshot);
@@ -58,8 +60,9 @@ public class SnapshotService {
     @Async
     @EventListener
     public void onSnapshotTracks(SnapshotCreatedEvent.SnapshotTracksCreated event) {
-        Snapshot snapshot = event
-                .getSnapshot()
+        Snapshot snapshot = snapshotRepository
+                .findById(event.getSnapshotID())
+                .orElseThrow(() -> new EntityNotFoundException("Snapshot not found"))
                 .setSavedTracks(event.getData())
                 .setTracksStatus(EventStatus.FINISHED);
         snapshotRepository.save(snapshot);
@@ -68,8 +71,9 @@ public class SnapshotService {
     @Async
     @EventListener
     public void onSnapshotPlaylists(SnapshotCreatedEvent.SnapshotPlaylistsCreated event) {
-        Snapshot snapshot = event
-                .getSnapshot()
+        Snapshot snapshot = snapshotRepository
+                .findById(event.getSnapshotID())
+                .orElseThrow(() -> new EntityNotFoundException("Snapshot not found"))
                 .setPlaylists(event.getData())
                 .setPlaylistsStatus(EventStatus.FINISHED);
         snapshotRepository.save(snapshot);
@@ -78,8 +82,9 @@ public class SnapshotService {
     @Async
     @EventListener
     public void onSnapshotUser(SnapshotCreatedEvent.SnapshotUserCreated event) {
-        Snapshot snapshot = event
-                .getSnapshot()
+        Snapshot snapshot = snapshotRepository
+                .findById(event.getSnapshotID())
+                .orElseThrow(() -> new EntityNotFoundException("Snapshot not found"))
                 .setPrivateSpotifyUser(event.getData())
                 .setUserStatus(EventStatus.FINISHED);
         snapshotRepository.save(snapshot);

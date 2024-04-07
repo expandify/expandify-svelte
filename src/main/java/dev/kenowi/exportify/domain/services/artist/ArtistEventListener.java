@@ -1,9 +1,8 @@
 package dev.kenowi.exportify.domain.services.artist;
 
-import dev.kenowi.exportify.domain.entities.Album;
 import dev.kenowi.exportify.domain.entities.Artist;
-import dev.kenowi.exportify.domain.entities.Track;
-import dev.kenowi.exportify.domain.events.*;
+import dev.kenowi.exportify.domain.events.ArtistIDsLoaded;
+import dev.kenowi.exportify.domain.events.SnapshotCreatedEvent;
 import dev.kenowi.exportify.domain.utils.StreamHelper;
 import dev.kenowi.exportify.infrastructure.spotify.clients.SpotifyArtistClient;
 import dev.kenowi.exportify.infrastructure.spotify.data.SpotifyCursorPage;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -41,7 +39,7 @@ public class ArtistEventListener {
 
     @Async
     @EventListener
-    public void loadFollowedArtists(SnapshotEvent.Created event) {
+    public void loadFollowedArtists(SnapshotCreatedEvent event) {
         Set<Artist> artists = SpotifyCursorPage
                 .streamPagination(after -> spotifyArtistClient
                         .getFollowing(after, 50)
@@ -50,37 +48,14 @@ public class ArtistEventListener {
                 .map(artistRepository::upsert)
                 .collect(Collectors.toSet());
 
-        eventPublisher.publishEvent(new SnapshotEvent.ArtistsCreated(this, event.getSnapshot(), artists));
+        eventPublisher.publishEvent(event.artistsCreated(this, artists));
     }
 
     @Async
     @EventListener
-    public void loadAlbumArtists(AlbumsCreatedEvent event) {
-
-        Stream<String> artistIds = event
-                .getAlbums()
+    public void loadArtistIDs(ArtistIDsLoaded event) {
+        event.getArtistsIDs()
                 .stream()
-                .map(Album::getSpotifyArtistIDs)
-                .flatMap(List::stream);
-        List<Artist> artists = loadArtistsByID(artistIds);
-
-        eventPublisher.publishEvent(new ArtistsCreatedEvent(this, artists));
-    }
-
-    @Async
-    @EventListener
-    public void loadTrackArtists(TracksCreatedEvent event) {
-        Stream<String> spotifyArtistIDs = event
-                .getTracks()
-                .stream()
-                .map(Track::getSpotifyArtistIDs)
-                .flatMap(List::stream);
-        List<Artist> artists = loadArtistsByID(spotifyArtistIDs);
-        eventPublisher.publishEvent(new TracksEvent.ArtistsCreated(this, event.getTracks(), artists));
-    }
-
-    private List<Artist> loadArtistsByID(Stream<String> spotifyArtistIDs) {
-        return spotifyArtistIDs
                 .distinct()
                 .collect(StreamHelper.chunked(50))
                 .map(ids -> String.join(",", ids))
@@ -88,7 +63,6 @@ public class ArtistEventListener {
                 .map(response -> response.get("artists"))
                 .flatMap(List::stream)
                 .map(spotifyArtistMapper::toEntity)
-                .map(artistRepository::upsert)
-                .toList();
+                .forEach(artistRepository::upsert);
     }
 }
