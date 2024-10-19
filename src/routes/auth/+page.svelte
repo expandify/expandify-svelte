@@ -15,7 +15,8 @@
 
         if (!code || !state) {
             const authUrl = await authorizeUrl();
-            await goto(authUrl);
+						window.location.href = authUrl;
+            //await goto(authUrl);
         }
 
         try {
