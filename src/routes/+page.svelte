@@ -10,18 +10,7 @@
     }
 </script>
 
-<main class="main">
+<main class="min-h-lvh flex flex-col justify-center items-center ">
     <h1>Welcome to Expandify</h1>
     <Button on:click={() => goto("/auth")} text="Login With Spotify" type="spotify"></Button>
 </main>
-
-
-<style lang="scss">
-  .main {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-</style>

@@ -18,14 +18,7 @@
     startAutoRefresh();
 </script>
 
-<div class="page">
-    <slot/>
-    <Notifications/>
+<div class="min-h-lvh bg-white dark:bg-gray-900">
+	<slot></slot>
+	<Notifications></Notifications>
 </div>
-
-
-<style lang="scss">
-  .page {
-    min-height: 100vh;
-  }
-</style>
