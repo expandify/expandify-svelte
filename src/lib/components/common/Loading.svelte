@@ -28,11 +28,11 @@
 
 <div class="loading-text-container">
     {#if error}
-        <h1 class="error">Error loading {title}</h1>
+        <h1 class="text-red-600">Error loading {title}</h1>
     {:else if loading}
         <h1>{`Loading ${title}${stepSuffix || progressDots}`}</h1>
     {:else}
-        <h1 class="success">Loaded {title}{stepSuffix}</h1>
+        <h1 class="text-green-500">Loaded {title}{stepSuffix}</h1>
     {/if}
 
     {#if error}
@@ -48,14 +48,6 @@
     flex-direction: row;
     align-items: center;
     gap: 2rem;
-
-    .error {
-      color: var(--text-negative);
-    }
-
-    .success {
-      color: var(--text-positive);
-    }
   }
 
 </style>
