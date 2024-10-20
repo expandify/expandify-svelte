@@ -48,6 +48,7 @@
 					<SidebarItem label="Release Tracker" href="/tools/release-tracker"></SidebarItem>
 					<SidebarItem label="Song Finder" href="/tools/song-finder"></SidebarItem>
 					<SidebarItem label="Library Value" href="/tools/library-value"></SidebarItem>
+					<SidebarItem label="Cover Flow" href="/tools/cover-flow"></SidebarItem>
 					<SidebarItem label="Backup" href="/tools/backup"></SidebarItem>
 				</SidebarDropdownWrapper>
 			</SidebarGroup>

@@ -10,11 +10,11 @@
     import { Modal } from 'flowbite-svelte';
 
     $: anyNeeded =
-        ($dependencies.albums && ($albums.loading || $albums.error)) ||
-        ($dependencies.artists && ($artists.loading || $artists.error)) ||
-        ($dependencies.playlists && ($playlists.loading || $playlists.error)) ||
-        ($dependencies.tracks && ($tracks.loading || $tracks.error)) ||
-        ($dependencies.user && ($user.loading || $user.error));
+        ($dependencies.albums && ($albums.loading || !!$albums.error)) ||
+        ($dependencies.artists && ($artists.loading || !!$artists.error)) ||
+        ($dependencies.playlists && ($playlists.loading || !!$playlists.error)) ||
+        ($dependencies.tracks && ($tracks.loading || !!$tracks.error)) ||
+        ($dependencies.user && ($user.loading || !!$user.error));
 </script>
 
 {#if anyNeeded}

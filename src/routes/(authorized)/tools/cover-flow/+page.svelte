@@ -1,12 +1,13 @@
 <script lang="ts">
-    import {dependencies} from "$lib/stores/dependencies";
+	import { dependencies } from '$lib/stores/dependencies';
+	import CoverFlow from '$lib/components/CoverFlow.svelte';
 
 
-    dependencies.onlyAlbumsNeeded();
+	dependencies.onlyAlbumsNeeded();
 </script>
 
 <p>Old Apple Cover Flow Recreation</p>
 <span>Under Construction</span>
 
-<style lang="scss">
-</style>
+<CoverFlow></CoverFlow>
+
