@@ -5,18 +5,18 @@
 
 	// Code taken from "https://github.com/shuding/coverflow" and modified.
 
-	export let width = 600;
+	export let width = 1200;
 	export let spacing = 20;
-	export let size = 180;
+	export let size = 420;
 	export let flat = false;
 
-	let browserPrefix = "";
+	let browserPrefix = '';
 	if (navigator.userAgent.indexOf('Firefox') != -1) {
-		browserPrefix = "-moz-";
+		browserPrefix = '-moz-';
 	} else if (navigator.userAgent.indexOf('Chrome') != -1) {
-		browserPrefix = "-webkit-";
+		browserPrefix = '-webkit-';
 	} else if (navigator.userAgent.indexOf('Safari') != -1) {
-		browserPrefix = "-webkit-";
+		browserPrefix = '-webkit-';
 	}
 
 	function setTransform3D(el: HTMLElement, degree: number, perspective: number, z: number) {
@@ -96,9 +96,9 @@
 	let coverflow: HTMLElement;
 	onMount(() => {
 		initCoverFlow(coverflow);
-	})
+	});
 
-	function transformScroll(event: WheelEvent & {   currentTarget: (EventTarget & HTMLDivElement)}) {
+	function transformScroll(event: WheelEvent & { currentTarget: (EventTarget & HTMLDivElement) }) {
 		if (!event.deltaY) {
 			return;
 		}
