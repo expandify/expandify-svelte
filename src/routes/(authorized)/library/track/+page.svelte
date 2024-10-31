@@ -11,7 +11,7 @@
 
 <h2 class="header">
     <span>Tracks - {$tracks.tracks.length}</span>
-    <button class="button" on:click={() => spotifyPersistence.reloadSavedTracks()} title="Reload Library">
+    <button class="button" onclick={() => spotifyPersistence.reloadSavedTracks()} title="Reload Library">
         <Svg name={"reload"}/>
     </button>
 </h2>

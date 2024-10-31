@@ -1,18 +1,25 @@
 <script lang="ts">
     import {onDestroy} from "svelte";
-    import {createEventDispatcher} from "svelte";
     import Button from "./Button.svelte";
 
-    const dispatch = createEventDispatcher();
+    let {
+        title,
+        total = null,
+        current = null,
+        loading = true,
+        error = false,
+        retry = () => {}
+    } = $props<{
+        title: string;
+        total?: number | null;
+        current?: number | null;
+        loading?: boolean;
+        error?: boolean;
+        retry?: () => void;
+    }>();
 
-    export let title: string;
-    export let total: number | null = null;
-    export let current: number | null = null;
-    export let loading: boolean = true;
-    export let error: boolean = false;
 
-
-    let progressDots = ""
+    let progressDots = $state("")
     const interval = setInterval(() => {
         if (progressDots.length > 3)
             progressDots = "";
@@ -21,7 +28,7 @@
     }, 400);
     onDestroy(() => clearInterval(interval));
 
-    $: stepSuffix = current && total ? `: ${current} of ${total}` : "";
+    let stepSuffix = $derived(current && total ? `: ${current} of ${total}` : "");
 
 
 </script>
@@ -37,7 +44,7 @@
 
     {#if error}
         <div>
-            <Button on:click={() => dispatch('retry')} text="Retry"/>
+            <Button click={() => retry()} text="Retry"/>
         </div>
     {/if}
 

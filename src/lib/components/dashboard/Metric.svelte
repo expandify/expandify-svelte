@@ -1,6 +1,8 @@
 <script lang="ts">
-    export let title: string;
-    export let metric: number;
+    let { title, metric } = $props<{
+        title: string;
+        metric: number;
+    }>();
 
 </script>
 

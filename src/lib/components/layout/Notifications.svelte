@@ -3,7 +3,7 @@
     import {NotificationType} from '$lib/types/notification';
     import {fade} from 'svelte/transition';
 
-    $: iterator = Array.from($notifications);
+    let iterator = $derived(Array.from($notifications));
 </script>
 
 <div class="banners">

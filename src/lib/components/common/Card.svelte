@@ -1,14 +1,15 @@
 <script lang="ts">
 	import type { Album, Artist, Playlist } from '$lib/types/spotify';
 	import { fade } from 'svelte/transition';
-	import ImageWithFallback from '../common/ImageWithFallback.svelte';
 	import { Card, Popover } from 'flowbite-svelte';
 
-	export let card: Album | Artist | Playlist;
+	let { card } = $props<{
+		card: Album | Artist | Playlist;
+	}>();
 
 	let title = card.name;
-	let subtitle: string;
-	let href: string | null;
+	let subtitle = $state<string>();
+	let href = $state<string | null>();
 
 	switch (card.type) {
 		case 'album':
@@ -28,7 +29,7 @@
 
 </script>
 
-<Card img="{card?.images?.at(0)?.url}"
+<Card img={card?.images?.at(0)?.url}
 			href={href}
 			reverse={false}
 			class="p-4 max-w-48 rounded-2xl"
@@ -42,7 +43,7 @@
 	</div>
 	<Popover triggeredBy="#card-title-{card.id}"
 					 placement="bottom"
-					 arrow="{false}"
+					 arrow={false}
 					 transition={fade}
 					 params={{ duration: 200, delay: 500 }}
 					 offset={-50} >

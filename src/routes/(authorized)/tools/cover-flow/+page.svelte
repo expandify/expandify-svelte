@@ -6,7 +6,8 @@
 
 	dependencies.onlyAlbumsNeeded();
 
-	$: coverflowContainerWidth = 1000;
+	let coverflowContainerWidth = $state(1000);
+	
 
 </script>
 

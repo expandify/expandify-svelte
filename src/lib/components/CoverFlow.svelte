@@ -59,8 +59,8 @@
 			imgs: HTMLElement[] = [],
 			placeholding;
 		for (let childNode of c.childNodes) {
-			if (childNode instanceof HTMLElement && (<HTMLElement>childNode).tagName) {
-				imgs.push(<HTMLElement>childNode);
+			if ((childNode instanceof HTMLElement) && (childNode as HTMLElement).tagName) {
+				imgs.push(childNode as HTMLElement);
 			}
 		}
 		for (let i = 0; i < imgs.length; ++i) {
@@ -90,6 +90,9 @@
 			imgs[i].onclick = function() {
 				displayIndex(c.scrollLeft, imgs, imgs.indexOf(imgs[i]));
 			};
+		console.log("kqjbwekjqwe")
+		console.log(c.dataset.index);
+		console.log(imgs);
 		displayIndex(c.scrollLeft, imgs, +c.dataset.index);
 	}
 

@@ -3,13 +3,19 @@
     import Loading from "$lib/components/common/Loading.svelte";
     import {calculateLibraryValue} from "./value-calculator";
 
-    let savedAlbums = false;
-    let ownPlaylists = false;
-    let followedPlaylists = false;
-    let savedTracks = false;
+     
+    let savedAlbums = $state(false);
+     
+    let ownPlaylists = $state(false);
+     
+    let followedPlaylists = $state(false);
+     
+    let savedTracks = $state(false);
 
-    let calculating = false;
-    let libraryValue: number | null = null;
+     
+    let calculating = $state(false);
+     
+    let libraryValue = $state<number | null>(null);
 
     async function calcLibrary() {
         calculating = true;
@@ -40,7 +46,7 @@
 </div>
 
 {#if savedAlbums || ownPlaylists || followedPlaylists || savedTracks}
-    <Button on:click={calcLibrary} text="Calculate Library Value" type="elevated"/>
+    <Button click={calcLibrary} text="Calculate Library Value" type="elevated"/>
 {/if}
 
 

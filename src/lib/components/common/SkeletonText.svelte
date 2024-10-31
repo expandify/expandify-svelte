@@ -1,16 +1,20 @@
 <script lang="ts">
-
-
-    let className = "";
-    export {className as class};
-    export let skeleton = false;
-
-    export let length = "5rem"
+    let {
+        class: className = "",
+        skeleton = false,
+        length = "5rem",
+        children
+    } = $props<{
+        class?: string;
+        skeleton?: boolean;
+        length?: string;
+        children?: import('svelte').Snippet;
+    }>();
 
 </script>
 
 {#if !skeleton}
-    <span class={className}><slot/></span>
+    <span class={className}>{@render children?.()}</span>
 {:else }
     <div class="{className} skeleton" style="width: {length}"></div>
 {/if}

@@ -124,7 +124,7 @@ export function toPlaylistSimplified(playlist: SpotifyApi.PlaylistObjectSimplifi
         external_urls: toExternalUrl(playlist.external_urls),
         href: playlist.href,
         id: playlist.id,
-        images: playlist.images.map(i => toSpotifyImage(i)),
+        images: playlist.images?.map(i => toSpotifyImage(i)),
         name: playlist.name,
         owner: toUserPublic(playlist.owner),
         public: playlist.public,

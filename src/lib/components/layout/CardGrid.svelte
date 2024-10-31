@@ -3,7 +3,9 @@
     import {fade} from 'svelte/transition';
     import Card from '../common/Card.svelte';
 
-    export let cards: Album[] | Artist[] | Playlist[];
+    let { cards } = $props<{
+        cards: Album[] | Artist[] | Playlist[];
+    }>();
 </script>
 
 <div class="cards" in:fade>

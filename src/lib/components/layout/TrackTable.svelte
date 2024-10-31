@@ -5,11 +5,13 @@
     import {viewport} from "$lib/actions/useViewportAction";
     import SkeletonText from "$lib/components/common/SkeletonText.svelte";
 
-    export let tracks: (Track & { added_at?: string })[];
-    export let showImage = true;
-    export let showAddedAt = false;
+    let { tracks, showImage = true, showAddedAt = false } = $props<{
+        tracks: (Track & { added_at?: string })[];
+        showImage?: boolean;
+        showAddedAt?: boolean;
+    }>();
 
-    let visible: Array<boolean> = Array(tracks.length).fill(true)
+    let visible = $state<Array<boolean>>(Array(tracks.length).fill(true))
 
 </script>
 
@@ -32,8 +34,8 @@
     {#each tracks as track, i}
         <div class="row"
              use:viewport
-             on:enterViewport={() => visible[i] = true}
-             on:exitViewport={() => visible[i] = false}>
+             onenterViewport={() => visible[i] = true}
+             onexitViewport={() => visible[i] = false}>
 
             <span class="position">{i + 1}</span>
             {#if showImage}

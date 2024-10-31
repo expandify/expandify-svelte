@@ -1,14 +1,13 @@
 <script lang="ts">
-    import {createEventDispatcher} from "svelte";
-
-    const dispatch = createEventDispatcher();
-
-    export let type: 'base' | 'elevated' | 'spotify' = "base";
-    export let text: string;
+    let { type = "base", text, click } = $props<{
+        type?: 'base' | 'elevated' | 'spotify';
+        text: string;
+        click: () => void;
+    }>();
 </script>
 
 <button class="button"
-        on:click={() => dispatch('click')}
+        onclick={click}
         class:base={type === 'base'}
         class:elevated={type === 'elevated'}
         class:spotify={type === 'spotify'}>

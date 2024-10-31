@@ -5,11 +5,15 @@
     import {browser} from '$app/environment';
     import {spotifySession, type SpotifySession} from '$lib/stores/spotifySession';
 
+    let { children } = $props<{
+			children?: import('svelte').Snippet;
+		}>();
+
     if (browser) {
         try {
             const data: SpotifySession = JSON.parse(localStorage.spotify);
             spotifySession.set({...data, expirationDate: new Date(data.expirationDate)});
-        } catch (error) {
+        } catch (_) {
             spotifySession.set(null);
         }
         spotifySession.subscribe((value) => (localStorage.spotify = JSON.stringify(value)));
@@ -19,6 +23,6 @@
 </script>
 
 <div class="min-h-lvh bg-white dark:bg-gray-900">
-	<slot></slot>
+	{@render children?.()}
 	<Notifications></Notifications>
 </div>

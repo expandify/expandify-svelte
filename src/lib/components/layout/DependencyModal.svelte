@@ -9,17 +9,20 @@
     import {spotifyPersistence} from "$lib/services/spotify/spotify-persistance";
     import { Modal } from 'flowbite-svelte';
 
-    $: anyNeeded =
-        ($dependencies.albums && ($albums.loading || !!$albums.error)) ||
-        ($dependencies.artists && ($artists.loading || !!$artists.error)) ||
-        ($dependencies.playlists && ($playlists.loading || !!$playlists.error)) ||
-        ($dependencies.tracks && ($tracks.loading || !!$tracks.error)) ||
-        ($dependencies.user && ($user.loading || !!$user.error));
+    let anyNeeded = $state(false);
+    $effect(() => {
+        anyNeeded =
+            ($dependencies.albums && ($albums.loading || !!$albums.error)) ||
+            ($dependencies.artists && ($artists.loading || !!$artists.error)) ||
+            ($dependencies.playlists && ($playlists.loading || !!$playlists.error)) ||
+            ($dependencies.tracks && ($tracks.loading || !!$tracks.error)) ||
+            ($dependencies.user && ($user.loading || !!$user.error));
+    });
 </script>
 
 {#if anyNeeded}
-    <Modal title="Loading" bind:open={anyNeeded} size="lg" dismissable="{false}" >
-        {#if $dependencies.albums }
+    <Modal title="Loading" bind:open={anyNeeded} size="lg" dismissable={false} >
+        {#if $dependencies.albums}
             <Loading
               title={"Albums"}
               current={$albums.albums.length}

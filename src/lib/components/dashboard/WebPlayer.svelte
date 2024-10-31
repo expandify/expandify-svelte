@@ -3,19 +3,24 @@
     import {msToTime} from "$lib/utils/converter/date-time";
     import {onDestroy} from "svelte";
     import ImageWithFallback from "../common/ImageWithFallback.svelte";
-    import Svg from "../common/Svg.svelte";
     import ProgressBar from "../common/ProgressBar.svelte";
     import {toPlaybackState} from "$lib/utils/converter/spotify";
     import {spotifyApi} from "$lib/services/spotify/spotify-api";
+    import {
+        BackwardStepSolid,
+        ForwardStepSolid,
+        PauseSolid,
+        PlaySolid
+    } from 'flowbite-svelte-icons';
+    import { Button, Card } from 'flowbite-svelte';
 
-    const svgSize = "3.5rem";
 
-    let playbackState: PlaybackState | null;
+    let playbackState = $state<PlaybackState | null>();
 
-    $: timeMs = playbackState?.progress_ms || 0;
-    $: lengthMs = playbackState?.item?.duration_ms || 1;
-    $: remainingMs = lengthMs - timeMs;
-    $: percent = ((timeMs / lengthMs) * 100).toFixed(1);
+    let timeMs = $derived(playbackState?.progress_ms || 0);
+    let lengthMs = $derived(playbackState?.item?.duration_ms || 1);
+    let remainingMs = $derived(lengthMs - timeMs);
+    let percent = $derived(((timeMs / lengthMs) * 100).toFixed(1));
 
     async function getPlayback() {
         const playbackState = await spotifyApi.getPlaybackState();
@@ -40,135 +45,46 @@
 
 {#key playbackState}
     {#if playbackState}
-        <div class="player">
-
-            <div class="header">
+        <Card class="aspect-video flex flex-col justify-between gap-2">
+            <div class="header flex flex-row h-[50%] gap-4">
                 <ImageWithFallback type={playbackState.item?.album} fallbackSvg="album"/>
-                <div class="infos">
+                <div class="infos flex flex-col">
                     <h2 class="title">{playbackState.item?.name}</h2>
                     <h5 class="artists">{playbackState.item?.artists.map((a) => a.name).join(', ')}</h5>
                     <small class="device">{playbackState.device.name}</small>
                 </div>
             </div>
 
-            <div class="progress">
-                <small class="time">{msToTime(timeMs)}</small>
-                <small class="remaining-time">{msToTime(remainingMs)}</small>
+            <div class="progress flex flex-row items-center justify-between gap-4 group">
+
+                <small class="time w-[10%] group-hover:hidden">{msToTime(timeMs)}</small>
+                <small class="remaining-time w-[10%] hidden group-hover:block">{msToTime(remainingMs)}</small>
                 <ProgressBar max={lengthMs} value={timeMs}></ProgressBar>
-                <small class="length">{msToTime(lengthMs)}</small>
-                <small class="percent">{percent}%</small>
+                <small class="length w-[10%] group-hover:hidden">{msToTime(lengthMs)}</small>
+                <small class="percent w-[10%] hidden group-hover:block">{percent}%</small>
             </div>
 
-            <div class="media-control">
-                <button class="media-control-button" on:click={() => spotifyApi.previousPlayback()}>
-                    <Svg name=previous class="svg" width={svgSize} height={svgSize}></Svg>
+
+            <div class="flex flex-row justify-between">
+                <button onclick={() => spotifyApi.previousPlayback()}>
+                    <BackwardStepSolid class="h-14 w-14" />
                 </button>
                 {#if playbackState.is_playing}
-                    <button class="media-control-button" on:click={() => spotifyApi.pausePlayback()}>
-                        <Svg name=pause class="svg" width={svgSize} height={svgSize}></Svg>
+                    <button class="media-control-button" onclick={() => spotifyApi.pausePlayback()}>
+                        <PauseSolid class="h-14 w-14" />
                     </button>
                 {:else}
-                    <button class="media-control-button" on:click={() => spotifyApi.startPlayback()}>
-                        <Svg name=play class="svg" width={svgSize} height={svgSize}></Svg>
+                    <button class="media-control-button" onclick={() => spotifyApi.startPlayback()}>
+                        <PlaySolid class="h-14 w-14" />
                     </button>
                 {/if}
-                <button class="media-control-button" on:click={() => spotifyApi.nextPlayback()}>
-                    <Svg name=next class="svg" width={svgSize} height={svgSize}></Svg>
+                <button class="media-control-button" onclick={() => spotifyApi.nextPlayback()}>
+                    <ForwardStepSolid class="h-14 w-14" />
                 </button>
             </div>
 
-        </div>
+        </Card>
     {/if}
 {/key}
 
-
-<style lang="scss">
-  .player {
-    aspect-ratio: 4/2;
-    width: 28rem;
-    border-radius: 2rem;
-    background-color: var(--background-elevated-base);
-    padding: 2rem;
-    padding-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    .header {
-      display: flex;
-      flex-direction: row;
-      height: 50%;
-      gap: 1rem;
-
-      .infos {
-        display: flex;
-        flex-direction: column;
-
-        .title {
-          margin-top: 0;
-        }
-
-        .artists {
-          margin-top: 0;
-          color: var(--text-subdued);
-        }
-
-        .device {
-          color: var(--text-subdued);
-        }
-      }
-    }
-
-    .progress {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-
-      .remaining-time, .percent, .time, .length {
-        width: 10%;
-      }
-
-      .remaining-time, .percent {
-        display: none;
-      }
-    }
-
-    .progress:hover {
-      .remaining-time, .percent {
-        display: block;
-      }
-
-      .time, .length {
-        display: none;
-      }
-    }
-
-    .media-control {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-
-      .media-control-button {
-        background-color: inherit;
-        border-radius: 5rem;
-        border: none;
-        fill: var(--text-subdued);
-      }
-
-      .media-control-button:hover {
-        background-color: var(--background-elevated-highlight);
-        cursor: pointer;
-        fill: var(--text-base);
-      }
-
-      /*
-      :global(.svg) {
-        fill: inherit;
-      }
-      */
-
-    }
-  }
-</style>
+<Button></Button>

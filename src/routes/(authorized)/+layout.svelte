@@ -11,10 +11,15 @@
 	import { spotifySession } from '$lib/stores/spotifySession';
 	import { spotifyPersistence } from '$lib/services/spotify/spotify-persistance';
 
+	let { children } = $props<{
+		children?: import('svelte').Snippet;
+	}>();
 
-	$: if (!($spotifySession) && browser) {
-		goto("/");
-	}
+	$effect.pre(() => {
+		if (!($spotifySession) && browser) {
+			goto('/');
+		}
+	});
 
 	if (!$albums.updated && browser) {
 		spotifyPersistence.loadSavedAlbums();
@@ -47,7 +52,7 @@
 			<DependencyModal />
 		</div>
 		<main class="overflow-x-auto box-content flex flex-col p-8 w-full">
-			<slot />
+			{@render children?.()}
 		</main>
 	{/if}
 </div>

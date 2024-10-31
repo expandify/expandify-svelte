@@ -1,12 +1,14 @@
 <script lang="ts">
-    export let max: number | null = null;
-    export let value: number | null = null;
+	let { max = null, value = null } = $props<{
+		max?: number | null;
+		value?: number | null;
+	}>();
 </script>
 
 {#if value && max}
-    <progress {value} {max}></progress>
+	<progress {value} {max}></progress>
 {:else}
-    <progress></progress>
+	<progress></progress>
 {/if}
 
 

@@ -2,10 +2,17 @@
     import type {AlbumSimplified, Artist, PlaylistSimplified} from "$lib/types/spotify";
     import Svg from "./Svg.svelte";
 
-    export let type: AlbumSimplified | Artist | PlaylistSimplified | null | undefined;
-    export let fallbackSvg: string = type?.type || "";
-    export let borderRadius = type?.type === "artist" ? "100%" : "1rem";
-    export let showFallback = false;
+    let {
+        type,
+        fallbackSvg = type?.type || "",
+        borderRadius = type?.type === "artist" ? "100%" : "1rem",
+        showFallback = false
+    } = $props<{
+        type: AlbumSimplified | Artist | PlaylistSimplified | null | undefined;
+        fallbackSvg?: string;
+        borderRadius?: string;
+        showFallback?: boolean;
+    }>();
 
     let image = type?.images?.at(0)?.url;
     let imageAlt = type?.name;
