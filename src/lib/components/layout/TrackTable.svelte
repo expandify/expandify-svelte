@@ -13,7 +13,6 @@
 		showAddedAt?: boolean;
 	}>();
 
-
 </script>
 
 <Table class="max-w-full">
@@ -23,7 +22,7 @@
 			{#if showImage}
 				<TableHead class="w-20"></TableHead>
 			{/if}
-			<TableHead >TITLE</TableHead>
+			<TableHead>TITLE</TableHead>
 			<TableHead>ALBUM</TableHead>
 			{#if showAddedAt}
 				<TableHead>ADDED AT</TableHead>
@@ -47,13 +46,15 @@
 						</AspectRatio>
 					</TableCell>
 				{/if}
-				<TableCell class="text-left" >
+				<TableCell class="text-left">
 					<TooltipProvider>
 						<Tooltip>
 							<TooltipTrigger>
 								<div class="w-[40rem] flex flex-col items-start">
-									<span class="w-full text-left font-bold overflow-hidden whitespace-nowrap overflow-ellipsis">{track.name}</span>
-									<span class="w-full text-left overflow-hidden whitespace-nowrap overflow-ellipsis"	>{track.artists.map(a => a.name).join(", ")}</span>
+									<span
+										class="w-full text-left font-bold overflow-hidden whitespace-nowrap overflow-ellipsis">{track.name}</span>
+									<span
+										class="w-full text-left overflow-hidden whitespace-nowrap overflow-ellipsis">{track.artists.map(a => a.name).join(", ")}</span>
 								</div>
 							</TooltipTrigger>
 							<TooltipContent class="w-56">

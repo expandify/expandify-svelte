@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { albums } from '$lib/stores/library/albums';
-	import ImageWithFallback from '$lib/components/common/ImageWithFallback.svelte';
 	import { onMount } from 'svelte';
 
 	// Code taken from "https://github.com/shuding/coverflow" and modified.
@@ -114,7 +113,6 @@
 		 class="flex flex-col h-full no-scrollbar overflow-x-scroll"
 		on:wheel="{transformScroll}">
 	{#each $albums.albums as a}
-		<ImageWithFallback type="{a}" borderRadius="0"></ImageWithFallback>
-
+		<img src={a.images?.at(0)?.url} alt={a.name} />
 	{/each}
 </div>
