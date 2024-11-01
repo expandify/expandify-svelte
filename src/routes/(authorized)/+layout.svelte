@@ -47,12 +47,11 @@
 
 <div class="flex flex-row min-h-lvh">
 	{#if $spotifySession}
-		<SideBar />
+		<SideBar>
+			{@render children?.()}
+		</SideBar>
 		<div class="modal-wrapper">
 			<DependencyModal />
 		</div>
-		<main class="overflow-x-auto box-content flex flex-col p-8 w-full">
-			{@render children?.()}
-		</main>
 	{/if}
 </div>

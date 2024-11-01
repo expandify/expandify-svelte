@@ -4,6 +4,7 @@
     import Notifications from '$lib/components/layout/Notifications.svelte';
     import {browser} from '$app/environment';
     import {spotifySession, type SpotifySession} from '$lib/stores/spotifySession';
+		import { ModeWatcher } from 'mode-watcher';
 
     let { children } = $props<{
 			children?: import('svelte').Snippet;
@@ -22,6 +23,7 @@
     startAutoRefresh();
 </script>
 
+<ModeWatcher></ModeWatcher>
 <div class="min-h-lvh bg-white dark:bg-gray-900">
 	{@render children?.()}
 	<Notifications></Notifications>

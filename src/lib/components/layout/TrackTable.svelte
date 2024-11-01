@@ -1,143 +1,77 @@
 <script lang="ts">
-    import ImageWithFallback from "$lib/components/common/ImageWithFallback.svelte";
-    import type {Track} from "$lib/types/spotify";
-    import {formateDate, msToTime} from "$lib/utils/converter/date-time";
-    import {viewport} from "$lib/actions/useViewportAction";
-    import SkeletonText from "$lib/components/common/SkeletonText.svelte";
+	import type { Track } from '$lib/types/spotify';
+	import { formateDate, msToTime } from '$lib/utils/converter/date-time';
+	import { TableCell, TableHeader, TableRow, Table, TableHead } from '$lib/components/ui/table/index.js';
+	import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '$lib/components/ui/tooltip/index.js';
+	import { TableBody } from 'flowbite-svelte';
+	import { AspectRatio } from '$lib/components/ui/aspect-ratio';
+	import { CardDescription, CardTitle } from '$lib/components/ui/card';
 
-    let { tracks, showImage = true, showAddedAt = false } = $props<{
-        tracks: (Track & { added_at?: string })[];
-        showImage?: boolean;
-        showAddedAt?: boolean;
-    }>();
+	let { tracks, showImage = true, showAddedAt = false } = $props<{
+		tracks: (Track & { added_at?: string })[];
+		showImage?: boolean;
+		showAddedAt?: boolean;
+	}>();
 
-    let visible = $state<Array<boolean>>(Array(tracks.length).fill(true))
 
 </script>
 
-<div class="table">
-    <div class="row title-row">
-        <span class="position">#</span>
-        {#if showImage}
-            <div class="image-box">TITLE</div>
-            <div class="title-box"></div>
-        {:else}
-            <div class="title-box">TITLE</div>
-        {/if}
-        <span class="album">ALBUM</span>
-        {#if showAddedAt}
-            <span class="date">DATE ADDED</span>
-        {/if}
-        <span class="time">TIME</span>
-    </div>
+<Table class="max-w-full">
+	<TableHeader>
+		<TableRow>
+			<TableHead>#</TableHead>
+			{#if showImage}
+				<TableHead class="w-20"></TableHead>
+			{/if}
+			<TableHead >TITLE</TableHead>
+			<TableHead>ALBUM</TableHead>
+			{#if showAddedAt}
+				<TableHead>ADDED AT</TableHead>
+			{/if}
+			<TableHead>TIME</TableHead>
+		</TableRow>
+	</TableHeader>
+	<TableBody>
+		{#each tracks as track, i}
+			<TableRow onclick={() => console.log(`clicked row ${i + 1}`)}>
+				<TableCell>{i + 1}</TableCell>
+				{#if showImage}
+					<TableCell>
+						<AspectRatio ratio={1} class="w-full min-h-full">
+							<img src={track.album?.images?.at(0)?.url}
+									 class="object-cover "
+									 width="100%"
+									 alt={track.album?.name}
+									 loading="lazy"
+							/>
+						</AspectRatio>
+					</TableCell>
+				{/if}
+				<TableCell class="text-left" >
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger>
+								<div class="w-[40rem] flex flex-col items-start">
+									<span class="w-full text-left font-bold overflow-hidden whitespace-nowrap overflow-ellipsis">{track.name}</span>
+									<span class="w-full text-left overflow-hidden whitespace-nowrap overflow-ellipsis"	>{track.artists.map(a => a.name).join(", ")}</span>
+								</div>
+							</TooltipTrigger>
+							<TooltipContent class="w-56">
+								<CardTitle>
+									{track.name}
+								</CardTitle>
+								<CardDescription>
+									{track.artists.map(a => a.name).join(", ")}
+								</CardDescription>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
 
-    {#each tracks as track, i}
-        <div class="row"
-             use:viewport
-             onenterViewport={() => visible[i] = true}
-             onexitViewport={() => visible[i] = false}>
-
-            <span class="position">{i + 1}</span>
-            {#if showImage}
-                <div class="image-box">
-                    <ImageWithFallback type={track.album} fallbackSvg="album" showFallback={!visible[i]}
-                                       borderRadius="0"/>
-                </div>
-            {/if}
-            <div class="title-box overflow">
-                <SkeletonText class="title overflow" length="5rem" skeleton={!visible[i]}>{track.name}</SkeletonText>
-                <SkeletonText class="artists overflow" length="20rem"
-                              skeleton={!visible[i]}>{track.artists.map(a => a.name).join(", ")}</SkeletonText>
-            </div>
-            <SkeletonText class="album overflow" skeleton={!visible[i]}>{track.album?.name}</SkeletonText>
-            {#if showAddedAt}
-                <SkeletonText class="date overflow" skeleton={!visible[i]}>{formateDate(track.added_at)}</SkeletonText>
-            {/if}
-            <SkeletonText class="time overflow" skeleton={!visible[i]}>{msToTime(track.duration_ms)}</SkeletonText>
-        </div>
-    {/each}
-</div>
-
-
-<style lang="scss">
-  .table {
-
-    .row {
-      color: var(--text-subdued);
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 1rem;
-      height: 3rem;
-      border-radius: 0.4rem;
-      padding: 0.5rem 0;
-
-      .position {
-        min-width: max(2rem, 2%);
-        max-width: max(2rem, 2%);
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-      }
-
-      .image-box {
-        min-width: 3rem;
-        max-width: 3rem;
-      }
-
-      .title-box {
-        display: flex;
-        flex-direction: column;
-        margin-right: auto;
-        min-width: 10rem;
-
-        // :global is needed since the class is passed to a component
-        :global(.title) {
-          font-weight: 500;
-          color: var(--text-base);
-        }
-      }
-
-      // :global is needed since the class is passed to a component
-      :global(.album) {
-        margin-right: 15%;
-        min-width: 15%;
-        max-width: 15%;
-      }
-
-      // :global is needed since the class is passed to a component
-      :global(.date) {
-        min-width: 7rem;
-        max-width: 7rem;
-      }
-
-      // :global is needed since the class is passed to a component
-      :global(.time) {
-        min-width: max(5rem, 4%);
-        max-width: max(5rem, 4%);
-      }
-
-      // :global is needed since the class is passed to a component
-      :global(.overflow) {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-    }
-
-    .row:hover {
-      background-color: var(--background-elevated-highlight);
-      cursor: pointer;
-    }
-
-    .title-row {
-      padding-bottom: 0;
-    }
-
-    .title-row:hover {
-      background-color: inherit;
-      cursor: unset;
-    }
-  }
-</style>
+				</TableCell>
+				<TableCell>{track.album?.name}</TableCell>
+				<TableCell>{formateDate(track.added_at)}</TableCell>
+				<TableCell>{msToTime(track.duration_ms)}</TableCell>
+			</TableRow>
+		{/each}
+	</TableBody>
+</Table>

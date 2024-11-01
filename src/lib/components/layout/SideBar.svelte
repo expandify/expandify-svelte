@@ -1,66 +1,158 @@
 <script lang="ts">
-	import {
-		DarkMode,
-		Sidebar,
-		SidebarBrand,
-		SidebarDropdownWrapper,
-		SidebarGroup,
-		SidebarItem,
-		SidebarWrapper, type SiteType
-	} from 'flowbite-svelte';
-	import {
-		ChartPieSolid, ArrowLeftToBracketOutline, RefreshOutline
-	} from 'flowbite-svelte-icons';
+	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import { logout } from '$lib/auth/auth';
-	import { page } from '$app/stores';
 	import { spotifyPersistence } from '$lib/services/spotify/spotify-persistance';
+	import { toggleMode } from 'mode-watcher';
+	import { AudioLines, Disc3, FolderSync, ListMusic, LogOut, Moon, SquareUser, Sun } from 'lucide-svelte';
 
-	let site: SiteType = {
-		name: 'Exportify',
-		href: '/',
-		img: '/Icon.jpg'
-	};
+	let { children } = $props<{
+		children?: import('svelte').Snippet;
+	}>();
 
-	let activeUrl = $derived($page.url.pathname);
+
+	const library = [
+		{
+			title: 'Albums',
+			url: '/library/album',
+			icon: Disc3
+		},
+		{
+			title: 'Artists',
+			url: '/library/artist',
+			icon: SquareUser
+		},
+		{
+			title: 'Playlists',
+			url: '/library/playlist',
+			icon: ListMusic
+		},
+		{
+			title: 'Tracks',
+			url: '/library/track',
+			icon: AudioLines
+		}
+	];
+
+	const tools = [
+		{
+			title: 'Release Tracker',
+			url: '/tools/release-tracker',
+			icon: Disc3
+		},
+		{
+			title: 'Song Finder',
+			url: '/tools/song-finder',
+			icon: SquareUser
+		},
+		{
+			title: 'Library Value',
+			url: '/tools/library-value',
+			icon: ListMusic
+		},
+		{
+			title: 'Cover Flow',
+			url: '/tools/cover-flow',
+			icon: AudioLines
+		},
+		{
+			title: 'Backup',
+			url: '/tools/backup',
+			icon: AudioLines
+		}
+	];
 </script>
-<Sidebar {activeUrl} class="min-w-56  box-border">
-	<SidebarWrapper class="flex flex-col justify-between h-lvh sticky top-0">
-		<SidebarGroup>
-			<SidebarBrand {site} />
-			<SidebarGroup border>
-				<SidebarDropdownWrapper label="Library" isOpen>
-					<ChartPieSolid slot="icon"
-												 class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-					<SidebarItem label="Albums" href="/library/album"></SidebarItem>
-					<SidebarItem label="Artists" href="/library/artist"></SidebarItem>
-					<SidebarItem label="Playlists" href="/library/playlist"></SidebarItem>
-					<SidebarItem label="Tracks" href="/library/track"></SidebarItem>
-				</SidebarDropdownWrapper>
-			</SidebarGroup>
-			<SidebarGroup border>
-				<SidebarDropdownWrapper label="Tools" isOpen>
-					<ChartPieSolid slot="icon"
-												 class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-					<SidebarItem label="Release Tracker" href="/tools/release-tracker"></SidebarItem>
-					<SidebarItem label="Song Finder" href="/tools/song-finder"></SidebarItem>
-					<SidebarItem label="Library Value" href="/tools/library-value"></SidebarItem>
-					<SidebarItem label="Cover Flow" href="/tools/cover-flow"></SidebarItem>
-					<SidebarItem label="Backup" href="/tools/backup"></SidebarItem>
-				</SidebarDropdownWrapper>
-			</SidebarGroup>
-		</SidebarGroup>
-		<SidebarGroup>
-			<DarkMode class="text-primary-500 dark:text-primary-600 border dark:border-gray-800" />
-			<SidebarGroup border>
-				<SidebarItem label="Refresh" on:click={() => spotifyPersistence.reloadLibrary()}>
-					<RefreshOutline slot="icon"
-													class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-				</SidebarItem>
-				<SidebarItem label="Sign Out" on:click={() => logout()} href="/">
-					<ArrowLeftToBracketOutline slot="icon"
-																		 class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-				</SidebarItem>
-			</SidebarGroup>
-		</SidebarGroup>
-	</SidebarWrapper>
-</Sidebar>
+
+
+<Sidebar.Provider>
+	<Sidebar.Root variant="inset">
+		<Sidebar.Header>
+
+		</Sidebar.Header>
+		<Sidebar.Content>
+			<Sidebar.Group>
+				<Sidebar.GroupLabel>Library</Sidebar.GroupLabel>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						{#each library as lib (lib.title)}
+							<Sidebar.MenuItem>
+								<Sidebar.MenuButton>
+									{#snippet child({ props })}
+										<a href={lib.url} {...props}>
+											<lib.icon />
+											<span>{lib.title}</span>
+										</a>
+									{/snippet}
+								</Sidebar.MenuButton>
+							</Sidebar.MenuItem>
+						{/each}
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+			<Sidebar.Separator />
+			<Sidebar.Group>
+				<Sidebar.GroupLabel>Library</Sidebar.GroupLabel>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						{#each tools as tool (tool.title)}
+							<Sidebar.MenuItem>
+								<Sidebar.MenuButton>
+									{#snippet child({ props })}
+										<a href={tool.url} {...props}>
+											<tool.icon />
+											<span>{tool.title}</span>
+										</a>
+									{/snippet}
+								</Sidebar.MenuButton>
+							</Sidebar.MenuItem>
+						{/each}
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+			<Sidebar.Separator />
+		</Sidebar.Content>
+
+		<Sidebar.Separator />
+		<Sidebar.Footer>
+			<Sidebar.Menu>
+				<Sidebar.MenuItem>
+					<Sidebar.MenuButton>
+						{#snippet child({ props })}
+							<button onclick={() => spotifyPersistence.reloadLibrary()} {...props}>
+								<FolderSync />
+								<span>Refresh Library</span>
+							</button>
+						{/snippet}
+					</Sidebar.MenuButton>
+				</Sidebar.MenuItem>
+				<Sidebar.MenuItem>
+					<Sidebar.MenuButton>
+						{#snippet child({ props })}
+							<button onclick={toggleMode} {...props}>
+								<Moon class="rotate-0 scale-100 dark:-rotate-90 dark:scale-0" />
+								<Sun class="absolute rotate-90 scale-0 dark:rotate-0 dark:scale-100" />
+								<span>Toggle theme</span>
+							</button>
+						{/snippet}
+					</Sidebar.MenuButton>
+				</Sidebar.MenuItem>
+				<Sidebar.MenuItem>
+					<Sidebar.MenuButton>
+						{#snippet child({ props })}
+							<button onclick={logout} {...props}>
+								<LogOut />
+								<span>Logout</span>
+							</button>
+						{/snippet}
+					</Sidebar.MenuButton>
+				</Sidebar.MenuItem>
+			</Sidebar.Menu>
+		</Sidebar.Footer>
+		<Sidebar.Rail />
+	</Sidebar.Root>
+	<Sidebar.Inset>
+	<main class="p-6">
+
+		{@render children?.()}
+	</main>
+	</Sidebar.Inset>
+</Sidebar.Provider>
