@@ -1,9 +1,17 @@
 <script lang="ts">
-	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import { logout } from '$lib/auth/auth';
 	import { spotifyPersistence } from '$lib/services/spotify/spotify-persistance';
 	import { toggleMode } from 'mode-watcher';
 	import { AudioLines, Disc3, FolderSync, ListMusic, LogOut, Moon, SquareUser, Sun } from 'lucide-svelte';
+	import WebPlayer from '$lib/components/dashboard/WebPlayer.svelte';
+	import {
+		Sidebar,
+		SidebarContent, SidebarFooter, SidebarGroupContent, SidebarGroupLabel,
+		SidebarHeader, SidebarInset, SidebarMenu,
+		SidebarMenuButton, SidebarMenuItem,
+		SidebarProvider, SidebarSeparator
+	} from '$lib/components/ui/sidebar';
+	import { SidebarGroup } from 'flowbite-svelte';
 
 	let { children } = $props<{
 		children?: import('svelte').Snippet;
@@ -63,69 +71,76 @@
 </script>
 
 
-<Sidebar.Provider>
-	<Sidebar.Root variant="inset">
-		<Sidebar.Header>
-
-		</Sidebar.Header>
-		<Sidebar.Content>
-			<Sidebar.Group>
-				<Sidebar.GroupLabel>Library</Sidebar.GroupLabel>
-				<Sidebar.GroupContent>
-					<Sidebar.Menu>
+<SidebarProvider>
+	<Sidebar variant="inset">
+		<SidebarHeader>
+			<SidebarMenuButton class="h-fit">
+				<a href="/dashboard" class="text-3xl">Exportify</a>
+			</SidebarMenuButton>
+		</SidebarHeader>
+		<SidebarContent>
+			<SidebarGroup>
+				<SidebarGroupLabel>Library</SidebarGroupLabel>
+				<SidebarGroupContent>
+					<SidebarMenu>
 						{#each library as lib (lib.title)}
-							<Sidebar.MenuItem>
-								<Sidebar.MenuButton>
+							<SidebarMenuItem>
+								<SidebarMenuButton>
 									{#snippet child({ props })}
 										<a href={lib.url} {...props}>
 											<lib.icon />
 											<span>{lib.title}</span>
 										</a>
 									{/snippet}
-								</Sidebar.MenuButton>
-							</Sidebar.MenuItem>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
 						{/each}
-					</Sidebar.Menu>
-				</Sidebar.GroupContent>
-			</Sidebar.Group>
-			<Sidebar.Separator />
-			<Sidebar.Group>
-				<Sidebar.GroupLabel>Library</Sidebar.GroupLabel>
-				<Sidebar.GroupContent>
-					<Sidebar.Menu>
+					</SidebarMenu>
+				</SidebarGroupContent>
+			</SidebarGroup>
+			<SidebarSeparator />
+			<SidebarGroup>
+				<SidebarGroupLabel>Library</SidebarGroupLabel>
+				<SidebarGroupContent>
+					<SidebarMenu>
 						{#each tools as tool (tool.title)}
-							<Sidebar.MenuItem>
-								<Sidebar.MenuButton>
+							<SidebarMenuItem>
+								<SidebarMenuButton>
 									{#snippet child({ props })}
 										<a href={tool.url} {...props}>
 											<tool.icon />
 											<span>{tool.title}</span>
 										</a>
 									{/snippet}
-								</Sidebar.MenuButton>
-							</Sidebar.MenuItem>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
 						{/each}
-					</Sidebar.Menu>
-				</Sidebar.GroupContent>
-			</Sidebar.Group>
-			<Sidebar.Separator />
-		</Sidebar.Content>
+					</SidebarMenu>
+				</SidebarGroupContent>
+			</SidebarGroup>
+			<SidebarSeparator />
+		</SidebarContent>
 
-		<Sidebar.Separator />
-		<Sidebar.Footer>
-			<Sidebar.Menu>
-				<Sidebar.MenuItem>
-					<Sidebar.MenuButton>
+
+		<SidebarFooter>
+			<SidebarSeparator />
+			<SidebarGroup>
+				<WebPlayer></WebPlayer>
+			</SidebarGroup>
+			<SidebarSeparator />
+			<SidebarMenu>
+				<SidebarMenuItem>
+					<SidebarMenuButton>
 						{#snippet child({ props })}
 							<button onclick={() => spotifyPersistence.reloadLibrary()} {...props}>
 								<FolderSync />
 								<span>Refresh Library</span>
 							</button>
 						{/snippet}
-					</Sidebar.MenuButton>
-				</Sidebar.MenuItem>
-				<Sidebar.MenuItem>
-					<Sidebar.MenuButton>
+					</SidebarMenuButton>
+				</SidebarMenuItem>
+				<SidebarMenuItem>
+					<SidebarMenuButton>
 						{#snippet child({ props })}
 							<button onclick={toggleMode} {...props}>
 								<Moon class="rotate-0 scale-100 dark:-rotate-90 dark:scale-0" />
@@ -133,26 +148,26 @@
 								<span>Toggle theme</span>
 							</button>
 						{/snippet}
-					</Sidebar.MenuButton>
-				</Sidebar.MenuItem>
-				<Sidebar.MenuItem>
-					<Sidebar.MenuButton>
+					</SidebarMenuButton>
+				</SidebarMenuItem>
+				<SidebarMenuItem>
+					<SidebarMenuButton>
 						{#snippet child({ props })}
 							<button onclick={logout} {...props}>
 								<LogOut />
 								<span>Logout</span>
 							</button>
 						{/snippet}
-					</Sidebar.MenuButton>
-				</Sidebar.MenuItem>
-			</Sidebar.Menu>
-		</Sidebar.Footer>
-		<Sidebar.Rail />
-	</Sidebar.Root>
-	<Sidebar.Inset>
-	<main class="p-6">
+					</SidebarMenuButton>
+				</SidebarMenuItem>
+			</SidebarMenu>
+		</SidebarFooter>
+		<!--<Sidebar.Rail />-->
+	</Sidebar>
+	<SidebarInset>
+		<main class="p-6">
 
-		{@render children?.()}
-	</main>
-	</Sidebar.Inset>
-</Sidebar.Provider>
+			{@render children?.()}
+		</main>
+	</SidebarInset>
+</SidebarProvider>

@@ -1,4 +1,7 @@
 <script lang="ts">
+    import { Card, CardContent, CardDescription } from '$lib/components/ui/card';
+    import { CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
+
     let { title, metric } = $props<{
         title: string;
         metric: number;
@@ -6,34 +9,12 @@
 
 </script>
 
+<Card>
+    <CardHeader>
+        <CardTitle>{metric}</CardTitle>
 
-<div class="card">
-    <h1 class="metric">{metric}</h1>
-
-    <div class="title">{title}</div>
-</div>
-
-<style lang="scss">
-
-
-  .card {
-    padding: 2rem;
-    border-radius: 2rem;
-    background-color: var(--background-elevated-base);
-    width: 8rem;
-    height: 10rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-
-    .metric {
-      font-size: 3rem;
-      margin: 0;
-    }
-
-    .title {
-      font-size: 1.2rem;
-    }
-  }
-</style>
+    </CardHeader>
+    <CardContent>
+        <CardDescription>{title}</CardDescription>
+    </CardContent>
+</Card>

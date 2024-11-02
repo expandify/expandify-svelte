@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { PlaybackState } from '$lib/types/spotify';
 	import { msToTime } from '$lib/utils/converter/date-time';
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { toPlaybackState } from '$lib/utils/converter/spotify';
 	import { spotifyApi } from '$lib/services/spotify/spotify-api';
 	import { Disc3, Pause, Play, SkipBack, SkipForward } from 'lucide-svelte';
-	import { Card, CardDescription, CardFooter, CardTitle } from '$lib/components/ui/card';
-	import { CardContent, CardHeader } from '$lib/components/ui/card/index.js';
+	import { Card } from '$lib/components/ui/card';
+	import { CardContent } from '$lib/components/ui/card/index.js';
 	import { Progress } from '$lib/components/ui/progress';
 	import { Button } from '$lib/components/ui/button';
 
@@ -37,39 +37,47 @@
 	onDestroy(() => {
 		clearInterval(playbackInterval);
 	});
+
+
+	let autoScrollElement = $state<Element>();
+	onMount(() => {
+		let reverse = false;
+		let scroll = 0;
+		window.setInterval(function() {
+			if (scroll <= 0) {
+				reverse = false;
+			}
+			if ((scroll + autoScrollElement!.clientWidth) >= autoScrollElement!.scrollWidth) {
+				reverse = true;
+			}
+			scroll = reverse ? scroll - 1 : scroll + 1;
+			autoScrollElement?.scrollTo({left: scroll, behavior: 'smooth'});
+		}, 60);
+	});
+
 </script>
 
-<Card>
-	<CardHeader>
-		<CardTitle>Card Title</CardTitle>
-		<CardDescription>Card Description</CardDescription>
-	</CardHeader>
-	<CardContent>
-		<p>Card Content</p>
-	</CardContent>
-	<CardFooter>
-		<p>Card Footer</p>
-	</CardFooter>
-</Card>
 
-{#key playbackState}
+<!--{#key playbackState}-->
 	{#if playbackState}
-		<Card class="h-60 aspect-video">
+		<Card class="h-full">
 			<CardContent class="h-full flex flex-col gap-4">
-				<div class="flex flex-row h-1/2 gap-4">
+				<div class="flex flex-col h-full gap-4">
 					{#if playbackState.item}
 						<img src={playbackState.item?.album.images?.at(0)?.url}
 								 class="rounded-2xl"
-								 size="auto"
 								 alt={playbackState.item?.album.name}
 								 loading="lazy" />
 					{:else}
 						<Disc3 size="80" />
 					{/if}
 
-					<div class="flex flex-col">
-						<h2>{playbackState.item?.name}</h2>
-						<h5>{playbackState.item?.artists.map((a) => a.name).join(', ')}</h5>
+					<div class="flex flex-col whitespace-nowrap">
+						<div bind:this={autoScrollElement} class="whitespace-nowrap overflow-hidden">
+							<b>{playbackState.item?.artists.map((a) => a.name).join(', ')}</b>
+							&bull;
+							{playbackState.item?.name}
+						</div>
 						<small>{playbackState.device.name}</small>
 					</div>
 				</div>
@@ -107,4 +115,4 @@
 			</CardContent>
 		</Card>
 	{/if}
-{/key}
+<!--{/key}-->
