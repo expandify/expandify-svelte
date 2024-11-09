@@ -3,7 +3,7 @@
     import {dependencies} from '$lib/stores/dependencies';
     import {playlists} from '$lib/stores/library/playlists';
     import {spotifyPersistence} from "$lib/services/spotify/spotify-persistance";
-    import { RefreshOutline } from 'flowbite-svelte-icons';
+    import { RefreshCcw } from 'lucide-svelte';
 
     dependencies.onlyPlaylistsNeeded();
 </script>
@@ -12,7 +12,7 @@
 <h2 class="header">
     <span>Playlists - {$playlists.playlists.length}</span>
     <button class="button" onclick={() => spotifyPersistence.reloadPlaylists()} title="Reload Library">
-        <RefreshOutline />
+        <RefreshCcw />
     </button>
 </h2>
 <CardGrid cards={$playlists.playlists}/>

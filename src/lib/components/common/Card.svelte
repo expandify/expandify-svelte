@@ -1,8 +1,8 @@
 <script lang="ts">
-	import * as Card from "$lib/components/ui/card/index.js";
-	import * as Tooltip from "$lib/components/ui/tooltip/index.js";
 	import type { Album, Artist, Playlist } from '$lib/types/spotify';
 	import { AspectRatio } from "$lib/components/ui/aspect-ratio/index.js";
+	import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
+	import { TooltipProvider, TooltipTrigger, Tooltip, TooltipContent } from '$lib/components/ui/tooltip/index.js';
 
 	let { card } = $props<{
 		card: Album | Artist | Playlist;
@@ -14,7 +14,7 @@
 
 	switch (card.type) {
 		case 'album':
-			subtitle = card.artists.map(a => a.name).join(', ');
+			subtitle = (card as Album).artists.map(a => a.name).join(', ');
 			href = `/library/album/${card.id}`;
 			break;
 		case 'artist':
@@ -30,31 +30,31 @@
 
 </script>
 <a href={href}>
-<Card.Root class="hover:bg-accent hover:text-accent-foreground hover:cursor-pointer"
-onclick={() => console.log('clicked')}>
-	<Card.Header>
-		<Tooltip.Provider>
-			<Tooltip.Root>
-				<Tooltip.Trigger >
-					<Card.Title class="w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
+<Card class="hover:bg-accent hover:text-accent-foreground hover:cursor-pointer"
+			onclick={() => console.log('clicked')}>
+	<CardHeader>
+		<TooltipProvider>
+			<Tooltip>
+				<TooltipTrigger >
+					<CardTitle class="w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
 						{title}
-					</Card.Title>
-					<Card.Description class="w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
+					</CardTitle>
+					<CardDescription class="w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
 						{subtitle || ""}
-					</Card.Description>
-				</Tooltip.Trigger>
-				<Tooltip.Content class="w-56">
-					<Card.Title>
+					</CardDescription>
+				</TooltipTrigger>
+				<TooltipContent class="w-56">
+					<CardTitle>
 						{title}
-					</Card.Title>
-					<Card.Description>
+					</CardTitle>
+					<CardDescription>
 						{subtitle || ""}
-					</Card.Description>
-				</Tooltip.Content>
-			</Tooltip.Root>
-		</Tooltip.Provider>
-	</Card.Header>
-	<Card.Content>
+					</CardDescription>
+				</TooltipContent>
+			</Tooltip>
+		</TooltipProvider>
+	</CardHeader>
+	<CardContent>
 		<AspectRatio ratio={1}>
 		<img src={card?.images?.at(0)?.url}
 				 class="rounded-lg object-cover h-full"
@@ -63,6 +63,6 @@ onclick={() => console.log('clicked')}>
 				 loading="lazy"
 				 />
 		</AspectRatio>
-	</Card.Content>
-</Card.Root>
+	</CardContent>
+</Card>
 </a>

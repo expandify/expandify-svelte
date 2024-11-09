@@ -1,9 +1,8 @@
 <script lang="ts">
 	import type { Track } from '$lib/types/spotify';
 	import { formateDate, msToTime } from '$lib/utils/converter/date-time';
-	import { TableCell, TableHeader, TableRow, Table, TableHead } from '$lib/components/ui/table/index.js';
+	import { TableCell, TableHeader, TableBody, TableRow, Table, TableHead } from '$lib/components/ui/table/index.js';
 	import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '$lib/components/ui/tooltip/index.js';
-	import { TableBody } from 'flowbite-svelte';
 	import { AspectRatio } from '$lib/components/ui/aspect-ratio';
 	import { CardDescription, CardTitle } from '$lib/components/ui/card';
 

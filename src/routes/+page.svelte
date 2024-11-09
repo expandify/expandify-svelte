@@ -1,8 +1,9 @@
 <script lang="ts">
     import {browser} from '$app/environment';
     import {goto} from '$app/navigation';
-    import Button from '$lib/components/common/Button.svelte';
+
     import {spotifySession} from '$lib/stores/spotifySession';
+    import { Button } from '$lib/components/ui/button';
 
 
     if (browser && $spotifySession) {
@@ -12,5 +13,5 @@
 
 <main class="min-h-lvh flex flex-col justify-center items-center ">
     <h1>Welcome to Expandify</h1>
-    <Button click={() => goto("/auth")} text="Login With Spotify" type="spotify"></Button>
+    <Button variant="destructive" onclick={() => goto("/auth")}>Login With Spotify</Button>
 </main>

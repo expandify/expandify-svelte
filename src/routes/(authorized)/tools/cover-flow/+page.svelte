@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { dependencies } from '$lib/stores/dependencies';
 	import CoverFlow from '$lib/components/CoverFlow.svelte';
-	import { Heading } from 'flowbite-svelte';
 
 
 	dependencies.onlyAlbumsNeeded();
@@ -12,7 +11,7 @@
 </script>
 
 <div bind:clientWidth={coverflowContainerWidth} class="flex flex-col justify-center items-center gap-52">
-	<Heading>Old Apple Cover Flow Recreation</Heading>
+	<h2>Old Apple Cover Flow Recreation</h2>
 	<CoverFlow bind:width="{coverflowContainerWidth}"></CoverFlow>
 </div>
 

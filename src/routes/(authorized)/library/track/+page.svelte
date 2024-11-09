@@ -3,7 +3,7 @@
     import {dependencies} from '$lib/stores/dependencies';
     import {tracks} from '$lib/stores/library/tracks';
     import {spotifyPersistence} from "$lib/services/spotify/spotify-persistance";
-    import Svg from "$lib/components/common/Svg.svelte";
+    import { RefreshCcw } from 'lucide-svelte';
 
     dependencies.onlyTracksNeeded()
 </script>
@@ -12,7 +12,7 @@
 <h2 class="header">
     <span>Tracks - {$tracks.tracks.length}</span>
     <button class="button" onclick={() => spotifyPersistence.reloadSavedTracks()} title="Reload Library">
-        <Svg name={"reload"}/>
+        <RefreshCcw />
     </button>
 </h2>
 

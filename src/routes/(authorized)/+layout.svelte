@@ -49,9 +49,8 @@
 	{#if $spotifySession}
 		<SideBar>
 			{@render children?.()}
-		</SideBar>
-		<div class="modal-wrapper">
 			<DependencyModal />
-		</div>
+		</SideBar>
+
 	{/if}
 </div>

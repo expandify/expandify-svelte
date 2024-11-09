@@ -7,68 +7,112 @@
     import {user} from "$lib/stores/library/user";
     import Loading from "../common/Loading.svelte";
     import {spotifyPersistence} from "$lib/services/spotify/spotify-persistance";
-    import { Modal } from 'flowbite-svelte';
+    import {
+        AlertDialog, AlertDialogAction, AlertDialogCancel,
+        AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+        AlertDialogHeader, AlertDialogTitle,
+    } from '$lib/components/ui/alert-dialog/index';
 
+
+    let forceClose = $state(false)
     let anyNeeded = $state(false);
+    let loading = $state(true);
     $effect(() => {
+        forceClose = false;
         anyNeeded =
             ($dependencies.albums && ($albums.loading || !!$albums.error)) ||
             ($dependencies.artists && ($artists.loading || !!$artists.error)) ||
             ($dependencies.playlists && ($playlists.loading || !!$playlists.error)) ||
             ($dependencies.tracks && ($tracks.loading || !!$tracks.error)) ||
             ($dependencies.user && ($user.loading || !!$user.error));
+
+        loading = ($dependencies.albums && $albums.loading) ||
+          ($dependencies.artists && $artists.loading) ||
+          ($dependencies.playlists && $playlists.loading) ||
+          ($dependencies.tracks && $tracks.loading) ||
+          ($dependencies.user && $user.loading);
     });
+
+
+    function retry() {
+        if ($dependencies.albums && $albums.error) {
+            spotifyPersistence.reloadSavedAlbums()
+        }
+        if ($dependencies.artists && $artists.error) {
+            spotifyPersistence.reloadFollowedArtists()
+        }
+        if ($dependencies.playlists && $playlists.error) {
+            spotifyPersistence.reloadPlaylists()
+        }
+        if ($dependencies.tracks && $tracks.error) {
+            spotifyPersistence.reloadSavedTracks()
+        }
+        if ($dependencies.user && $user.error) {
+            spotifyPersistence.reloadUser()
+        }
+    }
 </script>
 
-{#if anyNeeded}
-    <Modal title="Loading" bind:open={anyNeeded} size="lg" dismissable={false} >
-        {#if $dependencies.albums}
-            <Loading
-              title={"Albums"}
-              current={$albums.albums.length}
-              total={$albums.total}
-              loading={$albums.loading}
-              error={$albums.error !== null}
-              on:retry={() => spotifyPersistence.reloadSavedAlbums()}/>
-        {/if}
+<AlertDialog open={!forceClose && anyNeeded} controlledOpen={true}>
+    <AlertDialogContent>
+        <AlertDialogHeader>
+            <AlertDialogTitle>Loading Library Data</AlertDialogTitle>
+            <AlertDialogDescription>
+                {#if $dependencies.albums}
+                    <Loading
+                      title={"Albums"}
+                      current={$albums.albums.length}
+                      total={$albums.total}
+                      loading={$albums.loading}
+                      error={$albums.error !== null}
+                      retry={() => spotifyPersistence.reloadSavedAlbums()}/>
+                {/if}
 
-        {#if $dependencies.artists}
-            <Loading
-              title={"Artists"}
-              current={$artists.artists.length}
-              total={$artists.total}
-              loading={$artists.loading}
-              error={$artists.error !== null}
-              on:retry={() => spotifyPersistence.reloadFollowedArtists()}
-            />
-        {/if}
+                {#if $dependencies.artists}
+                    <Loading
+                      title={"Artists"}
+                      current={$artists.artists.length}
+                      total={$artists.total}
+                      loading={$artists.loading}
+                      error={$artists.error !== null}
+                      retry={() => spotifyPersistence.reloadFollowedArtists()}
+                    />
+                {/if}
 
-        {#if $dependencies.playlists}
-            <Loading
-              title={"Playlists"}
-              current={$playlists.playlists.length}
-              total={$playlists.total}
-              loading={$playlists.loading}
-              error={$playlists.error !== null}
-              on:retry={() => spotifyPersistence.reloadPlaylists()}/>
-        {/if}
+                {#if $dependencies.playlists}
+                    <Loading
+                      title={"Playlists"}
+                      current={$playlists.playlists.length}
+                      total={$playlists.total}
+                      loading={$playlists.loading}
+                      error={$playlists.error !== null}
+                      retry={() => spotifyPersistence.reloadPlaylists()}/>
+                {/if}
 
-        {#if $dependencies.tracks}
-            <Loading
-              title={"Tracks"}
-              current={$tracks.tracks.length}
-              total={$tracks.total}
-              loading={$tracks.loading}
-              error={$tracks.error !== null}
-              on:retry={() => spotifyPersistence.reloadSavedTracks()}/>
-        {/if}
+                {#if $dependencies.tracks}
+                    <Loading
+                      title={"Tracks"}
+                      current={$tracks.tracks.length}
+                      total={$tracks.total}
+                      loading={$tracks.loading}
+                      error={$tracks.error !== null}
+                      retry={() => spotifyPersistence.reloadSavedTracks()}/>
+                {/if}
 
-        {#if $dependencies.user}
-            <Loading
-              title={"User"}
-              loading={$user.loading}
-              error={$user.error !== null}
-              on:retry={() => spotifyPersistence.reloadUser()}/>
-        {/if}
-    </Modal>
-{/if}
+                {#if $dependencies.user}
+                    <Loading
+                      title={"User"}
+                      loading={$user.loading}
+                      error={$user.error !== null}
+                      retry={() => spotifyPersistence.reloadUser()}/>
+                {/if}
+            </AlertDialogDescription>
+        </AlertDialogHeader>
+        <div class:hidden={loading}>
+        <AlertDialogFooter>
+            <AlertDialogCancel onclick={() => forceClose = true}>Close</AlertDialogCancel>
+            <AlertDialogAction onclick={retry}>Retry</AlertDialogAction>
+        </AlertDialogFooter>
+        </div>
+    </AlertDialogContent>
+</AlertDialog>

@@ -5,7 +5,6 @@
 	import { tracks } from '$lib/stores/library/tracks';
 	import type { Album, Artist, Playlist, Track } from '$lib/types/spotify';
 	import { dependencies } from '$lib/stores/dependencies';
-	import { Heading, Li, List } from 'flowbite-svelte';
 
 	dependencies.setDependencies(true, true, true, true, true);
 
@@ -100,53 +99,46 @@
 
 <input oninput="{updateSearch}" placeholder="Find a song..." />
 
-<div class="playlists">
+<div class="flex flex-col">
 	{#if filteredPlaylists.length > 0}
-		<Heading>Playlists</Heading>
+		<h1>Playlists</h1>
 	{/if}
 	{#each filteredPlaylists as filteredPlaylist}
-		<Heading tag="h3">{filteredPlaylist.playlist.name}</Heading>
-		<List tag="ul" class="space-y-1 text-gray-500 dark:text-gray-400">
+		<h3>{filteredPlaylist.playlist.name}</h3>
+		<ul class="space-y-1 text-gray-500 dark:text-gray-400">
 			{#each filteredPlaylist.tracks as track}
-				<Li>{track.name} -- {track.album.name} -- {track.artists.map(a => a.name).join(", ")}</Li>
+				<li>{track.name} -- {track.album.name} -- {track.artists.map(a => a.name).join(", ")}</li>
 			{/each}
-		</List>
+		</ul>
 	{/each}
 
 	{#if filteredTracks.length > 0}
-		<Heading>Saved Songs</Heading>
+		<h1>Saved Songs</h1>
 	{/if}
-	<List tag="ul" class="space-y-1 text-gray-500 dark:text-gray-400">
+	<ul class="space-y-1 text-gray-500 dark:text-gray-400">
 	{#each filteredTracks as track}
-		<Li>{track.name} -- {track.album.name} -- {track.artists.map(a => a.name).join(", ")}</Li>
+		<li>{track.name} -- {track.album.name} -- {track.artists.map(a => a.name).join(", ")}</li>
 	{/each}
-	</List>
+	</ul>
 
 	{#if filteredAlbums.length > 0}
-		<Heading>Saved Albums</Heading>
+		<h1>Saved Albums</h1>
 	{/if}
 	{#each filteredAlbums as filteredAlbum}
-		<Heading tag="h3">{filteredAlbum.album.name}</Heading>
-		<List tag="ul" class="space-y-1 text-gray-500 dark:text-gray-400">
+		<h3>{filteredAlbum.album.name}</h3>
+		<ul class="space-y-1 text-gray-500 dark:text-gray-400">
 		{#each filteredAlbum.tracks as track}
-			<Li>{track.name} -- {track.album.name} -- {track.artists.map(a => a.name).join(", ")}</Li>
+			<li>{track.name} -- {track.album.name} -- {track.artists.map(a => a.name).join(", ")}</li>
 		{/each}
-		</List>
+		</ul>
 	{/each}
 
 	{#if filteredArtists.length > 0}
-		<Heading>Followed Artists</Heading>
+		<h1>Followed Artists</h1>
 	{/if}
-	<List tag="ul" class="space-y-1 text-gray-500 dark:text-gray-400">
+	<ul class="space-y-1 text-gray-500 dark:text-gray-400">
 	{#each filteredArtists as artist}
-		<Li>{artist.name}</Li>
+		<li>{artist.name}</li>
 	{/each}
-	</List>
+	</ul>
 </div>
-
-<style lang="scss">
-  .playlists {
-    display: flex;
-    flex-direction: column;
-  }
-</style>

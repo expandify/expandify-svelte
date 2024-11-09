@@ -7,11 +7,11 @@
 	import {
 		Sidebar,
 		SidebarContent, SidebarFooter, SidebarGroupContent, SidebarGroupLabel,
-		SidebarHeader, SidebarInset, SidebarMenu,
+		SidebarHeader, SidebarInset, SidebarMenu, SidebarGroup,
 		SidebarMenuButton, SidebarMenuItem,
 		SidebarProvider, SidebarSeparator
 	} from '$lib/components/ui/sidebar';
-	import { SidebarGroup } from 'flowbite-svelte';
+
 
 	let { children } = $props<{
 		children?: import('svelte').Snippet;

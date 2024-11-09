@@ -1,6 +1,10 @@
 <script lang="ts">
     import {onDestroy} from "svelte";
-    import Button from "./Button.svelte";
+    import { Button } from '$lib/components/ui/button';
+    import { Progress } from "$lib/components/ui/progress/index.js";
+    import { Check } from 'lucide-svelte';
+    import { Separator } from '$lib/components/ui/separator';
+    import X from 'lucide-svelte/icons/x';
 
     let {
         title,
@@ -33,28 +37,18 @@
 
 </script>
 
-<div class="loading-text-container">
+<Separator class="my-4" />
+<div class="flex flex-row text-base text-secondary-foreground whitespace-nowrap items-center gap-8 ">
+
     {#if error}
-        <h1 class="text-red-600">Error loading {title}</h1>
+        <h1>Error loading {title}</h1>
+        <X size="28" class="text-red-500" strokeWidth="4" />
+        <Button onclick={() => retry()} variant="outline">Retry</Button>
     {:else if loading}
         <h1>{`Loading ${title}${stepSuffix || progressDots}`}</h1>
+        <Progress max={total} value={current} class="h-2" />
     {:else}
-        <h1 class="text-green-500">Loaded {title}{stepSuffix}</h1>
+        <h1>Loaded {title}{stepSuffix}</h1>
+        <Check size="28" class="text-green-500" strokeWidth="4" />
     {/if}
-
-    {#if error}
-        <div>
-            <Button click={() => retry()} text="Retry"/>
-        </div>
-    {/if}
-
 </div>
-<style lang="scss">
-  .loading-text-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 2rem;
-  }
-
-</style>

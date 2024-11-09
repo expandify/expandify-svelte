@@ -3,7 +3,7 @@
     import {albums} from '$lib/stores/library/albums';
     import {dependencies} from "$lib/stores/dependencies";
     import {spotifyPersistence} from "$lib/services/spotify/spotify-persistance";
-    import Svg from "$lib/components/common/Svg.svelte";
+    import { RefreshCcw } from 'lucide-svelte';
     dependencies.onlyAlbumsNeeded();
 </script>
 
@@ -11,7 +11,7 @@
 <h2 class="header">
     <span>Albums - {$albums.albums.length}</span>
     <button class="button" onclick={() => spotifyPersistence.reloadSavedAlbums()} title="Reload Library">
-        <Svg name={"reload"}/>
+        <RefreshCcw />
     </button>
 </h2>
 
