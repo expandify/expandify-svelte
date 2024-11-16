@@ -1,118 +1,151 @@
 <script lang="ts">
 	import { albums } from '$lib/stores/library/albums';
-	import { onMount } from 'svelte';
 
-	// Code taken from "https://github.com/shuding/coverflow" and modified.
+	let slider: HTMLElement;
+	let dragging = false;
+	let startX: number;
+	let scrollLeft: number;
 
-	export let width = 1200;
-	export let spacing = 20;
-	export let size = 420;
-	export let flat = false;
-
-	let browserPrefix = '';
-	if (navigator.userAgent.indexOf('Firefox') != -1) {
-		browserPrefix = '-moz-';
-	} else if (navigator.userAgent.indexOf('Chrome') != -1) {
-		browserPrefix = '-webkit-';
-	} else if (navigator.userAgent.indexOf('Safari') != -1) {
-		browserPrefix = '-webkit-';
+	function pointerdown(e: PointerEvent) {
+		dragging = true;
+		startX = e.pageX - slider.offsetLeft;
+		scrollLeft = slider.scrollLeft;
 	}
 
-	function setTransform3D(el: HTMLElement, degree: number, perspective: number, z: number) {
-		degree = Math.max(Math.min(degree, 90), -90);
-		z -= 5;
-		el.style['perspective'] = perspective + 'px';
-		el.style['transform'] = 'rotateY(' + degree + 'deg) translateZ(' + z + 'px)';
-	}
-
-	function displayIndex(left: number, imgs: HTMLElement[], index: number) {
-		let mLeft = (width - size) * .5 - spacing * (index + 1) - size * .5;
-		for (let i = 0; i <= index; ++i) {
-			imgs[i].style.left = (left + i * spacing + spacing) + 'px';
-			imgs[i].style.marginLeft = mLeft + 'px';
-			imgs[i].style.zIndex = (i + 1).toString();
-			setTransform3D(imgs[i], flat ? 0 : ((index - i) * 10 + 45), 300, flat ? -(index - i) * 10 : (-(index - i) * 30 - 20));
-		}
-		imgs[index].style.marginLeft = (mLeft + size * .5) + 'px';
-		imgs[index].style.zIndex = imgs.length.toString();
-		setTransform3D(imgs[index], 0, 0, 5);
-		for (let i = index + 1; i < imgs.length; ++i) {
-			imgs[i].style.left = (left + i * spacing + spacing) + 'px';
-			imgs[i].style.marginLeft = (mLeft + size) + 'px';
-			imgs[i].style.zIndex = (imgs.length - i).toString();
-			setTransform3D(imgs[i], flat ? 0 : ((index - i) * 10 - 45), 300, flat ? (index - i) * 10 : ((index - i) * 30 - 20));
-		}
-	}
-
-	function coverflowScroll(c: HTMLElement, imgs: HTMLElement[]) {
-		let p = c.scrollLeft / width;
-		let index = Math.min(Math.floor(p * imgs.length), imgs.length - 1);
-		let left = c.scrollLeft;
-		c.dataset.index = index.toString();
-		displayIndex(left, imgs, index);
-	}
-
-	function initCoverFlow(c: HTMLElement) {
-		let index = c.dataset.index,
-			imgHeight = 0,
-			imgs: HTMLElement[] = [],
-			placeholding;
-		for (let childNode of c.childNodes) {
-			if ((childNode instanceof HTMLElement) && (childNode as HTMLElement).tagName) {
-				imgs.push(childNode as HTMLElement);
-			}
-		}
-		for (let i = 0; i < imgs.length; ++i) {
-			imgs[i].style.position = 'absolute';
-			imgs[i].style.width = size + 'px';
-			imgs[i].style.height = 'auto';
-			imgs[i].style.bottom = '60px';
-			imgs[i].style['transition'] = browserPrefix + 'transform .4s ease, margin-left .4s ease, -webkit-filter .4s ease';
-			imgHeight = Math.max(imgHeight, imgs[i].getBoundingClientRect().height);
-		}
-		setTransform3D(c, 0, 600, 0);
-		placeholding = document.createElement('DIV');
-		placeholding.style.width = (width ? width * 2 : (size + (imgs.length + 1) * spacing) * 2) + 'px';
-		placeholding.style.height = '1px';
-		c.appendChild(placeholding);
-		if (width)
-			c.style.width = width + 'px';
-		else
-			c.style.width = (width ? width : (size + (imgs.length + 1) * spacing)) + 'px';
-		c.style.height = (imgHeight + 80) + 'px';
-		c.style.position = 'relative';
-		c.dataset.index = (index ? parseInt(index) : 0).toString();
-		c.onscroll = function() {
-			coverflowScroll(c, imgs);
-		};
-		for (let i = 0; i < imgs.length; ++i)
-			imgs[i].onclick = function() {
-				displayIndex(c.scrollLeft, imgs, imgs.indexOf(imgs[i]));
-			};
-		console.log("kqjbwekjqwe")
-		console.log(c.dataset.index);
-		console.log(imgs);
-		displayIndex(c.scrollLeft, imgs, +c.dataset.index);
-	}
-
-	let coverflow: HTMLElement;
-	onMount(() => {
-		initCoverFlow(coverflow);
-	});
-
-	function transformScroll(event: WheelEvent & { currentTarget: (EventTarget & HTMLDivElement) }) {
-		if (!event.deltaY) {
+	function pointermove(e: PointerEvent) {
+		if (!dragging) {
 			return;
 		}
-
-		event.currentTarget.scrollLeft += event.deltaY + event.deltaX;
-		event.preventDefault();
+		e.preventDefault();
+		const x = e.pageX - slider.offsetLeft;
+		const walk = (x - startX) * 3; //scroll-fast
+		slider.scrollLeft = scrollLeft - walk;
 	}
+
 </script>
-<div bind:this={coverflow}
-		 class="flex flex-col h-full no-scrollbar overflow-x-scroll"
-		on:wheel="{transformScroll}">
+
+<ul bind:this={slider}
+		onpointerdown={pointerdown}
+		onpointerleave={() => dragging = false}
+		onpointerup={() => dragging = false}
+		onpointermove={pointermove}
+		class:snap-x={!dragging}
+		class="cards"
+>
 	{#each $albums.albums as a}
-		<img src={a.images?.at(0)?.url} alt={a.name} />
+		<li>
+			<img src={a.images?.at(0)?.url} alt={a.name} draggable="false" />
+		</li>
 	{/each}
-</div>
+</ul>
+
+
+<style>
+    :root {
+        --cover-size: 15rem;
+    }
+
+    @media (max-width: 1750px) {
+        :root {
+            --cover-size: 11rem;
+        }
+    }
+
+    @media (max-width: 1360px) {
+        :root {
+            --cover-size: 8rem;
+        }
+    }
+
+    @media (max-width: 1075px) {
+        :root {
+            --cover-size: 6rem;
+        }
+    }
+
+    @keyframes adjust-z-index {
+        0% {
+            z-index: 1;
+        }
+        50% {
+            z-index: 100; /* When at the center, be on top */
+        }
+        100% {
+            z-index: 1;
+        }
+    }
+
+    @keyframes rotate-cover {
+        0% {
+            transform: translateX(-100%) rotateY(-45deg);
+        }
+        35% {
+            transform: translateX(0) rotateY(-45deg);
+        }
+        50% {
+            transform: rotateY(0deg) translateZ(1em) scale(1.5);
+        }
+        65% {
+            transform: translateX(0) rotateY(45deg);
+        }
+        100% {
+            transform: translateX(100%) rotateY(45deg);
+        }
+    }
+
+    .cards {
+
+        min-height: calc(var(--cover-size) * 2.5);
+        width: calc(var(--cover-size) * 6);
+        margin: 0 auto;
+        padding: calc(var(--cover-size) / 3 * 2) 0;
+        position: relative;
+        max-width: 90vw;
+        list-style: none;
+        overflow-x: scroll;
+        white-space: nowrap;
+        box-sizing: border-box;
+
+    }
+
+    .cards li {
+
+        /* Track this element as it intersects the scrollport */
+        view-timeline-name: --li-in-and-out-of-view;
+        view-timeline-axis: inline;
+        /* Link an animation to the established view-timeline and have it run during the contain phase */
+        animation: linear adjust-z-index both;
+        animation-timeline: --li-in-and-out-of-view;
+        perspective: 40em;
+        position: relative;
+        z-index: 1;
+        will-change: z-index;
+        user-select: none;
+
+        display: inline-block;
+        width: var(--cover-size);
+        aspect-ratio: 1;
+        scroll-snap-align: center;
+
+    }
+
+    .cards li:first-of-type {
+
+        margin-left: calc(50% - (var(--cover-size) / 2));
+    }
+
+    .cards li:last-of-type {
+
+        margin-right: calc(50% - (var(--cover-size) / 2));
+    }
+
+    .cards li img {
+        width: 100%;
+        height: auto;
+        -webkit-box-reflect: below 0.5em linear-gradient(rgb(0 0 0 / 0), rgb(0 0 0 / 0.25));
+        /* Link an animation to the established view-timeline (of the parent li) and have it run during the contain phase */
+        animation: linear rotate-cover both;
+        animation-timeline: --li-in-and-out-of-view;
+    }
+
+</style>

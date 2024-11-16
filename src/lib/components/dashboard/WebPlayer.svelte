@@ -47,7 +47,7 @@
 			if (scroll <= 0) {
 				reverse = false;
 			}
-			if ((scroll + autoScrollElement!.clientWidth) >= autoScrollElement!.scrollWidth) {
+			if (autoScrollElement && ((scroll + autoScrollElement.clientWidth) >= autoScrollElement.scrollWidth)) {
 				reverse = true;
 			}
 			scroll = reverse ? scroll - 1 : scroll + 1;
