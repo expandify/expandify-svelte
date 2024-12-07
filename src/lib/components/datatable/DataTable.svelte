@@ -1,7 +1,6 @@
-<script lang="ts">
+<script lang="ts" generics="TValue">
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
 	import {
-		type ColumnFiltersState,
 		type PaginationState,
 		type RowSelectionState,
 		type SortingState,
@@ -9,9 +8,8 @@
 		getCoreRowModel,
 		getFilteredRowModel,
 		getPaginationRowModel,
-		getSortedRowModel
+		getSortedRowModel, type GlobalFilterTableState, type Row
 	} from '@tanstack/table-core';
-	import * as Table from '$lib/components/ui/table';
 	import {
 		DropdownMenu,
 		DropdownMenuCheckboxItem,
@@ -19,37 +17,39 @@
 		DropdownMenuTrigger
 	} from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
-	import { tracks } from '$lib/stores/library/tracks';
-
 	import { Input } from '$lib/components/ui/input';
-	import {
-		FlexRender,
-		createSvelteTable,
-		renderComponent,
-		renderSnippet
-	} from '$lib/components/ui/data-table';
-	import { savedTrackColumns } from '$lib/components/datatable/columns/tracks';
+	import { FlexRender, createSvelteTable } from '$lib/components/ui/data-table';
+	import { buildColumns, type ColumnConfig } from '$lib/components/datatable/columns/columns';
+	import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '$lib/components/ui/table';
 
+	let { data, columConfig, filterFunc }: {
+		data: TValue[],
+		columConfig: ColumnConfig<TValue>,
+		filterFunc: (row: Row<TValue>, filterValue: string) => boolean,
+	} = $props();
 
 	let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 15 });
 	let sorting = $state<SortingState>([]);
-	let columnFilters = $state<ColumnFiltersState>([]);
+	let globalFilter = $state<GlobalFilterTableState>();
 	let rowSelection = $state<RowSelectionState>({});
 	let columnVisibility = $state<VisibilityState>({
-		"available_markets": false,
-		"artists": false,
-		"preview_url": false,
-		"uri": false,
-		"href": false,
-		"external_urls": false
+		'available_markets': false,
+		'artists': false,
+		'preview_url': false,
+		'uri': false,
+		'href': false,
+		'external_urls': false
 	});
 
+	const columns = buildColumns(columConfig);
 
 	const table = createSvelteTable({
 		get data() {
-			return $tracks.tracks;
+			return data;
 		},
-		columns: savedTrackColumns,
+		enableSorting: true,
+		enableGlobalFilter: true,
+		columns: columns,
 		state: {
 			get pagination() {
 				return pagination;
@@ -63,14 +63,16 @@
 			get rowSelection() {
 				return rowSelection;
 			},
-			get columnFilters() {
-				return columnFilters;
+			get globalFilter() {
+				return globalFilter;
 			}
+
 		},
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 		getSortedRowModel: getSortedRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
+		globalFilterFn: (row, _, filterValue) => filterFunc(row, filterValue),
 		onPaginationChange: (updater) => {
 			if (typeof updater === 'function') {
 				pagination = updater(pagination);
@@ -85,11 +87,11 @@
 				sorting = updater;
 			}
 		},
-		onColumnFiltersChange: (updater) => {
+		onGlobalFilterChange: (updater) => {
 			if (typeof updater === 'function') {
-				columnFilters = updater(columnFilters);
+				globalFilter = updater(globalFilter);
 			} else {
-				columnFilters = updater;
+				globalFilter = updater;
 			}
 		},
 		onColumnVisibilityChange: (updater) => {
@@ -98,7 +100,7 @@
 			} else {
 				columnVisibility = updater;
 			}
-			console.log(columnVisibility)
+			console.log(columnVisibility);
 		},
 		onRowSelectionChange: (updater) => {
 			if (typeof updater === 'function') {
@@ -114,12 +116,9 @@
 	<div class="flex items-center py-4">
 		<Input
 			placeholder="Filter emails..."
-			value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-			oninput={(e) =>
-    table.getColumn("name")?.setFilterValue(e.currentTarget.value)}
-			onchange={(e) => {
-    table.getColumn("name")?.setFilterValue(e.currentTarget.value);
-   }}
+			value={table.getState().globalFilter}
+			oninput={(e) => table.setGlobalFilter(e.currentTarget.value)}
+			onchange={(e) => table.setGlobalFilter(e.currentTarget.value)}
 			class="max-w-sm"
 		/>
 		<DropdownMenu>
@@ -149,44 +148,44 @@
 	</div>
 	<div class=" ">
 		<div class="rounded-md border ">
-			<Table.Root>
-				<Table.Header>
+			<Table>
+				<TableHeader>
 					{#each table.getHeaderGroups() as headerGroup (headerGroup.id)}
-						<Table.Row>
+						<TableRow>
 							{#each headerGroup.headers as header (header.id)}
-								<Table.Head class="[&:has([role=checkbox])]:pl-3">
+								<TableHead class="[&:has([role=checkbox])]:pl-3">
 									{#if !header.isPlaceholder}
 										<FlexRender
 											content={header.column.columnDef.header}
 											context={header.getContext()}
 										/>
 									{/if}
-								</Table.Head>
+								</TableHead>
 							{/each}
-						</Table.Row>
+						</TableRow>
 					{/each}
-				</Table.Header>
-				<Table.Body>
+				</TableHeader>
+				<TableBody>
 					{#each table.getRowModel().rows as row (row.id)}
-						<Table.Row data-state={row.getIsSelected() && "selected"}>
+						<TableRow data-state={row.getIsSelected() && "selected"}>
 							{#each row.getVisibleCells() as cell (cell.id)}
-								<Table.Cell class="[&:has([role=checkbox])]:pl-3">
+								<TableCell class="[&:has([role=checkbox])]:pl-3">
 									<FlexRender
 										content={cell.column.columnDef.cell}
 										context={cell.getContext()}
 									/>
-								</Table.Cell>
+								</TableCell>
 							{/each}
-						</Table.Row>
+						</TableRow>
 					{:else}
-						<Table.Row>
-							<Table.Cell colspan={savedTrackColumns.length} class="h-24 text-center">
+						<TableRow>
+							<TableCell colspan={columns.length} class="h-24 text-center">
 								No results.
-							</Table.Cell>
-						</Table.Row>
+							</TableCell>
+						</TableRow>
 					{/each}
-				</Table.Body>
-			</Table.Root>
+				</TableBody>
+			</Table>
 		</div>
 		<div class="flex items-center justify-end space-x-2 pt-4">
 			<div class="text-muted-foreground flex-1 text-sm">
