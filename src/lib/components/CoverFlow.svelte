@@ -1,4 +1,8 @@
 <script lang="ts">
+	// Taken from:
+	//   - https://scroll-driven-animations.style/demos/cover-flow/css/
+	//   - https://www.youtube.com/watch?v=Dk1YA8dCgE0&list=PLNYkxOF6rcICM3ttukz9x5LCNOHfWBVnn&index=7
+
 	import { albums } from '$lib/stores/library/albums';
 
 	let slider: HTMLElement;
@@ -30,8 +34,7 @@
 		onpointerup={() => dragging = false}
 		onpointermove={pointermove}
 		class:snap-x={!dragging}
-		class="cards"
->
+		class="cards">
 	{#each $albums.albums as a}
 		<li>
 			<img src={a.images?.at(0)?.url} alt={a.name} draggable="false" />

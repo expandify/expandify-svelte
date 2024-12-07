@@ -164,8 +164,8 @@
 		</SidebarFooter>
 		<!--<Sidebar.Rail />-->
 	</Sidebar>
-	<SidebarInset>
-		<main class="p-6">
+	<SidebarInset class="overflow-hidden">
+		<main class="p-6 ">
 
 			{@render children?.()}
 		</main>

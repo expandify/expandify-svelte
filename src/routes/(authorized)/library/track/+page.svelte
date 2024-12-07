@@ -4,6 +4,7 @@
     import {tracks} from '$lib/stores/library/tracks';
     import {spotifyPersistence} from "$lib/services/spotify/spotify-persistance";
     import { RefreshCcw } from 'lucide-svelte';
+    import DataTable from '$lib/components/datatable/DataTable.svelte';
 
     dependencies.onlyTracksNeeded()
 </script>
@@ -16,25 +17,5 @@
     </button>
 </h2>
 
-<TrackTable tracks={$tracks.tracks} showImage={true} showAddedAt={true}/>
-
-<style lang="scss">
-  .header {
-    display: flex;
-    flex-direction: row;
-
-    .button {
-      display: flex;
-      align-items: center;
-      background-color: inherit;
-      border: none;
-      fill: var(--text-subdued);
-      cursor: pointer;
-      width: 2.5rem;
-    }
-
-    .button:hover {
-      fill: var(--text-base);
-    }
-  }
-</style>
+<!-- <TrackTable tracks={$tracks.tracks} showImage={true} showAddedAt={true}/> -->
+<DataTable></DataTable>
