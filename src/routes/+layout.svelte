@@ -24,7 +24,7 @@
 </script>
 
 <ModeWatcher></ModeWatcher>
-<div class="min-h-lvh bg-white dark:bg-gray-900">
+<div class="min-h-lvh">
 	{@render children?.()}
 	<Notifications></Notifications>
 </div>
