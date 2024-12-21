@@ -1,8 +1,5 @@
 <script lang="ts">
 	import type { Album, Artist, Playlist } from '$lib/types/spotify';
-	import { AspectRatio } from "$lib/components/ui/aspect-ratio/index.js";
-	import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
-	import { TooltipProvider, TooltipTrigger, Tooltip, TooltipContent } from '$lib/components/ui/tooltip/index.js';
 
 	let { card } = $props<{
 		card: Album | Artist | Playlist;
@@ -29,40 +26,25 @@
 	}
 
 </script>
-<a href={href}>
-<Card class="hover:bg-accent hover:text-accent-foreground hover:cursor-pointer"
-			onclick={() => console.log('clicked')}>
-	<CardHeader>
-		<TooltipProvider>
-			<Tooltip>
-				<TooltipTrigger >
-					<CardTitle class="w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
-						{title}
-					</CardTitle>
-					<CardDescription class="w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
-						{subtitle || ""}
-					</CardDescription>
-				</TooltipTrigger>
-				<TooltipContent class="w-56">
-					<CardTitle>
-						{title}
-					</CardTitle>
-					<CardDescription>
-						{subtitle || ""}
-					</CardDescription>
-				</TooltipContent>
-			</Tooltip>
-		</TooltipProvider>
-	</CardHeader>
-	<CardContent>
-		<AspectRatio ratio={1}>
+<a {href}
+	 class="group card preset-filled-surface-100-900 border-[1px] border-surface-200-800 card-hover divide-surface-200-800 block max-w-md divide-y ">
+	<header>
 		<img src={card?.images?.at(0)?.url}
 				 class="rounded-lg object-cover h-full"
 				 width="100%"
 				 alt={subtitle}
-				 loading="lazy"
-				 />
-		</AspectRatio>
-	</CardContent>
-</Card>
+				 loading="lazy" />
+	</header>
+	<article class="group-hover:block hidden absolute bg-surface-100-900 space-y-4 p-4 border-[1px] border-surface-200-800 rounded-md w-full ">
+		<h2 class="text-lg">
+			{title}
+		</h2>
+		<h3 class="h5 ">
+			{subtitle || ""}
+		</h3>
+	</article>
+	<article class="space-y-4 p-4">
+		<h2 class="text-lg text-nowrap whitespace-nowrap overflow-hidden">{title}</h2>
+		<h3 class="h5 text-nowrap whitespace-nowrap overflow-hidden">{subtitle || ""}</h3>
+	</article>
 </a>
